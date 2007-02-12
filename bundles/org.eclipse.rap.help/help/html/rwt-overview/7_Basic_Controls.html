@@ -1,0 +1,45 @@
+<h1>7 Basic Controls</h1>
+
+<a name="Class_Label"></a><h3>Class Label</h3>
+<p>Currently implemented:
+</p>
+<ul><li> get/set text
+</li><li> get/set image
+</li></ul>
+<dl><dd> <b>Note</b>: Just like in SWT, the label can only display a string or an image but not both at the same time. When both is set, the label displays the object that was set last. However, the behavior of the RWT label differs slightly from SWT in that that setting an image clears the text and vice versa. As a result, calling <code>getImage()</code> after setting a text using <code>setText()</code> returns <code>null</code> even though an image has been set previously.
+</dd></dl>
+<ul><li> alignment (<code>LEFT</code>, <code>CENTER</code>, <code>RIGHT</code>)
+</li><li> <code>SEPARATOR</code> style, both horizontal and vertical with the same styles as supported by SWT: <code>SHADOW_NONE</code>, <code>SHADOW_IN</code>, <code>SHADOW_OUT</code>
+</li></ul>
+<a name="Class_Button"></a><h3>Class Button</h3>
+<p>Currently implemented:
+</p>
+<ul><li> the types <code>CHECK</code>, <code>PUSH</code>, <code>RADIO</code>
+</li><li> get/set text and image
+</li><li> selection
+</li><li> alignment (<code>LEFT</code>, <code>CENTER</code>, <code>RIGHT</code>)
+</li><li> SelectionListener
+</li></ul>
+<a name="Class_Text"></a><h3>Class Text</h3>
+<p>Currently implemented:
+</p>
+<ul><li> get/set text
+</li><li> SINGLE, MULTI and PASSWORD styles
+</li><li> READ_ONLY
+</li></ul>
+<a name="Class_List"></a><h3>Class List</h3>
+<p>Currently implemented:
+</p>
+<ul><li> all selection-related methods
+</li><li> handling of focused item
+</li><li> all item operations
+</li><li> control scroll behaviour similar to SWT via <code>H_SCROLL</code> and <code>V_SCROLL</code> style flags: scroll never, scroll horizontal only, scroll vertical only, automatically scroll when necessary
+</li><li> SelectionListener
+</li></ul>
+<a name="Class_Combo"></a><h3>Class Combo</h3>
+<p>Currently Implemented:
+</p>
+<ul><li> all selection-related methods
+</li><li> all item operations
+</li><li> SelectionListener
+</li></ul>

@@ -1,0 +1,30 @@
+<h1>1 Widget Fundamentals</h1>
+
+<p></p>
+<a name="What_Is_a_Widget.3F"></a><h3>What Is a Widget?</h3>
+<p>TBD
+</p>
+<a name="Widget_Hierarchy."></a><h3>Widget Hierarchy.</h3>
+<p>RWT uses the same widget hierarchy as SWT. In addition the class 
+<code>Widget</code> implements Adaptable.
+</p>
+<a name="Events_and_Listeners."></a><h3>Events and Listeners.</h3>
+<p>RWT implements the SWT events as close as possible. Through
+the distributed nature of RWT e.g. key-stroke events with 
+server-side turnarounds for event processing won't be available
+since the network latency is too big to make such events usefully 
+applicable.
+</p><p>Currently RWT does not implement <i>untyped Listeners</i> as SWT does.
+Therefore all related methods (like Widget.notifyListeners(int,Event))
+are missing.
+</p>
+<a name="Application_Data."></a><h3>Application Data.</h3>
+<p>Works the same as in SWT.
+All methods for both, named and unnamed application data, are
+implemented.
+</p>
+<a name="Querying_the_Display"></a><h3>Querying the Display</h3>
+<p>Though RWT provides a class Display as well and Widget provides the <code>getDisplay()</code> method, the meaning of Display in RWT is 
+somewhat different.
+Display is described in more detail in the chapter <a href="5_Display." title="5. Display.">Display</a>
+</p>

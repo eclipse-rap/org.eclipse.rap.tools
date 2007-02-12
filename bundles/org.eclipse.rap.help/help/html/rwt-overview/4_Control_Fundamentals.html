@@ -1,0 +1,38 @@
+<h1>4 Control Fundamentals</h1>
+	  
+<p>
+</p>
+<a name="Bounds"></a><h3>Bounds</h3>
+<p>Bounds work the same as in SWT.
+</p>
+<a name="Client_Area"></a><h3>Client Area</h3>
+<p>The client area will work the same as in SWT.
+The method <code>getClientArea()</code> exists, but currently uses a very limited algorithm. This will change in the future.
+</p>
+<a name="Moving_and_Resizing"></a><h3>Moving and Resizing</h3>
+<p>All the location and dimension methods work the same as in SWT.
+</p><p>Currently, the only control that can be moved or resized by the user is Shell.
+Resize events are already sent, sending move events is not yet implemented but will be done in the future.
+</p>
+<a name="Visibility"></a><h3>Visibility</h3>
+<p>Implemented, works the same as in SWT.
+</p>
+<a name="Z-Order"></a><h3>Z-Order</h3>
+<p>Implemented, works the same as in SWT.
+</p>
+<a name="Enabling_and_Disabling"></a><h3>Enabling and Disabling</h3>
+<p>Implemented except for Table (cannot be disabled yet) and Tree (does not gray out items when disabled).
+For all other controls, disabling works just like in SWT.
+</p>
+<a name="Preferred_Size"></a><h3>Preferred Size</h3>
+<p>The preferred size calculation is used in many layouts to use the available space effectively. When layouting text the preferred size calculation calls the underlying operating system to determine the size of text strings. Calling the operating system is not possible with RAP, but we can use JavaScript to determine the text size. To avoid multiple request / response cycles during the layout process (which is taking place on the server side with RAP) we plan to implement a sophisticated system of text probing and application wide text / size storage.
+</p>
+<a name="Painting"></a><h3>Painting</h3>
+<p>Not yet available. Painting is based on the Graphics Context, see <a href="16_Graphics_Fundamentals.html" title="16. Graphics Fundamentals.">16._Graphics_Fundamentals.</a>
+</p>
+<a name="Repainting_and_Resizing"></a><h3>Repainting and Resizing</h3>
+<p>not planned
+</p>
+<a name="Filling_the_Background"></a><h3>Filling the Background</h3>
+<p>not applicable
+</p>

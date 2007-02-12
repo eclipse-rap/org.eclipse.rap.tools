@@ -1,0 +1,44 @@
+<toc label="RAP Help">
+  <topic label="Getting Started">
+    <topic label="Demo Application" href="help/html/getting-started/demo-app.html"/>
+    <topic label="Hello World" href="help/html/getting-started/hello-world.html"/>
+  </topic>
+
+  <topic label="RWT Overview and Comparison to SWT" 
+    href="help/html/rwt-overview/overview.html">
+    <topic label="I. WIDGETS">
+      <topic href="help/html/rwt-overview/1_Widget_Fundamentals.html" label="1 Widgets Fundamentals"/>
+      <topic href="help/html/rwt-overview/2_The_Keyboard.html" label="2 The Keyboard"/>
+      <topic href="help/html/rwt-overview/3_The_Mouse.html" label="3 The Mouse"/>
+      <topic href="help/html/rwt-overview/4_Control_Fundamentals.html" label="4 Control Fundamentals"/>
+      <topic href="help/html/rwt-overview/5_Display.html" label="5 Display"/>
+      <topic href="help/html/rwt-overview/6_Native_Widgets.html" label="6 Native Widgets"/>
+      <topic href="help/html/rwt-overview/7_Basic_Controls.html" label="7 Basic Controls"/>
+      <topic href="help/html/rwt-overview/8_Tool_Bars_and_Menus.html" label="8 Tool Bars and Menus"/>
+      <topic href="help/html/rwt-overview/9_Advanced_Controls.html" label="9 Advanced Controls"/>
+      <topic href="help/html/rwt-overview/10_Range-Based_Controls.html" label="10 Range-Based Controls"/>
+      <topic href="help/html/rwt-overview/11_Controls_Composites_Groups_and_Shells.html" label="11 Controls, Composites, Groups, and Shells"/>
+      <topic href="help/html/rwt-overview/12_Canvas_and_Caret.html" label="12 Canvas and Caret"/>
+      <topic href="help/html/rwt-overview/13_Draggable_Controls.html" label="13 Draggable Controls"/>
+      <topic href="help/html/rwt-overview/14_Dialogs.html" label="14 Dialogs"/>
+      <topic href="help/html/rwt-overview/15_Layout.html" label="15 Layout"/>
+    </topic>
+    
+    <topic label="II. GRAPHICS">
+      <topic href="help/html/rwt-overview/16_Graphics_Fundamentals.html" label="16 Graphics Fundamentals"/>
+      <topic href="help/html/rwt-overview/17_Colors.html" label="17 Colors"/>
+      <topic href="help/html/rwt-overview/18_Fonts.html" label="18 Fonts"/>
+      <topic href="help/html/rwt-overview/19_Images.html" label="19 Images"/>
+      <topic href="help/html/rwt-overview/20_Cursors.html" label="20 Cursors"/>
+    </topic>
+    
+    <topic label="III. CUSTOM_WIDGETS">
+      <topic href="help/html/rwt-overview/21_EnhancedBasicControls.html" label="21 Enhanced Basic Controls"/>
+      <topic href="help/html/rwt-overview/22_LayoutingComposites.html" label="22 LayoutingComposites"/>
+      <topic href="help/html/rwt-overview/22_Miscellaneous.html" label="22 Miscellaneous"/>
+      <topic href="help/html/rwt-overview/23_DeprecatedAPI.html" label="23 DeprecatedAPI"/>
+    </topic>
+  </topic>
+  
+  <topic label="Release Plan" href="help/html/ReleasePlan/ReleasePlan.html"/>
+</toc>
