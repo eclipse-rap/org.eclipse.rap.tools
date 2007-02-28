@@ -16,24 +16,31 @@
   workbench. The second demo shows what control widgets there are and that 
   they behave very similar to the SWT widgets.</p>
 
-<p>To access and run these demo applications, please open the Plug-Ins view 
+<p>To access and run these demo applications, please open the Plug-ins view 
   (e.g. through the Plug-in Development perspective). Select the plugin named 
   <strong>org.eclipse.rap.demo</strong> which contains both demo applications, 
   right-click on this plugin and select <strong>Import as &gt; source project
   </strong>.
-  This demo will then appear with all source files into your workspace / Package 
-  Explorer. The demo also provides a ready-to use Launch configuration.</p>
+  This demo will then appear with all source files in your workspace. The 
+  demo also provides a ready-to-use launch configuration.</p>
 
+<p><strong>Please note</strong> that even though importing the demo project as
+  source succeeds, the plug-in can only be run if You installed the SDK release.
+  When using the Update-Manager to get RAP, the <strong>Rich Ajax Platform SDK
+  </strong> component must also be checked as shown below.
+</p>  
+<img src="../../images/demo-app-sdk.png"/>
+  
 <p>To run the demo, select <strong>Run</strong>. In the upcoming Launch 
-  configuration wizard, select <strong>Rich AJAX Platform Demo</strong> from 
+  Configuration Dialog, select <strong>Rich AJAX Platform Demo</strong> from 
   the section <strong>Equinox OSGi Framework</strong>.</p>
 
 <p><strong>Important note for Eclipse 3.3:</strong><br/>
   If you are using Eclipse 3.3. already, you need to start the 
   <strong>org.eclipse.equinox.app</strong> plugin with your rap demo. To do 
-  so, switch to the <strong>Plug-ins</strong> tab of your Launch configuration 
-  wizard and select to include the <strong>org.eclipse.equinox.app</strong> 
-  plug-in.</p>
+  so, switch to the <strong>Plug-ins</strong> tab of your Launch Configuration 
+  and select to include the <strong>org.eclipse.equinox.app</strong> plug-in.
+  </p>
 
 <p>You may want to configure the TCP-port your demo application will listen to. 
   This is done opening the <strong>Arguments</strong> tab and passing 
@@ -42,9 +49,9 @@
   application will listen to. This is particularly important if the default 
   port 80 is already taken by some other application (e.g. your Web Server ...) 
   or in an environment where you are not allowed to access privileged ports 
-  (e.g. as a non-admin user on some OS).</p>
+  (e.g. as a non-admin user on some operating systems).</p>
   
-<img src="../../images/hello-world-params.png"/>
+<img src="../../images/demo-app-params.png"/>
   
 <p>To actually start your demo, click the <strong>Run</strong> button. The 
   correct startup should display in the Eclipse Console through a message 
