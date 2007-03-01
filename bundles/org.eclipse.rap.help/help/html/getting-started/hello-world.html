@@ -18,10 +18,10 @@
   select <strong>Plug-in Project</strong> from the section 
   <strong>Plug-in Development</strong>.</p>
   
-  <p>In order to run Your newly created plug-in project depends on a number of 
-    plug-ins that You need to enter as required plug-ins. Therefore, open the 
-    project's MANIFEST.MF with the <strong>Plug-in Manifest Editor</strong> and 
-    go to the <strong>Dependencies</strong> page.</p>
+  <p>Your newly created plug-in project depends on a number of plug-ins that You 
+    need to enter as required plug-ins. To do so, open the project's MANIFEST.MF 
+    with the <strong>Plug-in Manifest Editor</strong> and go to the 
+    <strong>Dependencies</strong> page.</p>
   <p>Add the following plug-ins to the list of <strong>Required Plug-ins</strong>.
   <ul>
     <li><code>org.eclipse.rap.ui.workbench</code></li>
@@ -35,12 +35,38 @@
 </li>
   
 <li><p><strong>Create your package</strong></p>
-<p>First you should create a package <code>org.eclipse.rap.helloworld</code> 
-  (or another package name to your liking) to contain your source files.</p>
+<p>Before creating any files or classes you should create a package <code>org.eclipse.rap.helloworld</code> 
+  (or another package name you like) to contain your source files.</p>
+</li>
+
+<li><p><strong>A workbench advisor <code>HelloWorldWorkbenchAdvisor</code> 
+  extending the <code>WorkbenchAdvisor</code> class</strong></p>
+
+<p>The WorkbenchAdvisor is necessary to provide the id of the perspective 
+  to the workbench. Therefore you need to implement the only method 
+  <code>getInitialWindowPerspectiveId()</code> to return the id of your 
+  perspective.</p>
+<p>Example code:
+<pre><code>
+package org.eclipse.rap.helloworld;
+
+import org.eclipse.rap.ui.entrypoint.WorkbenchAdvisor;
+
+public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
+
+  public String getInitialWindowPerspectiveId() {
+    return "org.eclipse.rap.helloworld.perspective";
+  }
+}
+</code></pre>
+</p>
+<p>For now we ignore the fact that the perspective id does not yet exist but
+  keep in mind to label the perspective extension with the same id that we
+  used here.</p>
 </li>
 
 <li><p><strong>Create an entry point</strong></p>
-<p>In the <strong>Plug-in Manifest Edtior</strong>, switch to the 
+<p>In the <strong>Plug-in Manifest Editor</strong>, switch to the 
   <strong>Extensions</strong> page.</p>  
 
 <img src="../../images/hello-world-workbench.png"/>
@@ -84,23 +110,22 @@ public class HelloWorldWorkbench implements IEntryPoint {
   of your application. The class needs to extend <code>ViewPart</code> and 
   provide an implementation for the method <code>createPartControl()</code>.</p>
 
-<img src="../../images/hello-world-view.png"/><br/><br/>
+<img src="../../images/hello-world-view.png"/>
   
-<p>The View must then be declared as an extension to 
+<p>Now you need to declared this <code>HelloWorldView</code> as an extension to 
   <code>org.eclipse.rap.ui.workbench.views</code> with these parameters:</p>
   <ul>
   <li><strong>id:</strong> <code>org.eclipse.rap.helloworld.helloWorldView</code></li>
   <li><strong>name:</strong> <code>Hello World</code></li>
   <li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldView</code></li>
-  <li><strong>icon:</strong> <em>some_icon.gif</em></li>
+  <li><strong>icon:</strong> <em>some_icon.gif</em>
+    <p><strong>Important note:</strong> The icon needs to be set as the current 
+    RAP Workbench implementation is incomplete in this part. Omitting the icon 
+    will lead to an exception.</p></li>
   </ul>
   
-  <p><strong>Important note:</strong> The icon needs to be set as the current 
-    RAP Workbench implementation is incomplete in this part. Omitting the icon 
-    will lead to an exception.</p>
-</li>
 
-<li><p><strong>Implement the method <code>createPartControl</code> in that 
+<p><strong>Implement the method <code>createPartControl</code> in that 
   HelloWorldView</strong></p>
 <p>You then need to implement the method <code>createPartControl</code> to 
   create and add the components you want in your view.</p>
@@ -120,6 +145,10 @@ public class HelloWorldView extends ViewPart {
     label.setText( "Hello RAP World" );
     label.setSize( 80, 20 );
   }
+
+  public void setFocus() {
+    // do nothing
+  }
 }
 </code></pre>
 </p></li>
@@ -131,7 +160,7 @@ public class HelloWorldView extends ViewPart {
   you need to implement <code>createInitialLayout()</code> to set up the layout 
   of your UI and add the views (only one view in the HelloWorld application). 
   Please note that you need to specify the <strong>id</strong> of your view, 
-  which needs to be distinguished from the class name.</p>
+  which needs to be distinguished from the <strong>class name</strong>.</p>
 <p>Example code:
 <pre><code>
 package org.eclipse.rap.helloworld;
@@ -155,8 +184,7 @@ public class Perspective implements IPerspectiveFactory {
 
 </code></pre></p>
   
-<p><strong>Then the <code>Perspective</code> needs to be declared as an 
-  extension to <code>org.eclipse.rap.ui.workbench.perspectives</code></strong>.</p>
+<p>Then the <code>Perspective</code> needs to be declared as an extension to <code>org.eclipse.rap.ui.workbench.perspectives</code>.</p>
 <img src="../../images/hello-world-perspective.png"/>
 <p>  
 <ul>
@@ -167,29 +195,6 @@ public class Perspective implements IPerspectiveFactory {
   All other Attributes may remain empty.</p>
 </li>
 
-<li><p><strong>A workbench advisor <code>HelloWorldWorkbenchAdvisor</code> 
-  extending the <code>WorkbenchAdvisor</code> class</strong></p>
-
-<p>The WorkbenchAdvisor is necessary to provide the id of the perspective 
-  to the workbench. Therefore you need to implement the only method 
-  <code>getInitialWindowPerspectiveId()</code> to return the id of your 
-  perspective. Once again you need to use the <strong>id</strong> of your 
-  perspective as return value, not the <strong>class name</strong>.<p/>
-<p>Example code:
-<pre><code>
-package org.eclipse.rap.helloworld;
-
-import org.eclipse.rap.ui.entrypoint.WorkbenchAdvisor;
-
-public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
-
-  public String getInitialWindowPerspectiveId() {
-    return "org.eclipse.rap.helloworld.perspective";
-  }
-}
-</code></pre>
-</p></li>
-<br/>
 </ol>
 
 <h2>Now it's time to start the HelloWorld application</h2>
@@ -207,6 +212,7 @@ public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
   <li>org.eclipse.core.jobs</li>
   <li>org.eclipse.core.runtime</li>
   <li>org.eclipse.core.runtime.compatibility.registry</li>
+  <li>org.eclipse.equinox.app (when using Eclipse 3.3)</li>
   <li>org.eclipse.equinox.common</li>
   <li>org.eclipse.equinox.http.jetty</li>
   <li>org.eclipse.equinox.http.registry</li>
