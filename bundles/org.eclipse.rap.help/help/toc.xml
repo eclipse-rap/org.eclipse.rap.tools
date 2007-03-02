@@ -9,5 +9,6 @@
       label="Hello World" 
       href="help/html/getting-started/hello-world.html"/>
   </topic>
+  <topic label="Legal" href="help/html/legal.html" />
   
 </toc>
