@@ -1,5 +1,4 @@
 <toc label="RAP Help">
-
   <topic label="Introduction" href="help/html/intro.html" />
   <topic label="Getting Started">
     <topic 
@@ -8,6 +7,9 @@
     <topic 
       label="Hello World" 
       href="help/html/getting-started/hello-world.html"/>
+    <topic 
+      label="WAR Deployment" 
+      href="help/html/getting-started/deployment.html"/>
   </topic>
   <topic label="Legal" href="help/html/legal.html" />
   

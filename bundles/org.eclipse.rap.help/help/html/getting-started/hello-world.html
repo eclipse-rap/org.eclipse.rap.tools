@@ -28,7 +28,12 @@
     <li><code>org.eclipse.rap.jface</code></li>
     <li><code>org.eclipse.rap.rwt</code></li>
     <li><code>org.eclipse.rap.w4t</code></li>
+  </ul></p>
+  
+  <p>Add the following servlet packages to the list of <strong>Imported Packages</strong>.
+  <ul>
     <li><code>javax.servlet</code></li>
+    <li><code>javax.servlet.http</code></li>
   </ul></p>
   <p>so that the <strong>Dependencies</strong> page looks like this:</p>
   <img src="../../images/hello-world-dependencies.png"/>
@@ -50,7 +55,7 @@
 <pre><code>
 package org.eclipse.rap.helloworld;
 
-import org.eclipse.rap.ui.entrypoint.WorkbenchAdvisor;
+import org.eclipse.ui.entrypoint.WorkbenchAdvisor;
 
 public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
 
@@ -88,9 +93,9 @@ public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
 <pre></code>
 package org.eclipse.rap.helloworld;
   
-import org.eclipse.rap.rwt.lifecycle.IEntryPoint;
-import org.eclipse.rap.rwt.widgets.Display;
-import org.eclipse.rap.ui.PlatformUI;
+import org.eclipse.swt.lifecycle.IEntryPoint;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 public class HelloWorldWorkbench implements IEntryPoint {
   
@@ -133,15 +138,15 @@ public class HelloWorldWorkbench implements IEntryPoint {
 <pre></code>
 package org.eclipse.rap.helloworld;
 
-import org.eclipse.rap.rwt.RWT;
-import org.eclipse.rap.rwt.widgets.Composite;
-import org.eclipse.rap.rwt.widgets.Label;
-import org.eclipse.rap.ui.part.ViewPart;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.part.ViewPart;
 
 public class HelloWorldView extends ViewPart {
 
   public void createPartControl( Composite parent ) {
-    Label label = new Label ( parent, RWT.NONE );
+    Label label = new Label ( parent, SWT.NONE );
     label.setText( "Hello RAP World" );
     label.setSize( 80, 20 );
   }
@@ -165,9 +170,9 @@ public class HelloWorldView extends ViewPart {
 <pre><code>
 package org.eclipse.rap.helloworld;
 
-import org.eclipse.rap.ui.IFolderLayout;
-import org.eclipse.rap.ui.IPageLayout;
-import org.eclipse.rap.ui.IPerspectiveFactory;
+import org.eclipse.ui.IFolderLayout;
+import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.IPerspectiveFactory;
 
 public class Perspective implements IPerspectiveFactory {
   

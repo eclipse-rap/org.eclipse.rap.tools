@@ -1,0 +1,79 @@
+<html>
+<body>
+  <h1>How to deploy a RAP application to a servlet container?</h1> 
+  
+  <p>The current eclipse build tools and wizards do not directly support 
+  building this style of application so for the time being the build can be
+  performed with a series of Ant scripts and resource templates. The 
+  <code>org.eclipse.rap.demo.feature</code> shows how to create a <code>WAR</code> that
+  contains the <code>org.eclipse.rap.demo</code> project as RAP application.</p>
+  
+  <p>Note: As with RCP applications there are a wide variety of possible
+  configurations. What's given in <code>org.eclipse.rap.demo.feature</code> is just
+  one possibility.</p>
+  
+  <p>As prerequisites we assume that you are familiar with the bundles- and 
+  build information section of the 
+  <a href="http://www.eclipse.org/equinox/server/http_in_container.php">
+  Equinox in a Servlet Container</a> document. We also assume that you have a 
+  checkout of the 
+  <a href="http://www.eclipse.org/equinox/server/downloads/servletbridge-anon.psf">servlet bridge bundles</a>
+  in your workspace.</p>
+  
+  <h3>Prepare the build script</h3>
+  <ul>
+  <li>If not already done checkout the <code>org.eclipse.rap.demo.feature</code>
+  project into your workspace.</li>
+  <li>Open the <code>script/webappBuilder.xml</code> with the Ant editor.</li>
+  <li>Adjust the <code>servletbridge.dir</code> property
+  (see docu in script file).</li>
+  </ul>
+  <img src="../../images/script.png">
+  
+  <h3>Create the build content</h3>
+  <ul>
+  <li>Right-Click on the <code>webAppBuilder.xml</code> script in the IDE and 
+      "Run Ant". (Note: So that the <code>pde.exportFeatures</code> task is
+      available in the IDE select "Run in the same JRE as the workspace" on the
+      JRE tab from "Run Ant..").</li>
+  <li>Refresh the feature project - a build folder should appear. (Note:
+      The <code>pde.exportFeatures</code> target will build the plugins
+      asynchronously and may take a while till finished. After that the complete 
+      <code>WAR</code> content should be available in the build folder.</li>
+  </ul>
+  <img src="../../images/build.png">
+  
+  <h3>Adjust the <code>config.ini</code></h3>
+  <ul>
+  <li>Adjust the path to the plugin directory of your build in the
+  <code>ConfigIniCreator</code> (see docu in <code>ConfigIniCreator</code> 
+  class).</li>
+  <li>Run the ConfigIniCreator as java application.</li>
+  <li>Copy the console output to the <code>config.ini</code> file of your
+  build.</li>
+  </ul>
+  <img src="../../images/config.png">
+  
+  
+  <p>After that pack the <code>WAR</code> of the application build available in the 
+  build folder (in our case the content of <code>build/rapdemo</code>). Deploy
+  the <code>WAR</code> to a servlet container to see whether the build was successful :-)</p>
+  <img src="../../images/runtime.png">
+  
+  <h2>How to deploy my own application?</h2>
+  
+  <p>To deploy your own application like described above you will have
+  to create your own feature. The feature should contain the same plugin 
+  references as the demo feature (except the demo-plugin of course!) plus the
+  plugins that make up your application. It is important that your plugins that
+  reference the servlet API use the <code>Import-Package</code> header to do 
+  this (see <code>MANIFEST.MF</code> of the demo project).</p>
+  
+  <p>Copy the script and templates folder to the feature and modifiy them
+  according to your project structure. Following the steps above should lead
+  to a full functional <code>WAR</code> of your application.</p>
+  
+  
+  
+</body>
+</html>
