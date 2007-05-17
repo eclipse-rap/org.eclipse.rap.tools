@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.rap.ui.internal.launch.RAPLaunchDelegate"
+            delegateDescription="%launchConfigurationType.delegateDescription"
+            delegateName="%launchConfigurationType.delegateName"
+            id="org.eclipse.rap.ui.launch.RAPLauncher"
+            modes="run,debug"
+            name="%launchConfigurationType.name"
+            public="true"
+            sourceLocatorId="org.eclipse.pde.ui.launcher.PDESourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.rap.ui.internal.launch.tab.RAPLaunchTabGroup"
+            description="%launchConfigurationTabGroup.description"
+            id="org.eclipse.rap.ui.launch.RAPTabGroup"
+            type="org.eclipse.rap.ui.launch.RAPLauncher">
+         <launchMode
+               description="%launchMode..run.description"
+               mode="run">
+         </launchMode>
+         <launchMode
+               description="%launchMode.debug.description"
+               mode="debug">
+         </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.rap.ui.launch.RAPLauncher"
+            icon="icons/obj16/launcher.gif"
+            id="org.eclipse.rap.ui.launch.RAPLaunchImage">
+      </launchConfigurationTypeImage>
+   </extension>
+
+</plugin>
