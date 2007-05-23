@@ -22,8 +22,7 @@ import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.*;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
@@ -272,8 +271,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     Display.getDefault().syncExec( new Runnable() {
       public void run() {
         try {
-          IWorkbenchBrowserSupport browserSupport 
-            = PlatformUI.getWorkbench().getBrowserSupport();
+          IWorkbench workbench = PlatformUI.getWorkbench();
+          IWorkbenchBrowserSupport support = workbench.getBrowserSupport();
           int style 
             = IWorkbenchBrowserSupport.LOCATION_BAR 
             | IWorkbenchBrowserSupport.NAVIGATION_BAR 
@@ -286,7 +285,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
           String id = config.getName();
           String name = config.getName();
           String toolTip = config.getName();
-          result[ 0 ] = browserSupport.createBrowser( style, id,name, toolTip );
+          result[ 0 ] = support.createBrowser( style, id, name, toolTip );
         } catch( CoreException e ) {
           exception[ 0 ] = e;
         }
