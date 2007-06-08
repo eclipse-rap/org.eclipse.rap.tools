@@ -36,11 +36,11 @@
   <h3>Create the build content</h3>
   <ul>
   <li>Right-Click on the <code>webAppBuilder.xml</code> script in the IDE and 
-      "Run Ant". (Note: So that the <code>pde.exportFeatures</code> task is
+      "Run Ant". (Note: In order to make the <code>pde.exportFeatures</code> task
       available in the IDE select "Run in the same JRE as the workspace" on the
       JRE tab from "Run Ant..").</li>
   <li>Refresh the feature project - a build folder should appear. (Note:
-      The <code>pde.exportFeatures</code> target will build the plugins
+      The <code>pde.exportFeatures</code> target will build the plug-ins
       asynchronously and may take a while till finished. After that the complete 
       <code>WAR</code> content should be available in the build folder.</li>
   </ul>
@@ -66,9 +66,9 @@
   <h2>How to deploy my own application?</h2>
   
   <p>To deploy your own application like described above you will have
-  to create your own feature. The feature should contain the same plugin 
-  references as the demo feature (except the demo-plugin of course!) plus the
-  plugins that make up your application. It is important that your plugins that
+  to create your own feature. The feature should contain the same plug-in 
+  references as the demo feature (except the demo-plug-in of course!) plus the
+  plug-ins that make up your application. It is important that your plug-ins that
   reference the servlet API use the <code>Import-Package</code> header to do 
   this (see <code>MANIFEST.MF</code> of the demo project).</p>
   

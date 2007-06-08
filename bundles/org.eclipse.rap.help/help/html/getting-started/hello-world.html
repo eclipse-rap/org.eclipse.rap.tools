@@ -25,9 +25,6 @@
   <p>Add the following plug-ins to the list of <strong>Required Plug-ins</strong>.
   <ul>
     <li><code>org.eclipse.rap.ui.workbench</code></li>
-    <li><code>org.eclipse.rap.jface</code></li>
-    <li><code>org.eclipse.rap.rwt</code></li>
-    <li><code>org.eclipse.rap.w4t</code></li>
   </ul></p>
   
   <p>Add the following servlet packages to the list of <strong>Imported Packages</strong>.
@@ -124,9 +121,8 @@ public class HelloWorldWorkbench implements IEntryPoint {
   <li><strong>name:</strong> <code>Hello World</code></li>
   <li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldView</code></li>
   <li><strong>icon:</strong> <em>some_icon.gif</em>
-    <p><strong>Important note:</strong> The icon needs to be set as the current 
-    RAP Workbench implementation is incomplete in this part. Omitting the icon 
-    will lead to an exception.</p></li>
+    <p><strong>Important note:</strong> If the icon path does not exist,
+    an exception is thrown.</p></li>
   </ul>
   
 
@@ -214,6 +210,7 @@ public class Perspective implements IPerspectiveFactory {
   <li>org.apache.commons.logging</li>  
   <li>org.eclipse.core.commands</li>
   <li>org.eclipse.core.contenttype</li>
+  <li>org.eclipse.core.expressions</li>
   <li>org.eclipse.core.jobs</li>
   <li>org.eclipse.core.runtime</li>
   <li>org.eclipse.core.runtime.compatibility.registry</li>
