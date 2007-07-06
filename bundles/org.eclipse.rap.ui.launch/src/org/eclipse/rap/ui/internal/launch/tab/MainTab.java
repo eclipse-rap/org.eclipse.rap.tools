@@ -19,21 +19,27 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.*;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.window.Window;
-import org.eclipse.rap.ui.internal.launch.*;
+import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
 import org.eclipse.rap.ui.internal.launch.util.Images;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 final class MainTab extends AbstractLaunchConfigurationTab {
+
+  private static final String BROWSER_PREFERENCE_PAGE 
+    = "org.eclipse.ui.browser.preferencePage"; //$NON-NLS-1$
 
   private static final Level[] LOG_LEVELS = {
     Level.OFF,
@@ -185,13 +191,27 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
     group.setText( "Browser" );
-    group.setLayout( new GridLayout( 1, false ) );
+    group.setLayout( new GridLayout( 2, false ) );
     Label lblBrowserMode = new Label( group, SWT.NONE );
+    GridDataFactory grab = GridDataFactory.swtDefaults();
+    grab.grab( true, false );
+    lblBrowserMode.setLayoutData( grab.create() );
     lblBrowserMode.setText( "Run in" );
+    Link lnkBrowserPrefs = new Link( group, SWT.NONE );
+    lnkBrowserPrefs.setText( "<a>Configure Browsers...</a>" );
+    lnkBrowserPrefs.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( final SelectionEvent event ) {
+        handleBrowserPrefsLink();
+      }
+    } );
+    GridDataFactory span2Cols = GridDataFactory.swtDefaults();
+    span2Cols.span( 2, SWT.DEFAULT );
     rbInternalBrowser = new Button( group, SWT.RADIO );
+    rbInternalBrowser.setLayoutData( span2Cols.create() );
     rbInternalBrowser.setText( "Intern&al Browser" );
     rbInternalBrowser.addSelectionListener( selectionListener );
     rbExternalBrowser = new Button( group, SWT.RADIO );
+    rbExternalBrowser.setLayoutData( span2Cols.create() );
     rbExternalBrowser.setText( "E&xternal Browser" );
     rbExternalBrowser.addSelectionListener( selectionListener );
   }
@@ -243,6 +263,9 @@ final class MainTab extends AbstractLaunchConfigurationTab {
       }
     } );
   }
+  
+  ////////////////
+  // Handle events
 
   private void handleEntryPointBrowseButton() {
     EntryPointSelectionDialog dialog 
@@ -252,6 +275,15 @@ final class MainTab extends AbstractLaunchConfigurationTab {
       EntryPointExtension entryPoint = ( EntryPointExtension )selection[ 0 ];
       txtEntryPoint.setText( entryPoint.getParameter() );
     }
+  }
+
+  private void handleBrowserPrefsLink() {
+    PreferenceDialog dialog 
+      = PreferencesUtil.createPreferenceDialogOn( getShell(), 
+                                                  BROWSER_PREFERENCE_PAGE, 
+                                                  null,
+                                                  null );
+    dialog.open();
   }
 
   ////////////////
