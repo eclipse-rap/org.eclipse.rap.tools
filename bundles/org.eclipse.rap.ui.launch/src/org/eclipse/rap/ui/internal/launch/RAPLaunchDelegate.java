@@ -29,6 +29,8 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
 
+  private static final String EMPTY = ""; //$NON-NLS-1$
+  
   // VM argument contants
   private static final String VMARG_PORT 
     = "-Dorg.osgi.service.http.port="; //$NON-NLS-1$
@@ -41,7 +43,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private static final String URL_FILE = "/rap"; //$NON-NLS-1$
   private static final String URL_QUERY_STARTUP = "?w4t_startup="; //$NON-NLS-1$
 
-  private static final int CONNECT_TIMEOUT = 10000;
+  private static final int CONNECT_TIMEOUT = 10000; // 10 Seconds
   
 
   public void launch( final ILaunchConfiguration config,
@@ -81,8 +83,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException 
   {
     String entryPoint = config.getEntryPoint(); 
-    String query = ""; //$NON-NLS-1$
-    if( !"".equals( entryPoint ) ) { //$NON-NLS-1$
+    String query = EMPTY; 
+    if( !EMPTY.equals( entryPoint ) ) { 
       query = URL_QUERY_STARTUP + entryPoint;
     }
     int port = config.getPort();
@@ -167,6 +169,19 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
   }
 
+  ////////////////////////////////////////////
+  // Helping methods to evaluate debug events 
+  
+  private static boolean isCreateEventFor( final DebugEvent event, 
+                                           final ILaunch launch ) 
+  {
+    Object source = event.getSource();
+    int kind = event.getKind();
+    return    kind == DebugEvent.CREATE 
+           && source instanceof RuntimeProcess 
+           && ( ( RuntimeProcess ) source ).getLaunch() == launch;
+  }
+  
   private static boolean isTerminateEventFor( final DebugEvent event, 
                                               final ILaunch launch ) 
   {
@@ -178,19 +193,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       result = process.getLaunch() == launch;
     }
     return result;
-  }
-  
-  ////////////////////////////////////////////
-  // Helping method that evaluates debug event 
-  
-  private static boolean isCreateEventFor( final DebugEvent event, 
-                                           final ILaunch launch ) 
-  {
-    Object source = event.getSource();
-    int kind = event.getKind();
-    return    kind == DebugEvent.CREATE 
-           && source instanceof RuntimeProcess 
-           && ( ( RuntimeProcess ) source ).getLaunch() == launch;
   }
   
   /////////////////////////////////////
