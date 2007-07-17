@@ -52,8 +52,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
                       final IProgressMonitor monitor ) 
     throws CoreException
   {
-    SubProgressMonitor subMonitor 
-      = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
+    SubProgressMonitor subMonitor;
+    subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     terminateIfRunning( launch, subMonitor );
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     registerBrowserOpener( launch, subMonitor );
