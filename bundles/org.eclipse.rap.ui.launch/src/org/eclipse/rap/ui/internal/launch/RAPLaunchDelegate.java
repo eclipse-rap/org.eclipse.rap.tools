@@ -43,7 +43,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private static final String URL_FILE = "/rap"; //$NON-NLS-1$
   private static final String URL_QUERY_STARTUP = "?w4t_startup="; //$NON-NLS-1$
 
-  private static final int CONNECT_TIMEOUT = 10000; // 10 Seconds
+  private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
   
 
   public void launch( final ILaunchConfiguration config,
@@ -55,8 +55,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     SubProgressMonitor subMonitor;
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     terminateIfRunning( launch, subMonitor );
-    subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
-    registerBrowserOpener( launch, subMonitor );
+    registerBrowserOpener( launch );
     super.launch( config, mode, launch, subMonitor );
   }
 
@@ -198,18 +197,15 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   /////////////////////////////////////
   // Helping methods to test connection
   
-  private static void waitForHttpService( final ILaunch launch,
-                                          final IProgressMonitor monitor ) 
-  {
+  private static void waitForHttpService( final ILaunch launch ) {
     ILaunchConfiguration config = launch.getLaunchConfiguration();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config ); 
     long start = System.currentTimeMillis();
     boolean canConnect = false;
     boolean interrupted = false;
-    while(    System.currentTimeMillis() - start < CONNECT_TIMEOUT 
-           && !canConnect 
+    while(    System.currentTimeMillis() - start <= CONNECT_TIMEOUT 
+           && !canConnect
            && !interrupted
-           && !monitor.isCanceled()
            && !launch.isTerminated() ) 
     {
       try {
@@ -220,7 +216,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
         // http service not yet started - wait a bit
         try {
           Thread.sleep( 200 );
-        } catch( InterruptedException e1 ) {
+        } catch( InterruptedException ie ) {
           interrupted = true;
         }
       } 
@@ -230,20 +226,16 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   /////////////////////////////////////////////////
   // Helping methods to create browser and open URL
   
-  private static void registerBrowserOpener( final ILaunch launch,
-                                             final IProgressMonitor monitor ) 
-  {
+  private static void registerBrowserOpener( final ILaunch launch ) {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     debugPlugin.addDebugEventListener( new IDebugEventSetListener() {
       public void handleDebugEvents( final DebugEvent[] events ) {
         for( int i = 0; i < events.length; i++ ) {
           DebugEvent event = events[ i ];
           if( isCreateEventFor( event, launch ) ) {
-            monitor.beginTask( "Opening browser", 1 );
             DebugPlugin.getDefault().removeDebugEventListener( this );
-            waitForHttpService( launch, monitor );
+            waitForHttpService( launch );
             openBrowser( launch );
-            monitor.done();
           }
         }
       }
