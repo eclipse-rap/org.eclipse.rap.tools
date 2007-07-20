@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.*;
 
 import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.*;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
@@ -44,7 +45,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private static final String URL_QUERY_STARTUP = "?w4t_startup="; //$NON-NLS-1$
 
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
-  
+
 
   public void launch( final ILaunchConfiguration config,
                       final String mode,
@@ -197,6 +198,16 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   /////////////////////////////////////
   // Helping methods to test connection
   
+  private static void waitForHttpService( final ILaunch launch,
+                                          final IProgressMonitor monitor )
+  {
+    SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
+    subMonitor.beginTask( "Waiting for HTTP service...", 
+                          IProgressMonitor.UNKNOWN );
+    waitForHttpService( launch );
+    subMonitor.done();
+  }
+
   private static void waitForHttpService( final ILaunch launch ) {
     ILaunchConfiguration config = launch.getLaunchConfiguration();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config ); 
@@ -234,14 +245,35 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
           DebugEvent event = events[ i ];
           if( isCreateEventFor( event, launch ) ) {
             DebugPlugin.getDefault().removeDebugEventListener( this );
-            waitForHttpService( launch );
-            openBrowser( launch );
+            // Start a separate job to wait for http service and launch the 
+            // browser. Otherwise we would block the application on whose 
+            // service we are waiting for
+            Job job = new Job( "Start client application" ) {
+              protected IStatus run( final IProgressMonitor monitor ) {
+                monitor.beginTask( "Starting client application", 2 );
+                waitForHttpService( launch, monitor );
+                openBrowser( launch, monitor );
+                monitor.done();
+                return Status.OK_STATUS;
+              }
+            };
+            job.schedule();
           }
         }
       }
     } );
   }
   
+  private static void openBrowser( final ILaunch launch, 
+                                   final IProgressMonitor monitor )
+  {
+    SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 2 );
+    subMonitor.beginTask( "Waiting for HTTP service...", 
+                          IProgressMonitor.UNKNOWN );
+    openBrowser( launch );
+    subMonitor.done();
+  }
+
   private static void openBrowser( final ILaunch launch ) {
     ILaunchConfiguration config = launch.getLaunchConfiguration();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
