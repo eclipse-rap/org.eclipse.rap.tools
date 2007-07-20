@@ -11,6 +11,7 @@
 
 package org.eclipse.rap.ui.internal.launch;
 
+import java.io.IOException;
 import java.net.*;
 import java.text.MessageFormat;
 import java.util.*;
@@ -44,19 +45,26 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private static final String URL_FILE = "/rap"; //$NON-NLS-1$
   private static final String URL_QUERY_STARTUP = "?w4t_startup="; //$NON-NLS-1$
 
+  private static final String PORT_ATTRIBUTE = "port"; //$NON-NLS-1$
+
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
 
-
+  private ILaunch launch;
+  
   public void launch( final ILaunchConfiguration config,
                       final String mode,
                       final ILaunch launch,
                       final IProgressMonitor monitor ) 
     throws CoreException
   {
+    // Store launch to be accessible from getVMArguments
+    this.launch = launch;
     SubProgressMonitor subMonitor;
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     terminateIfRunning( launch, subMonitor );
     registerBrowserOpener( launch );
+    subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
+    determinePort( launch, subMonitor );
     super.launch( config, mode, launch, subMonitor );
   }
 
@@ -68,26 +76,76 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   {
     List list = new ArrayList();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    list.add( VMARG_PORT + rapConfig.getPort() );
+    list.add( VMARG_PORT + getPort( launch ) );
     list.add( VMARG_LOG_LEVEL + rapConfig.getLogLevel().getName() );
     list.addAll( Arrays.asList( super.getVMArguments( config ) ) );
     String[] result = new String[ list.size() ];
     list.toArray( result );
     return result;
   }
+
+  ////////////////////////////////////////
+  // Helping methods to manage port number
+  
+  private static void determinePort( final ILaunch launch,
+                                     final IProgressMonitor monitor ) 
+    throws CoreException 
+  {
+    String taskName = "Determine port number";
+    monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
+    try {
+      ILaunchConfiguration config = launch.getLaunchConfiguration();
+      RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+      int port;
+      if( rapConfig.getUseManualPort() ) {
+        port = rapConfig.getPort();
+      } else {
+        port = findFreePort();
+      }
+      setPort( launch, port );
+    } finally {
+      monitor.done();
+    }
+  }
+  
+  private static int findFreePort() throws CoreException {
+    try {
+      ServerSocket server = new ServerSocket( 0 );
+      try {
+        return server.getLocalPort();
+      } finally {
+        server.close();
+      }
+    } catch( IOException e ) {
+      String msg = "Could not obtain a free port number."; //$NON-NLS-1$
+      String pluginId = Activator.getPluginId();
+      Status status = new Status( IStatus.ERROR, pluginId, 0, msg, e );
+      throw new CoreException( status );
+    }
+  }
+
+  private static void setPort( final ILaunch launch, final int port ) {
+    launch.setAttribute( PORT_ATTRIBUTE, String.valueOf( port ) );
+  }
+  
+  private static int getPort( final ILaunch launch ) {
+    return Integer.parseInt( launch.getAttribute( PORT_ATTRIBUTE ) );
+  }
   
   //////////////////////////////////
   // Helping method to construct URL
   
-  private static URL getUrl( final RAPLaunchConfig config ) 
+  private static URL getUrl( final ILaunch launch ) 
     throws CoreException 
   {
-    String entryPoint = config.getEntryPoint(); 
+    ILaunchConfiguration config = launch.getLaunchConfiguration();
+    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    String entryPoint = rapConfig.getEntryPoint(); 
     String query = EMPTY; 
     if( !EMPTY.equals( entryPoint ) ) { 
       query = URL_QUERY_STARTUP + entryPoint;
     }
-    int port = config.getPort();
+    int port = getPort( launch );
     try {
       URL result = new URL( URL_PROTOCOL, URL_HOST, port, URL_FILE + query );
       return result;
@@ -279,7 +337,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     URL url = null;
     try {
-      url = getUrl( rapConfig );
+      url = getUrl( launch );
       IWebBrowser browser = getBrowser( rapConfig );
       openUrl( browser, url );
     } catch( final CoreException e ) {

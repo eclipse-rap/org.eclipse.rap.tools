@@ -59,20 +59,23 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   private Button cbTerminatePrevious;
   private Button rbInternalBrowser;
   private Button rbExternalBrowser;
-  private Spinner txtPort;
+  private Button cbManualPort;
+  private Spinner spnPort;
   private ComboViewer cmbLogLevel;
+
+
 
   MainTab() {
     tabImage = Images.DESC_MAIN_TAB.createImage();
     GridData gridData = new GridData( SWT.FILL, SWT.CENTER, true, false );
     fillHorizontal = GridDataFactory.createFrom( gridData );
     modifyListener = new ModifyListener() {
-      public void modifyText( ModifyEvent e ) {
+      public void modifyText( final ModifyEvent e ) {
         updateLaunchConfigurationDialog();
       }
     };
     selectionListener = new SelectionAdapter() {
-      public void widgetSelected( SelectionEvent e ) {
+      public void widgetSelected( final SelectionEvent e ) {
         updateLaunchConfigurationDialog();
       }
     };
@@ -114,7 +117,8 @@ final class MainTab extends AbstractLaunchConfigurationTab {
       // TerminatePrevious
       cbTerminatePrevious.setSelection( rapConfig.getTerminatePrevious() );
       // Port
-      txtPort.setSelection( rapConfig.getPort() );
+      cbManualPort.setSelection( rapConfig.getUseManualPort() );
+      spnPort.setSelection( rapConfig.getPort() );
       // LogLevel
       Level logLevel = rapConfig.getLogLevel();
       StructuredSelection selection = new StructuredSelection( logLevel );
@@ -139,7 +143,8 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     // TerminatePrevious
     rapConfig.setTerminatePrevious( cbTerminatePrevious.getSelection() );
     // Port
-    rapConfig.setPort( txtPort.getSelection() );
+    rapConfig.setUseManualPort( cbManualPort.getSelection() );
+    rapConfig.setPort( spnPort.getSelection() );
     // LogLevel
     Level logLevel = Level.OFF;
     ISelection selection = cmbLogLevel.getSelection();
@@ -154,6 +159,8 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     } else {
       rapConfig.setBrowserMode( BrowserMode.INTERNAL );
     }
+    // Bring widget states up to date
+    spnPort.setEnabled( cbManualPort.getSelection() );
     setDirty( true );
   }
 
@@ -220,12 +227,13 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     group.setLayoutData( fillHorizontal.create() );
     group.setText( "Runtime Settings" );
     group.setLayout( new GridLayout( 2, false ) );
-    Label lblPort = new Label( group, SWT.NONE );
-    lblPort.setText( "&Port" );
-    txtPort = new Spinner( group, SWT.BORDER );
-    txtPort.setLayoutData( new GridData( 60, SWT.DEFAULT ) );
-    txtPort.setMaximum( 65535 );
-    txtPort.addModifyListener( modifyListener );
+    cbManualPort = new Button( group, SWT.CHECK );
+    cbManualPort.setText( "Manual Port configuration" );
+    cbManualPort.addSelectionListener( selectionListener );
+    spnPort = new Spinner( group, SWT.BORDER );
+    spnPort.setLayoutData( new GridData( 60, SWT.DEFAULT ) );
+    spnPort.setMaximum( 65535 );
+    spnPort.addModifyListener( modifyListener );
     Label lblLogLevel = new Label( group, SWT.NONE );
     lblLogLevel.setText( "Client-side &Log Level" );
     cmbLogLevel = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
