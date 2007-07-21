@@ -40,6 +40,8 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   private static final String BROWSER_PREFERENCE_PAGE 
     = "org.eclipse.ui.browser.preferencePage"; //$NON-NLS-1$
 
+  private static final int MAX_PORT_NUMBER = 65535;
+
   private static final Level[] LOG_LEVELS = {
     Level.OFF,
     Level.ALL,
@@ -55,6 +57,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   private final ModifyListener modifyListener;
   private final SelectionListener selectionListener;
   private final Image tabImage;
+  private final Image warnImage;
   private Text txtEntryPoint;
   private Button cbTerminatePrevious;
   private Button rbInternalBrowser;
@@ -64,9 +67,9 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   private ComboViewer cmbLogLevel;
 
 
-
   MainTab() {
     tabImage = Images.DESC_MAIN_TAB.createImage();
+    warnImage = Images.WARNING.createImage();
     GridData gridData = new GridData( SWT.FILL, SWT.CENTER, true, false );
     fillHorizontal = GridDataFactory.createFrom( gridData );
     modifyListener = new ModifyListener() {
@@ -83,6 +86,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   
   public void dispose() {
     tabImage.dispose();
+    warnImage.dispose();
     super.dispose();
   }
 
@@ -228,11 +232,11 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     group.setText( "Runtime Settings" );
     group.setLayout( new GridLayout( 2, false ) );
     cbManualPort = new Button( group, SWT.CHECK );
-    cbManualPort.setText( "Manual Port configuration" );
+    cbManualPort.setText( "Manual &Port configuration" );
     cbManualPort.addSelectionListener( selectionListener );
     spnPort = new Spinner( group, SWT.BORDER );
     spnPort.setLayoutData( new GridData( 60, SWT.DEFAULT ) );
-    spnPort.setMaximum( 65535 );
+    spnPort.setMaximum( MAX_PORT_NUMBER );
     spnPort.addModifyListener( modifyListener );
     Label lblLogLevel = new Label( group, SWT.NONE );
     lblLogLevel.setText( "Client-side &Log Level" );
@@ -242,7 +246,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     cmbLogLevel.setContentProvider( new LogLevelContentProvider() );
     cmbLogLevel.setInput( LOG_LEVELS );
     cmbLogLevel.addSelectionChangedListener( new ISelectionChangedListener() {
-      public void selectionChanged( SelectionChangedEvent event ) {
+      public void selectionChanged( final SelectionChangedEvent event ) {
         updateLaunchConfigurationDialog();
       }
     } );
@@ -258,17 +262,11 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     group.setText( "Important Information" );
     group.setLayout( new FillLayout() );
     CLabel lblInfo = new CLabel( group, SWT.LEFT );
-    final Image image = Images.WARNING.createImage();
-    lblInfo.setImage( image );
+    lblInfo.setImage( warnImage );
     String text
       = "Please note, that the RAP Application Launcher only works with the "
       + "Equinox OSGi Framework (default setting on page 'Bundles').";
     lblInfo.setText( text );
-    lblInfo.addDisposeListener( new DisposeListener() {
-      public void widgetDisposed( DisposeEvent e ) {
-        image.dispose();
-      }
-    } );
   }
   
   ////////////////

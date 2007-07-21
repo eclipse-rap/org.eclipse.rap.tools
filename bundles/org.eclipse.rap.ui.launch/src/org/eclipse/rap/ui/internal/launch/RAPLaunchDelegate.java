@@ -45,11 +45,11 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private static final String URL_FILE = "/rap"; //$NON-NLS-1$
   private static final String URL_QUERY_STARTUP = "?w4t_startup="; //$NON-NLS-1$
 
-  private static final String PORT_ATTRIBUTE = "port"; //$NON-NLS-1$
-
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
 
   private ILaunch launch;
+  private RAPLaunchConfig config;
+  private int port;
   
   public void launch( final ILaunchConfiguration config,
                       final String mode,
@@ -57,14 +57,17 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
                       final IProgressMonitor monitor ) 
     throws CoreException
   {
-    // Store launch to be accessible from getVMArguments
+    // As this is the first method that is called after creating an instance
+    // of RAPLaunchDelegate, we store the launch and config parameters to be 
+    // accessible from member methods
     this.launch = launch;
+    this.config = new RAPLaunchConfig( config ); 
     SubProgressMonitor subMonitor;
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
-    terminateIfRunning( launch, subMonitor );
-    registerBrowserOpener( launch );
+    terminateIfRunning( subMonitor );
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
-    determinePort( launch, subMonitor );
+    port = determinePort( subMonitor );
+    registerBrowserOpener();
     super.launch( config, mode, launch, subMonitor );
   }
 
@@ -75,9 +78,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException
   {
     List list = new ArrayList();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    list.add( VMARG_PORT + getPort( launch ) );
-    list.add( VMARG_LOG_LEVEL + rapConfig.getLogLevel().getName() );
+    list.add( VMARG_PORT + port );
+    list.add( VMARG_LOG_LEVEL + this.config.getLogLevel().getName() );
     list.addAll( Arrays.asList( super.getVMArguments( config ) ) );
     String[] result = new String[ list.size() ];
     list.toArray( result );
@@ -87,25 +89,22 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   ////////////////////////////////////////
   // Helping methods to manage port number
   
-  private static void determinePort( final ILaunch launch,
-                                     final IProgressMonitor monitor ) 
+  private int determinePort( final IProgressMonitor monitor ) 
     throws CoreException 
   {
+    int result;
     String taskName = "Determine port number";
     monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
-      ILaunchConfiguration config = launch.getLaunchConfiguration();
-      RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-      int port;
-      if( rapConfig.getUseManualPort() ) {
-        port = rapConfig.getPort();
+      if( config.getUseManualPort() ) {
+        result = config.getPort();
       } else {
-        port = findFreePort();
+        result = findFreePort();
       }
-      setPort( launch, port );
     } finally {
       monitor.done();
     }
+    return result;
   }
   
   private static int findFreePort() throws CoreException {
@@ -119,33 +118,22 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     } catch( IOException e ) {
       String msg = "Could not obtain a free port number."; //$NON-NLS-1$
       String pluginId = Activator.getPluginId();
-      Status status = new Status( IStatus.ERROR, pluginId, 0, msg, e );
+      Status status = new Status( IStatus.ERROR, pluginId, msg, e );
       throw new CoreException( status );
     }
   }
 
-  private static void setPort( final ILaunch launch, final int port ) {
-    launch.setAttribute( PORT_ATTRIBUTE, String.valueOf( port ) );
-  }
-  
-  private static int getPort( final ILaunch launch ) {
-    return Integer.parseInt( launch.getAttribute( PORT_ATTRIBUTE ) );
-  }
-  
   //////////////////////////////////
   // Helping method to construct URL
   
-  private static URL getUrl( final ILaunch launch ) 
+  private URL getUrl() 
     throws CoreException 
   {
-    ILaunchConfiguration config = launch.getLaunchConfiguration();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    String entryPoint = rapConfig.getEntryPoint(); 
+    String entryPoint = config.getEntryPoint(); 
     String query = EMPTY; 
     if( !EMPTY.equals( entryPoint ) ) { 
       query = URL_QUERY_STARTUP + entryPoint;
     }
-    int port = getPort( launch );
     try {
       URL result = new URL( URL_PROTOCOL, URL_HOST, port, URL_FILE + query );
       return result;
@@ -160,17 +148,14 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   ///////////////////////////////////////////////////
   // Helping methods to detect already running launch
   
-  private static void terminateIfRunning( final ILaunch launch, 
-                                          final IProgressMonitor monitor ) 
+  private void terminateIfRunning( final IProgressMonitor monitor ) 
     throws CoreException 
   {
-    ILaunchConfiguration config = launch.getLaunchConfiguration();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    if( rapConfig.getTerminatePrevious() ) {
+    if( config.getTerminatePrevious() ) {
       String taskName = "Terminating previous launch";
       monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
       try {
-        final ILaunch runningLaunch = findRunning( launch );
+        final ILaunch runningLaunch = findRunning();
         if( runningLaunch != null ) {
           terminate( runningLaunch );
         }
@@ -180,8 +165,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
   }
 
-  private static ILaunch findRunning( final ILaunch launch ) {
-    ILaunchConfiguration config = launch.getLaunchConfiguration(); 
+  private ILaunch findRunning() {
     ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
     ILaunch[] runningLaunches = launchManager.getLaunches();
     ILaunch result = null;
@@ -195,7 +179,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return result;
   }
   
-  private static void terminate( final ILaunch launch )
+  private static void terminate( final ILaunch previousLaunch )
     throws DebugException
   {
     final Object signal = new Object();
@@ -205,7 +189,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       public void handleDebugEvents( final DebugEvent[] events ) {
         for( int i = 0; i < events.length; i++ ) {
           DebugEvent event = events[ i ];
-          if( isTerminateEventFor( event, launch ) ) {
+          if( isTerminateEventFor( event, previousLaunch ) ) {
             DebugPlugin.getDefault().removeDebugEventListener( this );
             terminated[ 0 ] = true;
             synchronized( signal ) {
@@ -215,7 +199,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
         }
       }
     } );
-    launch.terminate();
+    previousLaunch.terminate();
     if( !terminated[ 0 ] ) {
       try {
         synchronized( signal ) {
@@ -232,10 +216,9 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   
   private static boolean isCreateEventFor( final DebugEvent event, 
                                            final ILaunch launch ) 
-  {
+  { 
     Object source = event.getSource();
-    int kind = event.getKind();
-    return    kind == DebugEvent.CREATE 
+    return    event.getKind() == DebugEvent.CREATE 
            && source instanceof RuntimeProcess 
            && ( ( RuntimeProcess ) source ).getLaunch() == launch;
   }
@@ -256,19 +239,15 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   /////////////////////////////////////
   // Helping methods to test connection
   
-  private static void waitForHttpService( final ILaunch launch,
-                                          final IProgressMonitor monitor )
-  {
+  private void waitForHttpService( final IProgressMonitor monitor ) {
     SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
     subMonitor.beginTask( "Waiting for HTTP service...", 
                           IProgressMonitor.UNKNOWN );
-    waitForHttpService( launch );
+    waitForHttpService();
     subMonitor.done();
   }
 
-  private static void waitForHttpService( final ILaunch launch ) {
-    ILaunchConfiguration config = launch.getLaunchConfiguration();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config ); 
+  private void waitForHttpService() {
     long start = System.currentTimeMillis();
     boolean canConnect = false;
     boolean interrupted = false;
@@ -278,7 +257,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
            && !launch.isTerminated() ) 
     {
       try {
-        Socket socket = new Socket( URL_HOST, rapConfig.getPort() );
+        Socket socket = new Socket( URL_HOST, port );
         socket.close();
         canConnect = true;
       } catch( Exception e ) {
@@ -295,7 +274,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   /////////////////////////////////////////////////
   // Helping methods to create browser and open URL
   
-  private static void registerBrowserOpener( final ILaunch launch ) {
+  private void registerBrowserOpener() {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     debugPlugin.addDebugEventListener( new IDebugEventSetListener() {
       public void handleDebugEvents( final DebugEvent[] events ) {
@@ -309,8 +288,11 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
             Job job = new Job( "Start client application" ) {
               protected IStatus run( final IProgressMonitor monitor ) {
                 monitor.beginTask( "Starting client application", 2 );
-                waitForHttpService( launch, monitor );
-                openBrowser( launch, monitor );
+                waitForHttpService( monitor );
+                monitor.worked( 1 );
+                if( !launch.isTerminated() ) {
+                  openBrowser( monitor );
+                }
                 monitor.done();
                 return Status.OK_STATUS;
               }
@@ -322,34 +304,27 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     } );
   }
   
-  private static void openBrowser( final ILaunch launch, 
-                                   final IProgressMonitor monitor )
-  {
+  private void openBrowser( final IProgressMonitor monitor ) {
     SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 2 );
     subMonitor.beginTask( "Waiting for HTTP service...", 
                           IProgressMonitor.UNKNOWN );
-    openBrowser( launch );
-    subMonitor.done();
-  }
-
-  private static void openBrowser( final ILaunch launch ) {
-    ILaunchConfiguration config = launch.getLaunchConfiguration();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    URL url = null;
     try {
-      url = getUrl( launch );
-      IWebBrowser browser = getBrowser( rapConfig );
-      openUrl( browser, url );
-    } catch( final CoreException e ) {
-      String text = "Failed to open browser for URL ''{0}''.";
-      String msg = MessageFormat.format( text, new Object[]{ url } );
-      ErrorUtil.show( msg, e );
+      URL url = null;
+      try {
+        url = getUrl();
+        IWebBrowser browser = getBrowser();
+        openUrl( browser, url );
+      } catch( final CoreException e ) {
+        String text = "Failed to open browser for URL ''{0}''.";
+        String msg = MessageFormat.format( text, new Object[]{ url } );
+        ErrorUtil.show( msg, e );
+      }
+    } finally {
+      subMonitor.done();
     }
   }
-  
-  private static IWebBrowser getBrowser( final RAPLaunchConfig config ) 
-    throws CoreException
-  {
+
+  private IWebBrowser getBrowser() throws CoreException {
     final IWebBrowser[] result = { null };
     final CoreException[] exception = { null };
     Display.getDefault().syncExec( new Runnable() {
@@ -366,7 +341,11 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
           } else {
             style |= IWorkbenchBrowserSupport.AS_EDITOR;
           }
-          String id = config.getName();
+          // Starting the same launch first with the external, then with the 
+          // internal browser without restarting the workbench will still open 
+          // an external browser. 
+          // The fix is to append the browserMode to the id
+          String id = config.getName() + config.getBrowserMode();
           String name = config.getName();
           String toolTip = config.getName();
           result[ 0 ] = support.createBrowser( style, id, name, toolTip );
