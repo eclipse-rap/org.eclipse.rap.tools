@@ -38,6 +38,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     = "-Dorg.osgi.service.http.port="; //$NON-NLS-1$
   private static final String VMARG_LOG_LEVEL 
     = "-Dorg.eclipse.swt.clientLogLevel="; //$NON-NLS-1$
+  private static final String VMARG_AWT_HEADLESS 
+    = "-Djava.awt.headless="; //$NON-NLS-1$
   
   // Constants to construct URL
   private static final String URL_PROTOCOL = "http"; //$NON-NLS-1$
@@ -46,6 +48,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private static final String URL_QUERY_STARTUP = "?w4t_startup="; //$NON-NLS-1$
 
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
+
 
   private ILaunch launch;
   private RAPLaunchConfig config;
@@ -80,6 +83,9 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     List list = new ArrayList();
     list.add( VMARG_PORT + port );
     list.add( VMARG_LOG_LEVEL + this.config.getLogLevel().getName() );
+    if( Platform.OS_MACOSX.equals( Platform.getOS() ) ) {
+      list.add( VMARG_AWT_HEADLESS + Boolean.TRUE );
+    }
     list.addAll( Arrays.asList( super.getVMArguments( config ) ) );
     String[] result = new String[ list.size() ];
     list.toArray( result );
