@@ -291,7 +291,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
             // Start a separate job to wait for http service and launch the 
             // browser. Otherwise we would block the application on whose 
             // service we are waiting for
-            Job job = new Job( "Start client application" ) {
+            Job job = new Job( "Starting client application" ) {
               protected IStatus run( final IProgressMonitor monitor ) {
                 monitor.beginTask( "Starting client application", 2 );
                 waitForHttpService( monitor );
