@@ -37,7 +37,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private static final String VMARG_PORT 
     = "-Dorg.osgi.service.http.port="; //$NON-NLS-1$
   private static final String VMARG_LOG_LEVEL 
-    = "-Dorg.eclipse.swt.clientLogLevel="; //$NON-NLS-1$
+    = "-Dorg.eclipse.rwt.clientLogLevel="; //$NON-NLS-1$
   private static final String VMARG_AWT_HEADLESS 
     = "-Djava.awt.headless="; //$NON-NLS-1$
   
