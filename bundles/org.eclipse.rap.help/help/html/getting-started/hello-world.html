@@ -22,9 +22,9 @@
     need to enter as required plug-ins. To do so, open the project's MANIFEST.MF 
     with the <strong>Plug-in Manifest Editor</strong> and go to the 
     <strong>Dependencies</strong> page.</p>
-  <p>Add the following plug-ins to the list of <strong>Required Plug-ins</strong>.
+  <p>Add the following plug-in to the list of <strong>Required Plug-ins</strong>.
   <ul>
-    <li><code>org.eclipse.rap.ui.workbench</code></li>
+    <li><code>org.eclipse.rap.ui</code></li>
   </ul></p>
   
   <p>Add the following servlet packages to the list of <strong>Imported Packages</strong>.
@@ -74,8 +74,9 @@ public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
 <img src="../../images/hello-world-workbench.png"/>
   
 <p>Add an <code>entrypoint</code> extension for the 
-<code>org.eclipse.rap.ui.workbench.entrypoint</code> and enter these details: 
-<ul><li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldWorkbench</code></li>
+<code>org.eclipse.rap.ui.entrypoint</code> and enter these details: 
+<ul><li><strong>id:</strong> <code>org.eclipse.rap.helloworld.helloWorldWorkbench</code></li>
+<li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldWorkbench</code></li>
 <li><strong>parameter:</strong> <code>default</code></li>
 </ul></p>
 
@@ -115,7 +116,7 @@ public class HelloWorldWorkbench implements IEntryPoint {
 <img src="../../images/hello-world-view.png"/>
   
 <p>Now you need to declared this <code>HelloWorldView</code> as an extension to 
-  <code>org.eclipse.rap.ui.workbench.views</code> with these parameters:</p>
+  <code>org.eclipse.ui.views</code> with these parameters:</p>
   <ul>
   <li><strong>id:</strong> <code>org.eclipse.rap.helloworld.helloWorldView</code></li>
   <li><strong>name:</strong> <code>Hello World</code></li>
@@ -185,7 +186,7 @@ public class Perspective implements IPerspectiveFactory {
 
 </code></pre></p>
   
-<p>Then the <code>Perspective</code> needs to be declared as an extension to <code>org.eclipse.rap.ui.workbench.perspectives</code>.</p>
+<p>Then the <code>Perspective</code> needs to be declared as an extension to <code>org.eclipse.ui.perspectives</code>.</p>
 <img src="../../images/hello-world-perspective.png"/>
 <p>  
 <ul>
@@ -226,8 +227,8 @@ public class Perspective implements IPerspectiveFactory {
   <li>org.eclipse.rap.demo</li>
   <li>org.eclipse.rap.jface</li>
   <li>org.eclipse.rap.rwt</li>
+  <li>org.eclipse.rap.ui</li>
   <li>org.eclipse.rap.ui.workbench</li>
-  <li>org.eclipse.rap.w4t</li>
   <li>org.mortbay.jetty</li>
 </ul>
   Click <strong>Run</strong> to start the application. For further information
