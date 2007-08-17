@@ -44,8 +44,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   // Constants to construct URL
   private static final String URL_PROTOCOL = "http"; //$NON-NLS-1$
   private static final String URL_HOST = "127.0.0.1"; //$NON-NLS-1$
-  private static final String URL_FILE = "/rap"; //$NON-NLS-1$
-  private static final String URL_QUERY_STARTUP = "?w4t_startup="; //$NON-NLS-1$
+  private static final String URL_QUERY_STARTUP = "?startup="; //$NON-NLS-1$
 
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
 
@@ -81,12 +80,20 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException
   {
     List list = new ArrayList();
+    list.addAll( Arrays.asList( getRAPVMArguments() ) );
+    list.addAll( Arrays.asList( super.getVMArguments( config ) ) );
+    String[] result = new String[ list.size() ];
+    list.toArray( result );
+    return result;
+  }
+  
+  private String[] getRAPVMArguments() throws CoreException {
+    List list = new ArrayList();
     list.add( VMARG_PORT + port );
-    list.add( VMARG_LOG_LEVEL + this.config.getLogLevel().getName() );
+    list.add( VMARG_LOG_LEVEL + config.getLogLevel().getName() );
     if( Platform.OS_MACOSX.equals( Platform.getOS() ) ) {
       list.add( VMARG_AWT_HEADLESS + Boolean.TRUE );
     }
-    list.addAll( Arrays.asList( super.getVMArguments( config ) ) );
     String[] result = new String[ list.size() ];
     list.toArray( result );
     return result;
@@ -135,13 +142,17 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private URL getUrl() 
     throws CoreException 
   {
+    String servletName = config.getServletName();
+    if( !servletName.startsWith( "/" ) ) {
+      servletName = "/" + servletName;
+    }
     String entryPoint = config.getEntryPoint(); 
     String query = EMPTY; 
     if( !EMPTY.equals( entryPoint ) ) { 
       query = URL_QUERY_STARTUP + entryPoint;
     }
     try {
-      URL result = new URL( URL_PROTOCOL, URL_HOST, port, URL_FILE + query );
+      URL result = new URL( URL_PROTOCOL, URL_HOST, port, servletName + query );
       return result;
     } catch( MalformedURLException e ) {
       String msg = "Invalid URL."; //$NON-NLS-1$

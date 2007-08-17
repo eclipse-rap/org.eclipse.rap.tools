@@ -58,6 +58,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   private final SelectionListener selectionListener;
   private final Image tabImage;
   private final Image warnImage;
+  private Text txtServletName;
   private Text txtEntryPoint;
   private Button cbTerminatePrevious;
   private Button rbInternalBrowser;
@@ -65,7 +66,6 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   private Button cbManualPort;
   private Spinner spnPort;
   private ComboViewer cmbLogLevel;
-
 
   MainTab() {
     tabImage = Images.DESC_MAIN_TAB.createImage();
@@ -116,6 +116,8 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   public void initializeFrom( final ILaunchConfiguration config ) {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     try {
+      // ServletName
+      txtServletName.setText( rapConfig.getServletName() );
       // EntryPoint
       txtEntryPoint.setText( rapConfig.getEntryPoint() );
       // TerminatePrevious
@@ -142,6 +144,8 @@ final class MainTab extends AbstractLaunchConfigurationTab {
 
   public void performApply( final ILaunchConfigurationWorkingCopy config ) {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    // ServletName
+    rapConfig.setServletName( txtServletName.getText() );
     // EntryPoint
     rapConfig.setEntryPoint( txtEntryPoint.getText() );
     // TerminatePrevious
@@ -177,10 +181,17 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   
   private void createEntryPointSection( final Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
-    group.setLayout( new GridLayout( 2, false ) );
+    group.setLayout( new GridLayout( 3, false ) );
     group.setLayoutData( fillHorizontal.create() );
-    group.setText( "&Entry Point to Run" );
-    group.setLayout( new GridLayout( 2, false ) );
+    // TODO [rh] find more suitable name
+    group.setText( "Servlet and Entry Point to Run" );
+    Label lblServletName = new Label( group, SWT.NONE );
+    lblServletName.setText( "Ser&vlet Name" );
+    txtServletName = new Text( group, SWT.BORDER );
+    txtServletName.setLayoutData( spanHorizontal( 2 ) );
+    txtServletName.addModifyListener( modifyListener );
+    Label lblEntryPoint = new Label( group, SWT.NONE );
+    lblEntryPoint.setText( "&Entry Point" );
     txtEntryPoint = new Text( group, SWT.BORDER );
     txtEntryPoint.setLayoutData( fillHorizontal.create() );
     txtEntryPoint.addModifyListener( modifyListener );
@@ -192,11 +203,12 @@ final class MainTab extends AbstractLaunchConfigurationTab {
       }
     } );
     cbTerminatePrevious = new Button( group, SWT.CHECK );
+    cbTerminatePrevious.setLayoutData( spanHorizontal( 3 ) );
     String text = "&Terminate possibly running previous launch";
     cbTerminatePrevious.setText( text );
     cbTerminatePrevious.addSelectionListener( selectionListener );
   }
-
+  
   private void createBrowserModeSection( final Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
@@ -268,7 +280,14 @@ final class MainTab extends AbstractLaunchConfigurationTab {
       + "Equinox OSGi Framework (default setting on page 'Bundles').";
     lblInfo.setText( text );
   }
+
+  ////////////////
+  // Layout helper
   
+  private static GridData spanHorizontal( final int span ) {
+    return new GridData( SWT.FILL, SWT.CENTER, true, false, span, SWT.DEFAULT );
+  }
+
   ////////////////
   // Handle events
 

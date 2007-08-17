@@ -66,29 +66,34 @@ public final class RAPLaunchConfig {
   private static final String PREFIX = "org.eclipse.rap.launch."; //$NON-NLS-1$
   
   // Launch configuration attribute names
+  public static final String SERVLET_NAME 
+    = PREFIX + "servletName"; //$NON-NLS-1$
   public static final String ENRY_POINT 
     = PREFIX + "entryPoint"; //$NON-NLS-1$
-  public static final String LOG_LEVEL 
-    = PREFIX + "logLevel"; //$NON-NLS-1$
+  public static final String TERMINATE_PREVIOUS 
+    = PREFIX + "terminatePrevious"; //$NON-NLS-1$
+  public static final String BROWSER_MODE 
+    = PREFIX + "browserMode"; //$NON-NLS-1$
   public static final String PORT 
     = PREFIX + "port"; //$NON-NLS-1$
   public static final String USE_MANUAL_PORT 
     = PREFIX + "useManualPort"; //$NON-NLS-1$
-  public static final String BROWSER_MODE 
-    = PREFIX + "browserMode"; //$NON-NLS-1$
-  public static final String TERMINATE_PREVIOUS 
-    = PREFIX + "terminatePrevious"; //$NON-NLS-1$
+  public static final String LOG_LEVEL 
+    = PREFIX + "logLevel"; //$NON-NLS-1$
   
   // Default values for launch configuration attribute names
+  public static final String DEFAULT_SERVLET_NAME = "rap"; //$NON-NLS-1$
   public static final String DEFAULT_ENTRY_POINT = ""; //$NON-NLS-1$
+  public static final boolean DEFAULT_TERMINATE_PREVIOUS = true;
   public static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
-  public static final String DEFAULT_LOG_LEVEL = Level.OFF.getName();
   public static final int DEFAULT_PORT = 10080;
   public static final boolean DEFAULT_USE_MANUAL_PORT = false;
-  public static final boolean DEFAULT_TERMINATE_PREVIOUS = true;
+  public static final String DEFAULT_LOG_LEVEL = Level.OFF.getName();
 
   
-  public static void setDefaults( final ILaunchConfigurationWorkingCopy config ) {
+  public static void setDefaults( final ILaunchConfigurationWorkingCopy config ) 
+  {
+    config.setAttribute( ENRY_POINT, DEFAULT_SERVLET_NAME );
     config.setAttribute( ENRY_POINT, DEFAULT_ENTRY_POINT );
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE.getName() );
     config.setAttribute( PORT, DEFAULT_PORT );
@@ -116,14 +121,32 @@ public final class RAPLaunchConfig {
   //////////////////////////////////////////////////////////
   // Accessor and mutator methods for wrapped launch config
   
+  public String getServletName() throws CoreException {
+    return config.getAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
+  }
+  
+  public void setServletName( final String entryPoint ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( SERVLET_NAME, entryPoint );
+  }
+  
   public String getEntryPoint() throws CoreException {
-    return config.getAttribute( ENRY_POINT, 
-                                DEFAULT_ENTRY_POINT );
+    return config.getAttribute( ENRY_POINT, DEFAULT_ENTRY_POINT );
   }
   
   public void setEntryPoint( final String entryPoint ) {
     checkWorkingCopy();
     workingCopy.setAttribute( ENRY_POINT, entryPoint );
+  }
+  
+  public boolean getTerminatePrevious() throws CoreException {
+    return config.getAttribute( TERMINATE_PREVIOUS, 
+                                DEFAULT_TERMINATE_PREVIOUS );
+  }
+  
+  public void setTerminatePrevious( final boolean terminatePrevious ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( TERMINATE_PREVIOUS, terminatePrevious );
   }
   
   public BrowserMode getBrowserMode() throws CoreException {
@@ -165,16 +188,6 @@ public final class RAPLaunchConfig {
   public void setLogLevel( final Level logLevel ) {
     checkWorkingCopy();
     workingCopy.setAttribute( LOG_LEVEL, logLevel.getName() );
-  }
-  
-  public boolean getTerminatePrevious() throws CoreException {
-    return config.getAttribute( TERMINATE_PREVIOUS, 
-                                DEFAULT_TERMINATE_PREVIOUS );
-  }
-  
-  public void setTerminatePrevious( final boolean terminatePrevious ) {
-    checkWorkingCopy();
-    workingCopy.setAttribute( TERMINATE_PREVIOUS, terminatePrevious );
   }
   
   /////////////////
