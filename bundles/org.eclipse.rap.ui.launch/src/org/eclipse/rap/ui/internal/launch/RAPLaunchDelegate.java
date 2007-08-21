@@ -22,6 +22,7 @@ import org.eclipse.debug.core.*;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
+import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.*;
@@ -31,21 +32,16 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
 
-  private static final String EMPTY = ""; //$NON-NLS-1$
-  
   // VM argument contants
   private static final String VMARG_PORT 
     = "-Dorg.osgi.service.http.port="; //$NON-NLS-1$
   private static final String VMARG_LOG_LEVEL 
     = "-Dorg.eclipse.rwt.clientLogLevel="; //$NON-NLS-1$
+  private static final String VMARG_LIBRARY_VARIANT
+    = "-Dorg.eclipse.rwt.clientLibraryVariant="; //$NON-NLS-1$
   private static final String VMARG_AWT_HEADLESS 
     = "-Djava.awt.headless="; //$NON-NLS-1$
   
-  // Constants to construct URL
-  private static final String URL_PROTOCOL = "http"; //$NON-NLS-1$
-  private static final String URL_HOST = "127.0.0.1"; //$NON-NLS-1$
-  private static final String URL_QUERY_STARTUP = "?startup="; //$NON-NLS-1$
-
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
 
 
@@ -91,6 +87,10 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     List list = new ArrayList();
     list.add( VMARG_PORT + port );
     list.add( VMARG_LOG_LEVEL + config.getLogLevel().getName() );
+    LibraryVariant libraryVariant = config.getLibraryVariant();
+    if( libraryVariant != LibraryVariant.STANDARD ) {
+      list.add( VMARG_LIBRARY_VARIANT + libraryVariant.getName() );
+    }
     if( Platform.OS_MACOSX.equals( Platform.getOS() ) ) {
       list.add( VMARG_AWT_HEADLESS + Boolean.TRUE );
     }
@@ -106,7 +106,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException 
   {
     int result;
-    String taskName = "Determine port number";
+    String taskName = "Determining port number";
     monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
       if( config.getUseManualPort() ) {
@@ -142,18 +142,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private URL getUrl() 
     throws CoreException 
   {
-    String servletName = config.getServletName();
-    if( !servletName.startsWith( "/" ) ) {
-      servletName = "/" + servletName;
-    }
-    String entryPoint = config.getEntryPoint(); 
-    String query = EMPTY; 
-    if( !EMPTY.equals( entryPoint ) ) { 
-      query = URL_QUERY_STARTUP + entryPoint;
-    }
     try {
-      URL result = new URL( URL_PROTOCOL, URL_HOST, port, servletName + query );
-      return result;
+      return URLBuilder.fromLaunchConfig( config, port );
     } catch( MalformedURLException e ) {
       String msg = "Invalid URL."; //$NON-NLS-1$
       String pluginId = Activator.getPluginId();
@@ -258,10 +248,13 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   
   private void waitForHttpService( final IProgressMonitor monitor ) {
     SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
-    subMonitor.beginTask( "Waiting for HTTP service...", 
-                          IProgressMonitor.UNKNOWN );
-    waitForHttpService();
-    subMonitor.done();
+    String taskName = "Waiting for HTTP service";
+    subMonitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
+    try {
+      waitForHttpService();
+    } finally {
+      subMonitor.done();
+    }
   }
 
   private void waitForHttpService() {
@@ -274,7 +267,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
            && !launch.isTerminated() ) 
     {
       try {
-        Socket socket = new Socket( URL_HOST, port );
+        Socket socket = new Socket( URLBuilder.getHost(), port );
         socket.close();
         canConnect = true;
       } catch( Exception e ) {
@@ -305,12 +298,15 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
             Job job = new Job( "Starting client application" ) {
               protected IStatus run( final IProgressMonitor monitor ) {
                 monitor.beginTask( "Starting client application", 2 );
-                waitForHttpService( monitor );
-                monitor.worked( 1 );
-                if( !launch.isTerminated() ) {
-                  openBrowser( monitor );
+                try {
+                  waitForHttpService( monitor );
+                  monitor.worked( 1 );
+                  if( !launch.isTerminated() ) {
+                    openBrowser( monitor );
+                  }
+                } finally {
+                  monitor.done();
                 }
-                monitor.done();
                 return Status.OK_STATUS;
               }
             };
@@ -322,9 +318,9 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   }
   
   private void openBrowser( final IProgressMonitor monitor ) {
-    SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 2 );
-    subMonitor.beginTask( "Waiting for HTTP service...", 
-                          IProgressMonitor.UNKNOWN );
+    SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
+    String taskName = "Starting client application";
+    subMonitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
       URL url = null;
       try {

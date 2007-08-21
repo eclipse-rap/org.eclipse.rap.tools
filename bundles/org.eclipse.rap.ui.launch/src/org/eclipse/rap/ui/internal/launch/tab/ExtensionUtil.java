@@ -15,23 +15,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.pde.core.plugin.*;
 import org.eclipse.pde.internal.core.ibundle.IBundlePluginModel;
 import org.eclipse.pde.internal.core.plugin.PluginHandler;
 import org.eclipse.pde.internal.core.plugin.WorkspacePluginModel;
 
 
-final class ExtensionLocator {
+final class ExtensionUtil {
   
   static IPluginExtension[] getWorkspaceExtensions( 
-    final String extensionPoint ) 
+    final String extensionPoint, 
+    final IProgressMonitor monitor ) 
     throws CoreException 
   {
     List list = new ArrayList();
-    IPluginModelBase[] workspacePlugins = findInWorkspace( extensionPoint );
-    
-    for( int i = 0; i < workspacePlugins.length; i++ ) {
+    IPluginModelBase[] workspacePlugins 
+      = findInWorkspace( extensionPoint );
+    for( int i = 0; !isCanceled( monitor ) && i < workspacePlugins.length; i++ ) 
+    {
       IPluginModelBase modelBase = workspacePlugins[ i ];
       /*
        * Here's the naught code. IBundlePluginModel contains a reference to the
@@ -62,12 +66,37 @@ final class ExtensionLocator {
         }
       }
     }
-    IPluginExtension[] result = new IPluginExtension[ list.size() ];
-    list.toArray( result );
+    IPluginExtension[] result;
+    if( isCanceled( monitor ) ) {
+      // discard all eventually collected information if monitor was canceled
+      result = new IPluginExtension[ 0 ];
+    } else {
+      result = new IPluginExtension[ list.size() ];
+      list.toArray( result );
+    }
     return result;
   }
 
-  static IPluginModelBase[] findInWorkspace( 
+  static String getAttribute( final IPluginElement element, 
+                              final String attributeName ) 
+  {
+    IPluginAttribute attribute = element.getAttribute( attributeName ); 
+    return attribute == null ? null : attribute.getValue();
+  }
+  
+  static String getProjectName( final IPluginExtension pluginExtension )
+  {
+    String result = null;
+    IPluginModelBase pluginModel = pluginExtension.getPluginModel();
+    if( pluginModel instanceof WorkspacePluginModel ) {
+      WorkspacePluginModel workspacePlugin = ( WorkspacePluginModel )pluginModel;
+      IResource resource = workspacePlugin.getUnderlyingResource();
+      result = resource.getProject().getName();
+    }
+    return result;
+  }
+
+  private static IPluginModelBase[] findInWorkspace( 
     final String extensionPoint )
   {
     List list = new ArrayList();
@@ -86,7 +115,11 @@ final class ExtensionLocator {
     return result;
   }
   
-  private ExtensionLocator() {
+  private static boolean isCanceled( final IProgressMonitor monitor ) {
+    return monitor != null && monitor.isCanceled();
+  }
+
+  private ExtensionUtil() {
     // prevent instantiation
   }
 }

@@ -21,29 +21,28 @@ import org.eclipse.rap.ui.internal.launch.util.Images;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.IMemento;
-import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
-import org.eclipse.ui.dialogs.SearchPattern;
+import org.eclipse.ui.dialogs.*;
 
 
-final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
+final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog { 
 
   private static final String SETTINGS_ID 
-    = Activator.PLUGIN_ID + ".ENTRY_POINT_SELECTION_DIALOG"; //$NON-NLS-1$
+    = Activator.PLUGIN_ID + ".SERVLET_NAME_SELECTION_DIALOG"; //$NON-NLS-1$
 
-  private static final Comparator COMPARATOR = new EntryPointComparator();
-  
-  private EntryPointExtension[] entryPoints;
+  private static final Comparator COMPARATOR = new BrandingComparator();
 
-  EntryPointSelectionDialog( final Shell shell ) {
+  private BrandingExtension[] brandings;
+
+  ServletNameSelectionDialog( final Shell shell ) {
     super( shell );
-    setTitle( "Select Entry Point" );
+    setTitle( "Select Servlet Name" );
     String msg 
-      = "&Select an entry point to open (? = any character, * = any string, " 
-      + "EP = EntryPoint)";
+      = "&Select a servlet name to open (? = any character, * = any string, " 
+      + "SN = ServletName)";
     setMessage( msg );
-    setSelectionHistory( new EntryPointSelectionHistory() );
-    setListLabelProvider( new EntryPointLabelProvider() );
-    setDetailsLabelProvider( new EntryPointLabelProvider() );
+    setSelectionHistory( new ServletNameSelectionHistory() );
+    setListLabelProvider( new BrandingLabelProvider() );
+    setDetailsLabelProvider( new BrandingLabelProvider() );
   }
 
   //////////////////////////////////////////////////////////
@@ -70,15 +69,15 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
                                       final IProgressMonitor monitor )
     throws CoreException
   {
-    if( entryPoints == null ) {
+    if( brandings == null ) {
       if( monitor != null ) {
-        String msg = "Searching for entry points in workspace";
+        String msg = "Searching for servlet names in workspace";
         monitor.beginTask( msg, IProgressMonitor.UNKNOWN );
       }
-      entryPoints = EntryPointExtension.findInWorkspace( monitor );
+      brandings = BrandingExtension.findInWorkspace( monitor );
     }
-    for( int i = 0; i < entryPoints.length; i++ ) {
-      provider.add( entryPoints[ i ], itemsFilter );
+    for( int i = 0; i < brandings.length; i++ ) {
+      provider.add( brandings[ i ], itemsFilter );
     }
     if( monitor != null ) {
       monitor.done();
@@ -86,15 +85,14 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   protected ItemsFilter createFilter() {
-    SearchPattern searchPattern = SelectionDialogUtil.createSearchPattern();
-    return new EntryPointItemsFilter( searchPattern );
+    return new BrandingItemsFilter( SelectionDialogUtil.createSearchPattern() );
   }
 
   public String getElementName( final Object element ) {
-    EntryPointExtension entryPoint = ( EntryPointExtension )element;
-    String project = entryPoint.getProject();
-    String parameter = entryPoint.getParameter();
-    return SelectionDialogUtil.getLabel( project, parameter );
+    BrandingExtension branding = ( BrandingExtension )element;
+    String project = branding.getProject();
+    String servletName = branding.getServletName();
+    return SelectionDialogUtil.getLabel( project, servletName );
   }
 
   protected Comparator getItemsComparator() {
@@ -108,20 +106,20 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
   ////////////////
   // Inner classes
   
-  private static final class EntryPointComparator implements Comparator {
+  private static final class BrandingComparator implements Comparator {
     
     public int compare( final Object object1, final Object object2 ) {
-      EntryPointExtension extension1 = ( EntryPointExtension )object1;
-      EntryPointExtension extension2 = ( EntryPointExtension )object2;
-      String string1 = extension1.getProject() + extension1.getParameter(); 
-      String string2 = extension2.getProject() + extension2.getParameter();
+      BrandingExtension extension1 = ( BrandingExtension )object1;
+      BrandingExtension extension2 = ( BrandingExtension )object2;
+      String string1 = extension1.getProject() + extension1.getServletName(); 
+      String string2 = extension2.getProject() + extension2.getServletName();
       return string1.compareTo( string2 );
     }
   }
 
-  private final class EntryPointItemsFilter extends ItemsFilter {
+  private final class BrandingItemsFilter extends ItemsFilter {
     
-    public EntryPointItemsFilter( final SearchPattern searchPattern ) {
+    public BrandingItemsFilter( final SearchPattern searchPattern ) {
       super( searchPattern );
     }
 
@@ -130,21 +128,23 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
     }
 
     public boolean matchItem( final Object item ) {
-      return matches( ( ( EntryPointExtension )item ).getParameter() );
+      return matches( ( ( BrandingExtension )item ).getServletName() );
     }
   }
   
-  private static final class EntryPointLabelProvider extends LabelProvider {
+  private static final class BrandingLabelProvider
+    extends LabelProvider
+  {
 
     private final Image image = Images.EXTENSION.createImage();
 
     public String getText( final Object element ) {
       String result = null;
       if( element != null ) {
-        EntryPointExtension entryPoint = ( EntryPointExtension )element;
-        String project = entryPoint.getProject();
-        String parameter = entryPoint.getParameter();
-        result = SelectionDialogUtil.getLabel( project, parameter );
+        BrandingExtension branding = ( BrandingExtension )element;
+        String project = branding.getProject();
+        String servletName = branding.getServletName();
+        result = SelectionDialogUtil.getLabel( project, servletName );
       }
       return result;
     }
@@ -159,7 +159,8 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
     }
   }
 
-  private static final class EntryPointSelectionHistory extends SelectionHistory 
+  private static final class ServletNameSelectionHistory 
+    extends SelectionHistory 
   {
     
     private static final String SEPARATOR = "#"; //$NON-NLS-1$
@@ -171,12 +172,14 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
         String[] parts = textData.split( SEPARATOR ); 
         if( parts.length == 3 ) {
           String project = parts[ 0 ];
-          String parameter = parts[ 1 ];
-          String id = parts[ 2 ];
-          if( "null".equals( id ) ) { //$NON-NLS-1$
-            id = null;
+          String servletName = parts[ 1 ];
+          String defaultEntryPointId = parts[ 2 ];
+          if( "null".equals( defaultEntryPointId ) ) { //$NON-NLS-1$
+            defaultEntryPointId = null;
           }
-          result = new EntryPointExtension( project, id, parameter );
+          result = new BrandingExtension( project, 
+                                          servletName, 
+                                          defaultEntryPointId );
         }
       }
       return result;
@@ -185,13 +188,13 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
     protected void storeItemToMemento( final Object item, 
                                        final IMemento memento ) 
     {
-      EntryPointExtension entryPoint = ( EntryPointExtension )item;
+      BrandingExtension branding = ( BrandingExtension )item;
       String text 
-        = entryPoint.getProject() 
+        = branding.getProject() 
         + SEPARATOR
-        + entryPoint.getParameter()
+        + branding.getServletName()
         + SEPARATOR
-        + entryPoint.getId();
+        + branding.getDefaultEntryPointId();
       memento.putTextData( text );
     }
   }

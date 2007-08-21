@@ -17,77 +17,67 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.pde.core.plugin.*;
 
-final class EntryPointExtension extends AbstractExtension {
-  
 
+final class BrandingExtension extends AbstractExtension {
+  
   private static final String EXTENSION_ID 
-    = "org.eclipse.rap.ui.entrypoint"; //$NON-NLS-1$
-  private static final String ATTR_PARAMETER = "parameter"; //$NON-NLS-1$
-  private static final String ID = "id"; //$NON-NLS-1$
+    = "org.eclipse.rap.ui.branding"; //$NON-NLS-1$
+  private static final String ATTR_SERVLET_NAME 
+    = "servletName"; //$NON-NLS-1$
+  private static final String DEFAULT_ENTRYPOINT_ID 
+    = "defaultEntrypointId"; //$NON-NLS-1$
 
-  static EntryPointExtension findById( final String id ) throws CoreException {
-    EntryPointExtension result = null;
-    if( id != null ) {
-      EntryPointExtension[] extensions = findInWorkspace( null );
-      for( int i = 0; result == null && i < extensions.length; i++ ) {
-        if( id.equals( extensions[ i ].getId() ) ) {
-          result = extensions[ i ];
-        }
-      }
-    }
-    return result;
-  }
-  
-  static EntryPointExtension[] findInWorkspace( final IProgressMonitor monitor ) 
+  static BrandingExtension[] findInWorkspace( final IProgressMonitor monitor ) 
     throws CoreException 
   {
     IPluginExtension[] extensions 
       = ExtensionUtil.getWorkspaceExtensions( EXTENSION_ID, monitor );
     List list = new ArrayList();
     for( int i = 0; i < extensions.length; i++ ) {
-      EntryPointExtension[] entryPoints;
-      entryPoints = getEntryPointExtensions( extensions[ i ] );
-      list.addAll( Arrays.asList( entryPoints ) );
+      BrandingExtension[] brandings = getBrandingExtensions( extensions[ i ] );
+      list.addAll( Arrays.asList( brandings ) );
     }
-    EntryPointExtension[] result = new EntryPointExtension[ list.size() ];
+    BrandingExtension[] result = new BrandingExtension[ list.size() ];
     list.toArray( result );
     return result;
   }
-  
-  private static final EntryPointExtension[] getEntryPointExtensions( 
+
+  private static final BrandingExtension[] getBrandingExtensions( 
     final IPluginExtension pluginExtension ) 
   {
     IPluginObject[] children = pluginExtension.getChildren();
-    EntryPointExtension[] result = new EntryPointExtension[ children.length ];
+    BrandingExtension[] result = new BrandingExtension[ children.length ];
     for( int i = 0; i < children.length; i++ ) {
       String project = ExtensionUtil.getProjectName( pluginExtension );
       IPluginElement element = ( IPluginElement )children[ i ];
-      String parameter = ExtensionUtil.getAttribute( element, ATTR_PARAMETER );
-      String id = ExtensionUtil.getAttribute( element, ID );
-      result[ i ] = new EntryPointExtension( project, id, parameter );
+      String servletName 
+        = ExtensionUtil.getAttribute( element, ATTR_SERVLET_NAME );
+      String defaultEntryPointId 
+        = ExtensionUtil.getAttribute( element, DEFAULT_ENTRYPOINT_ID );
+      result[ i ] 
+        = new BrandingExtension( project, servletName, defaultEntryPointId );
     }
     return result;
   }
+  
+  private final String servletName;
+  private final String defaultEntryPointId;
 
-
-  private final String id;
-  private final String parameter;
-
-  EntryPointExtension( final String project, 
-                       final String id,
-                       final String parameter ) 
+  BrandingExtension( final String project, 
+                     final String servletName, 
+                     final String defaultEntryPointId ) 
   {
     super( project );
-    this.id = id;
-    this.parameter = parameter;
-  }
-
-  final String getId() {
-    return id;
+    this.servletName = servletName;
+    this.defaultEntryPointId = defaultEntryPointId;
   }
   
-  final String getParameter() {
-    return parameter;
+  final String getServletName() {
+    return servletName;
+  }
+  
+  final String getDefaultEntryPointId() {
+    return defaultEntryPointId;
   }
 
   /////////////////////
@@ -96,7 +86,7 @@ final class EntryPointExtension extends AbstractExtension {
   public final int hashCode() {
     int prime = 31;
     int result = 1;
-    int valueHashCode = parameter == null ? 0 : parameter.hashCode();
+    int valueHashCode = servletName == null ? 0 : servletName.hashCode();
     result = prime * result + valueHashCode;
     int projectHashCode = project == null ? 0 : project.hashCode();
     result = prime * result + projectHashCode;
@@ -113,12 +103,12 @@ final class EntryPointExtension extends AbstractExtension {
       result = false;
     } else {
       result = true;
-      EntryPointExtension other = ( EntryPointExtension )obj;
-      if( parameter == null ) {
-        if( other.parameter != null ) {
+      BrandingExtension other = ( BrandingExtension )obj;
+      if( servletName == null ) {
+        if( other.servletName != null ) {
           result = false;
         }
-      } else if( !parameter.equals( other.parameter ) ) {
+      } else if( !servletName.equals( other.servletName ) ) {
         result = false;
       }
       if( project == null ) {

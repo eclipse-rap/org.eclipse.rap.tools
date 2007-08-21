@@ -14,45 +14,38 @@ package org.eclipse.rap.ui.internal.launch.tab;
 import java.util.logging.Level;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.window.Window;
+import org.eclipse.pde.ui.launcher.BundlesTab;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.RAPLaunchConfigValidator;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
+import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
 import org.eclipse.rap.ui.internal.launch.util.Images;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 final class MainTab extends AbstractLaunchConfigurationTab {
 
+  
   private static final String BROWSER_PREFERENCE_PAGE 
     = "org.eclipse.ui.browser.preferencePage"; //$NON-NLS-1$
 
-  private static final int MAX_PORT_NUMBER = 65535;
-
-  private static final Level[] LOG_LEVELS = {
-    Level.OFF,
-    Level.ALL,
-    Level.WARNING,
-    Level.INFO,
-    Level.SEVERE,
-    Level.FINE,
-    Level.FINER,
-    Level.FINEST
-  };
-  
   private final GridDataFactory fillHorizontal; 
   private final ModifyListener modifyListener;
   private final SelectionListener selectionListener;
@@ -66,6 +59,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   private Button cbManualPort;
   private Spinner spnPort;
   private ComboViewer cmbLogLevel;
+  private ComboViewer cmbLibVariant;
 
   MainTab() {
     tabImage = Images.DESC_MAIN_TAB.createImage();
@@ -84,6 +78,9 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     };
   }
   
+  ////////////
+  // Overrides
+  
   public void dispose() {
     tabImage.dispose();
     warnImage.dispose();
@@ -96,7 +93,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     container.setLayout( new GridLayout() );
     container.setLayoutData( new GridData( GridData.FILL_BOTH ) );
     // Create sections
-    createEntryPointSection( container );
+    createServletNameAndEntryPointSection( container );
     createBrowserModeSection( container );
     createRuntimeSettingsSection( container );
     createInfoSection( container );
@@ -125,10 +122,6 @@ final class MainTab extends AbstractLaunchConfigurationTab {
       // Port
       cbManualPort.setSelection( rapConfig.getUseManualPort() );
       spnPort.setSelection( rapConfig.getPort() );
-      // LogLevel
-      Level logLevel = rapConfig.getLogLevel();
-      StructuredSelection selection = new StructuredSelection( logLevel );
-      cmbLogLevel.setSelection( selection );
       // BrowserMode
       if( BrowserMode.EXTERNAL.equals( rapConfig.getBrowserMode() ) ) {
         rbExternalBrowser.setSelection( true );
@@ -137,6 +130,14 @@ final class MainTab extends AbstractLaunchConfigurationTab {
         rbExternalBrowser.setSelection( false );
         rbInternalBrowser.setSelection( true );
       }
+      // LogLevel
+      Level logLevel = rapConfig.getLogLevel();
+      StructuredSelection logSelection = new StructuredSelection( logLevel );
+      cmbLogLevel.setSelection( logSelection );
+      // LibraryVariant
+      LibraryVariant libVariant = rapConfig.getLibraryVariant();
+      StructuredSelection libSelection = new StructuredSelection( libVariant );
+      cmbLibVariant.setSelection( libSelection );
     } catch( CoreException e ) {
       ErrorUtil.show( null, e );
     }
@@ -150,56 +151,75 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     rapConfig.setEntryPoint( txtEntryPoint.getText() );
     // TerminatePrevious
     rapConfig.setTerminatePrevious( cbTerminatePrevious.getSelection() );
-    // Port
-    rapConfig.setUseManualPort( cbManualPort.getSelection() );
-    rapConfig.setPort( spnPort.getSelection() );
-    // LogLevel
-    Level logLevel = Level.OFF;
-    ISelection selection = cmbLogLevel.getSelection();
-    if( !selection.isEmpty() ) {
-      IStructuredSelection ssel = ( IStructuredSelection )selection;
-      logLevel = ( Level )ssel.getFirstElement();
-    }
-    rapConfig.setLogLevel( logLevel );
     // BrowserMode
     if( rbExternalBrowser.getSelection() ) {
       rapConfig.setBrowserMode( BrowserMode.EXTERNAL );
     } else {
       rapConfig.setBrowserMode( BrowserMode.INTERNAL );
     }
-    // Bring widget states up to date
+    // Manual Port
     spnPort.setEnabled( cbManualPort.getSelection() );
+    // Port Number
+    rapConfig.setUseManualPort( cbManualPort.getSelection() );
+    rapConfig.setPort( spnPort.getSelection() );
+    // LogLevel
+    Level logLevel = Level.OFF;
+    ISelection logSelection = cmbLogLevel.getSelection();
+    if( !logSelection.isEmpty() ) {
+      IStructuredSelection ssel = ( IStructuredSelection )logSelection;
+      logLevel = ( Level )ssel.getFirstElement();
+    }
+    rapConfig.setLogLevel( logLevel );
+    // LibraryVariant
+    LibraryVariant libVariant = LibraryVariant.STANDARD;
+    ISelection libSelection = cmbLibVariant.getSelection();
+    if( !libSelection.isEmpty() ) {
+      IStructuredSelection ssel = ( IStructuredSelection )libSelection;
+      libVariant = ( LibraryVariant )ssel.getFirstElement();
+    }
+    rapConfig.setLibraryVariant( libVariant );
+    validate( rapConfig );
     setDirty( true );
   }
-
+  
   public void setDefaults( final ILaunchConfigurationWorkingCopy config ) {
     RAPLaunchConfig.setDefaults( config );
+  }
+  
+  public boolean isValid( final ILaunchConfiguration launchConfig ) {
+    return getErrorMessage() == null;
   }
   
   ///////////////////////////////////
   // Helping methods to create the UI
   
-  private void createEntryPointSection( final Composite parent ) {
+  private void createServletNameAndEntryPointSection( final Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayout( new GridLayout( 3, false ) );
     group.setLayoutData( fillHorizontal.create() );
-    // TODO [rh] find more suitable name
     group.setText( "Servlet and Entry Point to Run" );
     Label lblServletName = new Label( group, SWT.NONE );
     lblServletName.setText( "Ser&vlet Name" );
     txtServletName = new Text( group, SWT.BORDER );
-    txtServletName.setLayoutData( spanHorizontal( 2 ) );
+    txtServletName.setLayoutData( fillHorizontal.create() );
     txtServletName.addModifyListener( modifyListener );
+    Button btnBrowseServletName = new Button( group, SWT.PUSH );
+    btnBrowseServletName.setText( "Bro&wse..." );
+    btnBrowseServletName.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( final SelectionEvent event ) {
+        handleBrowseServletName();
+      }
+    } );
     Label lblEntryPoint = new Label( group, SWT.NONE );
     lblEntryPoint.setText( "&Entry Point" );
     txtEntryPoint = new Text( group, SWT.BORDER );
     txtEntryPoint.setLayoutData( fillHorizontal.create() );
     txtEntryPoint.addModifyListener( modifyListener );
-    Button btnBrowse = new Button( group, SWT.PUSH );
-    btnBrowse.setText( "&Browse..." );
-    btnBrowse.addSelectionListener( new SelectionAdapter() {
+    Button btnBrowseEntryPoint = new Button( group, SWT.PUSH );
+    btnBrowseEntryPoint.setText( "&Browse..." );
+    btnBrowseEntryPoint.addSelectionListener( new SelectionAdapter() {
       public void widgetSelected( final SelectionEvent event ) {
-        handleEntryPointBrowseButton();
+        handleBrowseEntryPoint();
       }
     } );
     cbTerminatePrevious = new Button( group, SWT.CHECK );
@@ -226,14 +246,12 @@ final class MainTab extends AbstractLaunchConfigurationTab {
         handleBrowserPrefsLink();
       }
     } );
-    GridDataFactory span2Cols = GridDataFactory.swtDefaults();
-    span2Cols.span( 2, SWT.DEFAULT );
     rbInternalBrowser = new Button( group, SWT.RADIO );
-    rbInternalBrowser.setLayoutData( span2Cols.create() );
+    rbInternalBrowser.setLayoutData( spanHorizontal( 2 ) );
     rbInternalBrowser.setText( "Intern&al Browser" );
     rbInternalBrowser.addSelectionListener( selectionListener );
     rbExternalBrowser = new Button( group, SWT.RADIO );
-    rbExternalBrowser.setLayoutData( span2Cols.create() );
+    rbExternalBrowser.setLayoutData( spanHorizontal( 2 ) );
     rbExternalBrowser.setText( "E&xternal Browser" );
     rbExternalBrowser.addSelectionListener( selectionListener );
   }
@@ -248,16 +266,29 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     cbManualPort.addSelectionListener( selectionListener );
     spnPort = new Spinner( group, SWT.BORDER );
     spnPort.setLayoutData( new GridData( 60, SWT.DEFAULT ) );
-    spnPort.setMaximum( MAX_PORT_NUMBER );
+    spnPort.setMinimum( RAPLaunchConfig.MIN_PORT_NUMBER );
+    spnPort.setMaximum( RAPLaunchConfig.MAX_PORT_NUMBER );
     spnPort.addModifyListener( modifyListener );
     Label lblLogLevel = new Label( group, SWT.NONE );
     lblLogLevel.setText( "Client-side &Log Level" );
     cmbLogLevel = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
-    cmbLogLevel.getCombo().setVisibleItemCount( LOG_LEVELS.length );
+    int itemCount = RAPLaunchConfig.LOG_LEVELS.length;
+    cmbLogLevel.getCombo().setVisibleItemCount( itemCount );
     cmbLogLevel.setLabelProvider( new LabelProvider() );
-    cmbLogLevel.setContentProvider( new LogLevelContentProvider() );
-    cmbLogLevel.setInput( LOG_LEVELS );
+    cmbLogLevel.setContentProvider( new ArrayContentProvider() );
+    cmbLogLevel.setInput( RAPLaunchConfig.LOG_LEVELS );
     cmbLogLevel.addSelectionChangedListener( new ISelectionChangedListener() {
+      public void selectionChanged( final SelectionChangedEvent event ) {
+        updateLaunchConfigurationDialog();
+      }
+    } );
+    Label lblLibraryVariant = new Label( group, SWT.NONE );
+    lblLibraryVariant.setText( "Client-side Library Variant" );
+    cmbLibVariant = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
+    cmbLibVariant.setLabelProvider( new LabelProvider() );
+    cmbLibVariant.setContentProvider( new ArrayContentProvider() );
+    cmbLibVariant.setInput( LibraryVariant.values() );
+    cmbLibVariant.addSelectionChangedListener( new ISelectionChangedListener() {
       public void selectionChanged( final SelectionChangedEvent event ) {
         updateLaunchConfigurationDialog();
       }
@@ -272,13 +303,22 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
     group.setText( "Important Information" );
-    group.setLayout( new FillLayout() );
-    CLabel lblInfo = new CLabel( group, SWT.LEFT );
-    lblInfo.setImage( warnImage );
-    String text
-      = "Please note, that the RAP Application Launcher only works with the "
-      + "Equinox OSGi Framework (default setting on page 'Bundles').";
-    lblInfo.setText( text );
+    group.setLayout( new GridLayout( 2, false ) );
+    Label lblImage = new Label( group, SWT.NONE );
+    lblImage.setLayoutData( new GridData( SWT.TOP, SWT.LEFT, false, false ) );
+    lblImage.setImage( warnImage );
+    String text 
+      = "Please note, that the RAP Application Launcher only works with "
+      + "the  Equinox OSGi Framework (this is the default setting on page "
+      + "<a>'Bundles'</a>).";
+    Link lblText = new Link( group, SWT.WRAP );
+    lblText.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
+    lblText.setText( text );
+    lblText.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected( final SelectionEvent event ) {
+        handleSelectBundlesTab();
+      }
+    } );
   }
 
   ////////////////
@@ -288,10 +328,39 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     return new GridData( SWT.FILL, SWT.CENTER, true, false, span, SWT.DEFAULT );
   }
 
+  /////////////
+  // Validation
+  
+  private void validate( final RAPLaunchConfig config ) {
+    RAPLaunchConfigValidator validator = new RAPLaunchConfigValidator( config );
+    IStatus[] states = validator.validate();
+    String infoMessage = findMessage( states, IStatus.INFO );
+    String warnMessage = findMessage( states, IStatus.WARNING );
+    String errorMessage = findMessage( states, IStatus.ERROR );
+    if( warnMessage != null ) {
+      setMessage( warnMessage );
+    } else {
+      setMessage( infoMessage );
+    }
+    setErrorMessage( errorMessage );
+  }
+  
+  private static String findMessage( final IStatus[] states, 
+                                     final int severity ) 
+  {
+    String result = null;
+    for( int i = 0; result == null && i < states.length; i++ ) {
+      if( states[ i ].matches( severity ) ) {
+        result = states[ i ].getMessage();
+      }
+    }
+    return result;
+  }
+  
   ////////////////
   // Handle events
 
-  private void handleEntryPointBrowseButton() {
+  private void handleBrowseEntryPoint() {
     EntryPointSelectionDialog dialog 
       = new EntryPointSelectionDialog( getShell() );
     if( dialog.open() == Window.OK ) {
@@ -301,6 +370,31 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     }
   }
 
+  private void handleBrowseServletName() {
+    ServletNameSelectionDialog dialog 
+      = new ServletNameSelectionDialog( getShell() );
+    if( dialog.open() == Window.OK ) {
+      Object[] selection = dialog.getResult();
+      BrandingExtension branding = ( BrandingExtension )selection[ 0 ];
+      txtServletName.setText( branding.getServletName() );
+      String defaultEntryPointId = branding.getDefaultEntryPointId();
+      String parameter = null;
+      try {
+        EntryPointExtension defaultEntryPoint 
+          = EntryPointExtension.findById( defaultEntryPointId );
+        if( defaultEntryPoint != null ) {
+          parameter = defaultEntryPoint.getParameter();
+        }
+      } catch( CoreException e ) {
+        String msg = "Failed to obtain default entry point from branding";
+        ErrorUtil.show( msg, e );
+      }
+      if( txtEntryPoint.getText().length() == 0 && parameter != null ) {
+        txtEntryPoint.setText( parameter );
+      }
+    }
+  }
+  
   private void handleBrowserPrefsLink() {
     PreferenceDialog dialog 
       = PreferencesUtil.createPreferenceDialogOn( getShell(), 
@@ -310,26 +404,17 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     dialog.open();
   }
 
-  ////////////////
-  // Inner classes
-  
-  private static final class LogLevelContentProvider
-    implements IStructuredContentProvider
-  {
-
-    public Object[] getElements( final Object inputElement ) {
-      return ( Object[] )inputElement;
+  private void handleSelectBundlesTab() {
+    ILaunchConfigurationTab bundlesTab = null;
+    ILaunchConfigurationTab[] tabs = getLaunchConfigurationDialog().getTabs();
+    for( int i = 0; bundlesTab == null && i < tabs.length; i++ ) {
+      if( tabs[ i ] instanceof BundlesTab ) {
+        bundlesTab= tabs[ i ];
+      }
     }
-
-    public void dispose() {
-      // do nothing
-    }
-
-    public void inputChanged( final Viewer viewer,
-                              final Object oldInput,
-                              final Object newInput )
-    {
-      // do nothing
+    if( bundlesTab != null ) {
+      getLaunchConfigurationDialog().setActiveTab( bundlesTab );
     }
   }
+  
 }

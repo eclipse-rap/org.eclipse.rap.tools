@@ -63,43 +63,103 @@ public final class RAPLaunchConfig {
     }
   }
   
-  private static final String PREFIX = "org.eclipse.rap.launch."; //$NON-NLS-1$
+  public static final class LibraryVariant {
+    
+    public static final LibraryVariant STANDARD 
+    = new LibraryVariant( "STANDARD" ); //$NON-NLS-1$
+    public static final LibraryVariant DEBUG 
+    = new LibraryVariant( "DEBUG" ); //$NON-NLS-1$
+    
+    public static LibraryVariant[] values() {
+      return new LibraryVariant[] { STANDARD, DEBUG };
+    }
+    
+    public static LibraryVariant parse( final String name ) {
+      LibraryVariant result = null;
+      LibraryVariant[] knownValues = values();
+      for( int i = 0; result == null && i < knownValues.length; i++ ) {
+        if( knownValues[ i ].getName().equalsIgnoreCase( name ) ) {
+          result = knownValues[ i ];
+        }
+      }
+      if( result == null ) {
+        String text = "Unknown LibraryVariant ''{0}''."; //$NON-NLS-1$
+        String msg = MessageFormat.format( text, new Object[] { name } );
+        throw new IllegalArgumentException( msg );  
+      }
+      return result;
+    }
+    
+    private final String name;
+    
+    private LibraryVariant( final String name ) {
+      this.name = name;
+    }
+    
+    public String getName() {
+      return name;
+    }
+    
+    public String toString() {
+      return name;
+    }
+  }
   
+  public static final Level[] LOG_LEVELS = {
+    Level.OFF,
+    Level.ALL,
+    Level.WARNING,
+    Level.INFO,
+    Level.SEVERE,
+    Level.FINE,
+    Level.FINER,
+    Level.FINEST
+  };
+
+  public static final int MIN_PORT_NUMBER = 0;
+  public static final int MAX_PORT_NUMBER = 65535;
+
   // Launch configuration attribute names
-  public static final String SERVLET_NAME 
+  private static final String PREFIX = "org.eclipse.rap.launch."; //$NON-NLS-1$
+  private static final String SERVLET_NAME 
     = PREFIX + "servletName"; //$NON-NLS-1$
-  public static final String ENRY_POINT 
+  private static final String ENRY_POINT 
     = PREFIX + "entryPoint"; //$NON-NLS-1$
-  public static final String TERMINATE_PREVIOUS 
+  private static final String TERMINATE_PREVIOUS 
     = PREFIX + "terminatePrevious"; //$NON-NLS-1$
-  public static final String BROWSER_MODE 
+  private static final String BROWSER_MODE 
     = PREFIX + "browserMode"; //$NON-NLS-1$
-  public static final String PORT 
+  private static final String PORT 
     = PREFIX + "port"; //$NON-NLS-1$
-  public static final String USE_MANUAL_PORT 
+  private static final String USE_MANUAL_PORT 
     = PREFIX + "useManualPort"; //$NON-NLS-1$
-  public static final String LOG_LEVEL 
+  private static final String LOG_LEVEL 
     = PREFIX + "logLevel"; //$NON-NLS-1$
+  private static final String LIBRARY_VARIANT 
+    = PREFIX + "libraryVariant"; //$NON-NLS-1$
   
   // Default values for launch configuration attribute names
-  public static final String DEFAULT_SERVLET_NAME = "rap"; //$NON-NLS-1$
-  public static final String DEFAULT_ENTRY_POINT = ""; //$NON-NLS-1$
-  public static final boolean DEFAULT_TERMINATE_PREVIOUS = true;
-  public static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
-  public static final int DEFAULT_PORT = 10080;
-  public static final boolean DEFAULT_USE_MANUAL_PORT = false;
-  public static final String DEFAULT_LOG_LEVEL = Level.OFF.getName();
+  private static final String DEFAULT_SERVLET_NAME = "rap"; //$NON-NLS-1$
+  private static final String DEFAULT_ENTRY_POINT = ""; //$NON-NLS-1$
+  private static final boolean DEFAULT_TERMINATE_PREVIOUS = true;
+  private static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
+  private static final int DEFAULT_PORT = 10080;
+  private static final boolean DEFAULT_USE_MANUAL_PORT = false;
+  private static final String DEFAULT_LOG_LEVEL = Level.OFF.getName();
+  private static final String DEFAULT_LIBRARY_VARIANT 
+    = LibraryVariant.STANDARD.getName();
 
   
   public static void setDefaults( final ILaunchConfigurationWorkingCopy config ) 
   {
-    config.setAttribute( ENRY_POINT, DEFAULT_SERVLET_NAME );
+    config.setAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
     config.setAttribute( ENRY_POINT, DEFAULT_ENTRY_POINT );
+    config.setAttribute( TERMINATE_PREVIOUS, DEFAULT_TERMINATE_PREVIOUS );
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE.getName() );
     config.setAttribute( PORT, DEFAULT_PORT );
-    config.setAttribute( LOG_LEVEL, DEFAULT_LOG_LEVEL );
     config.setAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
-    config.setAttribute( TERMINATE_PREVIOUS, DEFAULT_TERMINATE_PREVIOUS );
+    config.setAttribute( LOG_LEVEL, DEFAULT_LOG_LEVEL );
+    config.setAttribute( LIBRARY_VARIANT, DEFAULT_LIBRARY_VARIANT );
   }
   
   private final ILaunchConfiguration config;
@@ -190,13 +250,24 @@ public final class RAPLaunchConfig {
     workingCopy.setAttribute( LOG_LEVEL, logLevel.getName() );
   }
   
+  public LibraryVariant getLibraryVariant() throws CoreException {
+    String value 
+      = config.getAttribute( LIBRARY_VARIANT, DEFAULT_LIBRARY_VARIANT );
+    return LibraryVariant.parse( value );
+  }
+  
+  public void setLibraryVariant( final LibraryVariant libraryVariant ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( LIBRARY_VARIANT, libraryVariant.getName() );
+  }
+  
   /////////////////
   // Helping method
   
   private void checkWorkingCopy() {
     if( workingCopy == null ) {
       String msg 
-        = "Launch configuration cannot be modified, no working copy available";
+        = "Launch configuration cannot be modified, no working copy available"; //$NON-NLS-1$
       throw new IllegalStateException( msg );
     }
   }

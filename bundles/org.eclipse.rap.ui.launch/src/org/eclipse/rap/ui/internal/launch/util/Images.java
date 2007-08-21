@@ -21,14 +21,14 @@ import org.osgi.framework.Bundle;
 
 public final class Images {
   
-  private final static String ICONS_PATH = "$nl$/icons/"; //$NON-NLS-1$
+  private static final String ICONS_PATH = "$nl$/icons/"; //$NON-NLS-1$
   private static final String PATH_OBJ = ICONS_PATH + "obj16/"; //$NON-NLS-1$
   
   public static final ImageDescriptor DESC_MAIN_TAB 
     = create( PATH_OBJ + "main_tab.gif" ); //$NON-NLS-1$
 
-  public static final ImageDescriptor ENTRY_POINT 
-    = create( PATH_OBJ + "entrypoint.gif" ); //$NON-NLS-1$
+  public static final ImageDescriptor EXTENSION 
+    = create( PATH_OBJ + "extension.gif" ); //$NON-NLS-1$
 
   public static final ImageDescriptor WARNING 
     = create( PATH_OBJ + "warn.gif" ); //$NON-NLS-1$

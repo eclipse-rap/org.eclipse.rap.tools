@@ -12,3 +12,6 @@ Eclipse-LazyStart: true
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Export-Package: org.eclipse.rap.ui.internal.launch;x-internal:=true,
+ org.eclipse.rap.ui.internal.launch.tab;x-internal:=true,
+ org.eclipse.rap.ui.internal.launch.util;x-internal:=true
