@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.pde.ui.pluginContent">
+      <!-- contribute to plugin wizards -->
+      <wizard
+            class="org.eclipse.rap.internal.ui.templates.rap.HelloRAPWizard"
+            icon="$nl$/icons/etool16/newexprj_wiz.gif"
+            id="org.eclipse.rap.internal.ui.templates.rap.HelloRAPWizard"
+            java="true"
+            rcp="false"
+            name="%helloRAP.name"
+            ui-content="true">
+         <description>
+            %helloRAP.description
+         </description>
+      </wizard>
+      <wizard
+            class="org.eclipse.rap.internal.ui.templates.rap.ViewRAPWizard"
+            icon="$nl$/icons/etool16/newexprj_wiz.gif"
+            id="org.eclipse.rap.internal.ui.templates.rap.ViewRAPWizard"
+            java="true"
+            rcp="false"
+            name="%viewRAP.name"
+            ui-content="true">
+         <description>
+            %viewRAP.description
+         </description>
+      </wizard>
+      <wizard
+            class="org.eclipse.rap.internal.ui.templates.rap.MailRAPWizard"
+            icon="$nl$/icons/etool16/newexprj_wiz.gif"
+            id="org.eclipse.rap.internal.ui.templates.rap.MailRAPWizard"
+            java="true"
+            rcp="false"
+            name="%mailRAP.name"
+            ui-content="true">
+         <description>
+            %mailRAP.description
+         </description>
+      </wizard>
+      <!-- contribute to rcp wizards -->
+   </extension>
+
+</plugin>
