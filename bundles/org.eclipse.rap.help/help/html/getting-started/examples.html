@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="copyright" content="Copyright (c) 2007 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>RAP Examples</title>
+<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+</head>
+<body>
+
+<h1>RAP Examples</h1>
+
+<p>Note: This chapter assumes that you have downloaded the latest RAP Taget 
+Platform. The download and instructions on how to install it are available 
+<a href="http://www.eclipse.org/rap/downloads.php">here</a>.</p> 
+
+<p>There are two kinds of example types available.</p>
+
+<ul>
+  <li>
+    <h3>Templates</h3>
+    
+    <p>To create a RAP plug-in from a template open a the new project 
+    wizard (File -> New -> Project) and select Plug-in Project. Type a 
+    project name (e.g. mail) and click next. Ensure on the following page
+    that the plug-in option 'This plug-in will make contributions to the UI' is
+    selected and the no rich client application will be created. Click next. Now
+    you should see a page where you can select a template. Select one of the 
+    templates with the RAP prefix (e.g. RAP Mail). Click finish.</p>
+    
+    <p>The plug-in comes with a preconfigured launch configuration. Open
+    the Run dialog (Run -> Open Run Dialog), select the 
+    <a href="launcher.html#rap">RAP Launch Configuration</a> that matches your 
+    project name (e.g. mail) and click run to start.</p>
+    
+  </li>
+  <li>
+    <h3>Demo Plug-in</h3>
+    <p>The RAP project comes with two example applications demonstrating the 
+    features and capabilities of RAP.</p>
+
+    <p>The first application provides a workbench very closely aligned to the
+    RCP workbench. The second demo shows what widgets there are and that 
+    they behave very similar to the SWT widgets.</p>
+
+    <p>To access and run these demo applications, please open the Plug-ins view 
+    (e.g. through the Plug-in Development perspective). Select the plug-in named 
+    <strong>org.eclipse.rap.demo</strong> which contains both demo applications, 
+    right-click on this plug-in and select <strong>Import as &gt; Source Project
+    </strong>.
+    This plug-in will then appear with all source files in your workspace. The 
+    demo also provides a ready-to-use <a href="launcher.html#equinox">Equinox 
+    Launch Configuration</a>.</p>
+
+    <p>After launching, you can access the workbench demo using the 
+    URL <strong>http://localhost:&lt;port&gt;/rap?startup=default</strong>. To 
+    try the controls demo pass a parameter in the URL like this: 
+    <strong>http://localhost:&lt;port&gt;/rap?startup=controls</strong>.</p>
+
+  </li>
+</ul>
+
+</body>

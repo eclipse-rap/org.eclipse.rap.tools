@@ -2,8 +2,11 @@
   <topic label="Introduction" href="help/html/intro.html" />
   <topic label="Getting Started">
     <topic 
-      label="Demo Application" 
-      href="help/html/getting-started/demo-app.html"/>
+      label="RAP Examples" 
+      href="help/html/getting-started/examples.html"/>
+    <topic 
+      label="Using the RAP Launcher" 
+      href="help/html/getting-started/launcher.html"/>
     <topic 
       label="Hello World" 
       href="help/html/getting-started/hello-world.html"/>

@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="copyright" content="Copyright (c) 2007 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>Launching RAP Applications</title>
+<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+</head>
+<body>
+
+<h1>Launching RAP Applications</h1>
+
+<p>To start your RAP application, select <strong>Run...</strong> from 
+  the <strong>Run</strong> menu. You need to create a <strong>New Launch 
+  configuration</strong>. You can either use the <a href="#rap">RAP Launcher</a>
+  or the <a href="#equinox">Equinox Launcher</a>. Regardless which way to launch
+  you choose ensure that the following plug-ins are activated:
+<ul>
+  <li>javax.servlet</li>
+  <li>org.apache.commons.logging</li>  
+  <li>org.eclipse.core.commands</li>
+  <li>org.eclipse.core.contenttype</li>
+  <li>org.eclipse.core.expressions</li>
+  <li>org.eclipse.core.jobs</li>
+  <li>org.eclipse.core.runtime</li>
+  <li>org.eclipse.core.runtime.compatibility.registry</li>
+  <li>org.eclipse.equinox.app (when using Eclipse 3.3)</li>
+  <li>org.eclipse.equinox.common</li>
+  <li>org.eclipse.equinox.http.jetty</li>
+  <li>org.eclipse.equinox.http.registry</li>
+  <li>org.eclipse.equinox.http.servlet</li>
+  <li>org.eclipse.equinox.preferences</li>
+  <li>org.eclipse.equinox.registry</li>
+  <li>org.eclipse.osgi</li>
+  <li>org.eclipse.osgi.services</li>
+  <li>org.eclipse.rap.demo</li>
+  <li>org.eclipse.rap.jface</li>
+  <li>org.eclipse.rap.rwt</li>
+  <li>org.eclipse.rap.ui</li>
+  <li>org.eclipse.rap.ui.workbench</li>
+  <li>org.mortbay.jetty</li>
+</ul>
+</p>
+
+<a name="rap"><h3>Using the RAP Launcher</h3></a>
+  
+  <p>The RAP Launcher is based on the OSGi Launcher and only adds one tab page
+  to it whose fields are described below.</p>
+  
+  <h4>Servlet and Entry Point to Run</h4>
+    <p>Within this group you need to choose the combination of servlet name and 
+    entry point you would like to run.
+
+    <p>Please note that the selection dialogs opened when pressing the 
+    <strong>Browse...</strong>  buttons list all servlet names/entry points 
+    available in the workspace. Thus you have to ensure that the bundle that 
+    provides the servlet name/entry point you selected is contained in the 
+    selection on page '<strong>Bundles</strong>'.</p>
+
+    <p>When the <strong>Terminate possible running previous launch</strong>
+    option is selected, an eventually running launch with the same name 
+    will be terminated before lauching. This might come in handy when frequently
+    changing code and restarting the application.</p>
+    
+    <h4>Browser</h4>
+    Controls whether the application should be opened with the internal browser
+    in the editor area or if an external browser should be used.  
+    The outcome depends on the browser preference settings that can be reached
+    with the <strong>Configure Browsers...</strong> link.</p>
+    
+    <h4>Manual Port Configration</h4>
+    <p>It is recommended to let the launcher dynamically choose a free port for 
+    client-server communication. If this doesn't work however, you can explicity
+    specify a port number.</p>
+    
+    <h4>Client-side Log Level</h4>
+    <p>This setting controls to which extent messages from the client-side
+    JavaScript library are written. All settings other than <strong>OFF</strong>
+    may open a browser pop-up window.</p>
+    
+    <h4>Client-side Library Variant</h4>
+    <p>RAP comes with two flavors of qooxdoo, the client-side JavaScript
+    library. The <strong>STANDARD</strong> version is optimized for speed
+    and size, whereas the <strong>DEBUG</strong> version should be used
+    when developing with RAP, especially custom widgets.</p>
+    
+    <p>To launch a once created launch configuration you may use the
+    launch shortcut keys <code>Alt+Shift+X+R</code> (run) and
+    <code>Alt+Shift+D+R</code> (debug). 
+    </p>
+    
+<a name="equinox"><h3>Using the Equinox Launcher</h3></a>
+
+<p><strong>If you are using Eclipse 3.3</strong>, you need to start 
+  the <code>org.eclipse.equinox.app</code> plug-in with your RAP demo. To do 
+  so, switch to the <strong>Plug-ins</strong> tab of your Launch Configuration 
+  and select to include the <strong>org.eclipse.equinox.app</strong> plug-in.</p>
+  
+<p>For Max OS X systems, please add <strong>-Djava.awt.headless=true</strong> 
+to your VM arguments.</p>
+
+<p>To run the demo, select <strong>Run &gt; Run...</strong> from the main menu.
+  In the upcoming Launch Configuration Dialog, select <strong>Rich Ajax Platform 
+  Demo</strong> from the section <strong>Equinox OSGi Framework</strong>.</p>
+
+<p>You may want to configure the TCP-port your demo application will listen to. 
+  This is done opening the <strong>Arguments</strong> page and changing the 
+  <strong>-Dorg.osgi.service.http.port=9090</strong> VM argument, to a 
+  (arbitrarily chosen) port your application will listen to. This is 
+  particularly important if the default port 9090 is already taken by some 
+  other application.</p>
+  
+<img src="../../images/demo-app-params.png"/>
+  
+<p>To actually start your application, click the <strong>Run</strong> button. 
+  The correct startup should display in the Eclipse Console through a message 
+  saying <code style="color:red">INFO: Started SocketListener on 
+  0.0.0.0:&lt;port&gt;.</code> If an error shows up, please make sure all other 
+  instances are stopped and then retry with another port.</p>
+
+  <p>Now that the RAP application is running, you can access it using any 
+  browser. Please enter the URL
+  <strong>http://localhost:&lt;port&gt;/rap?startup=&lt;entrypoint&gt;</strong>.
+  Where &lt;entrypoint&gt; specifies the name of the IEntryPoint implementation
+  that you would like to start.
+  <p>
+
+</body>
+</html>
