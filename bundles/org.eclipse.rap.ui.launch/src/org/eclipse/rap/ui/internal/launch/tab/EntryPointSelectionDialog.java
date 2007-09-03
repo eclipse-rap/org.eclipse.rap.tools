@@ -159,40 +159,20 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
     }
   }
 
+  /* Empty SelectionHistory implementation, necessary to be able pass something
+   * non-null to setSelectionHistory. Without calling it, an exception would 
+   * occur when the dialog is canceled. */
   private static final class EntryPointSelectionHistory extends SelectionHistory 
   {
     
-    private static final String SEPARATOR = "#"; //$NON-NLS-1$
-
     protected Object restoreItemFromMemento( final IMemento memento ) {
-      Object result = null;
-      String textData = memento.getTextData();
-      if( textData != null ) {
-        String[] parts = textData.split( SEPARATOR ); 
-        if( parts.length == 3 ) {
-          String project = parts[ 0 ];
-          String parameter = parts[ 1 ];
-          String id = parts[ 2 ];
-          if( "null".equals( id ) ) { //$NON-NLS-1$
-            id = null;
-          }
-          result = new EntryPointExtension( project, id, parameter );
-        }
-      }
-      return result;
+      return null;
     }
 
     protected void storeItemToMemento( final Object item, 
                                        final IMemento memento ) 
     {
-      EntryPointExtension entryPoint = ( EntryPointExtension )item;
-      String text 
-        = entryPoint.getProject() 
-        + SEPARATOR
-        + entryPoint.getParameter()
-        + SEPARATOR
-        + entryPoint.getId();
-      memento.putTextData( text );
+      // do nothing
     }
   }
 }

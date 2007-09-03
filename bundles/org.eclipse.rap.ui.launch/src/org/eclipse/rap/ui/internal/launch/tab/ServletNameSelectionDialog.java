@@ -159,43 +159,21 @@ final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
     }
   }
 
+  /* Empty SelectionHistory implementation, necessary to be able pass something
+   * non-null to setSelectionHistory. Without calling it, an exception would 
+   * occur when the dialog is canceled. */
   private static final class ServletNameSelectionHistory 
     extends SelectionHistory 
   {
     
-    private static final String SEPARATOR = "#"; //$NON-NLS-1$
-
     protected Object restoreItemFromMemento( final IMemento memento ) {
-      Object result = null;
-      String textData = memento.getTextData();
-      if( textData != null ) {
-        String[] parts = textData.split( SEPARATOR ); 
-        if( parts.length == 3 ) {
-          String project = parts[ 0 ];
-          String servletName = parts[ 1 ];
-          String defaultEntryPointId = parts[ 2 ];
-          if( "null".equals( defaultEntryPointId ) ) { //$NON-NLS-1$
-            defaultEntryPointId = null;
-          }
-          result = new BrandingExtension( project, 
-                                          servletName, 
-                                          defaultEntryPointId );
-        }
-      }
-      return result;
+      return null;
     }
 
     protected void storeItemToMemento( final Object item, 
                                        final IMemento memento ) 
     {
-      BrandingExtension branding = ( BrandingExtension )item;
-      String text 
-        = branding.getProject() 
-        + SEPARATOR
-        + branding.getServletName()
-        + SEPARATOR
-        + branding.getDefaultEntryPointId();
-      memento.putTextData( text );
+      // do nothing
     }
   }
 }
