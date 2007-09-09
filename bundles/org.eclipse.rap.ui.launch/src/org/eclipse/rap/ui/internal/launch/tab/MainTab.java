@@ -11,6 +11,8 @@
 
 package org.eclipse.rap.ui.internal.launch.tab;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.core.runtime.CoreException;
@@ -257,7 +259,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     cmbLogLevel = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
     int itemCount = RAPLaunchConfig.LOG_LEVELS.length;
     cmbLogLevel.getCombo().setVisibleItemCount( itemCount );
-    cmbLogLevel.setLabelProvider( new LabelProvider() );
+    cmbLogLevel.setLabelProvider( new LogLevelLabelProvider() );
     cmbLogLevel.setContentProvider( new ArrayContentProvider() );
     cmbLogLevel.setInput( RAPLaunchConfig.LOG_LEVELS );
     cmbLogLevel.addSelectionChangedListener( new ISelectionChangedListener() {
@@ -268,7 +270,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     Label lblLibraryVariant = new Label( group, SWT.NONE );
     lblLibraryVariant.setText( "Client-side Library Variant" );
     cmbLibVariant = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
-    cmbLibVariant.setLabelProvider( new LabelProvider() );
+    cmbLibVariant.setLabelProvider( new LibraryVariantLabelProvider() );
     cmbLibVariant.setContentProvider( new ArrayContentProvider() );
     cmbLibVariant.setInput( LibraryVariant.values() );
     cmbLibVariant.addSelectionChangedListener( new ISelectionChangedListener() {
@@ -426,5 +428,44 @@ final class MainTab extends AbstractLaunchConfigurationTab {
       result = ( LibraryVariant )structuredSel.getFirstElement();
     }
     return result;
+  }
+  
+  ////////////////
+  // Inner classes
+  
+  private static final class LogLevelLabelProvider extends LabelProvider {
+    private static final Map lables = new HashMap();
+    static {
+      lables.put( Level.ALL, "All" );
+      lables.put( Level.OFF, "Off" );
+      lables.put( Level.CONFIG, "Config" );
+      lables.put( Level.WARNING, "Warning" );
+      lables.put( Level.SEVERE, "Severe" );
+      lables.put( Level.FINE, "Fine" );
+      lables.put( Level.FINER, "Finer" );
+      lables.put( Level.FINEST, "Finest" );
+      lables.put( Level.INFO, "Info" );
+    }
+    public String getText( final Object element ) {
+      String result = ( String )lables.get( element );
+      if( result == null ) {
+        result = super.getText( element );
+      }
+      return result;
+    }
+  }
+  
+  private static final class LibraryVariantLabelProvider extends LabelProvider {
+    public String getText( final Object element ) {
+      String result;
+      if( LibraryVariant.STANDARD.equals( element ) ) {
+        result = "Standard";
+      } else if( LibraryVariant.DEBUG.equals( element ) ) {
+        result = "Debug";
+      } else {
+        result = super.getText( element );
+      }
+      return result;
+    }
   }
 }
