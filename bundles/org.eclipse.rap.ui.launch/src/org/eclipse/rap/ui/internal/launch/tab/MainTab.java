@@ -152,36 +152,19 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     // TerminatePrevious
     rapConfig.setTerminatePrevious( cbTerminatePrevious.getSelection() );
     // BrowserMode
-    if( rbExternalBrowser.getSelection() ) {
-      rapConfig.setBrowserMode( BrowserMode.EXTERNAL );
-    } else {
-      rapConfig.setBrowserMode( BrowserMode.INTERNAL );
-    }
+    rapConfig.setBrowserMode( getBrowserMode() );
     // Manual Port
     spnPort.setEnabled( cbManualPort.getSelection() );
     // Port Number
     rapConfig.setUseManualPort( cbManualPort.getSelection() );
     rapConfig.setPort( spnPort.getSelection() );
-    // LogLevel
-    Level logLevel = Level.OFF;
-    ISelection logSelection = cmbLogLevel.getSelection();
-    if( !logSelection.isEmpty() ) {
-      IStructuredSelection ssel = ( IStructuredSelection )logSelection;
-      logLevel = ( Level )ssel.getFirstElement();
-    }
-    rapConfig.setLogLevel( logLevel );
-    // LibraryVariant
-    LibraryVariant libVariant = LibraryVariant.STANDARD;
-    ISelection libSelection = cmbLibVariant.getSelection();
-    if( !libSelection.isEmpty() ) {
-      IStructuredSelection ssel = ( IStructuredSelection )libSelection;
-      libVariant = ( LibraryVariant )ssel.getFirstElement();
-    }
-    rapConfig.setLibraryVariant( libVariant );
+    // Client-side log level
+    rapConfig.setLogLevel( getLogLevel() );
+    rapConfig.setLibraryVariant( getLibraryVariant() );
     validate( rapConfig );
     setDirty( true );
   }
-  
+
   public void setDefaults( final ILaunchConfigurationWorkingCopy config ) {
     RAPLaunchConfig.setDefaults( config );
   }
@@ -417,4 +400,31 @@ final class MainTab extends AbstractLaunchConfigurationTab {
     }
   }
   
+  /////////////////////////////////////////////////////////
+  // Helpers to get entered/selected values from UI widgets  
+
+  private BrowserMode getBrowserMode() {
+    return   rbExternalBrowser.getSelection() 
+           ? BrowserMode.EXTERNAL 
+           : BrowserMode.INTERNAL;
+  }
+
+  private Level getLogLevel() {
+    Level result = Level.OFF;
+    ISelection selection = cmbLogLevel.getSelection();
+    if( !selection.isEmpty() ) {
+      result = ( Level )( ( IStructuredSelection )selection ).getFirstElement();
+    }
+    return result;
+  }
+  
+  private LibraryVariant getLibraryVariant() {
+    LibraryVariant result = LibraryVariant.STANDARD;
+    ISelection selection = cmbLibVariant.getSelection();
+    if( !selection.isEmpty() ) {
+      IStructuredSelection structuredSel = ( IStructuredSelection )selection;
+      result = ( LibraryVariant )structuredSel.getFirstElement();
+    }
+    return result;
+  }
 }
