@@ -11,8 +11,8 @@
 
 <h1>Launching RAP Applications</h1>
 
-<p>To start your RAP application, select <strong>Run...</strong> from 
-  the <strong>Run</strong> menu. You need to create a <strong>New Launch 
+<p>To start your RAP application, select <strong>Open Run Dialog...</strong> 
+  from the <strong>Run</strong> menu. You need to create a <strong>New Launch 
   configuration</strong>. You can either use the <a href="#rap">RAP Launcher</a>
   or the <a href="#equinox">Equinox Launcher</a>. Regardless which way to launch
   you choose ensure that the following plug-ins are activated:
@@ -43,12 +43,20 @@
 </ul>
 </p>
 
-<a name="rap"><h3>Using the RAP Launcher</h3></a>
+<a name="rap"><h2>Using the RAP Launcher</h2></a>
   
-  <p>The RAP Launcher is based on the OSGi Launcher and only adds one tab page
-  to it whose fields are described below.</p>
+  <p>The RAP Launcher is based on the 
+  <a href="/help/topic/org.eclipse.pde.doc.user/guide/tools/launchers/equinox_launcher.htm">
+  OSGi Launcher</a> and adds a 
+  <strong>Main</strong> tab page to it. Please note, that the RAP Launcher only
+  works when the Equinox OSGi Framework is selected, which is the default
+  setting on page 
+  <a href="/help/topic/org.eclipse.pde.doc.user/guide/tools/launchers/equinox_plugins.htm">
+  <strong>Bundles</strong></a>.</p>
   
-  <h4>Servlet and Entry Point to Run</h4>
+  <img src="../../images/launcher.png" />
+  
+  <h3>Servlet and Entry Point to Run</h3>
     <p>Within this group you need to choose the combination of servlet name and 
     entry point you would like to run.
 
@@ -56,30 +64,30 @@
     <strong>Browse...</strong>  buttons list all servlet names/entry points 
     available in the workspace. Thus you have to ensure that the bundle that 
     provides the servlet name/entry point you selected is contained in the 
-    selection on page '<strong>Bundles</strong>'.</p>
+    selection on page <strong>Bundles</strong>.</p>
 
     <p>When the <strong>Terminate possible running previous launch</strong>
     option is selected, an eventually running launch with the same name 
     will be terminated before lauching. This might come in handy when frequently
     changing code and restarting the application.</p>
     
-    <h4>Browser</h4>
+    <h3>Browser</h3>
     Controls whether the application should be opened with the internal browser
     in the editor area or if an external browser should be used.  
     The outcome depends on the browser preference settings that can be reached
     with the <strong>Configure Browsers...</strong> link.</p>
     
-    <h4>Manual Port Configration</h4>
+    <h3>Manual Port Configration</h3>
     <p>It is recommended to let the launcher dynamically choose a free port for 
-    client-server communication. If this doesn't work however, you can explicity
-    specify a port number.</p>
+    client-server communication. However if you would like to have full control 
+    over the communication channel, you can explicity specify a port number.</p>
     
-    <h4>Client-side Log Level</h4>
-    <p>This setting controls to which extent messages from the client-side
+    <h3>Client-side Log Level</h3>
+    <p>This setting controls to which extent log messages from the client-side
     JavaScript library are written. All settings other than <strong>OFF</strong>
     may open a browser pop-up window.</p>
     
-    <h4>Client-side Library Variant</h4>
+    <h3>Client-side Library Variant</h3>
     <p>RAP comes with two flavors of qooxdoo, the client-side JavaScript
     library. The <strong>STANDARD</strong> version is optimized for speed
     and size, whereas the <strong>DEBUG</strong> version should be used
@@ -90,7 +98,7 @@
     <code>Alt+Shift+D+R</code> (debug). 
     </p>
     
-<a name="equinox"><h3>Using the Equinox Launcher</h3></a>
+<a name="equinox"><h2>Using the Equinox Launcher</h2></a>
 
 <p><strong>If you are using Eclipse 3.3</strong>, you need to start 
   the <code>org.eclipse.equinox.app</code> plug-in with your RAP demo. To do 
