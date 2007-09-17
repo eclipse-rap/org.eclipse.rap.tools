@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="copyright" content="Copyright (c) 2007 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>Theming for custom widgets</title>
+<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+</head>
+<body>
+
+<h1>Prepare Custom Widgets for Theming</h1>
+<p>
+  Once you wrote a custom widget, you might want to allow your users to customize
+  some aspects of its presentation.
+  To do so, you have to provide a couple of resources that are relevant for the
+  theming and register the widget with the extension point
+  <code>org.eclipse.rap.ui.themeableWidgets</code>.
+  The resources must conform to a naming convention so that they can be found.
+  Once a custom widget is registered with the extension point, they are
+  located by their name.
+</p>
+
+<h2>Extension Point themeableWidgets</h2>
+<p>
+  You have to register your custom RWT widget with the extension point
+  <code>org.eclipse.rap.ui.themeableWidgets</code>.
+  As a result of the resolve-by-name strategy, only the custom widget class must
+  be registered.
+  The following is an example of a themeable widget extension definition:
+  <pre>
+   &lt;extension
+         point=&quot;org.eclipse.rap.ui.themeableWidgets&quot;&gt;
+      &lt;widget
+            id=&quot;my.custom.datepicker&quot;
+            class=&quot;my.custom.controls.DatePicker&quot;&gt;
+      &lt;/widget&gt;
+   &lt;/extension&gt;
+  </pre>
+</p>
+
+<h2>Resources that are relevant for Theming</h2>
+<p>
+  The custom widget must provide the theme-relevant resources in a package which
+  is named after the schema
+  <code>&lt;internal-package&gt;.&lt;widget&gt;kit</code>
+  where 
+  <code>&lt;internal-package&gt;</code>
+  is the package name with the segment "internal" inserted somewhere in the path
+  and
+  <code>&lt;widget&gt;</code>
+  is the lower case class name of the custom widget.
+  For example, if your custom widget is <code>my.custom.XWidget</code>, you must
+  create a package
+  <code>my.custom.internal.xwidgetkit</code>
+  or
+  <code>my.internal.custom.xwidgetkit</code>
+  for your files.
+  By the way, if you are already familiar with the concept of life-cycle adapters
+  (LCAs), they reside in the very same package.
+</p>
+
+<p>
+  Theming relevant resources include:
+  <ul>
+    <li>
+      A <strong>theme adapter class</strong> that provides a bridge between your
+      theming and SWT.
+    </li>
+    <li>
+      A <strong>theme definition file</strong> that defines new theming keys for
+      your widget.
+    </li>
+    <li>
+      An <strong>appearance fragment file</strong> which defines new qooxdoo
+      appearances.
+    </li>
+  </ul>
+  None of these resources are mandatory, resources which are found are respected,
+  but those which are missing do not hurt.
+  For more complex widgets, you might also need to provide a JavaScript file of
+  its own to be passed to client side. However, those are additional resources
+  which are not automatically discovered but must be registered manually.
+</p>
+
+<h3>Theme Adapter</h3>
+  This is a class that implements the interface
+  <code>org.eclipse.rwt.theme.IControlThemeAdapter</code>.
+  The name must match the pattern <code>&lt;Widget&gt;ThemeAdapter</code>.
+  You must provide such a class if your custom widget's default values for
+  background color, foreground color, font, or border width differ from the
+  defaults of its superclass.
+
+<h4>What's the use of the Theme Adapter?</h4>
+<p>
+  Your custom widget will always be an (indirect) descendant of the class
+  <code>org.eclipse.swt.widgets.Control</code>.
+  This class defines a couple of getter methods, which must be aware of the
+  widget's default values, which depend on the current theme.
+  Namely, this includes the methods
+  <ul>
+    <li>getBackground(),</li>
+    <li>getForeground(),</li>
+    <li>getFont(), and</li>
+    <li>getBorderWidth().</li>
+  </ul>
+  If a custom value has been set for one of these properties using the according
+  setter method, the getters will simply return this value.
+  But if either no custom value has been set or the value has explicitly been set
+  to <code>null</code>, the widget displays its default and the getters must
+  reflect the actual state of the widget.
+  For example, if your custom widget has a light gray background by default, the
+  method <code>getBackground</code> should return this color instead of
+  <code>null</code>.
+  The value can depend on the particular instance of the widget, e.g. a widget
+  created with the style flag <code>SWT.BORDER</code> might be displayed with a
+  different border than one without this flag.
+  In order to provide the <code>Control</code> class with the necessary
+  information, you have to implement the theme adapter.
+</p>
+
+<h3>Theme Definition File</h3>
+<p>
+  The theme definition file is an XML-file with the name
+  <code>&lt;Widget&gt;.theme.xml</code>.
+  You must provide this file if you want to define new theming keys which allow
+  to make certain aspects of your widget's presentation configurable.
+  Its contents must conform with the schema that is outlined by the following
+  example:
+  <pre>
+&lt;theme&gt;
+   &lt;color name="mywidget.background"
+         description="Background color for MyWidget"
+         default="248, 248, 255"/&gt;
+
+   &lt;border name="mywidget.border"
+         description="Default border for MyWidget"
+         default="1 black"/&gt;
+
+   &lt;image name="mywidget.active.bgimage"
+         description="Background image for title bar of active Shells"
+         targetPath="mywidget/bg_active.png"
+         default="resource/images/mywidget_bg.png"/&gt;
+
+   ...
+&lt;/theme&gt;
+  </pre>
+  The root element is named <code>theme</code> and contains one or more elements
+  that define new theming keys.
+  The possible types are:
+  <ul>
+    <li>Color (<code>color</code>)</li>,
+    <li>Dimension (<code>dimension</code>)</li>,
+    <li>Box Dimension (<code>boxdim</code>)</li>,
+    <li>Border (<code>border</code>)</li>,
+    <li>Font (<code>font</code></li>), and
+    <li>Image (<code>image</code></li>).
+  </ul>
+  Every definition must provide the following attributes:
+  <ul>
+    <li>
+      <code>name</code>: contains the name of the key.
+      This name can be freely chosen, but to avoid conflicts, it should start with the
+     custom widget name.
+    </li>
+    <li>
+      <code>description</code>: contains a description that allows the user to
+      understand which aspects of the widget are affected by this key.
+    </li>
+    <li>
+      <code>default</code> contains the default value for this theming key in a
+      valid format (see the article on <a href="./theming.html">RWT Theming</a>) for
+      format definitions.
+    </li>
+    <li>
+      <code>target</code>: only for images, this attribute must specify a target
+      path to copy the image to.
+      Within the qooxdoo appearance theme, you can later refer to the image using the
+      path <code>widget/&lt;target&gt;</code>.
+    </li>
+  </ul>
+</p>
+
+<h3>Appearance Fragment</h3>
+<p>
+  The appearance fragment file is a piece of JavaScipt code to be included in the
+  qooxdoo appearance theme.
+  For details on the qooxdoo theming, refer to
+  <a href="http://qooxdoo.org/documentation/0.7/theme_support#defining_appearance_themes">http://qooxdoo.org/documentation/0.7/theme_support</a>,
+  especially the section on appearances.
+  The appearance fragment file must have the name <code>&lt;Widget&gt;.appearances.js</code>.
+</p>
+
+<p>
+  Normally, the contents of the file are directly included in the appearance
+  section of the generated qooxdoo theme file.
+  Unfortunately, some JavaScript editors might generate warnings as the file
+  contains only a fragment and not a complete valid JavaScript program.
+  In this case, you can surround the fragment with some extra dummy code that
+  makes your JavaScript editor happy.
+  The fragment to be actually included must be enclosed in two lines that contain
+  the words <code>BEGIN TEMPLATE</code> and <code>END TEMPLATE</code> as shown in
+  the example below.
+  If these lines are present, only the lines in between are included in the
+  appearance theme.
+  <pre>
+appearances = {
+// BEGIN TEMPLATE //
+
+  "my-custom" : {
+    style : function( states ) {
+      return {
+        border : states.rwt_BORDER ? "mycontrol.BORDER.border" : "mycontrol.border",
+        backgroundColor : "mycontrol.background",
+        padding : THEME_VALUE( "mycontrol.padding" ),
+        backgroundImage : "widget/mycontrol/bg.gif"
+      }
+    }
+  }
+
+// END TEMPLATE //
+};
+  </pre>
+</p>
+
+<p>
+  In the above example, the state <code>rwt_BORDER</code> signals that the
+  <code>SWT.BORDER</code> style flag is set.
+  This state is not automatically available.
+  It must explicitly be set in the life-cycle adapter (LCA).
+  If you don't provide an LCA on your own, this is done in the LCA of your super
+  class (usually CompositeLCA), otherwise it is your responsibility to make the
+  required states available.
+</p>
+
+<p>
+  In your appearance, you can directly refer to the <strong>colors</strong>,
+  <strong>borders</strong>, and <strong>fonts</strong> defined in your theme
+  definition file.
+  For <strong>dimensions</strong> and <strong>box dimensions</strong>, you have
+  to use the macro <code>THEME_VALUE()</code> as shown in the above example.
+  This macro is substituted with the current value in a valid format.
+  This is necessary because the qooxdoo theming does not allow for referring to
+  dimensions and box dimensions by a key.
+  For <strong>images</strong>, you must refer to the target path specified in
+  the theme definition file, prefixed with <code>widget/</code>.
+</p>
+
+</body>
