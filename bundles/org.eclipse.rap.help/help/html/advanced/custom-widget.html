@@ -1,0 +1,736 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="copyright" content="Copyright (c) 2007 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>Custom widgets</title>
+<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+</head>
+<body>
+  <h1>How to create a custom widget?</h1> 
+  
+  <p>Creating custom widgets in RAP is a hot topic and we see the need to
+  cover this in an article which you are just reading here. The main problem
+  is the distributed nature of RAP which requires that all components of your
+  custom widget have to play together and have some different aspects than
+  custom widgets in SWT.</p>
+  
+  <p>
+  You should be aware of the fact that there are two different types of custom widgets.
+  On the one side we have compounded widgets which is just an agglomeration of already
+  existing widgets. As this would be done in the same way like SWT we'll only care about
+  real custom widgets (you could use the term "owner drawn" in this case).
+  </p>
+  
+  <p>
+  There are different tasks to create a new custom widget which will be covered here:
+  <ul>
+  	<li>create a widget which will be used on the server</li>
+  	<li>create the javascript libraries needed by the custom widget</li>
+  	<li>create an adapter to connect the widget with the RAP lifecycle</li>
+  	<li>register the javascript files</li>
+  </ul>
+  </p>
+  
+  <p>As an exemplary widget implementation we will use a component to show specific
+  locations in a map. Behind the scenes we will use the public API of Google maps. Let's
+  start with our first task - the server-side widget implementation.</p>
+  
+  <h3>Creating the widget</h3>
+  
+  <p>
+  To have a clear line between your application and your widgets we'll create a new plug-in
+  project called <code>org.eclipse.rap.demo.gmaps</code>. We don't need any additional
+  aspects like an RCP application or an activator.
+  </p>
+  <img src="../../images/custom-widget/newproject.png">
+  
+  <p>
+  The first step is to create a java class - the widget itself - to talk to the developer like
+  every other widget. In our case we will call it <code>GMap.java</code> in place it into the
+  <code>org.eclipse.rap.gmaps</code> package. As super class we use <code>org.eclipse.swt.widgets.Composite</code>
+  to have to have a proper base class which interacts with the rest of SWT. To store the address which
+  will be shown on the map, we create a new field in the <code>GMap</code> class called <code>address</code>
+  and will generate the corresponding setter and getter. The setter - <code>setAdress( String )</code> - should
+  check for <code>null</code> values and replacing <code>null</code> with an empty string instead. It
+  should look like this in the end:
+  <pre>
+  <code>
+  public void setAddress( final String address ) {
+    if( address == null ) {
+      this.address = "";
+    } else {
+      this.address = address;
+    }
+  }
+  </code>
+  </pre>
+  <p>
+  To have an example for the other way around - from client to server - we introduce another
+  field called <code>centerLocation</code> to get the current location of the map when the
+  user moves it around. This is done by adding a new field to the class together with its
+  getter and setter:
+  </p>
+  <pre>
+  <code>
+  private String centerLocation;
+  
+  public void setCenterLocation( String location ) {
+    this.centerLocation = location;
+  }
+  
+  public String getCenterLocation() {
+    return this.centerLocation;
+  }
+  </code>
+  </pre>
+  <p>
+  Additionally we override the <code>setLayout(Layout)</code> method of <code>Composite</code>
+  with an empty method as our custom widget does not contain any other widgets.
+  That's all for now - this is all needed by the developers who want to use our the custom widget.
+  Now it gets interesting as we have to work out the javascript side of our widget.
+  </p>
+
+  <h3>Client-side implementation</h3>
+  
+  <p>
+  On the client side our widget is just a javascript class defined with the
+  <a href="http://qooxdoo.org/documentation/0.7/class_declaration">qooxdoo syntax</a>.
+  As super class we need to use at least
+  <a href="http://demo.qooxdoo.org/current/apiviewer/#qx.ui.core.Widget">qx.ui.core.Widget</a>.
+  To have an easier life we will directly use one of the
+  <a href="http://qooxdoo.org/documentation/0.7/layout_manager">qooxdoo layout managers</a>
+  as base of our widget. The code for the new qooxdoo class together with qooxdoos
+  <code>CanvasLayout</code> as super class will look like this:
+  <pre>
+  <code>
+  qx.Class.define( "org.eclipse.rap.gmaps.GMap", {
+  extend: qx.ui.layout.CanvasLayout,
+  		// ...
+    }
+  } );
+  </code>
+  </pre>
+  The first thing we need to create is the constructor for that class in order to initialize our widget properly.
+  As parameter we have an <code>id</code> which will be passed to the widget by us in a later step.
+  The first line is a base call which is the same as super in a java environment.
+  For now we populate the <code>id</code> to the browsers DOM by adding a new HTML attribute with <code>setHtmlAttribute</code>.
+  You see some Google Maps-specific calls here which are just there to initialize the Google Maps
+  subsystem. See the
+  <a href="http://code.google.com/apis/ajax/documentation">Google Maps API Documentation</a>
+  for more information.
+  The two <a href="http://qooxdoo.org/documentation/0.7/using_events">event listeners</a> for the
+  qooxdoo widget will take care for the size calculations. This means that whenever the server
+  sets a new size for the widget we care about our widget to lay out everything inside
+  (in this case the map) correctly.
+  The called method <code>_doResize</code> will be implemented later.
+  <pre>
+  <code>
+  qx.Class.define( "org.eclipse.rap.gmaps.GMap", {
+  extend: qx.ui.layout.CanvasLayout,
+  <b>
+	  construct: function( id ) {
+	    this.base( arguments );
+	    this.setHtmlAttribute( "id", id );
+	    this._id = id;
+	    this._map = null;
+	    if( GBrowserIsCompatible() ) {
+	      this._geocoder = new GClientGeocoder();
+	      this.addEventListener( "changeHeight", this._doResize, this );
+	      this.addEventListener( "changeWidth", this._doResize, this ); 
+	    }
+	  }
+  </b>  
+    }
+  } );
+  </code>
+  </pre>  
+  
+  To save the address of the widget somewhere we use the
+  <a href="http://qooxdoo.org/documentation/0.7/properties">property system</a> of qooxdoo.
+  Adding a new property will look like this:
+  <pre>
+  <code>
+  qx.Class.define( "org.eclipse.rap.gmaps.GMap", {
+  extend: qx.ui.layout.CanvasLayout,
+      construct: function( id ) {
+        // ...
+      }<b>,  // <-- comma added, see javascript syntax reference
+	  
+      properties : {
+        address : {
+          init : "",
+          apply : "load"
+        }
+      }
+      </b>
+    }
+  } );
+  </code>
+  </pre>
+  Qooxdoo will automatically generate the corresponding setter and getter at runtime for us.
+  So if we want to read the current address of our client-side widget we just need to call
+  <code>getAdress</code> on a our client-side GMap object. As you see in the <code>apply</code> attribute
+  of your address property the method <code>load</code> will be called when the value of the
+  property changes. So let's implement it:
+  
+  <pre>
+  <code>
+  qx.Class.define( "org.eclipse.rap.gmaps.GMap", {
+  extend: qx.ui.layout.CanvasLayout,
+      construct: function( id ) {
+        // ...
+      }
+	  
+      properties : {
+        // ...
+      }<b>,  // <-- comma added, see javascript syntax reference
+      
+      _doActivate : function() {
+        var shell = null;
+        var parent = this.getParent();
+        while( shell == null && parent != null ) {
+          if( parent.classname == "org.eclipse.rap.rwt.widgets.Shell" ) {
+            shell = parent;
+          }
+          parent = parent.getParent();
+        }
+        if( shell != null ) {
+          shell.setActiveChild( this );
+        }
+      },
+      
+      load : function() {
+        var current = this.getAddress();
+        if( GBrowserIsCompatible() && current != null && current != "" ) {
+          qx.ui.core.Widget.flushGlobalQueues();
+          if( this._map == null ) {
+            this._map = new GMap2( document.getElementById( this._id ) );
+            this._map.addControl( new GSmallMapControl() );
+            this._map.addControl( new GMapTypeControl() );
+            GEvent.bind( this._map, "click", this, this._doActivate );
+            GEvent.bind( this._map, "moveend", this, this._onMapMove );
+            
+          }
+          var map = this._map;
+          map.clearOverlays();
+          this._geocoder.getLatLng(
+            current,
+            function( point ) {
+              if( !point ) {
+                alert( "'" + current + "' not found" );
+              } else {
+                map.setCenter( point, 13 );
+                var marker = new GMarker( point );
+                map.addOverlay( marker );
+                marker.openInfoWindowHtml( current );
+              }
+            }
+          );
+        }
+      },
+      
+      _onMapMove : function() {
+        if( !org_eclipse_rap_rwt_EventUtil_suspend ) {
+          var wm = org.eclipse.swt.WidgetManager.getInstance();
+          var gmapId = wm.findIdByWidget( this );
+          var center = this._map.getCenter().toString();
+          var req = org.eclipse.swt.Request.getInstance();
+          req.addParameter( gmapId + ".mapCenter", center );
+        }
+      },
+    
+      _doResize : function() {
+        qx.ui.core.Widget.flushGlobalQueues();
+        if( this._map != null ) {
+          this._map.checkResize();
+        }
+      }      
+      </b>
+    }
+  } );
+  </code>
+  </pre>
+  <p>
+  There is a little hack involved which is easily explained. We need to listen to click
+  events in the map and connect them with our <code>_doActivate</code> method to activate
+  the current shell. This is needed because Google Maps API is implemented with an IFrame
+  and current browser generations send events only to their document. The IFrame is handled
+  as a separate document and thus we cannot catch the events to let the shell be activated with
+  the standard mechanism. This is obsolete for custom widgets without IFrames.
+  </p>
+  <p>
+  The other event listener for the <code>moveend</code> event will trigger a function to send
+  the current location of the map to the server. Therefore we need to get the Id - which is
+  allocated by RAP - of the current widget  and obtained via the WidgetManager on the client side.
+  Then we use the current <code>Request</code> object to add a new parameter which will be
+  processed later at the server side. If you want to immediately send the parameter to the server
+  use <code>req.send()</code>. But as we don't need this for now we just add the parameter
+  to the request object and it will be transfered automatically to the server with the next request.
+  </p>
+  <p>
+  Ok, we're almost done with our client-side implementation. But the key part of the whole widget
+  is still missing: the piece between the server and the client.
+  </p>
+  <p style="border:1px dotted grey;"><strong>Note:</strong> The qooxdoo build which gets delivered with RAP is <strong>not</strong>
+  the same qooxdoo you'll find on their webpage. We stripped it down to have the
+  best mix between needed functionality and size. So there may be classes which are
+  available in plain qooxdoo but not in the version of RAP.</p>
+
+  <h3>Filling the gap between client and server</h3>
+  <p>
+  In our current situation we have already done two important tasks: the server- and the client-side
+  widget. Now we need to connect each other in order to control the widget on the client by
+  calling it on the server (where our application lives).
+  In RAP - more precisely in RWT - we have a concept called the "Life Cycle". With each request
+  from the client the life cycle on the server side will be executed. It is responsible to process
+  all changes and events from the client and in the end it will send back a response to the client
+  what to do (mostly hide/show widgets, update data, etc).
+  The life cycle itself is splitted up in several phases which are executed in a specific order.
+  </p>
+  <table border="1">
+    <tr>
+        <th>Phase</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>ReadData</td>
+        <td>This is responsible to read the values sended from the client like occurred events.
+        At the end of this phase, all widget attributes are in sync again with the values on the client.
+        The attributes are preserved for later use.</td>
+    </tr>
+    <tr>
+        <td>ProcessAction</td>
+        <td>ProcessAction is responsible for dispatching the events to the widgets. Attributes may
+        change in this phase as a response for the events.</td>
+    </tr>
+    <tr>
+        <td>Render</td>
+        <td>At the end of the lifecycle every change will be rendered to the client.<br />
+        Be aware that only values which are different than there preserved ones are send to
+        the client (means: only the delta).</td>
+    </tr>
+  </table>
+  <p>
+  To participate in the life cycle - what is what we want to do with our custom widget -
+  we need to provide a Life Cycle Adapter (LCA). There are now two ways to connect the LCA
+  with our widget. On the one hand side we can return it directly when someone asks our widget
+  with <code>getAdapter</code> to provide a LCA. This can be done by implementing the
+  <code>getAdapter</code> method in our own widget like this:
+  <pre>
+  <code>
+  ...
+  public Object getAdapter( final Class adapter ) {
+    Object result;
+    if( adapter == IWidgetLifeCycleAdapter.class ) {
+      result = new MyCustomWidgetLCA();
+    } else {
+      result = super.getAdapter( adapter );
+    }
+    return result;
+  }
+  ...
+  </pre>
+  </code>
+  Or we let RAP do this itself by creating the LCA class in a package called
+  <widgetpackage>.internal.<widgetname>kit.<widgetname>LCA. The order of the internal
+  does not play the big role. The important thing is to have internal in the package
+  name, the package with the LCA is called <widgetname>kit and the LCA itself is 
+  called <widgetname>LCA.<br />
+  Here a little example:<br />
+  Our widget is <code>org.eclipse.rap.gmaps.GMap</code><br />
+  Then our LCA should be named <code>org.eclipse.rap.internal.gmaps.gmapkit.GMapLCA</code><br />
+  The LCA class itself has to have <code>org.eclipse.rwt.lifecycle.AbstractWidgetLCA</code>
+  as super class to override some methods. We'll just show you a little overview of the methods
+  and their role and then go further to implement a working LCA for our GMaps widget.
+  </p>
+  <table border="1">
+    <tr>
+        <th>Method name</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>renderInitialization(Widget)</td>
+        <td>This method is called to initialize your widget. Normally you will tell RAP which
+        client-side class to use and how it is initialized (think of style bits)</td>
+    </tr>
+    <tr>
+        <td>preserveValues</td>
+        <td>Here we have to preserve our values so we can see at the end of the lifecycle
+        if something has changes during the process action phase.</td>
+    </tr>
+    <tr>
+        <td>renderChanges</td>
+        <td>That's the most interesting part. We need to sync the attributes of the
+        widget on the server with the the client-side implementation by sending
+        the changes to the client.</td>
+    </tr>
+    <tr>
+        <td>renderDispose</td>
+        <td>You can tidy up several things here before the widget gets disposed on the client.</td>
+    </tr>
+    <tr>
+        <td>createResetHandlerCalls</td>
+        <td><span style="color:#f00;font-size:11pt;">Explain pooling?</span></td>
+    </tr>
+    <tr>
+        <td>getTypePoolId</td>
+        <td><span style="color:#f00;font-size:11pt;">Explain pooling?</span></td>
+    </tr>
+  </table>
+  <p>
+  After having a brief overview of the principles of the Life Cycle Adapter let's start
+  by implementing the LCA for our GMap widget.
+  After creating the LCA class - which extends AbstractWidgetLCA - we will fill the interesting
+  methods with some logic. First comes the initialization.
+  </p>
+  <pre>
+  <code>
+  public void renderInitialization( final Widget widget ) throws IOException {
+    JSWriter writer = JSWriter.getWriterFor( widget );
+    String id = WidgetUtil.getId( widget );
+    writer.newWidget( "org.eclipse.rap.gmaps.GMap", new Object[] { id } );
+    writer.set( "appearance", "composite" );
+    writer.set( "overflow", "hidden" );
+    ControlLCAUtil.writeStyleFlags( widget );
+  }
+  </code>
+  </pre>
+  <p>
+  Basically the class <code>JSWriter</code> is responsible for transforming our java calls
+  and setters into the corresponding javascript which gets transfered to the client.
+  The <code>JSWriter</code> is also responsible to only write out changes which are different
+  than their preserved value. For each widget you have an own <code>JSWriter</code> instance
+  so RAP can decide to which widget the call belongs.
+  As you can see in the snippet, <code>JSWriter#newWidget</code> is called to create a new widget
+  on the client side. The second parameters is an array of <code>Object</code>s which are
+  passed to the constructor of the qooxdoo class (see above).
+  With <code>JSWriter#set</code> you can easily set different attributes of your qooxdoo object.
+  This could also be done in Javascript and is just a showcase in here.
+  The next step is to preserve our values therewith RAP can decide in the next request if there
+  has something changed in the meantime. As we just have the address which could change this is
+  relative straight forward.
+  </p>
+  <pre>
+  <code>
+  private static final String PROP_ADDRESS = "address";
+  
+  public void preserveValues( final Widget widget ) {
+    ControlLCAUtil.preserveValues( ( Control )widget );
+    IWidgetAdapter adapter = WidgetUtil.getAdapter( widget );
+    adapter.preserve( PROP_ADDRESS, ( ( GMap )widget ).getAddress() );
+  }
+  </code>
+  </pre>
+  <p>
+  First we use <code>ControlLCAUtil#preserveValues</code> to have most of the work done
+  by the framework. It's responsible for preserving values like tooltip, tabindex, size, etc.
+  So we only need to care about the things implemented in our widget.
+  We just request a so called <code>IWidgetAdapter</code> which is responsible for different
+  aspects in the lifecycle of a widget. In this case we only use it to preserve the <code>address</code> value
+  with a predefined key (<code>PROP_ADRESS</code>) to associate it later.
+  </p>
+  <p>
+  The following step is one of most interesting parts of your lifecycle adapter - the
+  <code>renderChanges</code> method. As said before it is responsible to write every
+  change to the outgoing stream which is executed on the client. Let's take a look at the
+  implementation:
+  
+  </p>
+  <pre>
+  <code>
+  private static final String JS_PROP_ADDRESS = "address";
+  
+  public void renderChanges( final Widget widget ) throws IOException {
+    GMap gmap = ( GMap )widget;
+    ControlLCAUtil.writeChanges( gmap );
+    JSWriter writer = JSWriter.getWriterFor( widget );
+    writer.set( PROP_ADDRESS, JS_PROP_ADDRESS, gmap.getAddress() );
+  }
+  </code>
+  </pre>
+
+  <p>
+  Again we use the <code>ControlLCAUtil</code> to write the changes which are implemented on
+  <code>Control</code> and thus we should not care what's behind it (for those who really want to know it - 
+  it's the same as preserving the values like tooltip, tabindex, size, etc).
+  Like in the widget initialization we have to render something and therefore we
+  need to obtain the corresponding <code>JSWriter</code> instance for our widget. We need to use
+  <code>JSWriter#set</code> to set a specific attribute to the widget instance on the client-side.
+  There are many different <code>set</code> implementations available for every need. The one used
+  here is simple: We pass the key for the preserved value to the method so RAP can check if there has
+  something changed since the last time it was preserved, we pass the name of the client-side attribute
+  which gets transformed into "set*" and last but not least the value for this setter.
+  As we can see, the name of the javascript attribute (<code>JS_PROP_ADRESS</code>) will call the method
+  <code>setAdress</code> on the corresponding widget instance on the client. If you wonder where this
+  method is, take a look at the qooxdoo property system. The address property of our widget will be transformed
+  by qooxdoo into a set* and get* methods at runtime.
+  </p>
+  <p>
+  Now we need to process the actions transfered to the server (at least if there are any).
+  We see in the <code>GMap.js</code> that if the user moves the map a new parameter called
+  <code>centerLocation</code> will be attached to the current request and transfered to the
+  server. To read and process it the <code>readData</code> method of the LCA is used.
+  </p>
+  <pre>
+  <code>
+  private static final String PARAM_CENTER = "centerLocation";
+  
+  public void readData( final Widget widget ) {
+    GMap map = ( GMap )widget;
+    String location = WidgetLCAUtil.readPropertyValue( map, PARAM_CENTER );
+    map.setCenterLocation( location );
+  }
+  </code>
+  </pre>
+  <p>
+  As you can see, it's really easy. You just need to ask the <code>WidgetLCAUtil#readPropertyValue</code>
+  for the parameter and pass it to the server-side widget implementation. If you wonder why the 
+  center location does not get written in the <code>renderChanges</code> method we implemented above:
+  This will be your task at the end of the tutorial.
+  Normally you won't have public methods for attributes which are not changeable programmatically.
+  For this you would use an adapter or another mechanism to implement the setter behind the scenes.
+  At the end of the tutorial it is your task hide the public <code>setCenterLocation</code>
+  method of the <code>GMap</code> widget or - even better - to implement the rendering of
+  the center location yourself. 
+  </p>
+  <p>
+  The last step is to implement the way our widget is disposed on the client. Normally there is no
+  need to care for anything else and this is also the case with our GMap widget. If you really have
+  to do any other stuff like calling specific methods before the widget is disposed you should do it
+  here.
+  </p>
+  <pre>
+  <code>
+  public void renderDispose( final Widget widget ) throws IOException {
+    JSWriter writer = JSWriter.getWriterFor( widget );
+    writer.dispose();
+  }
+  </code>
+  </pre>
+  <p>
+  There are now two additional methods called <code>createResetHandlerCalls</code> and
+  <code>getTypePoolId</code>. These were introduced by a mechanism that helps to soften the massive
+  memory consumption on the client. Many of the client-side widgets are not thrown away
+  anymore, but kept in an object pool for later reuse. Especially with long-running
+  applications in the Internet Explorer browser, this can make a huge difference. Please
+  note that this topic is work in progress and, despite extensive
+  testing, might lead to errors under different circumstances. We recommend not to use this
+  in your custom widgets.
+  </p>
+
+  <h3>Registering the javascript files</h3>
+  Loading the client application (with our widget) in a browser will still lead to problems
+  as nobody knows about the javascript resources and where to find them. We can fix this
+  by using the <code>org.eclipse.rap.ui.resources</code> extension point. We add two new extensions,
+  one for our custom widget javascript file and one for the external javascript library of Google
+  Maps.
+  </p>
+  <pre>
+  <code>
+  &lt;plugin&gt;
+    &lt;extension
+      id="org.eclipse.rap.gmaps.gmap"
+      point="org.eclipse.rap.ui.resources"&gt;
+        &lt;resource class="org.eclipse.rap.gmaps.GMapResource"/&gt;
+        &lt;resource class="org.eclipse.rap.gmaps.GMapAPIResource"/&gt;
+    &lt;/extension&gt;
+  &lt;/plugin&gt;
+  </code>
+  </pre>
+  <p>
+  Both classes refer to an implementation of <code>org.eclipse.rwt.resources.IResource</code>.
+  The first one - our custom widget itself - is really easy to implement. We just need to tell
+  RAP that it is a javascript file, where it can find the file and which charset to use. So the
+  <code>IResource></code> implementation for the widget javascript could look like this:
+  </p>
+  <pre>
+  <code>
+  public class GMapResource implements IResource {
+  
+    public String getCharset() {
+      return "ISO-8859-1";
+    }
+  
+    public ClassLoader getLoader() {
+      return this.getClass().getClassLoader();
+    }
+  
+    public RegisterOptions getOptions() {
+      return RegisterOptions.VERSION_AND_COMPRESS;
+    }
+  
+    public String getLocation() {
+      return "org/eclipse/rap/gmaps/GMap.js";
+    }
+  
+    public boolean isJSLibrary() {
+      return true;
+    }
+  
+    public boolean isExternal() {
+      return false;
+    }
+  }
+  </code>
+  </pre>
+  <p>
+  For the charset we need to return a string to describe the charset. If you're not sure
+  you can use of the constants defined in <code>org.eclipse.rwt.internal.util.HTML</code> but be
+  aware that this is internal. The <code>getOptions</code> method specifies if the file should
+  be delivered with any special treatment. Possible ways are <code>NONE</code>, <code>VERSION</code>,
+  <code>COMPRESS</code> and <code>VERSION_AND_COMPRESS</code>. <code>VERSION</code> means that
+  RAP will append a hash value of the file itself to tell the browser if he should use an already
+  cached version or reload the file from the server. With the <code>COMPRESS</code> option RAP will
+  remove all unnecessary stuff like blank lines or comments from the javascript file in order
+  to save bandwidth and parse time. 
+  Remote files like our next task - the Google Maps library - are handled a little bit different.
+  </p>
+  <pre>
+  <code>
+  public class GMapAPIResource implements IResource {
+  
+    private static final String KEY_SYSTEM_PROPERTY = "org.eclipse.rap.gmaps.key";
+    
+    // key for localhost rap development on port 9090
+    private static final String KEY_LOCALHOST
+    = "ABQIAAAAjE6itH-9WA-8yJZ7sZwmpRQz5JJ2zPi3YI9JDWBFF"
+        + "6NSsxhe4BSfeni5VUSx3dQc8mIEknSiG9EwaQ";
+    
+    private String location;
+    
+    public String getCharset() {
+      return "ISO-8859-1";
+    }
+  
+    public ClassLoader getLoader() {
+      return this.getClass().getClassLoader();
+    }
+  
+    public RegisterOptions getOptions() {
+      return RegisterOptions.VERSION;
+    }
+  
+    public String getLocation() {
+      if( location == null ) {
+        String key = System.getProperty( KEY_SYSTEM_PROPERTY );
+        if( key == null ) {
+          key = KEY_LOCALHOST;
+        }
+        location = "http://maps.google.com/maps?file=api&v=2&key=" + key; 
+      }
+      return location;
+    }
+  
+    public boolean isJSLibrary() {
+      return true;
+    }
+  
+    public boolean isExternal() {
+      return true;
+    }
+  }
+  </code>
+  </pre>
+  <p>
+  To tell RAP to load external resources we just need to return <code>true</code> in
+  <code>isExternal</code>. The location should be a valid URL where the resource resides.
+  In this case it's loaded from the Google Maps server with a special API key. This is specific
+  for the Google Maps widget and is not needed by other widgets. If you're planning to use
+  or extend this sample widget we encourage you to get your <a href="http://www.google.com/apis/maps/signup.html">
+  own API key</a> for Google as this key
+  will only work on http://localhost:9090/rap. With every other combination of host, port or
+  servletName you need to obtain a new key. Additionally we implemented a system property
+  to define the key without recompiling the widget.
+  <br />
+  We've just finished our custom widget and our project structure should look like this if we have done everything right.
+  </p>
+  <img src="../../images/custom-widget/project.png">
+  
+  <h3>Test the widget</h3>  
+  <p>
+  In order to test the widget we will create a new plug-in project with the following entrypoint:
+  </p>
+  <pre>
+  <code>
+  public class GMapDemo implements IEntryPoint {
+
+    public Display createUI() {
+      Display display = new Display();
+      Shell shell = new Shell( display, SWT.SHELL_TRIM );
+      shell.setLayout( new FillLayout() );
+      shell.setText( "GMaps Demo" );
+      
+      GMap map = new GMap( shell, SWT.NONE );
+      map.setAddress( "Stephanienstraße 20, Karlsruhe" );
+  
+      shell.setSize( 300, 300 );
+      shell.open();
+      
+      return display;
+    }
+  }
+  </code>
+  </pre>
+  <p>
+  Don't forget to add <code>org.eclipse.rap.ui</code> and the GMap widget project as dependencies.
+  Then we need to register our entrypoint via the <code>org.eclipse.rap.ui.entrypoint</code>. If
+  everything went well our demo should look like this after starting the server:
+  </p>
+  <img src="../../images/custom-widget/demo.png">
+  <p>
+  But there was more: the center location we sended to the server. To read it out, we extend the sample
+  with a new button:
+  </p>
+  <pre>
+  <code>
+  public class GMapDemo implements IEntryPoint {
+
+    public Display createUI() {
+      Display display = new Display();
+      Shell shell = new Shell( display, SWT.SHELL_TRIM );
+      shell.setLayout( new FillLayout() );
+      shell.setText( "GMaps Demo" );
+      
+      GMap map = new GMap( shell, SWT.NONE );
+      map.setAddress( "Stephanienstraße 20, Karlsruhe" );
+  
+      Button button = new Button( shell, SWT.PUSH );
+      button.setText( "Tell me where I am!" );
+      button.addSelectionListener( new SelectionAdapter() {
+  
+        public void widgetSelected( SelectionEvent e ) {
+          MessageDialog.openInformation( shell, "GMap Demo", "You are here: " + map.getCenterLocation() );
+        }
+        
+      });
+      
+      shell.setSize( 300, 300 );
+      shell.open();
+      
+      return display;
+    }
+  }
+  </code>
+  </pre>
+  <p>
+  After a click on the button the current location will be sended to the server (together
+  with the selection event of the button), applied to the widget with the help of our LCA
+  and shown by the MessageDialog. Great!
+  </p>
+  <h3>And now?</h3>
+  <p>
+  You completed your first custom widget - congratulations!<br />
+  Before implementing a heavy custom control we like to give you some tasks to play around
+  with the GMap widget.
+  <ul>
+    <li>Implement the rendering for the center location to programmatically set it</li>
+    <li>Add support for <a href="http://www.google.com/apis/maps/documentation/overlays.html">markers</a></li>
+    <li>Implement other nice things by connecting Google Maps with RAP</li>
+  </ul>
+  We are delight in seeing what you can do with this little widget. If you have problems
+  , take a look at all the LCAs already provided by RAP. It's not black magic.
+  </p>
+</body>
+</html>
