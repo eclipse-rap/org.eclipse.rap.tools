@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="copyright" content="Copyright (c) 2007 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>Branding</title>
+<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+</head>
+<body>
+  <h1>Branding</h1>
+
+  <h3>Introduction</h3>
+  <p>
+  With the help of RAPs branding features you're able to define several (visual) aspects of your
+  RAP application. This includes for example the page title which is shown in the
+  browser or the theme to be used for the application.
+  </p>
+  <img src="../../images/branding/example.png" />
+  
+  <h3>Capabilities of the Branding</h3>
+  <p>
+  You can define a new branding by creating an extension for the
+  <code>org.eclipse.rap.ui.branding</code>
+  extension point.
+  </p>
+  <img src="../../images/branding/extension.png" />
+  <p>
+  And here the same as it appears in the <code>plugin.xml</code>:
+  </p>
+  <pre>
+  <code>
+  &lt;extension
+        point="org.eclipse.rap.ui.branding">
+     &lt;branding
+           id="org.eclipse.rap.demo.branding1"
+           servletName="tea"
+           defaultEntrypointId="org.eclipse.rap.demo.entrypoint1"
+           themeId="org.eclipse.rap.demo.alttheme"
+           title="It&apos;s tea-time">
+           favicon="icons/favicon2.ico"
+           body="body.html"
+           exitConfirmation="Do you really want to leave the party?"
+     &lt;/branding>
+  &lt;/extension&gt;
+  </code>
+  </pre>
+  <h4>servletName</h4>
+  <p>
+  The <code>servletName</code> attribute is responsible for the URL of the
+  application for the outside
+  world. For those without J2EE experience this means that you your application
+  will be available at <code>&lt;host&gt;:&lt;port&gt;/<b>&lt;servletName&gt;</b></code>.
+  </p>
+  <h4>defaultEntrypointId</h4>
+  <p>
+  The <code>defaultEntrypointId</code> refers to an entrypoint which should be
+  used as the default one for this servlet. Looking at the example branding above
+  the URI <code>http://&lt;host&gt;:&lt;port&gt;/tea</code> and
+  <code>http://&lt;host&gt;:&lt;port&gt;/tea?startup=<b>foo</b></code> are equivalent if
+  there is an entrypoint defined with the id <code>org.eclipse.rap.demo.entrypoint1</code>
+  and <code>parameter</code> <code>foo</code>.
+  </p>
+  
+  <h4>themeId</h4>
+  <p>Which theme to be used for this branding can be specified here. You need to provide
+  an id for the theme that is defined by an extension of <code>org.eclipse.rap.ui.themes</code>
+  </p>
+  See also <a href="theming.html">RWT Theming</a>
+  
+  <h4>title</h4>
+  <p>
+  To define the title which will be shown in the browser title or the the title of
+  the browser tab, you can use the <code>title</code> attribute.
+  </p>
+  
+  <h4>favicon</h4>
+  <p>
+  The favicon is the icon shown in the address bar of the browser. This has to be
+  a valid <a href="http://en.wikipedia.org/wiki/ICO_%28icon_image_file_format%29">.ico file</a>
+  to be correctly displayed in the browser.
+  </p>
+  
+  <h4>body</h4>
+  <p>
+  If you have the need for some custom (X)HTML markup in the RAP index page you can
+  register a valid (X)HTML file with the <code>body</code> attribute which will be included
+  in the body tag of the generated index page.
+  </p>
+  
+  <h4>exitConfirmation</h4>
+  <p>
+  If not empty the string in <code>exitConfirmation</code> will be shown to the user
+  if he wants to leave the RAP application. This is useful to prevent users to accidentally
+  close the browser window/tab.
+  </p>
+  <img src="../../images/branding/exitConfirmation.png" />
+  <p>
+    <b>NOTE:</b>
+    This will only work in browsers of the Mozilla family and Internet Explorer. Some
+    of the supported browser don't only use the specified string but instead wrapping
+    it in some other explaination why this popup is opened.
+  </p>
+  
+  <h4>Element additionalHeaders</h4>
+  <p>
+  To extend different aspects of the generated index page you can add a subelement
+  called <code>additionalHeaders</code> to your branding to add for example meta tags.
+  These informations will be added to the &lt;head&gt; tag of the index page.
+  </p>
+  See this example:
+  <pre>
+  <code>
+  &lt;additionalHeaders&gt;
+    &lt;meta
+      content="RAP Team"
+      name="author"&gt;
+    &lt;/meta&gt;
+  &lt;/additionalHeaders&gt;
+  </code>
+  </pre>
+  <p>
+  Available tags are <code>meta</code> and <code>link</code>. Furthermore you
+  can add as much additional attributes to each tag with the <code>attribute</code>
+  element.
+  </p>
+
+  <h4>Element associatedEntrypoints</h4>
+  <p>
+  The idea behind this is to have several different entrypoints in your application
+  but you want to group them behind a special branding (servletname, theme, etc).
+  In the normal use case you will not have the <code>associatedEntrypoints</code>
+  and thus every entrypoint is available in every branding. Introducing such an element
+  will give you the chance to allow only certain entrypoints for this branding.
+  Imagine you have the following entrypoints defined:
+  <ul>
+    <li>AppForCustomerA</li>
+    <li>AppForCustomerB</li>
+    <li>AppForAdministrationA</li>
+    <li>AppForAdministrationB</li>
+  </ul>
+  With branding in place you can now group them together so Customer A and Administration A
+  have the same branding (page title, servletName, theme) and are not allowed to use
+  the stuff of Customer B with this branding.
+  A sample implementation of the branding for Customer A could look like this:
+  </p>
+  <pre>
+  <code>
+  ...
+  &lt;associatedEntrypoints&gt;
+    &lt;entrypoint
+      id="org.eclipse.rap.demo.customerA"&gt;
+    &lt;/entrypoint&gt;
+    &lt;entrypoint
+      id="org.eclipse.rap.demo.customerA_Admin"&gt;
+    &lt;/entrypoint&gt;
+  &lt;/associatedEntrypoints&gt;
+  ...
+  </code>
+  </pre>
+  And the same should be done for Customer B (with other entrypoint ids)
+</body>
+</html>
