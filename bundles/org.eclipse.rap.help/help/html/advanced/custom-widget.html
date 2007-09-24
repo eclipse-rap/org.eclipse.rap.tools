@@ -732,5 +732,38 @@
   We are delight in seeing what you can do with this little widget. If you have problems
   , take a look at all the LCAs already provided by RAP. It's not black magic.
   </p>
+  <h3>Troubleshooting</h3>
+  <p>
+  There may be times where you need to track down a javascript error in your custom widget.
+  As the tooling support for javascript is not that mature as for java we provide some
+  little undertakes to help you debugging your custom widget.
+  <p>
+  <h4>Client library variants</h4>
+  As we do many improvements regarding speed of the underlying qooxdoo library the
+  normally used javascript fragment is compressed and cleaned from any comment in the
+  code. As it is easier to develop with a full-blown version of qooxdoo to debug
+  it you can specify <code>-Dorg.eclipse.rwt.clientLibraryVariant=DEBUG</code> as
+  VM parameter.
+  <h4>Client log level</h4>
+  <p>
+  To see debug messages and exceptions which occured during javascript execution
+  you can turn on the client-side debugging mode with
+  <code>-Dorg.eclipse.rwt.clientLogLevel=&lt;LEVEL&gt;</code> where <code>&lt;LEVEL&gt;</code>
+  is one of the following values:
+  </p>
+  <ul>
+	  <li>OFF</li>
+	  <li>ALL</li>
+	  <li>WARNING</li>
+	  <li>INFO</li>
+	  <li>SEVERE</li>
+	  <li>FINE</li>
+	  <li>FINER</li>
+	  <li>FINEST</li>
+  </ul>
+  <p>
+  When developing custom widget we recommend to use the level <code>ALL</code> to
+  see every debug message.
+  </p>
 </body>
 </html>
