@@ -43,7 +43,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     = "-Djava.awt.headless="; //$NON-NLS-1$
   
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
-
+  
 
   private ILaunch launch;
   private RAPLaunchConfig config;
@@ -179,7 +179,10 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     for( int i = 0; result == null && i < runningLaunches.length; i++ ) {
       ILaunch runningLaunch = runningLaunches[ i ];
       String runningName = runningLaunch.getLaunchConfiguration().getName();
-      if( runningLaunch != launch && runningName.equals( config.getName() ) ) {
+      if(    runningLaunch != launch 
+          && runningName.equals( config.getName() ) 
+          && !runningLaunch.isTerminated() )
+      {
         result = runningLaunches[ i ];  
       }
     }
