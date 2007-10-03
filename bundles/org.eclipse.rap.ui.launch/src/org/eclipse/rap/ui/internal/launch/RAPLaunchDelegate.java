@@ -178,15 +178,21 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     ILaunch result = null;
     for( int i = 0; result == null && i < runningLaunches.length; i++ ) {
       ILaunch runningLaunch = runningLaunches[ i ];
-      String runningName = runningLaunch.getLaunchConfiguration().getName();
       if(    runningLaunch != launch 
-          && runningName.equals( config.getName() ) 
+          && config.getName().equals( getLaunchName( runningLaunch ) ) 
           && !runningLaunch.isTerminated() )
       {
         result = runningLaunches[ i ];  
       }
     }
     return result;
+  }
+
+  private static String getLaunchName( final ILaunch launch ) {
+    ILaunchConfiguration launchConfiguration = launch.getLaunchConfiguration();
+    // the launch config might be null (e.g. if deleted) even though there
+    // still exists a launch for that config  
+    return launchConfiguration == null ? null : launchConfiguration.getName();
   }
   
   private static void terminate( final ILaunch previousLaunch )
