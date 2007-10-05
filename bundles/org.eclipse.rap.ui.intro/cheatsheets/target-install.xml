@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="RAP Target Installation">
+   <intro href="/org.eclipse.pde.doc.user/guide/tools/preference_pages/target_platform.htm">
+      <description>
+         This cheat sheet shows you how to install the RAP runtime target platform in order to build web applications the eclipse way.
+
+As RAP is a platform itself it can&apos;t be installed in top of you existing eclipse installation. We will help you to install RAP separately.
+
+Click the <b>?</b> button if you want to know more about target platforms.
+      </description>
+   </intro>
+   <item title="Installing target" dialog="true" skip="true">
+      <description>
+         Now let&apos;s install the target. If you already have it installed, you can switch this step. If not, it is <b>required</b> to install the target before running the demo or developing plugins on top of RAP.
+      </description>
+      <command serialization="org.eclipse.rap.ui.intro.installTarget" confirm="false">
+      </command>
+   </item>
+   <item title="Testing the demo..." dialog="true" skip="true">
+      <description>
+         To test the just installed target we need a demo. RAP already provides a simple demo application. To import it, click the <b>Perform</b> link, select <b>Projects with source folders</b> and choose the <b>org.eclipse.rap.demo</b> plugin on the next page.
+      </description>
+      <command serialization="org.eclipse.ui.file.import(importWizardId=org.eclipse.pde.ui.PluginImportWizard)" confirm="false">
+      </command>
+   </item>
+   <item title="...and launching it" dialog="true" skip="true">
+      <description>
+         To launch the web application we just need to run the bundled launch configration. Go to <b>Run</b> | <b>Run</b> or click <b>Perform</b>.
+      </description>
+      <command serialization="org.eclipse.pde.ui.EquinoxLaunchShortcut.run" confirm="false">
+      </command>
+   </item>
+</cheatsheet>
