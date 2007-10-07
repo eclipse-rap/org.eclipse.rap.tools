@@ -12,7 +12,7 @@
          point="org.eclipse.ui.cheatsheets.cheatSheetContent">
       <cheatsheet
             category="org.eclipse.cheatsheets.category.rap"
-            contentFile="cheatsheets/target-install.xml"
+            contentFile="cheatsheets/getting-started.xml"
             id="org.eclipse.rap.target.cheatsheet"
             name="RAP Target Installation">
       </cheatsheet>

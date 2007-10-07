@@ -19,7 +19,7 @@ public class IntroMessages extends NLS {
   public static String InstallDialog_DialogTitle;
   public static String InstallDialog_Message_selectLocation;
   public static String InstallDialog_NotWritable;
-  public static String InstallDialog_Path;
+  public static String InstallDialog_Location;
   public static String InstallDialog_ShellTitle;
   public static String InstallDialog_switchTarget;
   public static String InstallDialog_TargetDescription;

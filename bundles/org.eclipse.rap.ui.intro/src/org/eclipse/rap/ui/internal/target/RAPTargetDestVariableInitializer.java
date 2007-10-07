@@ -25,7 +25,8 @@ public final class RAPTargetDestVariableInitializer
   public static final String VARIABLE_NAME = "rap_target_dest"; //$NON-NLS-1$
 
   // TODO [bm] generic approach for version handling?
-  private static final String VERSION_FOLDER = "org.eclipse.rap.target-1.0.0"; //$NON-NLS-1$
+  private static final String VERSION_FOLDER 
+    = "org.eclipse.rap.target-1.0.0"; //$NON-NLS-1$
 
   public void initialize( final IValueVariable variable ) {
     URL configLocation = Platform.getConfigurationLocation().getURL();

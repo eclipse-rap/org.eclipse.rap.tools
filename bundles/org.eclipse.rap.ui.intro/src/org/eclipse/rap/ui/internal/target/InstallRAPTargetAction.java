@@ -10,34 +10,34 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.target;
 
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.NotEnabledException;
-import org.eclipse.core.commands.NotHandledException;
-import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.core.commands.common.CommandException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
+import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.statushandlers.StatusManager;
 
-public class InstallRAPTargetAction extends Action {
+public final class InstallRAPTargetAction extends Action {
 
-  private static final String INSTALL_COMMAND = "org.eclipse.rap.ui.intro.installTarget"; //$NON-NLS-1$
+  private static final String INSTALL_COMMAND 
+    = "org.eclipse.rap.ui.intro.installTarget"; //$NON-NLS-1$
 
   public void run() {
-    IWorkbenchWindow activeWorkbenchWindow = PlatformUI.getWorkbench()
-      .getActiveWorkbenchWindow();
-    IHandlerService handlerService = ( IHandlerService )activeWorkbenchWindow
-        .getService( IHandlerService.class );
+    IWorkbenchWindow workbenchWindow 
+      =  PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+    IHandlerService handlerService 
+      = ( IHandlerService )workbenchWindow.getService( IHandlerService.class );
     try {
       handlerService.executeCommand( INSTALL_COMMAND, null );
-    } catch( ExecutionException e ) {
-      e.printStackTrace();
-    } catch( NotDefinedException e ) {
-      e.printStackTrace();
-    } catch( NotEnabledException e ) {
-      e.printStackTrace();
-    } catch( NotHandledException e ) {
-      e.printStackTrace();
+    } catch( CommandException e ) {
+      String msg = "Failed execute command: " + INSTALL_COMMAND;
+      Status status 
+        = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, e );
+      int style = StatusManager.LOG | StatusManager.SHOW;
+      StatusManager.getManager().handle( status, style );
     }
   }
 }

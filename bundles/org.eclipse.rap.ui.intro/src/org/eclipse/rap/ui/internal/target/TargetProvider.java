@@ -45,6 +45,7 @@ public final class TargetProvider {
   public static void install( final IProgressMonitor monitor ) 
     throws CoreException 
   {
+    checkTargetDestination();
     File scriptFile = createScriptFile();
     AntRunner runner = new AntRunner();
     runner.setBuildFileLocation( scriptFile.getAbsolutePath() );
@@ -79,10 +80,22 @@ public final class TargetProvider {
     return file;
   }
   
+  private static void checkTargetDestination() throws CoreException {
+    File file = new File( getTargetDestination() );
+    file.mkdirs();
+    boolean valid = file.canWrite() && file.isDirectory();
+    if( !valid ) {
+      String msg = "Invalid target destination: " + file.toString(); 
+      Status status 
+        = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, null );
+      throw new CoreException( status );
+    }
+  }
+
   private static Map getProperties() throws CoreException {
     Map result = new HashMap();
     result.put( "src", getTargetSrc() ); //$NON-NLS-1$
-    result.put( "dest", getTargetDest() ); //$NON-NLS-1$
+    result.put( "dest", getTargetDestination() ); //$NON-NLS-1$
     return result;
   }
 
@@ -93,19 +106,25 @@ public final class TargetProvider {
       URL targetEntry = bundle.getEntry( "target/target.zip" ); //$NON-NLS-1$
       if( targetEntry == null ) {
         String msg = IntroMessages.TargetProvider_ArchiveNotFound; 
-        Status status = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, null );
+        Status status 
+          = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, null );
         throw new CoreException( status );
       }
       result = FileLocator.resolve( targetEntry );
     } catch( IOException e ) {
       String msg = IntroMessages.TargetProvider_SourceNotFound; 
-      Status status = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, e );
+      Status status 
+        = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, e );
       throw new CoreException( status );
     }
     return result.getFile();
   }
 
-  public static String getTargetDest() {
+  public static void setTargetDestination( final String targetDest ) {
+    targetDestination = targetDest;
+  }
+  
+  public static String getTargetDestination() {
     if( targetDestination == null ) {
       VariablesPlugin variablesPlugin = VariablesPlugin.getDefault();
       IStringVariableManager manager = variablesPlugin.getStringVariableManager();
@@ -137,9 +156,5 @@ public final class TargetProvider {
 
   private TargetProvider() {
     // prevent instantiation
-  }
-
-  public static void setTargetDestination( String targetDest ) {
-    targetDestination = targetDest;
   }
 }

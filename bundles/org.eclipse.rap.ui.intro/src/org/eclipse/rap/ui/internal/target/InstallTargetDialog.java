@@ -7,117 +7,110 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.target;
 
-import java.io.File;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.layout.*;
+import org.eclipse.swt.widgets.*;
 
-public class InstallTargetDialog extends TitleAreaDialog {
+public final class InstallTargetDialog extends TitleAreaDialog {
 
-  protected boolean shouldswitchTarget = true;
-  protected String targetDestination;
+  private boolean shouldSwitchTarget = true;
+  private String targetDestination;
   private Text txtPath;
 
-  public InstallTargetDialog( Shell parentShell ) {
+  public InstallTargetDialog( final Shell parentShell ) {
     super( parentShell );
+    setShellStyle( SWT.TITLE | SWT.CLOSE | SWT.RESIZE );
     setHelpAvailable( false );
   }
 
-  protected Control createDialogArea( Composite parent ) {
-    Composite container = createTargetLocationArea( parent );
-    createSwitchTargetGroup( container );
-    return container;
-  }
-
-  private Composite createTargetLocationArea( Composite parent ) {
-    Composite container = new Composite( parent, SWT.NONE );
-    container.setLayout( new GridLayout( 3, false ) );
-    Dialog.applyDialogFont( container );
+  protected Control createDialogArea( final Composite parent ) {
+    Composite result = ( Composite )super.createDialogArea( parent );
     getShell().setText( IntroMessages.InstallDialog_ShellTitle );
     setTitle( IntroMessages.InstallDialog_DialogTitle );
     setMessage( IntroMessages.InstallDialog_Message_selectLocation );
-    Label lblPath = new Label( container, SWT.NONE );
-    lblPath.setText( IntroMessages.InstallDialog_Path );
-    txtPath = new Text( container, SWT.SINGLE );
-    txtPath.setText( TargetProvider.getTargetDest() );
-    txtPath.addModifyListener( new ModifyListener() {
+    createTargetLocationArea( result );
+    createSwitchTargetGroup( result );
+    return result;
+  }
 
-      public void modifyText( ModifyEvent e ) {
-        if( checkLocation() ) {
-          targetDestination = txtPath.getText();
-        }
+  protected void okPressed() {
+    targetDestination = txtPath.getText();
+    super.okPressed();
+  }
+  
+  private void createTargetLocationArea( final Composite parent ) {
+    Composite container = new Composite( parent, SWT.NONE );
+    container.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+    container.setLayout( new GridLayout( 3, false ) );
+    Label lblPath = new Label( container, SWT.NONE );
+    lblPath.setText( IntroMessages.InstallDialog_Location );
+    txtPath = new Text( container, SWT.BORDER );
+    txtPath.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+    txtPath.setText( TargetProvider.getTargetDestination() );
+    txtPath.addModifyListener( new ModifyListener() {
+      public void modifyText( final ModifyEvent e ) {
+        validateLocation();
       }
     } );
     Button browse = new Button( container, SWT.PUSH );
     browse.setText( IntroMessages.InstallDialog_Browse );
     browse.addSelectionListener( new SelectionAdapter() {
-
-      public void widgetSelected( SelectionEvent e ) {
+      public void widgetSelected( final SelectionEvent e ) {
         DirectoryDialog dirChooser = new DirectoryDialog( getShell() );
+        if( txtPath.getText().length() > 0 ) {
+          dirChooser.setFilterPath( txtPath.getText() );
+        }
         String location = dirChooser.open();
-        txtPath.setText( location == null
-                                         ? "" : location ); //$NON-NLS-1$
+        if( location != null ) {
+          txtPath.setText( location );
+        }
       }
     } );
-    return container;
+    Dialog.applyDialogFont( container );
   }
 
-  private boolean checkLocation() {
-    boolean result = false;
-    String location = txtPath.getText();
-    File dir = new File( location );
-    if( location != null && dir.canWrite() && dir.isDirectory() ) {
-      // everything ok
+  private void validateLocation() {
+    boolean isValid = txtPath.getText().length() > 0;
+    if( isValid ) {
       setErrorMessage( null );
-      result = true;
     } else {
       setErrorMessage( IntroMessages.InstallDialog_validPath );
     }
-    return result;
+    Button okButton = getButton( OK );
+    okButton.setEnabled( isValid );
   }
 
-  private void createSwitchTargetGroup( Composite container ) {
-    final GridData gd2 = new GridData( GridData.FILL_HORIZONTAL );
-    gd2.horizontalSpan = 3;
-    Group gTarget = new Group( container, SWT.SHADOW_ETCHED_OUT );
-    gTarget.setLayoutData( gd2 );
-    gTarget.setLayout( new GridLayout() );
-    gTarget.setText( IntroMessages.InstallDialog_TargetGroup );
-    final Button switchTarget = new Button( gTarget, SWT.CHECK );
+  private void createSwitchTargetGroup( final Composite parent ) {
+    Composite container = new Composite( parent, SWT.NONE );
+    container.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, true ) );
+    FillLayout layout = new FillLayout();
+    layout.marginWidth = 5;
+    layout.marginHeight = 5;
+    container.setLayout( layout );
+    Group grgTarget = new Group( container, SWT.NONE );
+    grgTarget.setLayout( new GridLayout() );
+    grgTarget.setText( IntroMessages.InstallDialog_TargetGroup );
+    final Button switchTarget = new Button( grgTarget, SWT.CHECK );
     switchTarget.setText( IntroMessages.InstallDialog_switchTarget );
     switchTarget.setSelection( true );
     switchTarget.addSelectionListener( new SelectionAdapter() {
-
-      public void widgetSelected( SelectionEvent e ) {
-        shouldswitchTarget = switchTarget.getSelection();
+      public void widgetSelected( final SelectionEvent e ) {
+        shouldSwitchTarget = switchTarget.getSelection();
       }
     } );
-    Label lblDescription = new Label( gTarget, SWT.WRAP );
+    Label lblDescription = new Label( grgTarget, SWT.WRAP );
     final GridData gd3 = new GridData( GridData.FILL_HORIZONTAL );
-    gd3.widthHint = 225;
+    gd3.widthHint = 120;
     lblDescription.setLayoutData( gd3 );
     lblDescription.setText( IntroMessages.InstallDialog_TargetDescription );
+    Dialog.applyDialogFont( container );
   }
 
   public boolean shouldSwitchTarget() {
-    return shouldswitchTarget;
+    return shouldSwitchTarget;
   }
 
   public String getTargetDestination() {

@@ -16,7 +16,8 @@ import org.osgi.framework.BundleContext;
 
 public class IntroPlugin extends AbstractUIPlugin {
 
-  public static final String PLUGIN_ID = "org.eclipse.rap.ui.intro"; //$NON-NLS-1$
+  public static final String PLUGIN_ID 
+    = "org.eclipse.rap.ui.intro"; //$NON-NLS-1$
   
   // The shared instance
   private static IntroPlugin plugin;

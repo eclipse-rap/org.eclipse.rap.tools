@@ -7,106 +7,88 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.target;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.*;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Preferences;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.*;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.pde.internal.core.ICoreConstants;
-import org.eclipse.pde.internal.core.LoadTargetOperation;
-import org.eclipse.pde.internal.core.PDECore;
-import org.eclipse.pde.internal.core.itarget.ILocationInfo;
+import org.eclipse.pde.internal.core.*;
+import org.eclipse.pde.internal.core.itarget.ITarget;
 import org.eclipse.pde.internal.core.itarget.ITargetModel;
 import org.eclipse.pde.internal.core.target.TargetModel;
 import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
-import org.eclipse.ui.statushandlers.StatusManager;
 
 // ERROR HANDLING !!!!!
 public class InstallRAPTargetHandler extends AbstractHandler {
 
-  final String TARGET_FILE = "target/rap.target"; //$NON-NLS-1$
+  private static final String TARGET_FILE = "target/rap.target"; //$NON-NLS-1$
 
-  public Object execute( ExecutionEvent event ) throws ExecutionException {
-    Shell workbenchShell = PlatformUI.getWorkbench()
-      .getActiveWorkbenchWindow()
-      .getShell();
-    InstallTargetDialog installDialog = new InstallTargetDialog( workbenchShell );
-    int result = installDialog.open();
+  public Object execute( final ExecutionEvent event ) throws ExecutionException 
+  {
+    IWorkbench workbench = PlatformUI.getWorkbench();
+    Shell shell = workbench.getActiveWorkbenchWindow().getShell();
+    InstallTargetDialog dialog = new InstallTargetDialog( shell );
+    int result = dialog.open();
     if( result == Dialog.OK ) {
-      installTarget( installDialog.getTargetDestination() );
+      installTarget( dialog.getTargetDestination() );
       // switch target if the users wants to
-      if( installDialog.shouldSwitchTarget() ) {
+      if( dialog.shouldSwitchTarget() ) {
         switchTarget();
       }
     }
     return null;
   }
 
-  private void installTarget( final String targetDestination ) {
-    IRunnableWithProgress run = new IRunnableWithProgress() {
-
-      public void run( IProgressMonitor monitor )
+  private static void installTarget( final String targetDestination )
+    throws ExecutionException 
+  {
+    IRunnableWithProgress runnable = new IRunnableWithProgress() {
+      public void run( final IProgressMonitor monitor )
         throws InvocationTargetException, InterruptedException
       {
         try {
           TargetProvider.setTargetDestination( targetDestination );
           TargetProvider.install( monitor );
         } catch( CoreException e ) {
-          IStatus s = new Status( IStatus.ERROR,
-                                  IntroPlugin.PLUGIN_ID,
-                                  e.getMessage(),
-                                  e );
-          StatusManager.getManager().handle( s,
-                                             StatusManager.SHOW
-                                                 | StatusManager.LOG );
+          throw new InvocationTargetException( e );
         }
       }
     };
     IProgressService service = PlatformUI.getWorkbench().getProgressService();
     try {
-      service.busyCursorWhile( run );
+      service.busyCursorWhile( runnable );
     } catch( InvocationTargetException e ) {
+      Throwable cause = e.getCause() == null ? e : e.getCause();
+      String msg = "Failed to install target platform.";
+      throw new ExecutionException( msg, cause );
     } catch( InterruptedException e ) {
+      // TODO [rh] exception handling
     }
   }
 
-  private void switchTarget() {
-    Preferences fPreferences = PDECore.getDefault().getPluginPreferences();
-    fPreferences.setValue( ICoreConstants.TARGET_PROFILE,
-                           "id:org.eclipse.rap.target" ); //$NON-NLS-1$
-    doLoadTarget();
-  }
-
-  private void doLoadTarget() {
+  private static void switchTarget() {
     IRunnableWithProgress run = new IRunnableWithProgress() {
-
-      public void run( IProgressMonitor monitor )
+    
+      public void run( final IProgressMonitor monitor )
         throws InvocationTargetException, InterruptedException
       {
         try {
           ITargetModel model = getTargetModel();
-          if( !model.isLoaded() ) {
-            return;
-          }
-          LoadTargetOperation op = new LoadTargetOperation( model.getTarget() );
-          ResourcesPlugin.getWorkspace().run( op, monitor );
+          if( model.isLoaded() ) {
+            ITarget target = model.getTarget();
+            LoadTargetOperation operation = new LoadTargetOperation( target );
+            ResourcesPlugin.getWorkspace().run( operation, monitor );
+          } 
+        } catch( IOException e ) { 
+          throw new InvocationTargetException( e );
         } catch( CoreException e ) {
           throw new InvocationTargetException( e );
         } catch( OperationCanceledException e ) {
@@ -124,21 +106,21 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     }
   }
 
-  protected ITargetModel getTargetModel() {
-    ITargetModel t = new TargetModel();
+  private static ITargetModel getTargetModel() 
+    throws IOException, CoreException 
+  {
+    ITargetModel targetModel = new TargetModel();
     URL entry = IntroPlugin.getDefault().getBundle().getEntry( TARGET_FILE );
-    InputStream is;
+    InputStream is = new BufferedInputStream( entry.openStream() );
     try {
-      is = new BufferedInputStream( entry.openStream() );
-      t.load( is, true );
-    } catch( IOException e ) {
-      e.printStackTrace();
-    } catch( CoreException e ) {
-      e.printStackTrace();
-    }
-    t.getTarget().getLocationInfo().setPath( TargetProvider.getTargetDest()
-                                             + File.separatorChar
-                                             + "eclipse" ); //$NON-NLS-1$
-    return t;
+      targetModel.load( is, true );
+    } finally {
+      is.close();    
+    }        
+    String path = TargetProvider.getTargetDestination()
+                + File.separatorChar
+                + "eclipse"; //$NON-NLS-1$
+    targetModel.getTarget().getLocationInfo().setPath( path ); 
+    return targetModel;
   }
 }
