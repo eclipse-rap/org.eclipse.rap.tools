@@ -121,13 +121,5 @@
             sequence="M3+M2+D R">
       </key>
    </extension>
-   <extension
-         point="org.eclipse.pde.core.targets">
-      <target
-            definition="targets/rap.target"
-            id="org.eclipse.rap.ui.launch.Target"
-            name="%target.name">
-      </target>
-   </extension>
    
 </plugin>

@@ -139,9 +139,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   //////////////////////////////////
   // Helping method to construct URL
   
-  private URL getUrl() 
-    throws CoreException 
-  {
+  private URL getUrl() throws CoreException {
     try {
       return URLBuilder.fromLaunchConfig( config, port );
     } catch( MalformedURLException e ) {
