@@ -16,7 +16,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.pde.internal.core.*;
+import org.eclipse.pde.internal.core.LoadTargetOperation;
 import org.eclipse.pde.internal.core.itarget.ITarget;
 import org.eclipse.pde.internal.core.itarget.ITargetModel;
 import org.eclipse.pde.internal.core.target.TargetModel;
@@ -38,10 +38,11 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     InstallTargetDialog dialog = new InstallTargetDialog( shell );
     int result = dialog.open();
     if( result == Dialog.OK ) {
-      installTarget( dialog.getTargetDestination() );
+      String targetDestination = dialog.getTargetDestination();
+      installTarget( targetDestination );
       // switch target if the users wants to
       if( dialog.shouldSwitchTarget() ) {
-        switchTarget();
+        switchTarget( targetDestination );
       }
     }
     return null;
@@ -55,8 +56,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
         throws InvocationTargetException, InterruptedException
       {
         try {
-          TargetProvider.setTargetDestination( targetDestination );
-          TargetProvider.install( monitor );
+          TargetProvider.install( targetDestination, monitor );
         } catch( CoreException e ) {
           throw new InvocationTargetException( e );
         }
@@ -74,14 +74,14 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     }
   }
 
-  private static void switchTarget() {
+  private static void switchTarget( final String targetDestination ) {
     IRunnableWithProgress run = new IRunnableWithProgress() {
     
       public void run( final IProgressMonitor monitor )
         throws InvocationTargetException, InterruptedException
       {
         try {
-          ITargetModel model = getTargetModel();
+          ITargetModel model = getTargetModel( targetDestination );
           if( model.isLoaded() ) {
             ITarget target = model.getTarget();
             LoadTargetOperation operation = new LoadTargetOperation( target );
@@ -106,7 +106,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     }
   }
 
-  private static ITargetModel getTargetModel() 
+  private static ITargetModel getTargetModel( final String targetDestination ) 
     throws IOException, CoreException 
   {
     ITargetModel targetModel = new TargetModel();
@@ -117,10 +117,8 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     } finally {
       is.close();    
     }        
-    String path = TargetProvider.getTargetDestination()
-                + File.separatorChar
-                + "eclipse"; //$NON-NLS-1$
-    targetModel.getTarget().getLocationInfo().setPath( path ); 
+    File path = new File( targetDestination, "eclipse" ); //$NON-NLS-N$
+    targetModel.getTarget().getLocationInfo().setPath( path.toString() ); 
     return targetModel;
   }
 }

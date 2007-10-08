@@ -32,7 +32,8 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     setTitle( IntroMessages.InstallDialog_DialogTitle );
     setMessage( IntroMessages.InstallDialog_Message_selectLocation );
     createTargetLocationArea( result );
-    createSwitchTargetGroup( result );
+    createSwitchTargetArea( result );
+    txtPath.setText( TargetProvider.getDefaultTargetDestination() );
     return result;
   }
 
@@ -49,7 +50,6 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     lblPath.setText( IntroMessages.InstallDialog_Location );
     txtPath = new Text( container, SWT.BORDER );
     txtPath.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-    txtPath.setText( TargetProvider.getTargetDestination() );
     txtPath.addModifyListener( new ModifyListener() {
       public void modifyText( final ModifyEvent e ) {
         validateLocation();
@@ -80,10 +80,12 @@ public final class InstallTargetDialog extends TitleAreaDialog {
       setErrorMessage( IntroMessages.InstallDialog_validPath );
     }
     Button okButton = getButton( OK );
-    okButton.setEnabled( isValid );
+    if( okButton != null ) {
+      okButton.setEnabled( isValid );
+    }
   }
 
-  private void createSwitchTargetGroup( final Composite parent ) {
+  private void createSwitchTargetArea( final Composite parent ) {
     Composite container = new Composite( parent, SWT.NONE );
     container.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, true ) );
     FillLayout layout = new FillLayout();

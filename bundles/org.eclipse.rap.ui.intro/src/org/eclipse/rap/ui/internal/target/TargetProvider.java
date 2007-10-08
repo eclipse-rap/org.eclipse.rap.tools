@@ -10,27 +10,14 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.target;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.ant.core.AntRunner;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.variables.IStringVariableManager;
-import org.eclipse.core.variables.IValueVariable;
-import org.eclipse.core.variables.VariablesPlugin;
+import org.eclipse.core.runtime.*;
 import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 import org.osgi.framework.Bundle;
 
@@ -40,16 +27,24 @@ public final class TargetProvider {
   private static final String COPY_ANT_XML = "copy.ant.xml"; //$NON-NLS-1$
   private static final String CHARSET_NAME = "ISO-8859-1"; //$NON-NLS-1$
 
-  private static String targetDestination;
+  private static final String DEFAULT_TARGET_DEST 
+     = "org.eclipse.rap.target-1.0.0"; //$NON-NLS-1$
+
+  public static String getDefaultTargetDestination() {
+    URL configLocation = Platform.getConfigurationLocation().getURL();
+    File targetDest = new File( configLocation.getFile(), DEFAULT_TARGET_DEST );
+    return targetDest.toString();
+  }
   
-  public static void install( final IProgressMonitor monitor ) 
+  public static void install( final String targetDest,
+                              final IProgressMonitor monitor ) 
     throws CoreException 
   {
-    checkTargetDestination();
+    checkTargetDestination( targetDest );
     File scriptFile = createScriptFile();
     AntRunner runner = new AntRunner();
     runner.setBuildFileLocation( scriptFile.getAbsolutePath() );
-    runner.addUserProperties( getProperties() );
+    runner.addUserProperties( getProperties( targetDest ) );
     runner.run( monitor );
   }
   
@@ -80,8 +75,10 @@ public final class TargetProvider {
     return file;
   }
   
-  private static void checkTargetDestination() throws CoreException {
-    File file = new File( getTargetDestination() );
+  private static void checkTargetDestination( final String location ) 
+    throws CoreException 
+  {
+    File file = new File( location );
     file.mkdirs();
     boolean valid = file.canWrite() && file.isDirectory();
     if( !valid ) {
@@ -92,10 +89,12 @@ public final class TargetProvider {
     }
   }
 
-  private static Map getProperties() throws CoreException {
+  private static Map getProperties( final String targetDest ) 
+    throws CoreException 
+  {
     Map result = new HashMap();
     result.put( "src", getTargetSrc() ); //$NON-NLS-1$
-    result.put( "dest", getTargetDestination() ); //$NON-NLS-1$
+    result.put( "dest", targetDest ); //$NON-NLS-1$
     return result;
   }
 
@@ -120,21 +119,6 @@ public final class TargetProvider {
     return result.getFile();
   }
 
-  public static void setTargetDestination( final String targetDest ) {
-    targetDestination = targetDest;
-  }
-  
-  public static String getTargetDestination() {
-    if( targetDestination == null ) {
-      VariablesPlugin variablesPlugin = VariablesPlugin.getDefault();
-      IStringVariableManager manager = variablesPlugin.getStringVariableManager();
-      String variableName = RAPTargetDestVariableInitializer.VARIABLE_NAME;
-      IValueVariable targetDest = manager.getValueVariable( variableName );
-      targetDestination = targetDest.getValue();
-    }
-    return targetDestination;
-  }
-  
   private static String loadContent() throws IOException {
     InputStream stream 
       = TargetProvider.class.getResourceAsStream( COPY_ANT_XML );

@@ -39,12 +39,4 @@
       </target>
    </extension>
    -->
-   <extension
-         point="org.eclipse.core.variables.valueVariables">
-      <variable
-            initializerClass="org.eclipse.rap.ui.internal.target.RAPTargetDestVariableInitializer"
-            name="rap_target_dest"
-            readOnly="true">
-      </variable>
-   </extension>
 </plugin>
