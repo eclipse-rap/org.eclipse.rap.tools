@@ -10,23 +10,23 @@
     <topic 
       label="Hello World" 
       href="help/html/getting-started/hello-world.html"/>
-    <topic 
-      label="WAR Deployment" 
-      href="help/html/getting-started/deployment.html"/>
   </topic>
   <topic label="Advanced Topics">
     <topic 
       label="Custom widgets" 
       href="help/html/advanced/custom-widget.html"/>
     <topic 
-      label="Branding" 
-      href="help/html/advanced/branding.html"/>
-    <topic 
       label="RWT Theming" 
       href="help/html/advanced/theming.html"/>
     <topic 
       label="Prepare Custom Widgets for Theming" 
       href="help/html/advanced/theming-custom.html"/>
+    <topic 
+      label="Branding" 
+      href="help/html/advanced/branding.html"/>
+    <topic 
+      label="WAR Deployment" 
+      href="help/html/advanced/deployment.html"/>
   </topic>
   <topic label="Legal" href="help/html/legal.html" />
   
