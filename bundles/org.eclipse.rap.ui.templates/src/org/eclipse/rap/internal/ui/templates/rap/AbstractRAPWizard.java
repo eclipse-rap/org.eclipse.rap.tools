@@ -85,26 +85,27 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     InputStream tmpl = getClass().getResourceAsStream( resource );
     StringBuffer buffer = new StringBuffer();
     try {
-		InputStreamReader reader = new InputStreamReader( tmpl, "ISO-8859-1" ); //$NON-NLS-1$
-		BufferedReader br = new BufferedReader( reader );
-		try {
-		  int character = br.read();    
-		  while( character != -1 ) {
-		     buffer.append( ( char )character );
-		    character = br.read();
-		  }
-		} finally {
-		  br.close();
-		}
-	} catch( final Exception ex ) {
-	  String pluginId = Activator.getPluginId();
-	  String msg = "Could not read launch template"; //$NON-NLS-1$
-	  throw new CoreException( new Status( IStatus.ERROR, pluginId, msg, ex ) );
-	}
-	// TODO [rh] find the method that PDE uses to translate project names into 
-	//      bundle names and replace the line below (-> PluginId!)
+      InputStreamReader reader = new InputStreamReader( tmpl, "ISO-8859-1" ); //$NON-NLS-1$
+      BufferedReader br = new BufferedReader( reader );
+      try {
+        int character = br.read();
+        while( character != -1 ) {
+          buffer.append( ( char )character );
+          character = br.read();
+        }
+      } finally {
+        br.close();
+      }
+    } catch( final Exception ex ) {
+      String pluginId = Activator.getPluginId();
+      String msg = "Could not read launch template"; //$NON-NLS-1$
+      throw new CoreException( new Status( IStatus.ERROR, pluginId, msg, ex ) );
+    }
+    // TODO [rh] find the method that PDE uses to translate project names into
+    // bundle names and replace the lines below (-> PluginId!)
     String escapedProjectName = project.getName().replace( ' ', '_' );
-	replacePlaceholder( buffer, "${projectName}", escapedProjectName ); //$NON-NLS-1$
+    escapedProjectName = escapedProjectName.replace( '-', '_' );
+    replacePlaceholder( buffer, "${projectName}", escapedProjectName ); //$NON-NLS-1$
     replacePlaceholder( buffer, "${entryPoint}", getEntryPointName() ); //$NON-NLS-1$
     byte[] bytes = buffer.toString().getBytes();
     return new ByteArrayInputStream( bytes );
