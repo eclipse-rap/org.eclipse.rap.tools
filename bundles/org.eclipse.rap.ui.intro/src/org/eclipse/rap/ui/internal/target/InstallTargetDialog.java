@@ -9,8 +9,10 @@ package org.eclipse.rap.ui.internal.target;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.rap.ui.internal.intro.Images;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
@@ -18,6 +20,7 @@ public final class InstallTargetDialog extends TitleAreaDialog {
 
   private boolean shouldSwitchTarget = true;
   private String targetDestination;
+  private Image titleImage;
   private Text txtPath;
 
   public InstallTargetDialog( final Shell parentShell ) {
@@ -26,11 +29,20 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     setHelpAvailable( false );
   }
 
+  public boolean shouldSwitchTarget() {
+    return shouldSwitchTarget;
+  }
+
+  public String getTargetDestination() {
+    return targetDestination;
+  }
+
+  //////////////////////////////
+  // (TitleArea)Dialog overrides
+  
   protected Control createDialogArea( final Composite parent ) {
     Composite result = ( Composite )super.createDialogArea( parent );
-    getShell().setText( IntroMessages.InstallDialog_ShellTitle );
-    setTitle( IntroMessages.InstallDialog_DialogTitle );
-    setMessage( IntroMessages.InstallDialog_Message_selectLocation );
+    configureDialog();
     createTargetLocationArea( result );
     createSwitchTargetArea( result );
     txtPath.setText( TargetProvider.getDefaultTargetDestination() );
@@ -42,6 +54,26 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     super.okPressed();
   }
   
+  public boolean close() {
+    if( titleImage != null ) {
+      titleImage.dispose();
+    }
+    return super.close();
+  }
+  
+  //////////////////////////////////////
+  // Dialog content construction helpers 
+  
+  private void configureDialog() {
+    getShell().setText( IntroMessages.InstallDialog_ShellTitle );
+    setTitle( IntroMessages.InstallDialog_DialogTitle );
+    if( titleImage == null ) {
+      titleImage = Images.EXTRACT_TARGET.createImage( false );
+    }
+    setTitleImage( titleImage );
+    setMessage( IntroMessages.InstallDialog_Message_selectLocation );
+  }
+
   private void createTargetLocationArea( final Composite parent ) {
     Composite container = new Composite( parent, SWT.NONE );
     container.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
@@ -72,19 +104,6 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     Dialog.applyDialogFont( container );
   }
 
-  private void validateLocation() {
-    boolean isValid = txtPath.getText().length() > 0;
-    if( isValid ) {
-      setErrorMessage( null );
-    } else {
-      setErrorMessage( IntroMessages.InstallDialog_validPath );
-    }
-    Button okButton = getButton( OK );
-    if( okButton != null ) {
-      okButton.setEnabled( isValid );
-    }
-  }
-
   private void createSwitchTargetArea( final Composite parent ) {
     Composite container = new Composite( parent, SWT.NONE );
     container.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, true ) );
@@ -111,11 +130,19 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     Dialog.applyDialogFont( container );
   }
 
-  public boolean shouldSwitchTarget() {
-    return shouldSwitchTarget;
-  }
-
-  public String getTargetDestination() {
-    return targetDestination;
+  /////////////
+  // Validation
+  
+  private void validateLocation() {
+    boolean isValid = txtPath.getText().length() > 0;
+    if( isValid ) {
+      setErrorMessage( null );
+    } else {
+      setErrorMessage( IntroMessages.InstallDialog_validPath );
+    }
+    Button okButton = getButton( OK );
+    if( okButton != null ) {
+      okButton.setEnabled( isValid );
+    }
   }
 }
