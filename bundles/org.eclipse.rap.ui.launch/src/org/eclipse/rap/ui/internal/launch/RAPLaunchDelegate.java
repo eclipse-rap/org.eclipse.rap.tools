@@ -76,8 +76,11 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException
   {
     List list = new ArrayList();
-    list.addAll( Arrays.asList( getRAPVMArguments() ) );
+    // ORDER IS CRUCIAL HERE:
+    // Override VM arguments that are specified manually with the values
+    // necessary for the RAP launcher
     list.addAll( Arrays.asList( super.getVMArguments( config ) ) );
+    list.addAll( Arrays.asList( getRAPVMArguments() ) );
     String[] result = new String[ list.size() ];
     list.toArray( result );
     return result;
