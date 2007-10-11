@@ -18,12 +18,12 @@ public class HelloRAPWizard extends AbstractRAPWizard {
   }
 
   public ITemplateSection[] createTemplateSections() {
-    return new ITemplateSection[]{
+    return new ITemplateSection[] {
       new HelloRAPTemplate()
     };
   }
 
   protected String getEntryPointName() {
-	return "hello"; //$NON-NLS-1$
+	  return "hello"; //$NON-NLS-1$
   }
 }

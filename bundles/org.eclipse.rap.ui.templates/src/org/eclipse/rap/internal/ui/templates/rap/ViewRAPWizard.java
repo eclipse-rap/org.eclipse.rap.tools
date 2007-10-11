@@ -18,7 +18,7 @@ public class ViewRAPWizard extends AbstractRAPWizard {
   }
 
   public ITemplateSection[] createTemplateSections() {
-    return new ITemplateSection[]{
+    return new ITemplateSection[] {
       new ViewRAPTemplate()
     };
   }

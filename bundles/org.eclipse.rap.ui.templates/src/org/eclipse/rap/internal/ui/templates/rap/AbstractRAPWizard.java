@@ -41,51 +41,66 @@ import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 
 /**
  * <p>
- * Abstract RAP template wizard. Subclasses must implemenet
+ * Abstract RAP template wizard. Subclasses must implement
  * {@link #init(org.eclipse.pde.ui.IFieldData)} and
  * {@link #createTemplateSections()}.
  * </p>
  * <p>
- * This class is responsible for modying the manifest.mf after it has been
+ * This class is responsible for modying the MANIFEST.MF after it has been
  * created, in order to make it work for RAP.
  * </p>
  */
 abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
+  private static final String LAUNCH_TEMPLATE = "launch.template"; //$NON-NLS-1$
+  private static final String CHARSET = "ISO-8859-1"; //$NON-NLS-1$
+
+  private static final String TAG_ENTRY_POINT = "${entryPoint}"; //$NON-NLS-1$
+  private static final String TAG_PLUGIN_ID = "${pluginId}"; //$NON-NLS-1$
+  private static final String TAG_PROJECT_NAME = "${projectName}"; //$NON-NLS-1$
+  
   public boolean performFinish( final IProject project,
                                 final IPluginModelBase model,
                                 final IProgressMonitor monitor )
   {
     boolean result = super.performFinish( project, model, monitor );
-    IResourceChangeListener listener = new ManifestListener();
-    copyLaunchConfig(project);
-    ResourcesPlugin.getWorkspace().addResourceChangeListener( listener );
+    if( result ) {
+      copyLaunchConfig( project, model );
+      IResourceChangeListener listener = new ManifestListener();
+      ResourcesPlugin.getWorkspace().addResourceChangeListener( listener );
+    }
     return result;
   }
-
-  // helping classes
-  /////////////////////
   
-  private void copyLaunchConfig( final IProject project ) {
-    IFile launch = project.getFile( project.getName() + ".launch" ); //$NON-NLS-1$
-    if( !launch.exists() ) {
+  protected abstract String getEntryPointName();
+
+  ////////////////////////////
+  // Copy launch config helper
+
+  private void copyLaunchConfig( final IProject project, 
+                                 final IPluginModelBase model ) 
+  {
+    String name = project.getName() + ".launch"; //$NON-NLS-1$
+    IFile launchConfig = project.getFile( name ); 
+    if( !launchConfig.exists() ) {
       try {
-        InputStream stream = readLaunchConfig( project );
-        launch.create( stream, true, new NullProgressMonitor() );
+        InputStream stream = readLaunchConfig( project, model );
+        launchConfig.create( stream, true, new NullProgressMonitor() );
       } catch( final CoreException ce ) {
         Activator.getDefault().getLog().log( ce.getStatus() );
       }
     }
   }
 
-  private ByteArrayInputStream readLaunchConfig( final IProject project )
+  private InputStream readLaunchConfig( final IProject project,
+                                        final IPluginModelBase model )
     throws CoreException
   {
-    String resource = "launch.template"; //$NON-NLS-1$
-    InputStream tmpl = getClass().getResourceAsStream( resource );
+    InputStream template 
+      = AbstractRAPWizard.class.getResourceAsStream( LAUNCH_TEMPLATE );
     StringBuffer buffer = new StringBuffer();
     try {
-      InputStreamReader reader = new InputStreamReader( tmpl, "ISO-8859-1" ); //$NON-NLS-1$
+      InputStreamReader reader = new InputStreamReader( template, CHARSET );
       BufferedReader br = new BufferedReader( reader );
       try {
         int character = br.read();
@@ -101,33 +116,32 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       String msg = "Could not read launch template"; //$NON-NLS-1$
       throw new CoreException( new Status( IStatus.ERROR, pluginId, msg, ex ) );
     }
-    // TODO [rh] find the method that PDE uses to translate project names into
-    // bundle names and replace the lines below (-> PluginId!)
-    String escapedProjectName = project.getName().replace( ' ', '_' );
-    escapedProjectName = escapedProjectName.replace( '-', '_' );
-    replacePlaceholder( buffer, "${projectName}", escapedProjectName ); //$NON-NLS-1$
-    replacePlaceholder( buffer, "${entryPoint}", getEntryPointName() ); //$NON-NLS-1$
-    byte[] bytes = buffer.toString().getBytes();
-    return new ByteArrayInputStream( bytes );
+    // Replace $-placeholder with actual values
+    replacePlaceholder( buffer, TAG_PROJECT_NAME, project.getName() );
+    String pluginId = model.getPluginBase().getId();
+    replacePlaceholder( buffer, TAG_PLUGIN_ID, pluginId );
+    replacePlaceholder( buffer, TAG_ENTRY_POINT, getEntryPointName() ); 
+    return new ByteArrayInputStream( buffer.toString().getBytes() );
   }
 
-  protected abstract String getEntryPointName();
-
   private static void replacePlaceholder( final StringBuffer buffer, 
-                                          final String placeHolder, 
+                                          final String placeholder, 
                                           final String replacement ) 
   {
     int index;
-    index = buffer.indexOf( placeHolder );
+    index = buffer.indexOf( placeholder );
     while( index != -1 ) {
-      buffer.replace( index, index + placeHolder.length(), replacement );
-      index = buffer.indexOf( placeHolder );
+      buffer.replace( index, index + placeholder.length(), replacement );
+      index = buffer.indexOf( placeholder );
      }
   }
 
+  ///////////////////
+  // helping classes
+  
   private class ManifestListener implements IResourceChangeListener {
 
-    public void resourceChanged( IResourceChangeEvent event ) {
+    public void resourceChanged( final IResourceChangeEvent event ) {
       try {
         event.getDelta().accept( new ManifestModifier( this ) );
       } catch( CoreException cex ) {
@@ -147,7 +161,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       listener = manifestListener;
     }
 
-    public boolean visit( IResourceDelta delta ) throws CoreException {
+    public boolean visit( final IResourceDelta delta ) throws CoreException {
       String name = delta.getResource().getName();
       if( MANIFEST_FILE.equals( name )
           && IResourceDelta.ADDED == delta.getKind()
@@ -162,7 +176,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     }
 
     private void modifyManifest( final IResource resource )
-    throws CoreException
+      throws CoreException
     {
       final IFile file = ( IFile )resource;
       try {
@@ -206,7 +220,8 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       }
     }
 
-    private void scheduleJob( final IFile file, final ByteArrayOutputStream baos )
+    private void scheduleJob( final IFile file, 
+                              final ByteArrayOutputStream baos )
     {
       IResourceRuleFactory ruleFactory 
         = ResourcesPlugin.getWorkspace().getRuleFactory();
