@@ -228,8 +228,8 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       ISchedulingRule rule = ruleFactory.createRule( file );
       Job job = new WorkspaceJob( "Modifing " + MANIFEST_FILE ) { //$NON-NLS-1$
 
-        public IStatus runInWorkspace( IProgressMonitor monitor )
-        throws CoreException
+        public IStatus runInWorkspace( final IProgressMonitor monitor )
+          throws CoreException
         {
           ByteArrayInputStream bais 
             = new ByteArrayInputStream( baos.toByteArray() );
