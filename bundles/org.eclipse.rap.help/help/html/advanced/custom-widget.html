@@ -237,7 +237,7 @@
           var gmapId = wm.findIdByWidget( this );
           var center = this._map.getCenter().toString();
           var req = org.eclipse.swt.Request.getInstance();
-          req.addParameter( gmapId + ".mapCenter", center );
+          req.addParameter( gmapId + ".centerLocation", center );
         }
       },
     
