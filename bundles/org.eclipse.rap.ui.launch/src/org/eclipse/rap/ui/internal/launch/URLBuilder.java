@@ -13,7 +13,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.*;
 
-public final class URLBuilder {
+final class URLBuilder {
 
   private static final String EMPTY = ""; //$NON-NLS-1$
   private static final String SLASH = "/"; //$NON-NLS-1$
@@ -22,12 +22,12 @@ public final class URLBuilder {
   private static final String HOST = "127.0.0.1"; //$NON-NLS-1$
   private static final String QUERY_STARTUP = "?startup="; //$NON-NLS-1$
 
-  public static String getHost() {
+  static String getHost() {
     return HOST;
   }
   
-  public static URL fromLaunchConfig( final RAPLaunchConfig config, 
-                                      final int port ) 
+  static URL fromLaunchConfig( final RAPLaunchConfig config, 
+                               final int port ) 
     throws CoreException, MalformedURLException 
   {
     String servletName = config.getServletName();
