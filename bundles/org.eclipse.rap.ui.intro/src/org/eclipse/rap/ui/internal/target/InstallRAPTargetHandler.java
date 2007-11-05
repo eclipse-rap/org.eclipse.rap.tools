@@ -20,6 +20,7 @@ import org.eclipse.pde.internal.core.LoadTargetOperation;
 import org.eclipse.pde.internal.core.itarget.ITarget;
 import org.eclipse.pde.internal.core.itarget.ITargetModel;
 import org.eclipse.pde.internal.core.target.TargetModel;
+import org.eclipse.rap.ui.internal.intro.ErrorUtil;
 import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
@@ -76,7 +77,6 @@ public class InstallRAPTargetHandler extends AbstractHandler {
 
   private static void switchTarget( final String targetDestination ) {
     IRunnableWithProgress run = new IRunnableWithProgress() {
-    
       public void run( final IProgressMonitor monitor )
         throws InvocationTargetException, InterruptedException
       {
@@ -102,7 +102,13 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     try {
       service.runInUI( service, run, ResourcesPlugin.getWorkspace().getRoot() );
     } catch( InvocationTargetException e ) {
+      String msg = "Failed to switch to RAP target platform.";
+      ErrorUtil.show( msg, e ); //$NON-NLS-1$
     } catch( InterruptedException e ) {
+      String msg
+        = "InterruptedException occured while switching to RAP target " 
+        +	"platform."; //$NON-NLS-1$
+      ErrorUtil.log( msg, e );
     }
   }
 
