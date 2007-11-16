@@ -191,7 +191,7 @@
         var shell = null;
         var parent = this.getParent();
         while( shell == null && parent != null ) {
-          if( parent.classname == "org.eclipse.rap.rwt.widgets.Shell" ) {
+          if( parent.classname == "org.eclipse.swt.widgets.Shell" ) {
             shell = parent;
           }
           parent = parent.getParent();
@@ -385,7 +385,7 @@
     writer.newWidget( "org.eclipse.rap.gmaps.GMap", new Object[] { id } );
     writer.set( "appearance", "composite" );
     writer.set( "overflow", "hidden" );
-    ControlLCAUtil.writeStyleFlags( widget );
+    ControlLCAUtil.writeStyleFlags( ( GMap )widget );
   }
   </code>
   </pre>
