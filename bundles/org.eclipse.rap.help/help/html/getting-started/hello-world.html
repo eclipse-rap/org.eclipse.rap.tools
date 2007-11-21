@@ -41,7 +41,7 @@
   (or another package name you like) to contain your source files.</p>
 </li>
 
-<li><p><strong>A workbench advisor <code>HelloWorldWorkbenchAdvisor</code> 
+<li><p><strong>Create a workbench advisor <code>HelloWorldWorkbenchAdvisor</code> 
   extending the <code>WorkbenchAdvisor</code> class</strong></p>
 
 <p>The WorkbenchAdvisor is necessary to provide the id of the perspective 
@@ -52,7 +52,7 @@
 <pre><code>
 package org.eclipse.rap.helloworld;
 
-import org.eclipse.ui.entrypoint.WorkbenchAdvisor;
+import org.eclipse.ui.application.WorkbenchAdvisor;
 
 public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
 
@@ -64,7 +64,32 @@ public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
 </p>
 <p>For now we ignore the fact that the perspective id does not yet exist but
   keep in mind to label the perspective extension with the same id that we
-  used here.</p>
+  used here.</p></li>
+<li>  <p><strong>Create the <code>HelloWorldWorkbench</code> class implementing 
+  <code>IEntryPoint</code>.</strong></p>
+<p>The HelloWorldWorkbench is the entry point of the application and responsible 
+  for creating the UI. Therefore it must implement the interface 
+  <code>IEntryPoint</code> with <code>createUI()</code> as the only method.
+</p>
+  
+<p>Example code: 
+<pre></code>
+package org.eclipse.rap.helloworld;
+  
+import org.eclipse.rwt.lifecycle.IEntryPoint;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
+
+public class HelloWorldWorkbench implements IEntryPoint {
+  
+  public Display createUI() {
+    Display result = PlatformUI.createDisplay();
+    PlatformUI.createAndRunWorkbench( result, new HelloWorldWorkbenchAdvisor() );
+    return result;
+  }
+}
+</code></pre>
+</p>
 </li>
 
 <li><p><strong>Create an entry point</strong></p>
@@ -79,32 +104,7 @@ public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
 <li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldWorkbench</code></li>
 <li><strong>parameter:</strong> <code>default</code></li>
 </ul></p>
-
-<p><strong>Now create the <code>HelloWorldWorkbench</code> class implementing 
-  <code>IEntryPoint</code>.</strong></p>
-<p>The HelloWorldWorkbench is the entry point of the application and responsible 
-  for creating the UI. Therefore it must implement the interface 
-  <code>IEntryPoint</code> with <code>createUI()</code> as the only method.
-</p>
-  
-<p>Example code: 
-<pre></code>
-package org.eclipse.rap.helloworld;
-  
-import org.eclipse.swt.lifecycle.IEntryPoint;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-
-public class HelloWorldWorkbench implements IEntryPoint {
-  
-  public Display createUI() {
-    Display result = PlatformUI.createDisplay();
-    PlatformUI.createAndRunWorkbench( result, new HelloWorldWorkbenchAdvisor() );
-    return result;
-  }
-}
-</code></pre>
-</p></li>
+</li>
 
 <li><p><strong>Create the <code>HelloWorldView</code> view extending class 
   <code>ViewPart</code></strong></p>
@@ -113,21 +113,7 @@ public class HelloWorldWorkbench implements IEntryPoint {
   of your application. The class needs to extend <code>ViewPart</code> and 
   provide an implementation for the method <code>createPartControl()</code>.</p>
 
-<img src="../../images/hello-world-view.png"/>
-  
-<p>Now you need to declared this <code>HelloWorldView</code> as an extension to 
-  <code>org.eclipse.ui.views</code> with these parameters:</p>
-  <ul>
-  <li><strong>id:</strong> <code>org.eclipse.rap.helloworld.helloWorldView</code></li>
-  <li><strong>name:</strong> <code>Hello World</code></li>
-  <li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldView</code></li>
-  <li><strong>icon:</strong> <em>some_icon.gif</em>
-    <p><strong>Important note:</strong> If the icon path does not exist,
-    an exception is thrown.</p></li>
-  </ul>
-  
-
-<p><strong>Implement the method <code>createPartControl</code> in that 
+<p>Then <strong>implement the method <code>createPartControl</code> in that 
   HelloWorldView</strong></p>
 <p>You then need to implement the method <code>createPartControl</code> to 
   create and add the components you want in your view.</p>
@@ -154,6 +140,23 @@ public class HelloWorldView extends ViewPart {
 }
 </code></pre>
 </p></li>
+
+<li>  
+<p><strong>Now you need to declare this <code>HelloWorldView</code> as an extension to 
+  <code>org.eclipse.ui.views</code> with these parameters:</strong></p>
+      <p><img src="../../images/hello-world-view.png"/></p>
+  <ul>
+  <li><strong>id:</strong> <code>org.eclipse.rap.helloworld.helloWorldView</code></li>
+  <li><strong>name:</strong> <code>Hello World</code></li>
+  <li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldView</code></li>
+  <li><strong>icon:</strong> <em>some_icon.gif</em>
+    <p><strong>Important note:</strong> If the icon path does not exist,
+    an exception is thrown.</p>
+
+
+    </li>
+  </ul>
+  
   
 <li><p><strong>Create a <code>Perspective</code> implementing 
   <code>IPerspectiveFactory</code></strong></p>
@@ -184,9 +187,10 @@ public class Perspective implements IPerspectiveFactory {
   }
 }
 
-</code></pre></p>
-  
-<p>Then the <code>Perspective</code> needs to be declared as an extension to <code>org.eclipse.ui.perspectives</code>.</p>
+</code></pre></p></li>
+
+<li>  
+<p><strong>Then the <code>Perspective</code> needs to be declared as an extension to <code>org.eclipse.ui.perspectives</code>.</strong></p>
 <img src="../../images/hello-world-perspective.png"/>
 <p>  
 <ul>
@@ -196,8 +200,8 @@ public class Perspective implements IPerspectiveFactory {
 </ul>  
   All other Attributes may remain empty.</p>
 </li>
-<li>
-  Now the hello world application is complete. For information on how to 
+<li><strong>
+  Now the hello world application is complete.</strong> For information on how to 
   launch a RAP application please see the chapter
   <a href="launcher.html">Launching RAP Applications</a>.
 </li>
