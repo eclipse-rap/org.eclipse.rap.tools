@@ -69,13 +69,12 @@
     }
   }
   </code></pre>
-  The constant <code>BUNDLE_NAME</code> contains the name of a localization
-  properties file without the file extension.
-  This file contains the mapping from keys to real strings.
-  Note that the class has a private constructor.
-  Instances can only be acquired through the factory method <code>get()</code>.
-  The <code>Messages</code> instance contains fields that hold the translated 
-  strings.
+  The constant <code>BUNDLE_NAME</code> contains the name (without extension) of
+  a properties file, that contains the mapping from keys to real strings.
+  Note that in contrast to RCP, the class does not extend
+  <code>org.eclipse.osgi.util.NLS</code>.
+  Instances, which can be acquired through the factory method
+  <code>get()</code>, contain fields that hold the translated strings.
   </p>
   
   <p>
@@ -83,7 +82,7 @@
   <code>messages.properties</code> in the same package.
   This properties file follows the conventions of standard
   <code>ResourceBundle</code> properties files.
-  For each externalized string, there has to be a key entry in the property
+  For each externalized string, there has to be a key entry in the properties
   file.
   </p>
   
@@ -129,7 +128,7 @@
   <h2>Translate plug-in manifest</h2>
   <p>
   Extension definitions in the plug-in manifest file can also contain strings
-  that are ... to internationalization.
+  that are subject to internationalization.
   
   In order to get this working a few prerequisites are necessary,
   * check out the plug-in <code>org.eclipse.rap.equinox</code> from the RAP CVS
@@ -201,8 +200,8 @@
   
   <h2>Create translations of your *.properties files</h2>
   <p>
-  The last step the internationalization is to actually translate.
-  The translated strings are contained in localized properties files.
+  The last step of the internationalization is to actually translate.
+  The translated strings are contained in localization properties files.
   These files may also reside in a fragment of its own, together with other
   localized resources.
   Localization properties files have a suffix that determines the language,
@@ -219,6 +218,11 @@
   Java ResourceBundle mechanism).
   Those files can be converted using the <code>native2ascii</code>
   conversion utility, included with the Java SDK.
+  Alternatively, RAP also allows for UTF-8 encoded properties files to ease the
+  translation into non-latin languages.
+  In this case, you have to change the call to
+  <code>RWT.NLS.getISO8859_1Encoded</code> into
+  <code>RWT.NLS.getUTF8Encoded</code> in the <code>Messages</code> class.
   </p>
   
   <h2>How does RAP select the language for a user session?</h2>
