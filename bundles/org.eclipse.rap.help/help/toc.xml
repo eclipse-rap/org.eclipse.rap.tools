@@ -25,6 +25,9 @@
       label="Branding" 
       href="help/html/advanced/branding.html"/>
     <topic 
+      label="Internationalization" 
+      href="help/html/advanced/internationalization.html"/>
+    <topic 
       label="WAR Deployment" 
       href="help/html/advanced/deployment.html"/>
   </topic>

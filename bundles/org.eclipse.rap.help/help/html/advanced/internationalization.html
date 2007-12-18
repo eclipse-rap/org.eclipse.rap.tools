@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="copyright" content="Copyright (c) 2007 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>Internationalization</title>
+<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+</head>
+<body>
+  <h1>How to Internationalize a RAP application</h1> 
+  
+  <p>
+  Internationalization in RAP follows the same approach as RCP.
+  However, due to the server-side, multi-user nature of RAP, a few adaptations
+  are necessary.  
+  In the following, you will get a step-by-step guide to internationalize the
+  simple
+  <a href="../getting-started/hello-world.html">Hello World application</a> 
+  created in the getting-started chapter.
+  For a more general introduction to internationalization in RCP, see
+  <a href="#ref1">[1]</a>.
+  </p>
+  
+  <h2>Why does RAP internationalization differs from RCP?</h2>
+  <p>
+  In RAP we have to deal with different languages for different user sessions.
+  Indeed, the language can also change between requests within the same session.
+  Therefore, we cannot store language related information statically in
+  <code>Message</code> classes as this is done in RCP.
+  Instead, we must use a different instance of the <code>Message</code> class
+  for every language.
+  </p>
+  
+  <h2>Move translatable strings into *.properties files</h2>
+  <p>
+  In RCP, it's quite simple to externalize strings using the <q>Externalize
+  Strings</q> wizard provided by JDT.
+  Unfortunately, this wizard is not yet prepared to externalize strings the RAP
+  way.
+  You can probably benefit from the assistance of the <q>Externalize Strings</q>
+  wizard anyway, but only partly.
+  Until now, you are on your own here.
+  We will now explain how to do it from scratch.
+  </p>
+  
+  <p>
+  Let's start with the preparations.
+  You probably know the resource bundle accessor classes (usually called
+  <code>Messages</code>).
+  We also use such a class, but instead of accessing a resource bundle,
+  we use the RAP NLS facility to access nationalized strings.
+  We create a class <code>Messages</code> in the package
+  <code>org.eclipse.rap.helloworld</code> with the following initial
+  content:
+  <pre><code>
+  public class Messages {
+  
+    private static final String BUNDLE_NAME
+      = "org.eclipse.rap.helloworld.messages"; //$NON-NLS-1$
+    
+    private Messages() {
+      // prevent instantiation
+    }
+    
+    public static Messages get() {
+      Class clazz = Messages.class;
+      return ( Messages )RWT.NLS.getISO8859_1Encoded( BUNDLE_NAME, clazz );
+    }
+  }
+  </code></pre>
+  The constant <code>BUNDLE_NAME</code> contains the name of a localization
+  properties file without the file extension.
+  This file contains the mapping from keys to real strings.
+  Note that the class has a private constructor.
+  Instances can only be acquired through the factory method <code>get()</code>.
+  The <code>Messages</code> instance contains fields that hold the translated 
+  strings.
+  </p>
+  
+  <p>
+  In the next step, we create an empty properties file
+  <code>messages.properties</code> in the same package.
+  This properties file follows the conventions of standard
+  <code>ResourceBundle</code> properties files.
+  For each externalized string, there has to be a key entry in the property
+  file.
+  </p>
+  
+  <p>
+  Now we are prepared to externalize strings.
+  Let's start with the class <code>HelloWorldView</code> from the hello world
+  example.
+  The class contains one string we'd like to externalize in order to make it
+  translatable:
+  <pre><code>
+  public void createPartControl( Composite parent ) {
+    Label label = new Label ( parent, SWT.NONE );
+    label.setText( <strong>"Hello RAP World"</strong> );
+    label.setSize( 80, 20 );
+  }
+  </code></pre>
+  We change the string into the following code:
+  <pre><code>
+  public void createPartControl( Composite parent ) {
+    Label label = new Label ( parent, SWT.NONE );
+    label.setText( <strong>Messages.get().HelloWorldView_Message</strong> );
+    label.setSize( 80, 20 );
+  }
+  </code></pre>
+  The key <code>HelloWorldView_Message</code> can be freely chosen, however,
+  the RCP convention is to prefix it with the name of the class that uses it.
+  Now we have to add that key to the <code>Messages</code> class:
+  <pre><code>
+  public class Messages {  
+    ...
+    public String HelloWorldView_Message;
+    ...
+  </code></pre>
+  and add a definition to the <code>messages.properties</code> file:
+  <pre><code>
+  HelloWorldView_Message = Hello RAP World
+  </code></pre>
+  Note that in contrast to RCP, you must use fields instead of constants in the
+  <code>Messages</code> class, as they are not shared over all user session and
+  thus cannot be accessed in a static way in RAP.
+  </p>
+  
+  <h2>Translate plug-in manifest</h2>
+  <p>
+  Extension definitions in the plug-in manifest file can also contain strings
+  that are ... to internationalization.
+  
+  In order to get this working a few prerequisites are necessary,
+  * check out the plug-in <code>org.eclipse.rap.equinox</code> from the RAP CVS
+  * also include the plug-in <code></code> into your workspace.
+  </p>
+  
+  <p>
+  Also the plug-in manifest file (<code>plugin.xml</code>) may contain
+  translatable strings.
+  Like in RCP, those stings are replaced by unique keys, prefixed with a
+  <code>%</code> sign.
+  The keys are then resolved in a <code>plugin.properties</code> file that
+  resides in the root directory of the plug-in.
+  For example, the internationalized version of the HelloWorld plug-in manifest
+  file contains placeholders for the names of the view and the perspective.
+  <pre><code>
+   ...
+   &lt;extension
+         point="org.eclipse.ui.views"&gt;
+      &lt;view
+            id="org.eclipse.rap.helloworld.helloWorldView"
+            class="org.eclipse.rap.helloworld.HelloWorldView"
+            name="<strong>%helloWorldView_name</strong>"&gt;
+      &lt;/view&gt;
+   &lt;/extension&gt;
+   
+   &lt;extension
+         point="org.eclipse.ui.perspectives"&gt;
+      &lt;perspective
+            id="org.eclipse.rap.helloworld.perspective"
+            class="org.eclipse.rap.helloworld.Perspective"
+            icon="icons/icon.gif"
+            name="<strong>%perspective_name</strong>"&gt;
+      &lt;/perspective&gt;
+   &lt;/extension&gt;
+  <code></pre>
+  And here's the <code>plugin.properties</code>:
+  <pre><code>
+  helloWorldView_name = Hello World View
+  perspective_name = Hello World Perspective
+  </code></pre>
+  To make this work, the OSGi manifest file (<code>MANIFEST.MF</code>) must
+  contain the line:
+  <pre><code>
+  Bundle-Localization: plugin
+  </code></pre>
+  </p>
+  
+  <p>
+  Again, RAP needs a special treatment to support the internationalization of
+  extensions because of it's server-side, multi-user nature.
+  The problem is that the Equinox extension registry does the translation on
+  startup and caches the results.
+  In RAP, different sessions may require translations into different languages.
+  In order to allow for this, we had to exploit the compatibility mechanism of
+  the Equinox extension registry.
+  As a side effect, the internationalization of Eclipse 3.2 plug-ins won't work.
+  </p>
+  
+  <p>  
+  To launch it from Eclipse, you need to include the plug-in
+  <code>org.eclipse.equinox.registry</code> as a source plug-in into your
+  workspace.
+  Make sure that this plug-in is also included in the launch configuration
+  (from the workspace, not from the target platform).
+  We hope that we can remove these inconveniences once Equinox supports
+  server-side applications with user sessions.
+  </p>
+  
+  <h2>Create translations of your *.properties files</h2>
+  <p>
+  The last step the internationalization is to actually translate.
+  The translated strings are contained in localized properties files.
+  These files may also reside in a fragment of its own, together with other
+  localized resources.
+  Localization properties files have a suffix that determines the language,
+  optionally also the country, and a variant (refer to the
+  <code>java.util.Locale</code> Javadoc for these concepts), all preceded
+  by an underscore character.
+  For example, to create a translation to Swiss German, create a copy of the
+  <code>messages.properties</code> file and name it
+  <code>messages_de_CH.properties</code>.
+  Then you can start to translate the contained stings.
+  Be aware that the translated properties files will very likely contain
+  accented characters that are not included in the Latin-1 encoding
+  (ISO-8859-1), which is expected by the RAP NLS support (as well as by the
+  Java ResourceBundle mechanism).
+  Those files can be converted using the <code>native2ascii</code>
+  conversion utility, included with the Java SDK.
+  </p>
+  
+  <h2>How does RAP select the language for a user session?</h2>
+  <p>
+  Web browsers allow users to set their preferred languages and they pass those
+  preferences in an <code>Accept-Language</code> HTTP header with every request.
+  RAP tries to select one of the requested languages in the preferred order and
+  if this is not possible, it uses the default locale as fallback.
+  The default locale can be set by adding the system property
+  <code>user.language</code> to the launch configuration.
+  If no matching properties file can be found, the default one
+  (<code>messages.properties</code>) takes precedence.
+  </p>
+  
+  <h2>References</h2>
+  <p>
+  <du>
+  <li><a name="ref1" href="http://www.eclipse.org/articles/Article-Internationalization/how2I18n.html">1. How to Internationalize your Eclipse Plug-In (Article on Eclipse.org)</a></li>
+  </du>
+  </p>
+  
+</body>
+</html>
