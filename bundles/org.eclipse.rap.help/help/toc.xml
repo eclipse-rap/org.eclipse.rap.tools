@@ -31,6 +31,36 @@
       label="WAR Deployment" 
       href="help/html/advanced/deployment.html"/>
   </topic>
+  <topic label="Reference">
+	<topic label="API Reference" href="reference/api/overview-summary.html">
+          <topic label="org.eclipse.rwt" href="reference/api/org/eclipse/rwt/package-summary.html"/>
+          <topic label="org.eclipse.rwt.branding" href="reference/api/org/eclipse/rwt/branding/package-summary.html"/>
+          <topic label="org.eclipse.rwt.graphics" href="reference/api/org/eclipse/rwt/graphics/package-summary.html"/>
+          <topic label="org.eclipse.rwt.lifecycle" href="reference/api/org/eclipse/rwt/lifecycle/package-summary.html"/>
+          <topic label="org.eclipse.rwt.provisional.uitest" href="reference/api/org/eclipse/rwt/provisional/uitest/package-summary.html"/>
+          <topic label="org.eclipse.rwt.resources" href="reference/api/org/eclipse/rwt/resources/package-summary.html"/>
+          <topic label="org.eclipse.rwt.service" href="reference/api/org/eclipse/rwt/service/package-summary.html"/>
+          <topic label="org.eclipse.rwt.theme" href="reference/api/org/eclipse/rwt/theme/package-summary.html"/>
+          <topic label="org.eclipse.rwt.widgets" href="reference/api/org/eclipse/rwt/widgets/package-summary.html"/>
+          <topic label="org.eclipse.swt" href="reference/api/org/eclipse/swt/package-summary.html"/>
+          <topic label="org.eclipse.swt.browser" href="reference/api/org/eclipse/swt/browser/package-summary.html"/>
+          <topic label="org.eclipse.swt.custom" href="reference/api/org/eclipse/swt/custom/package-summary.html"/>
+          <topic label="org.eclipse.swt.events" href="reference/api/org/eclipse/swt/events/package-summary.html"/>
+          <topic label="org.eclipse.swt.graphics" href="reference/api/org/eclipse/swt/graphics/package-summary.html"/>
+          <topic label="org.eclipse.swt.layout" href="reference/api/org/eclipse/swt/layout/package-summary.html"/>
+          <topic label="org.eclipse.swt.widgets" href="reference/api/org/eclipse/swt/widgets/package-summary.html"/>
+    </topic>
+
+    <topic label="RAP Extension Points Reference" href="reference/extension-points/index.html">
+       <topic label="org.eclipse.rap.ui.adapterfactory" href="reference/extension-points/org_eclipse_rap_ui_adapterfactory.html"/>
+       <topic label="org.eclipse.rap.ui.branding" href="reference/extension-points/org_eclipse_rap_ui_branding.html"/>
+       <topic label="org.eclipse.rap.ui.entrypoint" href="reference/extension-points/org_eclipse_rap_ui_entrypoint.html"/>
+       <topic label="org.eclipse.rap.ui.phaselistener" href="reference/extension-points/org_eclipse_rap_ui_phaselistener.html"/>
+       <topic label="org.eclipse.rap.ui.resources" href="reference/extension-points/org_eclipse_rap_ui_resources.html"/>
+       <topic label="org.eclipse.rap.ui.themeableWidgets" href="reference/extension-points/org_eclipse_rap_ui_themeableWidgets.html"/>
+       <topic label="org.eclipse.rap.ui.themes" href="reference/extension-points/org_eclipse_rap_ui_themes.html"/>
+    </topic>
+  </topic>
   <topic label="Legal" href="help/html/legal.html" />
   
 </toc>
