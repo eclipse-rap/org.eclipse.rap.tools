@@ -24,7 +24,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.eclipse.rap.ui.internal.target.InstallRAPTargetHandler"
+            defaultHandler="org.eclipse.rap.ui.internal.intro.target.InstallRAPTargetHandler"
             id="org.eclipse.rap.ui.intro.installTarget"
             name="Install RAP target platform">
       </command>

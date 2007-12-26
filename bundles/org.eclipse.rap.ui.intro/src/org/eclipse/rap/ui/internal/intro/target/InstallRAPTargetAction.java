@@ -8,7 +8,7 @@
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.ui.internal.target;
+package org.eclipse.rap.ui.internal.intro.target;
 
 import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.runtime.IStatus;

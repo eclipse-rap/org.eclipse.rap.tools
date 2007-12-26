@@ -5,7 +5,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html Contributors:
  * Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.ui.internal.target;
+package org.eclipse.rap.ui.internal.intro.target;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -14,8 +14,8 @@ import java.net.URL;
 import org.eclipse.core.commands.*;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.*;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.window.Window;
 import org.eclipse.pde.internal.core.LoadTargetOperation;
 import org.eclipse.pde.internal.core.itarget.ITarget;
 import org.eclipse.pde.internal.core.itarget.ITargetModel;
@@ -27,7 +27,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
 
-// ERROR HANDLING !!!!!
 public class InstallRAPTargetHandler extends AbstractHandler {
 
   private static final String TARGET_FILE = "target/rap.target"; //$NON-NLS-1$
@@ -38,7 +37,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     Shell shell = workbench.getActiveWorkbenchWindow().getShell();
     InstallTargetDialog dialog = new InstallTargetDialog( shell );
     int result = dialog.open();
-    if( result == Dialog.OK ) {
+    if( result == Window.OK ) {
       String targetDestination = dialog.getTargetDestination();
       installTarget( targetDestination );
       // switch target if the users wants to
@@ -71,7 +70,8 @@ public class InstallRAPTargetHandler extends AbstractHandler {
       String msg = "Failed to install target platform.";
       throw new ExecutionException( msg, cause );
     } catch( InterruptedException e ) {
-      // TODO [rh] exception handling
+      String msg = "Installing target interrupted.";
+      throw new ExecutionException( msg );
     }
   }
 

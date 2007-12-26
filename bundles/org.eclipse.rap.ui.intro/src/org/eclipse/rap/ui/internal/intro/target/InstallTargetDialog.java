@@ -5,7 +5,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html Contributors:
  * Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.ui.internal.target;
+package org.eclipse.rap.ui.internal.intro.target;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;

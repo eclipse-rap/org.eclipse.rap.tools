@@ -46,7 +46,9 @@
       <group style-id="content-group" id="rap-target-one-group">
         <link 
           label="Install Target Platform" 
-          url="http://org.eclipse.ui.intro/runAction?class=org.eclipse.rap.ui.internal.target.InstallRAPTargetAction&amp;pluginId=org.eclipse.rap.ui.intro&amp;standby=true" id="rap-target-one" style-id="content-link">
+          url="http://org.eclipse.ui.intro/runAction?class=org.eclipse.rap.ui.internal.intro.target.InstallRAPTargetAction&amp;pluginId=org.eclipse.rap.ui.intro&amp;standby=true" 
+          id="rap-target-one" 
+          style-id="content-link">
           <text>
             In order to work with RAP you need to have the runtime available.
             To install the target platform bundled with this feature, click 
@@ -57,14 +59,20 @@
       <group style-id="content-group" id="rap-target-quick-group">
         <link 
           label="Quick tour" 
-          url="http://org.eclipse.ui.intro/showStandby?partId=org.eclipse.platform.cheatsheet&amp;input=org.eclipse.rap.target.cheatsheet" id="rap-target-quick" style-id="content-link">
+          url="http://org.eclipse.ui.intro/showStandby?partId=org.eclipse.platform.cheatsheet&amp;input=org.eclipse.rap.target.cheatsheet" 
+          id="rap-target-quick" 
+          style-id="content-link">
           <text>
             Learn how to install and start a demo of the Rich Ajax Platform.
           </text>
         </link>
       </group>
       <group style-id="content-group" id="rap-target-cvs-group">
-        <link label="Get RAP from CVS" url="http://www.eclipse.org/rap/cvs.php" id="rap-target-cvs" style-id="content-link">
+        <link 
+          label="Get RAP from CVS" 
+          url="http://www.eclipse.org/rap/cvs.php" 
+          id="rap-target-cvs" 
+          style-id="content-link">
           <text>
             Learn how to obtain the latest RAP sources from the repository.
           </text>

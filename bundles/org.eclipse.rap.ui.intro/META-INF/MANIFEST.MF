@@ -17,4 +17,4 @@ Bundle-Localization: plugin
 Bundle-Activator: org.eclipse.rap.ui.internal.intro.IntroPlugin
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: org.eclipse.rap.ui.internal.intro;x-internal:=true,
- org.eclipse.rap.ui.internal.target;x-internal:=true
+ org.eclipse.rap.ui.internal.intro.target;x-internal:=true
