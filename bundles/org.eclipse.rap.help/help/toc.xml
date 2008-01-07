@@ -37,7 +37,6 @@
           <topic label="org.eclipse.rwt.branding" href="reference/api/org/eclipse/rwt/branding/package-summary.html"/>
           <topic label="org.eclipse.rwt.graphics" href="reference/api/org/eclipse/rwt/graphics/package-summary.html"/>
           <topic label="org.eclipse.rwt.lifecycle" href="reference/api/org/eclipse/rwt/lifecycle/package-summary.html"/>
-          <topic label="org.eclipse.rwt.provisional.uitest" href="reference/api/org/eclipse/rwt/provisional/uitest/package-summary.html"/>
           <topic label="org.eclipse.rwt.resources" href="reference/api/org/eclipse/rwt/resources/package-summary.html"/>
           <topic label="org.eclipse.rwt.service" href="reference/api/org/eclipse/rwt/service/package-summary.html"/>
           <topic label="org.eclipse.rwt.theme" href="reference/api/org/eclipse/rwt/theme/package-summary.html"/>
