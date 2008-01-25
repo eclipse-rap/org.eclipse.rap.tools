@@ -14,6 +14,17 @@
             sourceLocatorId="org.eclipse.pde.ui.launcher.PDESourceLookupDirector"
             sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
       </launchConfigurationType>
+      <launchConfigurationType
+            delegate="org.eclipse.rap.ui.internal.launch.junit.RAPJUnitLaunchConfigurationDelegate"
+            delegateDescription="%junitLaunchConfigurationType.delegateDescription"
+            delegateName="%junitLaunchConfigurationType.delegateName"
+            id="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher"
+            modes="run,debug"
+            name="%junitLaunchConfigurationType.name"
+            public="true"
+            sourceLocatorId="org.eclipse.pde.ui.launcher.PDESourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
+      </launchConfigurationType>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -31,6 +42,20 @@
                mode="debug">
          </launchMode>
       </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="org.eclipse.rap.ui.internal.launch.junit.RAPJUnitLaunchTabGroup"
+            description="%junitLaunchConfigurationTabGroup.description"
+            id="org.eclipse.rap.ui.launch.RAPJUnitTabGroup"
+            type="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher">
+         <launchMode
+               description="%junitLaunchMode.run.description"
+               mode="run">
+         </launchMode>
+         <launchMode
+               description="%junitLaunchMode.debug.description"
+               mode="debug">
+         </launchMode>
+      </launchConfigurationTabGroup>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -38,6 +63,11 @@
             configTypeID="org.eclipse.rap.ui.launch.RAPLauncher"
             icon="$nl$/icons/obj16/launcher.gif"
             id="org.eclipse.rap.ui.launch.RAPLaunchImage">
+      </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher"
+            icon="$nl$/icons/obj16/rapjunitlaunch.gif"
+            id="org.eclipse.rap.ui.launch.RAPJUnitTestLaunchImage">
       </launchConfigurationTypeImage>
    </extension>
    <extension
@@ -77,6 +107,39 @@
            </enablement>
          </contextualLaunch>         
       </shortcut>
+      <shortcut
+            class="org.eclipse.rap.ui.internal.launch.junit.RAPJUnitLaunchShortcut"
+            icon="$nl$/icons/obj16/rapjunitlaunch.gif"
+            id="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut"
+            label="%junitLaunchShortcut.label"
+            modes="run, debug">
+         <contextualLaunch>
+            <enablement>
+               <with variable="selection">
+                  <count value="1"/>
+                  <iterate>
+                      <adapt type="org.eclipse.jdt.core.IJavaElement">
+                    <test property="org.eclipse.jdt.core.isInJavaProjectWithNature" value="org.eclipse.pde.PluginNature"/>
+                    <test property="org.eclipse.jdt.core.hasTypeOnClasspath" value="junit.framework.Test"/>
+                    <test property="org.eclipse.jdt.junit.canLaunchAsJUnit" forcePluginActivation="true"/>
+                 </adapt>
+              </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+         <configurationType
+               id="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher">
+         </configurationType>
+         <description
+               description="%RunJUnitPluginLaunchShortcut.description"
+               mode="run">
+         </description>
+         <description
+               description="%DebugJUnitPluginLaunchShortcut.description"
+               mode="debug">
+         </description>
+      </shortcut>
+      
    </extension>
    <extension
          point="org.eclipse.pde.ui.launchShortcuts">
@@ -107,6 +170,18 @@
             categoryId="org.eclipse.debug.ui.category.run"
             id="org.eclipse.rap.ui.launch.RAPLaunchShortcut.debug">
       </command>
+      <command
+            name="%command.junit.run.name"
+            description="%command.junit.run.description"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut.run">
+      </command>
+      <command
+            name="%command.junit.debug.name"
+            description="%command.junit.debug.description"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut.debug">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -119,6 +194,16 @@
             commandId="org.eclipse.rap.ui.launch.RAPLaunchShortcut.debug"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M2+D R">
+      </key>
+      <key
+            commandId="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut.run"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M2+X U">
+      </key>
+      <key
+            commandId="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut.debug"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M2+D U">
       </key>
    </extension>
    

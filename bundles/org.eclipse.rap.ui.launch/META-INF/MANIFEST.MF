@@ -4,10 +4,13 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.rap.ui.launch;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: org.eclipse.rap.ui.internal.launch.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.debug.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.junit,
+ org.eclipse.jdt.launching,
  org.eclipse.pde.ui,
- org.eclipse.debug.ui
+ org.eclipse.ui
 Eclipse-LazyStart: true
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin

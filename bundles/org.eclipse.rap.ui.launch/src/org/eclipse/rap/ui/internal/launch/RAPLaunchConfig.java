@@ -66,9 +66,9 @@ public final class RAPLaunchConfig {
   public static final class LibraryVariant {
     
     public static final LibraryVariant STANDARD 
-    = new LibraryVariant( "STANDARD" ); //$NON-NLS-1$
+      = new LibraryVariant( "STANDARD" ); //$NON-NLS-1$
     public static final LibraryVariant DEBUG 
-    = new LibraryVariant( "DEBUG" ); //$NON-NLS-1$
+      = new LibraryVariant( "DEBUG" ); //$NON-NLS-1$
     
     public static LibraryVariant[] values() {
       return new LibraryVariant[] { STANDARD, DEBUG };
@@ -121,21 +121,21 @@ public final class RAPLaunchConfig {
 
   // Launch configuration attribute names
   private static final String PREFIX = "org.eclipse.rap.launch."; //$NON-NLS-1$
-  private static final String SERVLET_NAME 
+  public static final String SERVLET_NAME 
     = PREFIX + "servletName"; //$NON-NLS-1$
-  private static final String ENRY_POINT 
+  public static final String ENTRY_POINT 
     = PREFIX + "entryPoint"; //$NON-NLS-1$
-  private static final String TERMINATE_PREVIOUS 
+  public static final String TERMINATE_PREVIOUS 
     = PREFIX + "terminatePrevious"; //$NON-NLS-1$
-  private static final String BROWSER_MODE 
+  public static final String BROWSER_MODE 
     = PREFIX + "browserMode"; //$NON-NLS-1$
-  private static final String PORT 
+  public static final String PORT 
     = PREFIX + "port"; //$NON-NLS-1$
-  private static final String USE_MANUAL_PORT 
+  public static final String USE_MANUAL_PORT 
     = PREFIX + "useManualPort"; //$NON-NLS-1$
-  private static final String LOG_LEVEL 
+  public static final String LOG_LEVEL 
     = PREFIX + "logLevel"; //$NON-NLS-1$
-  private static final String LIBRARY_VARIANT 
+  public static final String LIBRARY_VARIANT 
     = PREFIX + "libraryVariant"; //$NON-NLS-1$
   
   // Default values for launch configuration attribute names
@@ -153,7 +153,7 @@ public final class RAPLaunchConfig {
   public static void setDefaults( final ILaunchConfigurationWorkingCopy config ) 
   {
     config.setAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
-    config.setAttribute( ENRY_POINT, DEFAULT_ENTRY_POINT );
+    config.setAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
     config.setAttribute( TERMINATE_PREVIOUS, DEFAULT_TERMINATE_PREVIOUS );
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE.getName() );
     config.setAttribute( PORT, DEFAULT_PORT );
@@ -191,12 +191,12 @@ public final class RAPLaunchConfig {
   }
   
   public String getEntryPoint() throws CoreException {
-    return config.getAttribute( ENRY_POINT, DEFAULT_ENTRY_POINT );
+    return config.getAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
   }
   
   public void setEntryPoint( final String entryPoint ) {
     checkWorkingCopy();
-    workingCopy.setAttribute( ENRY_POINT, entryPoint );
+    workingCopy.setAttribute( ENTRY_POINT, entryPoint );
   }
   
   public boolean getTerminatePrevious() throws CoreException {

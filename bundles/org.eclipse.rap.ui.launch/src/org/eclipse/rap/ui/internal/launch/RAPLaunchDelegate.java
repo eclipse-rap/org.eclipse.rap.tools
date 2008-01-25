@@ -58,6 +58,15 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     // As this is the first method that is called after creating an instance
     // of RAPLaunchDelegate, we store the launch and config parameters to be 
     // accessible from member methods
+    SubProgressMonitor subMonitor = doPreLaunch( config, launch, monitor );
+    super.launch( config, mode, launch, subMonitor );
+  }
+
+  public SubProgressMonitor doPreLaunch( final ILaunchConfiguration config,
+                                         final ILaunch launch,
+                                         final IProgressMonitor monitor )
+    throws CoreException
+  {
     this.launch = launch;
     this.config = new RAPLaunchConfig( config ); 
     SubProgressMonitor subMonitor;
@@ -66,7 +75,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     port = determinePort( subMonitor );
     registerBrowserOpener();
-    super.launch( config, mode, launch, subMonitor );
+    return subMonitor;
   }
 
   ///////////////////////////////////////

@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
-final class MainTab extends AbstractLaunchConfigurationTab {
+public final class MainTab extends AbstractLaunchConfigurationTab {
 
   
   private static final String BROWSER_PREFERENCE_PAGE 
@@ -63,7 +63,7 @@ final class MainTab extends AbstractLaunchConfigurationTab {
   private ComboViewer cmbLogLevel;
   private ComboViewer cmbLibVariant;
 
-  MainTab() {
+  public MainTab() {
     tabImage = Images.DESC_MAIN_TAB.createImage();
     warnImage = Images.WARNING.createImage();
     GridData gridData = new GridData( SWT.FILL, SWT.CENTER, true, false );
