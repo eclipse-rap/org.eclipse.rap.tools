@@ -53,7 +53,7 @@
   For example, if your custom widget is <code>my.custom.XWidget</code>, you must
   create a package
   <code>my.custom.internal.xwidgetkit</code>
-  or
+  or attribute
   <code>my.internal.custom.xwidgetkit</code>
   for your files.
   By the way, if you are already familiar with the concept of life-cycle adapters
@@ -139,7 +139,6 @@
 
    &lt;image name="mywidget.active.bgimage"
          description="Background image for title bar of active Shells"
-         targetPath="mywidget/bg_active.png"
          default="resource/images/mywidget_bg.png"/&gt;
 
    ...
@@ -173,10 +172,14 @@
       format definitions.
     </li>
     <li>
-      <code>target</code>: only for images, this attribute must specify a target
-      path to copy the image to.
+      <code>targetPath</code>: (optional) only for images, this attribute
+      <del>must</del> <add>can</add> specify a target path to copy the image to.
       Within the qooxdoo appearance theme, you can later refer to the image using the
-      path <code>widget/&lt;target&gt;</code>.
+      path <code>widget/&lt;targetPath&gt;</code>.<br/>
+      <strong>Update:</strong> Since RAP 1.1, this attribute is optional.
+      It might be dropped completely in the future.
+      If you don't specify a targetPath, it is automatically set to the key
+      given in the attribute <code>name</code>.
     </li>
   </ul>
 </p>
@@ -242,8 +245,8 @@ appearances = {
   This macro is substituted with the current value in a valid format.
   This is necessary because the qooxdoo theming does not allow for referring to
   dimensions and box dimensions by a key.
-  For <strong>images</strong>, you must refer to the target path specified in
-  the theme definition file, prefixed with <code>widget/</code>.
+  For <strong>images</strong>, you must refer to the key specified in the theme
+  definition file, prefixed with <code>widget/</code>.
 </p>
 
 </body>
