@@ -57,7 +57,7 @@
   should look like this in the end:
   <pre>
   <code>
-  public void setAddress( final String address ) {
+  public void setAddress( String address ) {
     if( address == null ) {
       this.address = "";
     } else {
@@ -321,7 +321,7 @@
   <pre>
   <code>
   ...
-  public Object getAdapter( final Class adapter ) {
+  public Object getAdapter( Class adapter ) {
     Object result;
     if( adapter == IWidgetLifeCycleAdapter.class ) {
       result = new MyCustomWidgetLCA();
@@ -379,7 +379,7 @@
   </p>
   <pre>
   <code>
-  public void renderInitialization( final Widget widget ) throws IOException {
+  public void renderInitialization( Widget widget ) throws IOException {
     JSWriter writer = JSWriter.getWriterFor( widget );
     String id = WidgetUtil.getId( widget );
     writer.newWidget( "org.eclipse.rap.gmaps.GMap", new Object[] { id } );
@@ -408,7 +408,7 @@
   <code>
   private static final String PROP_ADDRESS = "address";
   
-  public void preserveValues( final Widget widget ) {
+  public void preserveValues( Widget widget ) {
     ControlLCAUtil.preserveValues( ( Control )widget );
     IWidgetAdapter adapter = WidgetUtil.getAdapter( widget );
     adapter.preserve( PROP_ADDRESS, ( ( GMap )widget ).getAddress() );
@@ -434,7 +434,7 @@
   <code>
   private static final String JS_PROP_ADDRESS = "address";
   
-  public void renderChanges( final Widget widget ) throws IOException {
+  public void renderChanges( Widget widget ) throws IOException {
     GMap gmap = ( GMap )widget;
     ControlLCAUtil.writeChanges( gmap );
     JSWriter writer = JSWriter.getWriterFor( widget );
@@ -469,7 +469,7 @@
   <code>
   private static final String PARAM_CENTER = "centerLocation";
   
-  public void readData( final Widget widget ) {
+  public void readData( Widget widget ) {
     GMap map = ( GMap )widget;
     String location = WidgetLCAUtil.readPropertyValue( map, PARAM_CENTER );
     map.setCenterLocation( location );
@@ -495,7 +495,7 @@
   </p>
   <pre>
   <code>
-  public void renderDispose( final Widget widget ) throws IOException {
+  public void renderDispose( Widget widget ) throws IOException {
     JSWriter writer = JSWriter.getWriterFor( widget );
     writer.dispose();
   }
@@ -648,7 +648,7 @@
   <code>
   public class GMapDemo implements IEntryPoint {
 
-    public Display createUI() {
+    public int createUI() {
       Display display = new Display();
       Shell shell = new Shell( display, SWT.SHELL_TRIM );
       shell.setLayout( new FillLayout() );
@@ -659,15 +659,19 @@
   
       shell.setSize( 300, 300 );
       shell.open();
-      
-      return display;
+      while( !shell.isDisposed() ) {
+        if( !display.readAndDispatch() ) {
+          display.sleep();
+        }
+      }
+      return 0;
     }
   }
   </code>
   </pre>
   <p>
   Don't forget to add <code>org.eclipse.rap.ui</code> and the GMap widget project as dependencies.
-  Then we need to register our entrypoint via the <code>org.eclipse.rap.ui.entrypoint</code>. If
+  Then we need to register our entry point via the <code>org.eclipse.rap.ui.entrypoint</code>. If
   everything went well our demo should look like this after starting the server:
   </p>
   <img src="../../images/custom-widget/demo.png">
@@ -679,9 +683,9 @@
   <code>
   public class GMapDemo implements IEntryPoint {
 
-    public Display createUI() {
+    public int createUI() {
       Display display = new Display();
-      Shell shell = new Shell( display, SWT.SHELL_TRIM );
+      final Shell shell = new Shell( display, SWT.SHELL_TRIM );
       shell.setLayout( new FillLayout() );
       shell.setText( "GMaps Demo" );
       
@@ -691,17 +695,20 @@
       Button button = new Button( shell, SWT.PUSH );
       button.setText( "Tell me where I am!" );
       button.addSelectionListener( new SelectionAdapter() {
-  
         public void widgetSelected( SelectionEvent e ) {
-          MessageDialog.openInformation( shell, "GMap Demo", "You are here: " + map.getCenterLocation() );
+          String msg = "You are here: " + map.getCenterLocation() 
+          MessageDialog.openInformation( shell, "GMap Demo", msg );
         }
-        
       });
       
       shell.setSize( 300, 300 );
       shell.open();
-      
-      return display;
+      while( !shell.isDisposed() ) {
+        if( !display.readAndDispatch() ) {
+          display.sleep();
+        }
+      }
+      return 0;
     }
   }
   </code>

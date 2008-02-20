@@ -82,9 +82,10 @@ import org.eclipse.ui.PlatformUI;
 
 public class HelloWorldWorkbench implements IEntryPoint {
   
-  public Display createUI() {
-    Display result = PlatformUI.createDisplay();
-    PlatformUI.createAndRunWorkbench( result, new HelloWorldWorkbenchAdvisor() );
+  public int createUI() {
+    Display display = PlatformUI.createDisplay();
+    WorkbenchAdvisor advisor = new HelloWorldWorkbenchAdvisor()
+    int result = PlatformUI.createAndRunWorkbench( display, advisor );
     return result;
   }
 }
