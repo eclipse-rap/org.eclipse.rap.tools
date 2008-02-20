@@ -3,6 +3,7 @@ package $packageName$;
 import org.eclipse.rwt.lifecycle.IEntryPoint;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.application.WorkbenchAdvisor;
 
 /**
  * This class controls all aspects of the application's execution
@@ -10,9 +11,9 @@ import org.eclipse.ui.PlatformUI;
  */
 public class $applicationClass$ implements IEntryPoint {
 
-	public Display createUI() {
+	public int createUI() {
 		Display display = PlatformUI.createDisplay();
-		PlatformUI.createAndRunWorkbench( display, new ApplicationWorkbenchAdvisor() );
-		return display;
+		WorkbenchAdvisor advisor = new ApplicationWorkbenchAdvisor();
+		return PlatformUI.createAndRunWorkbench( display, advisor );
 	}
 }
