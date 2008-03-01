@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,6 @@
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.rap.ui.internal.launch;
 
 import java.io.IOException;
@@ -55,9 +54,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
                       final IProgressMonitor monitor ) 
     throws CoreException
   {
-    // As this is the first method that is called after creating an instance
-    // of RAPLaunchDelegate, we store the launch and config parameters to be 
-    // accessible from member methods
     SubProgressMonitor subMonitor = doPreLaunch( config, launch, monitor );
     super.launch( config, mode, launch, subMonitor );
   }
@@ -67,8 +63,11 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
                                          final IProgressMonitor monitor )
     throws CoreException
   {
+    // As this is the first method that is called after creating an instance
+    // of RAPLaunchDelegate, store the config parameters to be accessible 
+    // from member methods
+    // TODO [rh] find a better way
     this.launch = launch;
-    this.config = new RAPLaunchConfig( config ); 
     SubProgressMonitor subMonitor;
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     terminateIfRunning( subMonitor );
@@ -78,6 +77,37 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return subMonitor;
   }
 
+  ////////////////////////////////////////
+  // LaunchConfigurationDelegate overrides
+
+  public boolean finalLaunchCheck( final ILaunchConfiguration configuration,
+                                   final String mode,
+                                   final IProgressMonitor monitor )
+    throws CoreException
+  {
+    // As this is the first method that is called after creating an instance
+    // of RAPLaunchDelegate, store the config parameters to be accessible 
+    // from member methods
+    // TODO [rh] find a better way
+    this.config = new RAPLaunchConfig( configuration ); 
+    boolean result = super.finalLaunchCheck( configuration, mode, monitor );
+    if( result ) {
+      // can't access this.launch here
+      RAPLaunchConfig rapConfig = new RAPLaunchConfig( configuration );
+      if( rapConfig.getUseManualPort() && isPortBusy( rapConfig.getPort() ) ) 
+      {
+        DebugPlugin debugPlugin = DebugPlugin.getDefault();
+        IStatusHandler prompter = debugPlugin.getStatusHandler( promptStatus );
+        if( prompter != null ) {
+          IStatus status = PortBusyStatusHandler.STATUS;
+          Object resolution = prompter.handleStatus( status, config );
+          result = ( ( Boolean )resolution ).booleanValue();
+        }
+      }
+    }
+    return result;
+  }
+  
   ///////////////////////////////////////
   // EquinoxLaunchConfiguration overrides
   
@@ -146,6 +176,23 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       Status status = new Status( IStatus.ERROR, pluginId, msg, e );
       throw new CoreException( status );
     }
+  }
+
+  private static boolean isPortBusy( final int port ) {
+    ServerSocket server = null;
+    try {
+      server = new ServerSocket( port );
+    } catch( IOException e1 ) {
+      // assume that port is occupied when getting here
+    }
+    if( server != null ) {
+      try {
+        server.close();
+      } catch( IOException e ) {
+        // ignore
+      }
+    }
+    return server == null;
   }
 
   //////////////////////////////////

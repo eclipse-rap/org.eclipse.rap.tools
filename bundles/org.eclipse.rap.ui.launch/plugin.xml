@@ -206,5 +206,13 @@
             sequence="M3+M2+D U">
       </key>
    </extension>
-   
+  <extension
+         point="org.eclipse.debug.core.statusHandlers">
+      <statusHandler
+            class="org.eclipse.rap.ui.internal.launch.PortBusyStatusHandler"
+            code="601"
+            id="org.eclipse.rap.ui.launch.portBusyStatusHandler"
+            plugin="org.eclipse.rap.ui.launch">
+      </statusHandler>
+   </extension>   
 </plugin>
