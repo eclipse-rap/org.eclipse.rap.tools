@@ -115,7 +115,7 @@ public final class RAPLaunchConfigValidator {
   private IStatus validateURL() throws CoreException {
     IStatus result = Status.OK_STATUS;
     try {
-      URLBuilder.fromLaunchConfig( config, 80 );
+      URLBuilder.fromLaunchConfig( config, 80, false );
     } catch( MalformedURLException e ) {
       String text = "Servlet name and/or entry point cause a malformed URL.";
       result = createWarning( text, e );

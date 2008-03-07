@@ -31,7 +31,7 @@ public class RAPJUnitLaunchConfigurationDelegate
   private EquinoxLaunchConfigurationExtension elc
     = new EquinoxLaunchConfigurationExtension();
   private RAPLaunchDelegate rld
-    = new RAPLaunchDelegate();
+    = new RAPLaunchDelegate( true );
 
   
   private final class EquinoxLaunchConfigurationExtension
@@ -45,6 +45,15 @@ public class RAPJUnitLaunchConfigurationDelegate
     {
       super.preLaunchCheck( configuration, launch, monitor );
     }
+  }
+  
+  public boolean finalLaunchCheck( final ILaunchConfiguration configuration,
+                                   final String mode,
+                                   final IProgressMonitor monitor )
+    throws CoreException
+  {
+    rld.finalLaunchCheck( configuration, mode, monitor );
+    return super.finalLaunchCheck( configuration, mode, monitor );
   }
 
   public void launch( final ILaunchConfiguration configuration,

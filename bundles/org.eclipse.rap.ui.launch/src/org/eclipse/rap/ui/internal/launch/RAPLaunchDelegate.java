@@ -47,7 +47,16 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private ILaunch launch;
   private RAPLaunchConfig config;
   private int port;
+  private final boolean testMode;
   
+  public RAPLaunchDelegate() {
+    this( false );
+  }
+  
+  public RAPLaunchDelegate( final boolean testMode ) {
+    this.testMode = testMode;
+  }
+
   public void launch( final ILaunchConfiguration config,
                       final String mode,
                       final ILaunch launch,
@@ -200,7 +209,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   
   private URL getUrl() throws CoreException {
     try {
-      return URLBuilder.fromLaunchConfig( config, port );
+      return URLBuilder.fromLaunchConfig( config, port, testMode );
     } catch( MalformedURLException e ) {
       String msg = "Invalid URL."; //$NON-NLS-1$
       String pluginId = Activator.getPluginId();

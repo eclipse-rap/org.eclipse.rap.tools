@@ -21,13 +21,16 @@ final class URLBuilder {
   private static final String PROTOCOL = "http"; //$NON-NLS-1$
   private static final String HOST = "127.0.0.1"; //$NON-NLS-1$
   private static final String QUERY_STARTUP = "?startup="; //$NON-NLS-1$
+  private static final String QUERY_STARTUP_TEST
+    = "?startup=rapjunit&testentrypoint="; //$NON-NLS-1$
 
   static String getHost() {
     return HOST;
   }
   
   static URL fromLaunchConfig( final RAPLaunchConfig config, 
-                               final int port ) 
+                               final int port, 
+                               final boolean testMode ) 
     throws CoreException, MalformedURLException 
   {
     String servletName = config.getServletName();
@@ -36,7 +39,9 @@ final class URLBuilder {
     }
     String entryPoint = config.getEntryPoint();
     String query = EMPTY;
-    if( !EMPTY.equals( entryPoint ) ) {
+    if( testMode ) {
+      query = QUERY_STARTUP_TEST + entryPoint;
+    } else if( !EMPTY.equals( entryPoint ) ) {
       query = QUERY_STARTUP + entryPoint;
     }
     return new URL( PROTOCOL, HOST, port, servletName + query );
