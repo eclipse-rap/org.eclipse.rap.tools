@@ -135,7 +135,8 @@ shell.title.height: 25
   <ul>
     <li>
       A color keyword.
-      Only the 16 basic [http://www.w3.org/TR/REC-html40/types.html#h-6.5 HTML 4.0 colors]
+      Only the 16 basic
+      <a href="http://www.w3.org/TR/REC-html40/types.html#h-6.5">HTML 4.0 colors</a>
       (aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple,
        red, silver, teal, white, and yellow) are supported.
       The keywords are case-insensitive.
@@ -158,6 +159,16 @@ shell.title.height: 25
     <li><code>0, 128, 128</code></li>
     <li><code>#fffaf0</code></li>
   </ul>
+</p>
+
+<h4>Transparency</h4>
+<p>
+Since RAP 1.1M3, the keyword <code>transparent</code> is allowed for some
+color parameters such as <code>button.background</code>.
+It is generally not allowed for foreground colors and for colors that map to SWT
+system colors (see below).
+Transparency support in RAP is still developing, so chances are that there will
+be some changes to this feature in the near future.
 </p>
 
 <h3>Dimensions</h3>
@@ -247,6 +258,34 @@ shell.title.height: 25
     <li><code>resource/images/upper-left.png<code></li>
     <li><code>none</code></li>
   </ul>
+</p>
+
+<h2>Widget Variants</h2>
+<p>
+  RAP 1.1M3 introduced a new concept to allow for a more flexible theming,
+  called widget variants.
+  This allows to apply a style to certain widgets that differs from the
+  style of other widgets of the same type.
+  As an example, imagine an application that uses PUSH buttons in a special
+  banner bar.
+  These buttons should have a different font and text color than normal PUSH
+  buttons.
+</p>
+
+<p>
+  To implement this, the buttons in the bar are marked as belonging to a custom
+  variant (say "mybutton") like so:
+  <pre>
+   button.setData( WidgetUtil.CUSTOM_VARIANT, "mybutton" )
+  </pre>
+  In the theme file, the theme properties in question are copied and prefixed
+  with the name of the custom variant:
+  <pre>
+   mybutton/button.font: 10px Helvetica
+   mybutton/button.foreground: white
+   mybutton/button.border: none
+   ...
+  </pre>
 </p>
 
 <h2>SWT System Colors</h2>

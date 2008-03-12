@@ -212,11 +212,12 @@ appearances = {
 
   "my-custom" : {
     style : function( states ) {
+      var tv = new org.eclipse.swt.theme.ThemeValues( states );
       return {
-        border : states.rwt_BORDER ? "mycontrol.BORDER.border" : "mycontrol.border",
-        backgroundColor : "mycontrol.background",
-        padding : THEME_VALUE( "mycontrol.padding" ),
-        backgroundImage : "widget/mycontrol/bg.gif"
+        border : tv.getBorder( states.rwt_BORDER ? "mycontrol.BORDER.border" : "mycontrol.border" ),
+        backgroundColor : tv.getColor( "mycontrol.background" ),
+        padding : tv.getBoxDimension( "mycontrol.padding" ),
+        backgroundImage : tv.getImage( "mycontrol.background.image" )
       }
     }
   }
@@ -237,16 +238,16 @@ appearances = {
 </p>
 
 <p>
-  In your appearance, you can directly refer to the <strong>colors</strong>,
-  <strong>borders</strong>, and <strong>fonts</strong> defined in your theme
-  definition file.
-  For <strong>dimensions</strong> and <strong>box dimensions</strong>, you have
-  to use the macro <code>THEME_VALUE()</code> as shown in the above example.
-  This macro is substituted with the current value in a valid format.
-  This is necessary because the qooxdoo theming does not allow for referring to
-  dimensions and box dimensions by a key.
-  For <strong>images</strong>, you must refer to the key specified in the theme
-  definition file, prefixed with <code>widget/</code>.
+  <strong>Update:</strong>
+  Since RAP 1.1M3, you should not refer to the names of colors, borders,
+  and fonts in your appearance. Also, the makro <code>THEME_VALUE()</code> is
+  obsolete.
+  To refer to theme values, use an instance of the class ThemeValues as shown in
+  the example above.
+  This class transforms all types of theme values in a format suitable for the
+  qooxdoo appearance theme.
+  Moreover, it supports widget variants and tries to resolve the variant value
+  first.
 </p>
 
 </body>
