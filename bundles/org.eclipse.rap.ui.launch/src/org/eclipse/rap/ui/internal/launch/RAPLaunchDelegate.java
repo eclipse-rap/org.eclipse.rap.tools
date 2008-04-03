@@ -73,50 +73,22 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException
   {
     // As this is the first method that is called after creating an instance
-    // of RAPLaunchDelegate, store the config parameters to be accessible 
-    // from member methods
+    // of RAPLaunchDelegate, store the config and launch parameters to be 
+    // accessible from member methods
     // TODO [rh] find a better way
     this.launch = launch;
+    this.config = new RAPLaunchConfig( config ); 
     SubProgressMonitor subMonitor;
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     terminateIfRunning( subMonitor );
+    subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
+    warnIfPortBusy( subMonitor );
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     port = determinePort( subMonitor );
     registerBrowserOpener();
     return subMonitor;
   }
 
-  ////////////////////////////////////////
-  // LaunchConfigurationDelegate overrides
-
-  public boolean finalLaunchCheck( final ILaunchConfiguration configuration,
-                                   final String mode,
-                                   final IProgressMonitor monitor )
-    throws CoreException
-  {
-    // As this is the first method that is called after creating an instance
-    // of RAPLaunchDelegate, store the config parameters to be accessible 
-    // from member methods
-    // TODO [rh] find a better way
-    this.config = new RAPLaunchConfig( configuration ); 
-    boolean result = super.finalLaunchCheck( configuration, mode, monitor );
-    if( result ) {
-      // can't access this.launch here
-      RAPLaunchConfig rapConfig = new RAPLaunchConfig( configuration );
-      if( rapConfig.getUseManualPort() && isPortBusy( rapConfig.getPort() ) ) 
-      {
-        DebugPlugin debugPlugin = DebugPlugin.getDefault();
-        IStatusHandler prompter = debugPlugin.getStatusHandler( promptStatus );
-        if( prompter != null ) {
-          IStatus status = PortBusyStatusHandler.STATUS;
-          Object resolution = prompter.handleStatus( status, config );
-          result = ( ( Boolean )resolution ).booleanValue();
-        }
-      }
-    }
-    return result;
-  }
-  
   ///////////////////////////////////////
   // EquinoxLaunchConfiguration overrides
   
@@ -153,6 +125,36 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   ////////////////////////////////////////
   // Helping methods to manage port number
   
+  private void warnIfPortBusy( SubProgressMonitor monitor ) throws CoreException 
+  {
+    String taskName = "Checking manual port";
+    monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
+    try {
+      if( config.getUseManualPort() && isPortBusy( config.getPort() ) ) {
+        DebugPlugin debugPlugin = DebugPlugin.getDefault();
+        IStatusHandler prompter = debugPlugin.getStatusHandler( promptStatus );
+        if( prompter != null ) {
+          IStatus status = PortBusyStatusHandler.STATUS;
+          Object resolution = prompter.handleStatus( status, config );
+          if( Boolean.FALSE.equals( resolution ) ) {
+            String text
+              = "Port {0,number,#} in use. Launch ''{1}'' interrupted by user.";
+            Object[] args = new Object[] { 
+              new Integer( config.getPort() ),
+              config.getName()
+            };
+            String msg = MessageFormat.format( text, args );
+            String pluginId = Activator.PLUGIN_ID;
+            Status infoStatus = new Status( IStatus.INFO, pluginId, msg );
+            throw new CoreException( infoStatus );
+          }
+        }
+      }
+    } finally {
+      monitor.done();
+    }
+  }
+
   private int determinePort( final IProgressMonitor monitor ) 
     throws CoreException 
   {
