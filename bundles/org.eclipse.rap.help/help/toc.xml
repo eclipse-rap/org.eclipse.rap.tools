@@ -32,7 +32,7 @@
       href="help/html/advanced/deployment.html"/>
   </topic>
   <topic label="Reference">
-	<topic label="API Reference" href="reference/api/overview-summary.html">
+	<topic label="API Reference" href="help/html/reference/api/overview-summary.html">
           <topic label="org.eclipse.rwt" 
             href="help/html/reference/api/org/eclipse/rwt/package-summary.html"/>
           <topic label="org.eclipse.rwt.branding" 
@@ -65,7 +65,6 @@
             href="help/html/reference/api/org/eclipse/swt/widgets/package-summary.html"/>
     </topic>
 
-<!--
     <topic label="RAP Extension Points Reference" href="help/html/reference/extension-points/index.html">
        <topic label="org.eclipse.rap.ui.adapterfactory" href="help/html/reference/extension-points/org_eclipse_rap_ui_adapterfactory.html"/>
        <topic label="org.eclipse.rap.ui.branding" href="help/html/reference/extension-points/org_eclipse_rap_ui_branding.html"/>
@@ -75,7 +74,7 @@
        <topic label="org.eclipse.rap.ui.themeableWidgets" href="help/html/reference/extension-points/org_eclipse_rap_ui_themeableWidgets.html"/>
        <topic label="org.eclipse.rap.ui.themes" href="help/html/reference/extension-points/org_eclipse_rap_ui_themes.html"/>
     </topic>
--->    
+    
   </topic>
   <topic label="Legal" href="help/html/legal.html" />
   

@@ -2,11 +2,11 @@
 <project default="javadoc">
 	<target name="javadoc">
 		<javadoc 
-			executable="c:\program files\java\SDK-1.4.2_16\bin\javadoc.exe"
+			executable="/opt/j2sdk1.4.2_17/bin/javadoc"
 			access="public" 
 			author="false" 
 			classpath="javax.servlet" 
-			destdir="org.eclipse.rap.help\javaDoc\output" 
+			destdir="org.eclipse.rap.help/html/reference/api" 
 			nodeprecated="false" 
 			nodeprecatedlist="false" 
 			noindex="false" 
@@ -36,5 +36,10 @@
 			<package name="org.eclipse.swt.layout" />
 			<package name="org.eclipse.swt.widgets" />
 		</javadoc>
+		
+		<pde.convertSchemaToHTML
+			manifest="org.eclipse.rap.ui/plugin.xml"
+			destination="org.eclipse.rap.help/help/html/reference/extension-points" />
+
 	</target>
 </project>
