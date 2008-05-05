@@ -25,17 +25,13 @@
   <a href="http://www.eclipse.org/equinox/server/http_in_container.php">
   Equinox in a Servlet Container</a> document. We also assume that you have a 
   checkout of the 
-  <a href="servletbridge-anon.psf">servlet bridge bundles</a>
-  in your workspace. <b>Note</b>: This is configured to build and run against
-  the 3.2 code base of equinox. If you are working with 3.3 use the team project
-  set for the servlet bridge that is available  
-  <a href="http://www.eclipse.org/equinox/server/downloads/servletbridge-anon.psf">here.</a></p>
+  <a href="servletbridge-anon.psf">servlet bridge and demo feature bundles</a>
+  in your workspace.</p>
   
   <h3>Prepare the build script</h3>
   <ul>
-  <li>If not already done checkout the <code>org.eclipse.rap.demo.feature</code>
-  project into your workspace.</li>
-  <li>Open the <code>script/webappBuilder.xml</code> with the Ant editor.</li>
+  <li>Open the <code>script/webappBuilder.xml</code> of the
+  <code>org.eclipse.rap.demo.feature</code> with the Ant editor.</li>
   <li>Adjust the <code>servletbridge.dir</code> property
   (see docu in script file).</li>
   </ul>
@@ -69,7 +65,9 @@
   <p>After that pack the <code>WAR</code> of the application build available in the 
   build folder (in our case the content of <code>build/rapdemo</code>). Deploy
   the <code>WAR</code> to a servlet container to see whether the build was successful :-)</p>
-  <img src="../../images/runtime.png">
+  <img src="../../images/runtime.png"><br>
+  (screenshot shows application running with osgi-console. See web.xml in the
+  templates directory for more infos on how activating the console)
   
   <h2>How to deploy my own application?</h2>
   
@@ -84,7 +82,25 @@
   according to your project structure. Following the steps above should lead
   to a full functional <code>WAR</code> of your application.</p>
   
+  <p><strong>Note</strong>: If you are encountering problems during the build
+  you may consider to use the PDE-Export (available from the feature.xml editor)
+  before exporting the whole WAR at once. This proved helpful for
+  trouble-shooting as the export may shows problem relevant dialogs that are
+  suppressed in the ant export.</p>
   
+  <p><strong>Note also</strong>: Besides the application server log files
+  there exists an equinox framework log that can be found under the webapp's
+  work directory, e.g. on tomcat:
+  <pre>
+  <code>&lt;tomcat-installation&gt;\work\Catalina\localhost\demo\eclipse\workspace\.metadata\.log</code>
+  </pre>
+  In case equinox isn't able to start at all you may also have a look for log
+  files at:
+  <pre>
+  <code>&lt;tomcat-installation&gt;\work\Catalina\localhost\demo\eclipse\configuration</code>
+  </pre>
+  
+  </p>
   
 </body>
 </html>
