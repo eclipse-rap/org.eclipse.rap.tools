@@ -28,7 +28,7 @@ public final class TargetProvider {
   private static final String CHARSET_NAME = "ISO-8859-1"; //$NON-NLS-1$
 
   private static final String DEFAULT_TARGET_DEST 
-     = "org.eclipse.rap.target-1.1.0_M3"; //$NON-NLS-1$
+     = "org.eclipse.rap.target-1.1.0_M4"; //$NON-NLS-1$
 
   public static String getDefaultTargetDestination() {
     URL configLocation = Platform.getConfigurationLocation().getURL();
