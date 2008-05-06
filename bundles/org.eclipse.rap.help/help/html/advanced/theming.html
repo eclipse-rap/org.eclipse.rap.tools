@@ -9,7 +9,16 @@
 </head>
 <body>
 
-<h1>RWT Theming</h1>
+<h1>RWT Theming (CSS-based)</h1>
+
+<p class="Note">
+  This article describes the new CSS-based theming which is available since
+  RAP 1.1M4.
+  Developers are incouraged to use this way of theming now.
+  The old property-based theming is still supported but considered deprecated.
+  The documentation is still available <a href="./theming-old.html">here</a>.
+</p>
+
 <p>
   This article describes the theming functionality of RWT, the RAP Widget Toolkit.
   This theming defines the default look and feel of the basic RWT controls like
@@ -22,17 +31,9 @@
 
 <h2>Introduction</h2>
 
-<h3>Capabilities of the RWT Theming</h3>
 <p>
-  In general, the RWT theming allows to define
-  <ul>
-    <li>custom colors,</li>
-    <li>custom fonts,</li>
-    <li>custom borders,</li>
-    <li>custom dimensions and box dimensions (paddings etc.),</li>
-    <li>custom images and icons</li>
-  </ul>
-  for RWT controls.
+  The RWT theming allows to define custom colors, fonts, borders, paddings,
+  margins and images for RWT controls.
   However, which aspects are actually customizable depends on the particular
   control. Some controls allow for more flexibility, others are more hard-wired.
 </p>
@@ -52,49 +53,48 @@
 
 <h3>Create a Custom Theme File</h3>
 <p>
-  RWT theme files are simple Java Property files.
-  A template named <code>theme-template.properties</code> can be found in the
-  <code>src/</code> directory of the RWT plug-in
-  (<code>org.eclipse.rap.rwt</code>).
-  You only have to specify those properties that are relevant for your
-  customization, undefined properties stay at their default value.
-  See below for the syntax of the property values.
-</p>
-<p>
+  CSS theme files for RAP are valid
+  <a href="http://www.w3.org/TR/CSS21/">CSS 2.1</a> files, except for a couple
+  of non-standard properties and pseudo classes.
   The following is an example for a simple theme file:
   <pre>
-# My Aquablue Theme
-#
+  * {
+    backgound-color: white;
+  }
 
-# Frame border for group boxes
-# default: 1 solid #aca899
-group.frame.border: 2 dotted #56a0ea
+  Button[PUSH], BUTTON[TOGGLE] {
+    border: 2px solid blue;
+    color: rgb( 17, 23, 103 );
+    background-color: #f9f9f9;
+  }
 
-# Font for title bar of Shells
-# default: bold 11 "Segoe UI", Corbel, Calibri, Tahoma, "Lucida Sans Unicode", sans-serif
-shell.title.font: bold 15 "Trebuchet MS", Arial, Helvetica, sans-serif
-
-# Height of the title bar of Shells
-# default: 18
-shell.title.height: 25
-
-...
+  Button[PUSH]:hover, BUTTON[TOGGLE]:hover {
+    background-color: white;
+  }
   </pre>
+  The first rule defines a background color for all elements.
+  The second rule applies to Buttons with SWT style flags PUSH and TOGGLE and
+  defines a border, a color, and a background color.
+  The third rule defines a hover color for push-buttons and toggle-buttons.
+</p>
+<p>
+  The <code>theme.css</code> file found in the demo project
+  (<code>org.eclipse.rap.demo</code>) can serve as a more complex example.
 </p>
 
 <h3>Register the New Theme</h3>
 <p>
   In order to make your theme available, you have to register it with the
-  extension point <code>org.eclipse.rap.swt.themes</code>.
+  extension point <code>org.eclipse.rap.ui.themes</code>.
   In the <code>plugin.xml</code> of your application project, add an extension
   like this:
   <pre>
    &lt;extension
-         point="org.eclipse.rap.swt.themes"&gt;
+         point="org.eclipse.rap.ui.themes"&gt;
       &lt;theme
             id="my.application.aquablue"
             name="Aqua Blue Test Theme"
-            file="aqua-blue.properties" /&gt;
+            file="aqua-blue.css" /&gt;
    &lt;/extension&gt;
   </pre>
 </p>
@@ -123,139 +123,35 @@ shell.title.height: 25
   There is no support for programmatic activation of custom themes yet.
 </p>
 
+<h2>Available Property Values</h2>
+<p class="Note">
+  The properties supported for every widget will be published here later,
+  for now developers have to look into the <code>&lt;Widget&gt;.theme.xml</code>
+  files in the RWT source code.
+  Please note that as long as RAP still uses the old property system internally,
+  not all properties specified in a CSS file are really interpreted.
+</p>
+
 <h2>Syntax for Property Values</h2>
-<p>
-  Property values specified in a theme file must conform to the following syntactical rules:
-</p>
-
-<h3>Colors</h3>
-<p>
-  Colors can be specified in one of these ways:
+<p>  
+  Property values specified in a theme file must conform to the
+  <a href="http://www.w3.org/TR/CSS21/">CSS 2.1 specification</a>
+  with the following restrictions:
   <ul>
-    <li>
-      A color keyword.
-      Only the 16 basic
-      <a href="http://www.w3.org/TR/REC-html40/types.html#h-6.5">HTML 4.0 colors</a>
-      (aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple,
-       red, silver, teal, white, and yellow) are supported.
-      The keywords are case-insensitive.
-    </li>
-    <li>
-      A comma separated list of three decimal integer numbers in the range
-      <code>0 .. 255</code> that denote the red, green, and blue portion of the
-      color, respectively.
-    </li>
-    <li>
-      A hexadecimal color notation in the format <code>#rgb</code> or
-     <code>#rrggbb</code>, that is commonly used for HTML pages.
-    </li>
-  </ul>
-</p>
-<p>
-  Examples for valid color definitions:
-  <ul>
-    <li><code>white<code></li>
-    <li><code>0, 128, 128</code></li>
-    <li><code>#fffaf0</code></li>
-  </ul>
-</p>
-
-<h4>Transparency</h4>
-<p>
-Since RAP 1.1M3, the keyword <code>transparent</code> is allowed for some
-color parameters such as <code>button.background</code>.
-It is generally not allowed for foreground colors and for colors that map to SWT
-system colors (see below).
-Transparency support in RAP is still developing, so chances are that there will
-be some changes to this feature in the near future.
-</p>
-
-<h3>Dimensions</h3>
-<p>
-  Dimensions are given as integer numbers with the unit suffix <code>px</code>.
-  As all size calculations in SWT are pixel-based, only the unit "px" is allowed.
-</p>
-<p>
-  Example: <code>1px</code>
-</p>
-
-<h3>Box Dimensions</h3>
-<p>
-  Box dimensions like margins and paddings can be provided in the shorthand syntax known from CSS2.
-  One, two, three, or four dimensions may be specified, separated by spaces.
-  If four dimensions are given, they stand for the values in clock-wise order: top, right, bottom, left.
-  Three values stand for: top, right and left, bottom.
-  Two values stand for: top and bottom, right and left.
-  One values stands for: all four values.
-</p>
-<p>
-  Examples for valid box dimension definitions are:
-  <ul>
-    <li><code>5px</code> means: 5px for top, right, bottom, and left edge.</li>
-    <li><code>3px 5px</code> means: 3px for top and bottom edge, 5px for left and right.</li>
-    <li><code>2px 4px 0px</code> means: 2px for the top edge, 4px for left and right, and 0px for the bottom.</li>
-    <li><code>2px 4px 0px 2px</code> means: 2px top, 4px left, 0px bottom, 2px left.</li>
-  </ul>
-</p>
-
-<h3>Borders</h3>
-<p>
-  A border definition may contain a size in pixels, a style keyword, and a color.
-  All parameters are optional.
-  The valid style keywords are
-  <code>solid</code>,
-  <code>dotted</code>,
-  <code>dashed</code>,
-  <code>double</code>,
-  <code>inset</code>,
-  <code>outset</code>,
-  <code>groove</code>,
-  <code>ridge</code>, and
-  <code>none</code>.
-  If one of the complex styles <code>inset</code>, <code>outset</code>,
-  <code>groove</code>, or <code>ridge</code> is used without a color definition,
-  the default system shadow colors (<code>SWT.COLOR_WIDGET_NORMAL_SHADOW</code>,
-  <code>SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW</code>, etc., see below) are used to
-  paint the border.
-</p>
-<p>
-  Examples for valid border definitions are:
-  <ul>
-    <li><code>none</code></li>
-    <li><code>1px inset</code></li>
-    <li><code>2px groove</code></li>
-    <li><code>1px solid black</code></li>
-    <li><code>2px solid #fffa00</code></li>
-  </ul>
-</p>
-
-<h3>Fonts</h3>
-<p>
-  The syntax for font definitions is very similar to the CSS shorthand property ''font''.
-  A font definition contains the font size in pixels, a comma-separated list of font-family names, and the optional keywords <code>bold</code> and <code>italic</code>. The order of the parts does not matter.
-</p>
-<p>
-  Examples of valid font definitions are:
-  <ul>
-    <li><code>Helvetica 10px</code></li>
-    <li><code>Helvetica 10px bold</code></li>
-    <li><code>10px Helvetica bold italic</code></li>
-    <li><code>12px Tahoma, "Lucida Sans Unicode", sans-serif italic</code></li>
-  </ul>
-<p>
-
-<h3>Images</h3>
-<p>
-  Custom images may be defined using a '<tt>/</tt>'-separated path name that
-  identifies the location of an image resource within the bundle.
-  You can also specify the keyword <code>none</code> to indicate that no image
-  must be used.
-</p>
-<p>
-  Examples:
-  <ul>
-    <li><code>resource/images/upper-left.png<code></li>
-    <li><code>none</code></li>
+    <li>The keyword <code>inherit</code> is not supported</li>
+    <li>All length values must be in pixels, <code>px</code> is the only
+        supported unit</li>
+    <li>Percentage values are not supported</li>
+    <li>Borders can only be specified using the shortcut property
+        <code>border</code>, the properties <code>border-color</code>,
+        <code>border-color</code> etc. are not supported</li>
+    <li>Fonts can only be specified using the shortcut property
+        <code>font</code>, the properties <code>font-family</code>,
+        <code>font-weight</code> etc. are not supported</li>
+    <li>Background colors and images can only be specified using the properties
+        <code>background-color</code> and <code>background-image</code>
+        respectively, in this case the shortcut property <code>background</code>
+        is not supported</li>
   </ul>
 </p>
 
@@ -277,13 +173,12 @@ be some changes to this feature in the near future.
   <pre>
    button.setData( WidgetUtil.CUSTOM_VARIANT, "mybutton" )
   </pre>
-  In the theme file, the theme properties in question are copied and prefixed
-  with the name of the custom variant:
+  In the theme CSS file, these widget variants can be referred to using the
+  class notation known from CSS for HTML:
   <pre>
-   mybutton/button.font: 10px Helvetica
-   mybutton/button.foreground: white
-   mybutton/button.border: none
-   ...
+   Button.mybutton {
+     color: red;
+   }
   </pre>
 </p>
 
@@ -298,27 +193,28 @@ be some changes to this feature in the near future.
   <table cellspacing="5">
     <tr>
       <th style="text-align:left">SWT System Color</th>
-      <th style="text-align:left">Theming Key</th>
+      <th style="text-align:left">Element</th>
+      <th style="text-align:left">Property</th>
     </tr>
-    <tr><td>SWT.COLOR_WIDGET_DARK_SHADOW</td><td>widget.darkshadow</td></tr>
-    <tr><td>SWT.COLOR_WIDGET_NORMAL_SHADOW</td><td>widget.shadow</td></tr>
-    <tr><td>SWT.COLOR_WIDGET_LIGHT_SHADOW</td><td>widget.lightshadow</td></tr>
-    <tr><td>SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW</td><td>widget.highlight</td></tr>
-    <tr><td>SWT.COLOR_WIDGET_BACKGROUND</td><td>widget.background</td></tr>
-    <tr><td>SWT.COLOR_WIDGET_BORDER</td><td>widget.thinborder</td></tr>
-    <tr><td>SWT.COLOR_WIDGET_FOREGROUND</td><td>widget.foreground</td></tr>
-    <tr><td>SWT.COLOR_LIST_FOREGROUND</td><td>list.foreground</td></tr>
-    <tr><td>SWT.COLOR_LIST_BACKGROUND</td><td>list.background</td></tr>
-    <tr><td>SWT.COLOR_LIST_SELECTION</td><td>list.selection.background</td></tr>
-    <tr><td>SWT.COLOR_LIST_SELECTION_TEXT</td><td>list.selection.foreground</td></tr>
-    <tr><td>SWT.COLOR_INFO_FOREGROUND</td><td>widget.info.foreground</td></tr>
-    <tr><td>SWT.COLOR_INFO_BACKGROUND</td><td>widget.info.background</td></tr>
-    <tr><td>SWT.COLOR_TITLE_FOREGROUND</td><td>shell.title.foreground</td></tr>
-    <tr><td>SWT.COLOR_TITLE_BACKGROUND</td><td>shell.title.background</td></tr>
-    <tr><td>SWT.COLOR_TITLE_BACKGROUND_GRADIENT</td><td>shell.title.background.gradient</td></tr>
-    <tr><td>SWT.COLOR_TITLE_INACTIVE_FOREGROUND</td><td>shell.title.inactive.foreground</td></tr>
-    <tr><td>SWT.COLOR_TITLE_INACTIVE_BACKGROUND</td><td>shell.title.inactive.background</td></tr>
-    <tr><td>SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT</td><td>shell.title.inactive.background.gradient</td></tr>
+    <tr><td>SWT.COLOR_WIDGET_DARK_SHADOW</td><td>*</td><td>rwt-darkshadow-color</td></tr>
+    <tr><td>SWT.COLOR_WIDGET_NORMAL_SHADOW</td><td>*</td><td>rwt-shadow-color</td></tr>
+    <tr><td>SWT.COLOR_WIDGET_LIGHT_SHADOW</td><td>*</td><td>rwt-lightshadow-color</td></tr>
+    <tr><td>SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW</td><td>*</td><td>rwt-highlight-color</td></tr>
+    <tr><td>SWT.COLOR_WIDGET_BACKGROUND</td><td>*</td><td>rwt-background-color</td></tr>
+    <tr><td>SWT.COLOR_WIDGET_BORDER</td><td>*</td><td>rwt-thinborder-color</td></tr>
+    <tr><td>SWT.COLOR_WIDGET_FOREGROUND</td><td>*</td><td>color</td></tr>
+    <tr><td>SWT.COLOR_LIST_FOREGROUND</td><td>List</td><td>color</td></tr>
+    <tr><td>SWT.COLOR_LIST_BACKGROUND</td><td>List</td><td>background-color</td></tr>
+    <tr><td>SWT.COLOR_LIST_SELECTION</td><td>List-Item:selected</td><td>background-color</td></tr>
+    <tr><td>SWT.COLOR_LIST_SELECTION_TEXT</td><td>List-Item:selected</td><td>color</td></tr>
+    <tr><td>SWT.COLOR_INFO_FOREGROUND</td><td>Tooltip</td><td>color</td></tr>
+    <tr><td>SWT.COLOR_INFO_BACKGROUND</td><td>Tooltip</td><td>background-color</td></tr>
+    <tr><td>SWT.COLOR_TITLE_FOREGROUND</td><td>Shell-Titlebar</td><td>color</td></tr>
+    <tr><td>SWT.COLOR_TITLE_BACKGROUND</td><td>Shell-Titlebar</td><td>background-color</td></tr>
+    <tr><td>SWT.COLOR_TITLE_BACKGROUND_GRADIENT</td><td>Shell-Titlebar</td><td>background-gradient-color</td></tr>
+    <tr><td>SWT.COLOR_TITLE_INACTIVE_FOREGROUND</td><td>Shell-Titlebar:inactive</td><td>color</td></tr>
+    <tr><td>SWT.COLOR_TITLE_INACTIVE_BACKGROUND</td><td>Shell-Titlebar:inactive</td><td>background-color</td></tr>
+    <tr><td>SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT</td><td>Shell-Titlebar:inactive</td><td>background-gradient-color</td></tr>
   </table>
 </p>
 
