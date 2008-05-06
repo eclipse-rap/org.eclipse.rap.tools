@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta name="copyright" content="Copyright (c) 2007 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<title>Launching RAP Applications</title>
-<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+  <meta name="copyright" content="Copyright (c) 2007-2008-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>Launching RAP Applications</title>
+  <link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
 </head>
 <body>
 
@@ -17,14 +17,16 @@
   or the <a href="#equinox">Equinox Launcher</a>. Regardless which way to launch
   you choose ensure that the following plug-ins are activated:
 <ul>
+  <li>com.ibm.icu</li>  
   <li>javax.servlet</li>
   <li>org.apache.commons.logging</li>  
   <li>org.eclipse.core.commands</li>
   <li>org.eclipse.core.contenttype</li>
+  <li>org.eclipse.core.databinding</li>
+  <li>org.eclipse.core.databinding.beans</li>
   <li>org.eclipse.core.expressions</li>
   <li>org.eclipse.core.jobs</li>
   <li>org.eclipse.core.runtime</li>
-  <li>org.eclipse.core.runtime.compatibility.registry</li>
   <li>org.eclipse.equinox.app</li>
   <li>org.eclipse.equinox.common</li>
   <li>org.eclipse.equinox.http.jetty</li>
@@ -36,8 +38,12 @@
   <li>org.eclipse.osgi.services</li>
   <li>org.eclipse.rap.demo</li>
   <li>org.eclipse.rap.jface</li>
+  <li>org.eclipse.rap.jface.databinding</li>
   <li>org.eclipse.rap.rwt</li>
+  <li>org.eclipse.rap.rwt.q07</li>
   <li>org.eclipse.rap.ui</li>
+  <li>org.eclipse.rap.ui.forms</li>
+  <li>org.eclipse.rap.ui.views</li>
   <li>org.eclipse.rap.ui.workbench</li>
   <li>org.mortbay.jetty</li>
 </ul>
@@ -100,11 +106,6 @@
     
 <a name="equinox"><h2>Using the Equinox Launcher</h2></a>
 
-<p><strong>If you are using Eclipse 3.3</strong>, you need to start 
-  the <code>org.eclipse.equinox.app</code> plug-in with your RAP demo. To do 
-  so, switch to the <strong>Plug-ins</strong> tab of your Launch Configuration 
-  and select to include the <strong>org.eclipse.equinox.app</strong> plug-in.</p>
-  
 <p>For Max OS X systems, please add <strong>-Djava.awt.headless=true</strong> 
 to your VM arguments.</p>
 

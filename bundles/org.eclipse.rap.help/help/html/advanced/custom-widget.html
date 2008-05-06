@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta name="copyright" content="Copyright (c) 2007 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta name="copyright" content="Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title>Custom widgets</title>
@@ -351,24 +351,27 @@
         <th>Description</th>
     </tr>
     <tr>
-        <td>renderInitialization(Widget)</td>
-        <td>This method is called to initialize your widget. Normally you will tell RAP which
-        client-side class to use and how it is initialized (think of style bits)</td>
+        <td><code>renderInitialization(Widget)</code></td>
+        <td>This method is called to initialize your widget. Normally you will 
+        tell RAP which client-side class to use and how it is initialized 
+        (think of style bits)</td>
     </tr>
     <tr>
-        <td>preserveValues</td>
-        <td>Here we have to preserve our values so we can see at the end of the lifecycle
-        if something has changes during the process action phase.</td>
+        <td><code>preserveValues(Widget)</code></td>
+        <td>Here we have to preserve our values so we can see at the end of 
+        the lifecycle if something has changes during the process action 
+        phase.</td>
     </tr>
     <tr>
-        <td>renderChanges</td>
+        <td><code>renderChanges(Widget)</code></td>
         <td>That's the most interesting part. We need to sync the attributes of the
         widget on the server with the the client-side implementation by sending
         the changes to the client.</td>
     </tr>
     <tr>
-        <td>renderDispose</td>
-        <td>You can tidy up several things here before the widget gets disposed on the client.</td>
+        <td><code>renderDispose(Widget)</code></td>
+        <td>You can tidy up several things here before the widget gets disposed 
+        of on the client.</td>
     </tr>
   </table>
   <p>
@@ -718,6 +721,7 @@
   with the selection event of the button), applied to the widget with the help of our LCA
   and shown by the MessageDialog. Great!
   </p>
+  
   <h3>And now?</h3>
   <p>
   You completed your first custom widget - congratulations!<br />
@@ -728,9 +732,11 @@
     <li>Add support for <a href="http://www.google.com/apis/maps/documentation/overlays.html">markers</a></li>
     <li>Implement other nice things by connecting Google Maps with RAP</li>
   </ul>
-  We are delight in seeing what you can do with this little widget. If you have problems
-  , take a look at all the LCAs already provided by RAP. It's not black magic.
+  We are delight in seeing what you can do with this little widget. If you 
+  have problems, take a look at all the LCAs already provided by RAP. It's 
+  not black magic.
   </p>
+  
   <h3>Troubleshooting</h3>
   <p>
   There may be times where you need to track down a javascript error in your custom widget.
