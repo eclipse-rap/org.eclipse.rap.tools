@@ -14,8 +14,13 @@
 <p>To start your RAP application, select <strong>Open Run Dialog...</strong> 
   from the <strong>Run</strong> menu. You need to create a <strong>New Launch 
   configuration</strong>. You can either use the <a href="#rap">RAP Launcher</a>
-  or the <a href="#equinox">Equinox Launcher</a>. Regardless which way to launch
-  you choose ensure that the following plug-ins are activated:
+  or the <a href="#equinox">Equinox Launcher</a>. 
+</p>
+
+<h3>Required plug-ins</h3>  
+<p>
+  Regardless which way to launch you choose ensure that the following 
+  plug-ins are activated:
 <ul>
   <li>com.ibm.icu</li>  
   <li>javax.servlet</li>
@@ -47,6 +52,19 @@
   <li>org.eclipse.rap.ui.workbench</li>
   <li>org.mortbay.jetty</li>
 </ul>
+</p>
+
+<h3>web.xml</h3>
+<p>
+  Currently it is not possible to specify a <code>web.xml</code> to be used
+  by the servlet engine. Some of the settings that usually would be specified 
+  in the <code>web.xml</code>, can be passed to the Equinox HTTP Servlet via 
+  system properties.
+  <br />
+  Probably most notable is the session timeout 
+  (<code>-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval=&lt;timeout in Seconds&gt;</code>)
+  By default, the session timeout is zero, which means that the session never
+  expires.
 </p>
 
 <a name="rap"><h2>Using the RAP Launcher</h2></a>
