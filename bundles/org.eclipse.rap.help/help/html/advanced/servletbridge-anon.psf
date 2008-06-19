@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.eclipse.team.cvs.core.cvsnature">
-<project reference="1.0,:pserver:anonymous:dev.eclipse.org:/cvsroot/eclipse,org.eclipse.equinox.http.servletbridge,org.eclipse.equinox.http.servletbridge"/>
-<project reference="1.0,:pserver:anonymous:dev.eclipse.org:/cvsroot/eclipse,org.eclipse.equinox.servletbridge,org.eclipse.equinox.servletbridge"/>
-<project reference="1.0,:pserver:anonymous:dev.eclipse.org:/cvsroot/technology,org.eclipse.rap/org.eclipse.rap.demo.feature,org.eclipse.rap.demo.feature"/>
+<project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,org.eclipse.equinox.http.servletbridge,org.eclipse.equinox.http.servletbridge"/>
+<project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,org.eclipse.equinox.servletbridge,org.eclipse.equinox.servletbridge"/>
+<project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,org.eclipse.rap/org.eclipse.rap.demo.feature,org.eclipse.rap.demo.feature"/>
 </provider>
 </psf>
