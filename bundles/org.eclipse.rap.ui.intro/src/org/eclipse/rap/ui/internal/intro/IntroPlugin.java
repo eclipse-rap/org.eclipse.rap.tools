@@ -9,9 +9,9 @@
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
 
 
 public class IntroPlugin extends AbstractUIPlugin {

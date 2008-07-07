@@ -1,9 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html Contributors:
- * Innoopract Informationssysteme GmbH - initial API and implementation
+ * Copyright (c) 2007,2008 Innoopract Informationssysteme GmbH.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
@@ -46,6 +49,7 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     createTargetLocationArea( result );
     createSwitchTargetArea( result );
     txtPath.setText( TargetProvider.getDefaultTargetDestination() );
+    Dialog.applyDialogFont( result );
     return result;
   }
 
@@ -91,17 +95,18 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     browse.setText( IntroMessages.InstallDialog_Browse );
     browse.addSelectionListener( new SelectionAdapter() {
       public void widgetSelected( final SelectionEvent e ) {
-        DirectoryDialog dirChooser = new DirectoryDialog( getShell() );
+        DirectoryDialog dialog = new DirectoryDialog( getShell() );
+        dialog.setText( IntroMessages.InstallDialog_Message_selectDirText );
+        dialog.setMessage( IntroMessages.InstallDialog_Message_selectDirMsg );
         if( txtPath.getText().length() > 0 ) {
-          dirChooser.setFilterPath( txtPath.getText() );
+          dialog.setFilterPath( txtPath.getText() );
         }
-        String location = dirChooser.open();
+        String location = dialog.open();
         if( location != null ) {
           txtPath.setText( location );
         }
       }
     } );
-    Dialog.applyDialogFont( container );
   }
 
   private void createSwitchTargetArea( final Composite parent ) {
@@ -123,11 +128,10 @@ public final class InstallTargetDialog extends TitleAreaDialog {
       }
     } );
     Label lblDescription = new Label( grgTarget, SWT.WRAP );
-    final GridData gd3 = new GridData( GridData.FILL_HORIZONTAL );
-    gd3.widthHint = 120;
-    lblDescription.setLayoutData( gd3 );
+    GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+    gridData.widthHint = 120;
+    lblDescription.setLayoutData( gridData );
     lblDescription.setText( IntroMessages.InstallDialog_TargetDescription );
-    Dialog.applyDialogFont( container );
   }
 
   /////////////
