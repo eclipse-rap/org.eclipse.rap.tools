@@ -84,7 +84,7 @@ public class HelloWorldWorkbench implements IEntryPoint {
   
   public int createUI() {
     Display display = PlatformUI.createDisplay();
-    WorkbenchAdvisor advisor = new HelloWorldWorkbenchAdvisor()
+    WorkbenchAdvisor advisor = new HelloWorldWorkbenchAdvisor();
     int result = PlatformUI.createAndRunWorkbench( display, advisor );
     return result;
   }
