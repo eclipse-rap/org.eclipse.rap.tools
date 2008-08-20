@@ -323,7 +323,7 @@
   ...
   public Object getAdapter( Class adapter ) {
     Object result;
-    if( adapter == IWidgetLifeCycleAdapter.class ) {
+    if( adapter == ILifeCycleAdapter.class ) {
       result = new MyCustomWidgetLCA();
     } else {
       result = super.getAdapter( adapter );
@@ -333,7 +333,7 @@
   ...
   </pre>
   </code>
-  Or we let RAP do this itself by creating the LCA class in a package called
+  The preferred way is to let RAP do this itself by creating the LCA class in a package called
   <widgetpackage>.internal.<widgetname>kit.<widgetname>LCA. The order of the internal
   does not play the big role. The important thing is to have internal in the package
   name, the package with the LCA is called <widgetname>kit and the LCA itself is 
@@ -341,9 +341,11 @@
   Here a little example:<br />
   Our widget is <code>org.eclipse.rap.gmaps.GMap</code><br />
   Then our LCA should be named <code>org.eclipse.rap.internal.gmaps.gmapkit.GMapLCA</code><br />
-  The LCA class itself has to have <code>org.eclipse.rwt.lifecycle.AbstractWidgetLCA</code>
-  as super class to override some methods. We'll just show you a little overview of the methods
-  and their role and then go further to implement a working LCA for our GMaps widget.
+  The LCA class itself needs to have <code>org.eclipse.rwt.lifecycle.AbstractWidgetLCA</code>
+  as super class to override some of the needed methods. It's enough to have the LCA implement
+  <code>IWidgetLifeCycleAdapter</code> but we recommend to use <code>AbstractWidgetLCA</code>.
+  We'll just show you a little
+  overview of the methods and their role and then go further to implement a working LCA for our GMaps widget.
   </p>
   <table border="1">
     <tr>
