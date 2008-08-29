@@ -26,10 +26,10 @@
   <p>
   There are different tasks to create a new custom widget which will be covered here:
   <ul>
-  	<li>create a widget which will be used on the server</li>
-  	<li>create the javascript libraries needed by the custom widget</li>
-  	<li>create an adapter to connect the widget with the RAP lifecycle</li>
-  	<li>register the javascript files</li>
+    <li>create a widget which will be used on the server</li>
+    <li>create the javascript libraries needed by the custom widget</li>
+    <li>create an adapter to connect the widget with the RAP lifecycle</li>
+    <li>register the javascript files</li>
   </ul>
   </p>
   
@@ -107,8 +107,7 @@
   <code>
   qx.Class.define( "org.eclipse.rap.gmaps.GMap", {
   extend: qx.ui.layout.CanvasLayout,
-  		// ...
-    }
+      // ...
   } );
   </code>
   </pre>
@@ -130,19 +129,18 @@
   qx.Class.define( "org.eclipse.rap.gmaps.GMap", {
   extend: qx.ui.layout.CanvasLayout,
   <b>
-	  construct: function( id ) {
-	    this.base( arguments );
-	    this.setHtmlAttribute( "id", id );
-	    this._id = id;
-	    this._map = null;
-	    if( GBrowserIsCompatible() ) {
-	      this._geocoder = new GClientGeocoder();
-	      this.addEventListener( "changeHeight", this._doResize, this );
-	      this.addEventListener( "changeWidth", this._doResize, this ); 
-	    }
-	  }
-  </b>  
+    construct: function( id ) {
+      this.base( arguments );
+      this.setHtmlAttribute( "id", id );
+      this._id = id;
+      this._map = null;
+      if( GBrowserIsCompatible() ) {
+        this._geocoder = new GClientGeocoder();
+        this.addEventListener( "changeHeight", this._doResize, this );
+        this.addEventListener( "changeWidth", this._doResize, this ); 
+      }
     }
+  </b>  
   } );
   </code>
   </pre>  
@@ -157,7 +155,7 @@
       construct: function( id ) {
         // ...
       }<b>,  // <-- comma added, see javascript syntax reference
-	  
+    
       properties : {
         address : {
           init : "",
@@ -181,74 +179,75 @@
   extend: qx.ui.layout.CanvasLayout,
       construct: function( id ) {
         // ...
-      }
-	  
+      },
+      
       properties : {
         // ...
       }<b>,  // <-- comma added, see javascript syntax reference
       
-      _doActivate : function() {
-        var shell = null;
-        var parent = this.getParent();
-        while( shell == null && parent != null ) {
-          if( parent.classname == "org.eclipse.swt.widgets.Shell" ) {
-            shell = parent;
-          }
-          parent = parent.getParent();
-        }
-        if( shell != null ) {
-          shell.setActiveChild( this );
-        }
-      },
-      
-      load : function() {
-        var current = this.getAddress();
-        if( GBrowserIsCompatible() && current != null && current != "" ) {
-          qx.ui.core.Widget.flushGlobalQueues();
-          if( this._map == null ) {
-            this._map = new GMap2( document.getElementById( this._id ) );
-            this._map.addControl( new GSmallMapControl() );
-            this._map.addControl( new GMapTypeControl() );
-            GEvent.bind( this._map, "click", this, this._doActivate );
-            GEvent.bind( this._map, "moveend", this, this._onMapMove );
-            
-          }
-          var map = this._map;
-          map.clearOverlays();
-          this._geocoder.getLatLng(
-            current,
-            function( point ) {
-              if( !point ) {
-                alert( "'" + current + "' not found" );
-              } else {
-                map.setCenter( point, 13 );
-                var marker = new GMarker( point );
-                map.addOverlay( marker );
-                marker.openInfoWindowHtml( current );
-              }
+      members : {
+        _doActivate : function() {
+            var shell = null;
+            var parent = this.getParent();
+            while( shell == null && parent != null ) {
+                if( parent.classname == "org.eclipse.swt.widgets.Shell" ) {
+                    shell = parent;
+                }
+                parent = parent.getParent();
             }
-          );
+            if( shell != null ) {
+                shell.setActiveChild( this );
+            }
+        },
+        
+        load : function() {
+            var current = this.getAddress();
+            if( GBrowserIsCompatible() && current != null && current != "" ) {
+                qx.ui.core.Widget.flushGlobalQueues();
+                if( this._map == null ) {
+                    this._map = new GMap2( document.getElementById( this._id ) );
+                    this._map.addControl( new GSmallMapControl() );
+                    this._map.addControl( new GMapTypeControl() );
+                    GEvent.bind( this._map, "click", this, this._doActivate );
+                    GEvent.bind( this._map, "moveend", this, this._onMapMove );
+                    
+                }
+                var map = this._map;
+                map.clearOverlays();
+                this._geocoder.getLatLng(
+                current,
+                function( point ) {
+                    if( !point ) {
+                        alert( "'" + current + "' not found" );
+                        } else {
+                        map.setCenter( point, 13 );
+                        var marker = new GMarker( point );
+                        map.addOverlay( marker );
+                        marker.openInfoWindowHtml( current );
+                    }
+                }
+                );
+            }
+        },
+        
+        _onMapMove : function() {
+            if( !org_eclipse_rap_rwt_EventUtil_suspend ) {
+                var wm = org.eclipse.swt.WidgetManager.getInstance();
+                var gmapId = wm.findIdByWidget( this );
+                var center = this._map.getCenter().toString();
+                var req = org.eclipse.swt.Request.getInstance();
+                req.addParameter( gmapId + ".centerLocation", center );
+            }
+        },
+        
+        _doResize : function() {
+            qx.ui.core.Widget.flushGlobalQueues();
+            if( this._map != null ) {
+                this._map.checkResize();
+            }
         }
-      },
-      
-      _onMapMove : function() {
-        if( !org_eclipse_rap_rwt_EventUtil_suspend ) {
-          var wm = org.eclipse.swt.WidgetManager.getInstance();
-          var gmapId = wm.findIdByWidget( this );
-          var center = this._map.getCenter().toString();
-          var req = org.eclipse.swt.Request.getInstance();
-          req.addParameter( gmapId + ".centerLocation", center );
-        }
-      },
-    
-      _doResize : function() {
-        qx.ui.core.Widget.flushGlobalQueues();
-        if( this._map != null ) {
-          this._map.checkResize();
-        }
-      }      
+      }
       </b>
-    }
   } );
   </code>
   </pre>
@@ -417,6 +416,9 @@
     ControlLCAUtil.preserveValues( ( Control )widget );
     IWidgetAdapter adapter = WidgetUtil.getAdapter( widget );
     adapter.preserve( PROP_ADDRESS, ( ( GMap )widget ).getAddress() );
+    
+    // only needed for custom variants (themeing)
+    WidgetLCAUtil.preserveCustomVariant( widget );
   }
   </code>
   </pre>
@@ -426,7 +428,11 @@
   So we only need to care about the things implemented in our widget.
   We just request a so called <code>IWidgetAdapter</code> which is responsible for different
   aspects in the lifecycle of a widget. In this case we only use it to preserve the <code>address</code> value
-  with a predefined key (<code>PROP_ADRESS</code>) to associate it later.
+  with a predefined key (<code>PROP_ADRESS</code>) to associate it later.<br />
+  The last line calling <code>preserveCustomVariant</code> is only added for the sake of completeness.
+  Variants is a way to have different looks of the same widget and is part of the
+  theme engine provided by RAP. Please see the <a href="theming-custom.html">Prepare Custom Widgets for Theming</a>
+  article for more informations about theming a custom widget.
   </p>
   <p>
   The following step is one of most interesting parts of your lifecycle adapter - the
@@ -444,6 +450,9 @@
     ControlLCAUtil.writeChanges( gmap );
     JSWriter writer = JSWriter.getWriterFor( widget );
     writer.set( PROP_ADDRESS, JS_PROP_ADDRESS, gmap.getAddress() );
+    
+    // only needed for custom variants (themeing)
+    WidgetLCAUtil.writeCustomVariant( widget );
   }
   </code>
   </pre>
@@ -759,14 +768,14 @@
   is one of the following values:
   </p>
   <ul>
-	  <li>OFF</li>
-	  <li>ALL</li>
-	  <li>WARNING</li>
-	  <li>INFO</li>
-	  <li>SEVERE</li>
-	  <li>FINE</li>
-	  <li>FINER</li>
-	  <li>FINEST</li>
+    <li>OFF</li>
+    <li>ALL</li>
+    <li>WARNING</li>
+    <li>INFO</li>
+    <li>SEVERE</li>
+    <li>FINE</li>
+    <li>FINER</li>
+    <li>FINEST</li>
   </ul>
   <p>
   When developing custom widget we recommend to use the level <code>ALL</code> to
