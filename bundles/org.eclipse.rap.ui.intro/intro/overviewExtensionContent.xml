@@ -39,7 +39,7 @@
       <text style-id="page-description" id="page-description">
         The RAP project aims to enable developers to build rich, Ajax-enabled 
         web applications by using the Eclipse development model, plug-ins with 
-        the well known Eclipse workbench extenstion points and a widget toolkit 
+        the well known Eclipse workbench extension points and a widget toolkit 
         with SWT API (plus JFace).
       </text>
       <!-- panes -->
