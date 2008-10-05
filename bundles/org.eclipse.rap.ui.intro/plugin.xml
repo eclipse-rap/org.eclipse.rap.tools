@@ -29,6 +29,33 @@
             name="Install RAP target platform">
       </command>
    </extension>
+   <extension
+         point="org.eclipse.ui.activities">
+      <activity
+            description="Develop plug-ins, fragments, and features for the Rich Ajax Platform."
+            id="org.eclipse.rap.ui.rapPluginDevelopment"
+            name="RAP Plug-in Development">
+      </activity>
+      <defaultEnablement
+            id="org.eclipse.rap.ui.rapPluginDevelopment">
+      </defaultEnablement>
+      <activityRequirementBinding
+            activityId="org.eclipse.rap.ui.rapPluginDevelopment"
+            requiredActivityId="org.eclipse.plugInDevelopment">
+      </activityRequirementBinding>
+      <categoryActivityBinding
+            activityId="org.eclipse.rap.ui.rapPluginDevelopment"
+            categoryId="org.eclipse.categories.developmentCategory">
+      </categoryActivityBinding>
+      <activityPatternBinding
+            activityId="org.eclipse.rap.ui.rapPluginDevelopment"
+            pattern="org\.eclipse\.rap\.ui\..*/.*">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.eclipse.rap.ui.rapPluginDevelopment"
+            pattern="org\.eclipse\.rap\.internal\.ui\..*/.*">
+      </activityPatternBinding>
+   </extension>
    <!--
    <extension
          point="org.eclipse.pde.core.targets">
