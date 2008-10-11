@@ -56,6 +56,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   private Text txtServletName;
   private Text txtEntryPoint;
   private Button cbTerminatePrevious;
+  private Button cbOpenBrowser;
   private Button rbInternalBrowser;
   private Button rbExternalBrowser;
   private Button cbManualPort;
@@ -124,6 +125,11 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
       // Port
       cbManualPort.setSelection( rapConfig.getUseManualPort() );
       spnPort.setSelection( rapConfig.getPort() );
+      // OpenBrowser
+      boolean openBrowser = rapConfig.getOpenBrowser();
+      cbOpenBrowser.setSelection( openBrowser );
+      rbInternalBrowser.setEnabled( openBrowser );
+      rbExternalBrowser.setEnabled( openBrowser );
       // BrowserMode
       if( BrowserMode.EXTERNAL.equals( rapConfig.getBrowserMode() ) ) {
         rbExternalBrowser.setSelection( true );
@@ -153,6 +159,8 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     rapConfig.setEntryPoint( txtEntryPoint.getText() );
     // TerminatePrevious
     rapConfig.setTerminatePrevious( cbTerminatePrevious.getSelection() );
+    // OpenBrowser
+    rapConfig.setOpenBrowser( cbOpenBrowser.getSelection() );
     // BrowserMode
     rapConfig.setBrowserMode( getBrowserMode() );
     // Manual Port
@@ -208,7 +216,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
       }
     } );
     cbTerminatePrevious = new Button( group, SWT.CHECK );
-    cbTerminatePrevious.setLayoutData( spanHorizontal( 3 ) );
+    cbTerminatePrevious.setLayoutData( spanHorizontal( 3, 0 ) );
     String text = "&Terminate possibly running previous launch";
     cbTerminatePrevious.setText( text );
     cbTerminatePrevious.addSelectionListener( selectionListener );
@@ -219,11 +227,12 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     group.setLayoutData( fillHorizontal.create() );
     group.setText( "Browser" );
     group.setLayout( new GridLayout( 2, false ) );
-    Label lblBrowserMode = new Label( group, SWT.NONE );
+    cbOpenBrowser = new Button( group, SWT.CHECK );
     GridDataFactory grab = GridDataFactory.swtDefaults();
     grab.grab( true, false );
-    lblBrowserMode.setLayoutData( grab.create() );
-    lblBrowserMode.setText( "Run in" );
+    cbOpenBrowser.setLayoutData( grab.create() );
+    cbOpenBrowser.setText( "Open Application in" );
+    cbOpenBrowser.addSelectionListener( selectionListener );
     Link lnkBrowserPrefs = new Link( group, SWT.NONE );
     lnkBrowserPrefs.setText( "<a>Configure Browsers...</a>" );
     lnkBrowserPrefs.addSelectionListener( new SelectionAdapter() {
@@ -232,13 +241,21 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
       }
     } );
     rbInternalBrowser = new Button( group, SWT.RADIO );
-    rbInternalBrowser.setLayoutData( spanHorizontal( 2 ) );
+    rbInternalBrowser.setLayoutData( spanHorizontal( 2, 17 ) );
     rbInternalBrowser.setText( "Intern&al Browser" );
     rbInternalBrowser.addSelectionListener( selectionListener );
     rbExternalBrowser = new Button( group, SWT.RADIO );
-    rbExternalBrowser.setLayoutData( spanHorizontal( 2 ) );
+    rbExternalBrowser.setLayoutData( spanHorizontal( 2, 17 ) );
     rbExternalBrowser.setText( "E&xternal Browser" );
     rbExternalBrowser.addSelectionListener( selectionListener );
+    cbOpenBrowser.addSelectionListener( new SelectionAdapter() {
+
+      public void widgetSelected( SelectionEvent e ) {
+        boolean openBrowser = cbOpenBrowser.getSelection();
+        rbInternalBrowser.setEnabled( openBrowser );
+        rbExternalBrowser.setEnabled( openBrowser );
+      }
+    } );
   }
   
   private void createRuntimeSettingsSection( final Composite parent ) {
@@ -309,8 +326,11 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   ////////////////
   // Layout helper
   
-  private static GridData spanHorizontal( final int span ) {
-    return new GridData( SWT.FILL, SWT.CENTER, true, false, span, SWT.DEFAULT );
+  private static GridData spanHorizontal( final int span, int indent ) {
+    GridData result
+      = new GridData( SWT.FILL, SWT.CENTER, true, false, span, SWT.DEFAULT );
+    result.horizontalIndent = indent;
+    return result;
   }
 
   /////////////

@@ -86,7 +86,9 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     warnIfPortBusy( subMonitor );
     subMonitor = new SubProgressMonitor( monitor, IProgressMonitor.UNKNOWN );
     port = determinePort( subMonitor );
-    registerBrowserOpener();
+    if( this.config.getOpenBrowser() ) {
+      registerBrowserOpener();
+    }
     return subMonitor;
   }
 

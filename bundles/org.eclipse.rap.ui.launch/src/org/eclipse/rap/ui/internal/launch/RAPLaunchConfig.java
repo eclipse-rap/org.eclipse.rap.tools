@@ -127,6 +127,8 @@ public final class RAPLaunchConfig {
     = PREFIX + "entryPoint"; //$NON-NLS-1$
   public static final String TERMINATE_PREVIOUS 
     = PREFIX + "terminatePrevious"; //$NON-NLS-1$
+  public static final String OPEN_BROWSER
+    = PREFIX + "openBrowser"; //$NON-NLS-1$
   public static final String BROWSER_MODE 
     = PREFIX + "browserMode"; //$NON-NLS-1$
   public static final String PORT 
@@ -207,6 +209,15 @@ public final class RAPLaunchConfig {
   public void setTerminatePrevious( final boolean terminatePrevious ) {
     checkWorkingCopy();
     workingCopy.setAttribute( TERMINATE_PREVIOUS, terminatePrevious );
+  }
+  
+  public boolean getOpenBrowser() throws CoreException {
+    return config.getAttribute( OPEN_BROWSER, true );
+  }
+  
+  public void setOpenBrowser( final boolean openBrowser ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( OPEN_BROWSER, openBrowser );
   }
   
   public BrowserMode getBrowserMode() throws CoreException {
