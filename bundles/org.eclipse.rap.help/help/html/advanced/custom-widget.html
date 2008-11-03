@@ -280,10 +280,11 @@
 
   <h3>Filling the gap between client and server</h3>
   <p>
-  In our current situation we have already done two important tasks: the server- and the client-side
-  widget. Now we need to connect each other in order to control the widget on the client by
-  calling it on the server (where our application lives).
-  In RAP - more precisely in RWT - we have a concept called the "Life Cycle". With each request
+  In our current situation we have already done two important tasks: the server- 
+  and the client-side widget. Now we need to connect each other in order to 
+  control the widget on the client by calling it on the server (where our 
+  application lives).
+  In RAP - more precisely in RWT - we have a concept called the <em>life cycle</em>. With each request
   from the client the life cycle on the server side will be executed. It is responsible to process
   all changes and events from the client and in the end it will send back a response to the client
   what to do (mostly hide/show widgets, update data, etc).
@@ -314,9 +315,9 @@
   </table>
   <p>
   To participate in the life cycle - what is what we want to do with our custom widget -
-  we need to provide a Life Cycle Adapter (LCA). There are now two ways to connect the LCA
+  we need to provide a Life Cycle Adapter (LCA). There are two ways to connect the LCA
   with our widget. On the one hand side we can return it directly when someone asks our widget
-  with <code>getAdapter</code> to provide a LCA. This can be done by implementing the
+  with <code>getAdapter</code> to provide an LCA. This can be done by implementing the
   <code>getAdapter</code> method in our own widget like this:
   <pre>
   <code>
@@ -324,7 +325,7 @@
   public Object getAdapter( Class adapter ) {
     Object result;
     if( adapter == ILifeCycleAdapter.class ) {
-      result = new MyCustomWidgetLCA();
+      result = new MyCustomWidgetLCA(); // extends AbstractWidgetLCA
     } else {
       result = super.getAdapter( adapter );
     }
@@ -333,19 +334,20 @@
   ...
   </pre>
   </code>
-  The preferred way is to let RAP do this itself by creating the LCA class in a package called
-  &lt;widgetpackage&gt;.internal.&lt;widgetname&gt;kit.&lt;widgetname&gt;LCA. The order of the internal
-  does not play the big role. The important thing is to have internal in the package
-  name, the package with the LCA is called <widgetname>kit and the LCA itself is 
-  called <widgetname>LCA.<br />
+  The preferred way is to let RAP do this itself by creating the LCA class in a 
+  package called &lt;widgetpackage&gt;.internal.&lt;widgetname&gt;kit.&lt;widgetname&gt;LCA. 
+  The order of the internal does not play the big role. The important thing is 
+  to have internal in the package name, the package with the LCA is called 
+  <widgetname>kit and the LCA itself is called <widgetname>LCA.<br />
   Here a little example:<br />
-  Our widget is <code>org.eclipse.rap.gmaps.GMap</code><br />
-  Then our LCA should be named <code>org.eclipse.rap.internal.gmaps.gmapkit.GMapLCA</code><br />
-  The LCA class itself needs to have <code>org.eclipse.rwt.lifecycle.AbstractWidgetLCA</code>
-  as super class to override some of the needed methods. It's enough to have the LCA implement
-  <code>IWidgetLifeCycleAdapter</code> but we recommend to use <code>AbstractWidgetLCA</code>.
-  We'll just show you a little
-  overview of the methods and their role and then go further to implement a working LCA for our GMaps widget.
+  If our widget is named <code>org.eclipse.rap.gmaps.GMap</code>,
+  <br />
+  then our LCA should be named <code>org.eclipse.rap.internal.gmaps.gmapkit.GMapLCA</code>.
+  <br />
+  The LCA class itself must have <code>org.eclipse.rwt.lifecycle.AbstractWidgetLCA</code>
+  as the super class and implement its abstract methods.
+  We'll just show you a little overview of the methods and their role and then 
+  go further to implement a working LCA for our GMaps widget.
   </p>
   <table border="1">
     <tr>
