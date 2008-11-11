@@ -74,6 +74,8 @@
        <topic label="org.eclipse.rap.ui.themeableWidgets" href="help/html/reference/extension-points/org_eclipse_rap_ui_themeableWidgets.html"/>
        <topic label="org.eclipse.rap.ui.themes" href="help/html/reference/extension-points/org_eclipse_rap_ui_themes.html"/>
     </topic>
+    <topic label="RAP Theming Reference" href="help/html/reference/theming/index.html">
+    </topic>
     
   </topic>
   <topic label="Legal" href="help/html/legal.html" />
