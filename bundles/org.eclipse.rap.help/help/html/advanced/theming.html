@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta name="copyright" content="Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta name="copyright" content="Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title>RWT Theming</title>
@@ -9,58 +9,58 @@
 </head>
 <body>
 
-<h1>RWT Theming (CSS-based)</h1>
+<h1>RWT Theming</h1>
 
 <p class="Note">
-  This article describes the new CSS-based theming which is available since
+  This article describes the CSS-based theming which is available since
   RAP 1.1M4.
   Developers are encouraged to use this way of theming now.
-  The old property-based theming is still supported but considered deprecated.
-  The old documentation is still available <a href="./theming-old.html">here</a>.
-  <br/>
-  This article is currently developing.
-  You can always find the
-  <a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.rap/org.eclipse.rap.help/help/html/advanced/theming.html?root=Technology_Project&view=co">latest version</a>
-  in the Eclipse CVS.
-</p>
-
-<p>
-  This article describes the theming functionality of RWT, the RAP Widget Toolkit.
-  This theming defines the default look and feel of the basic RWT controls like
-  Shell, Button, Text etc.
-  It must not be mixed up with the theming of the Eclipse workbench.
-  Instead, it can be compared to the theming functionality of a desktop system
-  that allows the user to set custom colors for title bars, text background and
-  the like.
+  The old property-based theming is considered deprecated and will be discontinued.
 </p>
 
 <h2>Introduction</h2>
 
 <p>
+  This article describes the theming functionality of RWT, the RAP Widget Toolkit.
+  The RWT theming defines the <em>default</em> look and feel of the basic RWT
+  controls like Shell, Button, Text etc.
+  It must not be mixed up with higher-level concepts like the Eclipse workbench
+  theming or custom presentations.
+  Instead, it resembles the theming functionality provided by desktop systems
+  that allow users to settheir custom colors for window title bars, custom fonts,
+  and the like.
+</p>
+
+<p>
   The RWT theming allows to define custom colors, fonts, borders, paddings,
   margins and images for RWT controls.
-  However, which aspects are actually customizable depends on the particular
-  control. Some controls allow for more flexibility, others are more hard-wired.
-</p>
-<p>
-  Normally, a theme setting affects all instances of a control equally.
-  Different presentation schemes for the same widget type can be defined
-  using widget variants (see below).
-</p>
-<p>
-  As an example, the difference between the default look and feel and a custom
-  theme could look like this:
+  As an example, the following screenshot shows the same dialog once with the
+  default RAP theme and once with the custom theme included in the demo
+  application.
+  As you can see, a custom theme does not only change colors, it also affects
+  the size of widgets by changing dimension properties like paddings and borders.
   <br/>
   <img src="../../images/theming-dialog.png"/>
 </p>
 
-<h2>How to Define a Custom RWT Theme</h2>
-
-<h3>Create a Custom Theme File</h3>
 <p>
-  CSS theme files for RAP are valid
-  <a href="http://www.w3.org/TR/CSS21/">CSS 2.1</a> files, except for a couple
-  of non-standard properties and pseudo classes.
+  As all layouting calculations are executed on the RAP server, it's not enough
+  to pass some CSS style sheets to the client browser.
+  The server needs to know the actual sizes of those borders and margins as well
+  to be able to calculate widget bounds and layouts correctly.
+  To maintain that synchronicity between client-side presentations and server-side
+  layouts, the RWT theme files are evaluated by the server, which then passes
+  a preprocessed version of the theme to the client.
+</p>
+
+<h2>How to Register a Custom RWT Theme</h2>
+
+<h3>1. Define a Custom Theme</h3>
+<p>
+  Let's create a first simple RWT theme file.
+  The theme files for RAP are written in CSS using simple widget type names as
+  elements.
+  They can refer to style flags and certain widget states.
   The following is an example for a simple theme file:
   <pre>
   * {
@@ -77,48 +77,52 @@
     background-color: white;
   }
   </pre>
+  This style sheet contains three rules.
   The first rule defines a background color for all elements.
-  The second rule applies to Buttons with SWT style flags PUSH and TOGGLE and
-  defines a border, a color, and a background color.
-  The third rule defines a hover color for push-buttons and toggle-buttons.
-</p>
-<p>
-  The <code>theme.css</code> file found in the demo project
-  (<code>org.eclipse.rap.demo</code>) can serve as a more complex example.
+  The second rule applies to Buttons that have the SWT style flag PUSH
+  or TOGGLE set.
+  It defines a two pixel wide blue border, a text color, and a background color
+  for these buttons.
+  The third rule defines a hover background color for push-buttons and
+  toggle-buttons.
+  This color will be activated on mouse-over.
 </p>
 
-<h3>Register the New Theme</h3>
+<h3>2. Register the Custom Theme</h3>
 <p>
   In order to make your theme available, you have to register it with the
   extension point <code>org.eclipse.rap.ui.themes</code>.
   In the <code>plugin.xml</code> of your application project, add an extension
   like this:
   <pre>
-   &lt;extension
-         point="org.eclipse.rap.ui.themes"&gt;
-      &lt;theme
-            id="my.application.aquablue"
-            name="Aqua Blue Test Theme"
-            file="aqua-blue.css" /&gt;
-   &lt;/extension&gt;
+  &lt;extension
+      point="org.eclipse.rap.ui.themes"&gt;
+    &lt;theme
+        id="my.application.aquablue"
+        name="Aqua Blue Test Theme"
+        file="aqua-blue.css" /&gt;
+  &lt;/extension&gt;
   </pre>
+  Now your theme is registered, but your application still uses the old one.
 </p>
 
-<h3>Activate the Theme</h3>
+<h3>3. Activate the Custom Theme</h3>
 <p>
-  To make your application use the custom theme you have to register a branding
-  as shown in the example below.
-  For details, refer to the article on <a href="./branding.html">RAP branding</a>).
+  To make your application use the custom theme you have to register a branding.
+  A branding binds several settings (including the theme to use) to a servlet
+  name.
+  For more details, refer to the article on
+  <a href="./branding.html">RAP branding</a>.
   <pre>
-   &lt;extension
-         point="org.eclipse.rap.ui.branding"&gt;
-      &lt;branding
-            id="my.application.aquabranding"
-            servletName="aqua"
-            defaultEntrypointId="my.application.entrypoint1"
-            themeId="my.application.aquablue"&gt;
-      &lt;/branding&gt;
-   &lt;/extension&gt;
+  &lt;extension
+      point="org.eclipse.rap.ui.branding"&gt;
+    &lt;branding
+        id="my.application.aquabranding"
+        servletName="aqua"
+        defaultEntrypointId="my.application.entrypoint1"
+        themeId="my.application.aquablue"&gt;
+    &lt;/branding&gt;
+  &lt;/extension&gt;
   </pre>
 </p>
 <p>
@@ -128,17 +132,26 @@
   There is no support for programmatic activation of custom themes yet.
 </p>
 
-<h2>Available Property Values</h2>
-<p class="Note">
-  The properties supported for every widget will be published here later,
-  for now developers have to look into the <code>&lt;Widget&gt;.theme.xml</code>
-  files in the RWT source code.
-  Please note that as long as RAP still uses the old property system internally,
-  not all properties specified in a CSS file are really interpreted.
+<h2>RWT Theme File Syntax and Semantics</h2>
+<p>
+  Now that the sample theme works, you probably want to define more complex ones.
+  This section explains the basic rules for writing CSS theme files.
+  Moreover, the <code>theme.css</code> file found in the demo project
+  (<code>org.eclipse.rap.demo</code>) can serve as a more complex example.
 </p>
 
-<h2>Syntax for Property Values</h2>
-<p>  
+<h3>Themeable Widgets and Properties</h3>
+<p>
+  The element names a CSS selector referres to are simple widget type names
+  (e.g. Button).
+  Not all RWT widgets are equally customizeable, some already provide a large
+  set of themeable properties, others are still more hard-wired.
+  An overview of all available elements and themeable CSS properties can be found
+  in the <a href="../reference/theming/index.html">RWT theming reference</a>.
+</p>
+
+<h3>Syntax for Property Values</h3>
+<p>
   Property values specified in a theme file must conform to the
   <a href="http://www.w3.org/TR/CSS21/">CSS 2.1 specification</a>
   with the following restrictions:
@@ -160,38 +173,49 @@
   </ul>
 </p>
 
-<h2>Widget Variants</h2>
+<h3>Styles and States</h3>
 <p>
-  RAP 1.1M3 introduced a new concept to allow for a more flexible theming,
-  called widget variants.
-  This allows to apply a style to certain widgets that differs from the
-  style of other widgets of the same type.
-  As an example, imagine an application that uses PUSH buttons in a special
-  banner bar.
-  These buttons should have a different font and text color than normal PUSH
-  buttons.
+  Certain SWT style flags can be referred to in CSS selectors to allow to define
+  a styling depending on the widget type.
+  For style flags we use the attribute syntax (e.g. <code>[BORDER]</code>)
+  because it's simple and concise.
+  While style flags do not change during the lifetime of a widget,
+  there are also a couple of dynamic widget states a theme can refer to.
+  To refer to those dynamic states in a selector we use the attribute syntax
+  (e.g. <code>:hover</code>).
+</p>
+
+<h3>Widget Variants</h3>
+<p>
+  Normally, a theme setting affects all instances of a widget type equally.
+  By defining widget variants it is possible to apply an individual presentation
+  scheme to particular widgets.
+  As an example, imagine an application that uses buttons in a special banner bar.
+  These buttons should have a different font and text color than normal buttons.
+  By making these buttons part of a variant (e.g. "mybutton"), you can define
+  separate CSS rules for these widgets.
 </p>
 
 <p>
-  To implement this, the buttons in the bar are marked as belonging to a custom
-  variant (say "mybutton") like so:
+  To implement this, the buttons in the banner bar are marked as belonging to a
+  custom variant (e.g. "mybutton") using <code>Widget#setData()</code>:
   <pre>
-   button.setData( WidgetUtil.CUSTOM_VARIANT, "mybutton" )
+  button.setData( WidgetUtil.CUSTOM_VARIANT, "mybutton" )
   </pre>
   In the theme CSS file, these widget variants can be referred to using the
   class notation known from CSS for HTML:
   <pre>
-   Button.mybutton {
-     color: red;
-   }
+  Button.mybutton {
+    color: red;
+  }
   </pre>
 </p>
 
-<h2>SWT System Colors</h2>
+<h3>SWT System Colors</h3>
 <p>
   The SWT system colors, as returned by <code>Display#getSystemColor()</code>,
-  are also themeable.
-  The following list indicates which theme parameters manipulate these colors:
+  are also controlled by the theme.
+  The following list indicates which theming properties manipulate these colors:
 </p>
 
 <p>
@@ -201,13 +225,13 @@
       <th style="text-align:left">Element</th>
       <th style="text-align:left">Property</th>
     </tr>
+    <tr><td>SWT.COLOR_WIDGET_FOREGROUND</td><td>*</td><td>color</td></tr>
+    <tr><td>SWT.COLOR_WIDGET_BACKGROUND</td><td>*</td><td>background-color</td></tr>
     <tr><td>SWT.COLOR_WIDGET_DARK_SHADOW</td><td>System</td><td>rwt-darkshadow-color</td></tr>
     <tr><td>SWT.COLOR_WIDGET_NORMAL_SHADOW</td><td>System</td><td>rwt-shadow-color</td></tr>
     <tr><td>SWT.COLOR_WIDGET_LIGHT_SHADOW</td><td>System</td><td>rwt-lightshadow-color</td></tr>
     <tr><td>SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW</td><td>System</td><td>rwt-highlight-color</td></tr>
-    <tr><td>SWT.COLOR_WIDGET_BACKGROUND</td><td>*</td><td>background-color</td></tr>
     <tr><td>SWT.COLOR_WIDGET_BORDER</td><td>System</td><td>rwt-thinborder-color</td></tr>
-    <tr><td>SWT.COLOR_WIDGET_FOREGROUND</td><td>*</td><td>color</td></tr>
     <tr><td>SWT.COLOR_LIST_FOREGROUND</td><td>List</td><td>color</td></tr>
     <tr><td>SWT.COLOR_LIST_BACKGROUND</td><td>List</td><td>background-color</td></tr>
     <tr><td>SWT.COLOR_LIST_SELECTION</td><td>List-Item:selected</td><td>background-color</td></tr>
