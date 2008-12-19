@@ -24,15 +24,26 @@ public class IntroMessages extends NLS {
   public static String InstallDialog_Message_selectDirText;
 
   public static String InstallDialog_Message_selectLocation;
-  public static String InstallDialog_NotWritable;
   public static String InstallDialog_Location;
   public static String InstallDialog_ShellTitle;
   public static String InstallDialog_switchTarget;
   public static String InstallDialog_TargetDescription;
   public static String InstallDialog_TargetGroup;
   public static String InstallDialog_validPath;
+
+  public static String InstallRAPTargetAction_FailedExecuteCommand;
+
+  public static String InstallRAPTargetHandler_InstallFailed;
+
+  public static String InstallRAPTargetHandler_InstallInterrupted;
+
+  public static String InstallRAPTargetHandler_SwitchTargetFailed;
+
+  public static String InstallRAPTargetHandler_SwitchTargetInterrupted;
   public static String TargetProvider_ArchiveNotFound;
   public static String TargetProvider_FailureCreateScript;
+
+  public static String TargetProvider_InvalidTargetDest;
   public static String TargetProvider_SourceNotFound;
   
   static {

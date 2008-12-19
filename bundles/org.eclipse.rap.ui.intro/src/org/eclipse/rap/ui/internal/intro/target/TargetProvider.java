@@ -1,18 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *   Innoopract Informationssysteme GmbH - initial API and implementation
+ *   EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +84,9 @@ public final class TargetProvider {
     file.mkdirs();
     boolean valid = file.canWrite() && file.isDirectory();
     if( !valid ) {
-      String msg = "Invalid target destination: " + file.toString(); 
+      String text = IntroMessages.TargetProvider_InvalidTargetDest;
+      Object[] args = new Object[] { file.toString() };
+      String msg = MessageFormat.format( text, args ); 
       Status status 
         = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, null );
       throw new CoreException( status );

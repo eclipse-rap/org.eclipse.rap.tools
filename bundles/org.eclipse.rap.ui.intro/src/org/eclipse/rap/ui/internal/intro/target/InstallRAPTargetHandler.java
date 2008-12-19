@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *   Innoopract Informationssysteme GmbH - initial API and implementation
+ *   EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
@@ -70,10 +71,10 @@ public class InstallRAPTargetHandler extends AbstractHandler {
       service.busyCursorWhile( runnable );
     } catch( InvocationTargetException e ) {
       Throwable cause = e.getCause() == null ? e : e.getCause();
-      String msg = "Failed to install target platform.";
+      String msg = IntroMessages.InstallRAPTargetHandler_InstallFailed;
       throw new ExecutionException( msg, cause );
     } catch( InterruptedException e ) {
-      String msg = "Installing target interrupted.";
+      String msg = IntroMessages.InstallRAPTargetHandler_InstallInterrupted;
       throw new ExecutionException( msg );
     }
   }
@@ -105,12 +106,11 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     try {
       service.runInUI( service, run, ResourcesPlugin.getWorkspace().getRoot() );
     } catch( InvocationTargetException e ) {
-      String msg = "Failed to switch to RAP target platform.";
+      String msg = IntroMessages.InstallRAPTargetHandler_SwitchTargetFailed;
       ErrorUtil.show( msg, e ); //$NON-NLS-1$
     } catch( InterruptedException e ) {
       String msg
-        = "InterruptedException occured while switching to RAP target " 
-        +	"platform."; //$NON-NLS-1$
+        = IntroMessages.InstallRAPTargetHandler_SwitchTargetInterrupted;
       ErrorUtil.log( msg, e );
     }
   }
@@ -126,7 +126,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     } finally {
       is.close();    
     }        
-    File path = new File( targetDestination, "eclipse" ); //$NON-NLS-N$
+    File path = new File( targetDestination, "eclipse" ); //$NON-NLS-1$
     targetModel.getTarget().getLocationInfo().setPath( path.toString() ); 
     return targetModel;
   }
