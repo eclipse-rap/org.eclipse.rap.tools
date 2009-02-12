@@ -27,6 +27,19 @@
       </launchConfigurationType>
    </extension>
    <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.rap.ui.launch.RAPLauncher"
+            icon="$nl$/icons/obj16/launcher.gif"
+            id="org.eclipse.rap.ui.launch.RAPLaunchImage">
+      </launchConfigurationTypeImage>
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher"
+            icon="$nl$/icons/obj16/rapjunitlaunch.gif"
+            id="org.eclipse.rap.ui.launch.RAPJUnitTestLaunchImage">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
             class="org.eclipse.rap.ui.internal.launch.tab.RAPLaunchTabGroup"
@@ -56,19 +69,6 @@
                mode="debug">
          </launchMode>
       </launchConfigurationTabGroup>
-   </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-      <launchConfigurationTypeImage
-            configTypeID="org.eclipse.rap.ui.launch.RAPLauncher"
-            icon="$nl$/icons/obj16/launcher.gif"
-            id="org.eclipse.rap.ui.launch.RAPLaunchImage">
-      </launchConfigurationTypeImage>
-      <launchConfigurationTypeImage
-            configTypeID="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher"
-            icon="$nl$/icons/obj16/rapjunitlaunch.gif"
-            id="org.eclipse.rap.ui.launch.RAPJUnitTestLaunchImage">
-      </launchConfigurationTypeImage>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
@@ -113,6 +113,17 @@
             id="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut"
             label="%junitLaunchShortcut.label"
             modes="run, debug">
+         <configurationType
+               id="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher">
+         </configurationType>
+         <description
+               description="%RunJUnitPluginLaunchShortcut.description"
+               mode="run">
+         </description>
+         <description
+               description="%DebugJUnitPluginLaunchShortcut.description"
+               mode="debug">
+         </description>
          <contextualLaunch>
             <enablement>
                <with variable="selection">
@@ -127,17 +138,6 @@
                </with>
             </enablement>
          </contextualLaunch>
-         <configurationType
-               id="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher">
-         </configurationType>
-         <description
-               description="%RunJUnitPluginLaunchShortcut.description"
-               mode="run">
-         </description>
-         <description
-               description="%DebugJUnitPluginLaunchShortcut.description"
-               mode="debug">
-         </description>
       </shortcut>
       
    </extension>
