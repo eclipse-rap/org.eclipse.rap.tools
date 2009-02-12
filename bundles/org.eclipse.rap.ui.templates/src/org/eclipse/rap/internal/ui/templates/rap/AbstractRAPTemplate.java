@@ -29,6 +29,7 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
 
   protected static final String KEY_APPLICATION_CLASS = "applicationClass"; //$NON-NLS-1$
   protected static final String KEY_WINDOW_TITLE = "windowTitle"; //$NON-NLS-1$
+  protected static final String TEMPLATES_DIRECTORY = "templates_3.2"; //$NON-NLS-1$
 
   protected final URL getInstallURL() {
     return TemplateUtil.getInstallURL();
@@ -94,6 +95,10 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
   protected final String getPluginId() {
     IPluginBase plugin = model.getPluginBase();
     return plugin.getId();
+  }
+  
+  protected String getTemplateDirectory() {
+    return TEMPLATES_DIRECTORY;
   }
 
 }
