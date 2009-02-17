@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,10 +49,15 @@ final class ExtensionUtil {
   {
     String result = null;
     IPluginModelBase pluginModel = pluginExtension.getPluginModel();
-    if( pluginModel instanceof WorkspacePluginModel ) {
-      WorkspacePluginModel workspacePlugin = ( WorkspacePluginModel )pluginModel;
-      IResource resource = workspacePlugin.getUnderlyingResource();
-      result = resource.getProject().getName();
+    if( isPDECore33() ) {
+      if( pluginModel instanceof WorkspacePluginModel ) {
+        WorkspacePluginModel workspacePlugin
+          = ( WorkspacePluginModel )pluginModel;
+        IResource resource = workspacePlugin.getUnderlyingResource();
+        result = resource.getProject().getName();
+      }
+    } else {
+      result = pluginModel.getUnderlyingResource().getProject().getName();
     }
     return result;
   }

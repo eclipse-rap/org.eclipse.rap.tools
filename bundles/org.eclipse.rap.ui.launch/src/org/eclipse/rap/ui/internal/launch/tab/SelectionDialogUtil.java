@@ -8,7 +8,6 @@
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.rap.ui.internal.launch.tab;
 
 import org.eclipse.ui.dialogs.SearchPattern;
