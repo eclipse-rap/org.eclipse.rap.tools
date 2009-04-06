@@ -15,9 +15,8 @@ import java.text.MessageFormat;
 
 import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
-import org.eclipse.rap.ui.internal.intro.IntroPlugin;
+import org.eclipse.rap.ui.internal.intro.ErrorUtil;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -44,8 +43,7 @@ public final class InstallRAPTargetAction extends Action {
     String text = IntroMessages.InstallRAPTargetAction_FailedExecuteCommand;
     Object[] args = new Object[] { INSTALL_COMMAND };
     String msg = MessageFormat.format( text, args );
-    Status status 
-      = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, e );
+    IStatus status  = ErrorUtil.createErrorStatus( msg, e );
     StatusManager statusManager = StatusManager.getManager();
     statusManager.handle( status, StatusManager.LOG | StatusManager.SHOW );
   }

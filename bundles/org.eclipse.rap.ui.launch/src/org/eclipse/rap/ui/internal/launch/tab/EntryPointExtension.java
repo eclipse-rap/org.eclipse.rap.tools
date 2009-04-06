@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
@@ -16,15 +16,16 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.pde.core.plugin.*;
 
-final class EntryPointExtension extends AbstractExtension {
-  
+public final class EntryPointExtension extends AbstractExtension {
 
-  private static final String EXTENSION_ID 
+  private static final String EXTENSION_ID
     = "org.eclipse.rap.ui.entrypoint"; //$NON-NLS-1$
   private static final String ATTR_PARAMETER = "parameter"; //$NON-NLS-1$
-  private static final String ID = "id"; //$NON-NLS-1$
+  private static final String ATTR_ID = "id"; //$NON-NLS-1$
 
-  static EntryPointExtension findById( final String id ) throws CoreException {
+  public static EntryPointExtension findById( final String id )
+    throws CoreException
+  {
     EntryPointExtension result = null;
     if( id != null ) {
       EntryPointExtension[] extensions = findInWorkspace( null );
@@ -36,12 +37,29 @@ final class EntryPointExtension extends AbstractExtension {
     }
     return result;
   }
-  
-  static EntryPointExtension[] findInWorkspace( final IProgressMonitor monitor ) 
-    throws CoreException 
+
+  public static EntryPointExtension[] findInPlugins(
+    final String[] pluginIds,
+    final IProgressMonitor monitor )
+    throws CoreException
   {
-    IPluginExtension[] extensions 
+    IPluginExtension[] extensions
+      = ExtensionUtil.getPluginExtensions( pluginIds, EXTENSION_ID, monitor );
+    return findInPluginExtensions( extensions );
+  }
+
+  public static EntryPointExtension[] findInWorkspace(
+    final IProgressMonitor monitor )
+    throws CoreException
+  {
+    IPluginExtension[] extensions
       = ExtensionUtil.getWorkspaceExtensions( EXTENSION_ID, monitor );
+    return findInPluginExtensions( extensions );
+  }
+
+  private static EntryPointExtension[] findInPluginExtensions( 
+    final IPluginExtension[] extensions )
+  {
     List list = new ArrayList();
     for( int i = 0; i < extensions.length; i++ ) {
       EntryPointExtension[] entryPoints;
@@ -52,9 +70,9 @@ final class EntryPointExtension extends AbstractExtension {
     list.toArray( result );
     return result;
   }
-  
-  private static final EntryPointExtension[] getEntryPointExtensions( 
-    final IPluginExtension pluginExtension ) 
+
+  private static final EntryPointExtension[] getEntryPointExtensions(
+    final IPluginExtension pluginExtension )
   {
     IPluginObject[] children = pluginExtension.getChildren();
     EntryPointExtension[] result = new EntryPointExtension[ children.length ];
@@ -62,7 +80,7 @@ final class EntryPointExtension extends AbstractExtension {
       String project = ExtensionUtil.getProjectName( pluginExtension );
       IPluginElement element = ( IPluginElement )children[ i ];
       String parameter = ExtensionUtil.getAttribute( element, ATTR_PARAMETER );
-      String id = ExtensionUtil.getAttribute( element, ID );
+      String id = ExtensionUtil.getAttribute( element, ATTR_ID );
       result[ i ] = new EntryPointExtension( project, id, parameter );
     }
     return result;
@@ -72,26 +90,26 @@ final class EntryPointExtension extends AbstractExtension {
   private final String id;
   private final String parameter;
 
-  EntryPointExtension( final String project, 
-                       final String id,
-                       final String parameter ) 
+  public EntryPointExtension( final String project,
+                              final String id,
+                              final String parameter )
   {
     super( project );
     this.id = id;
     this.parameter = parameter;
   }
 
-  final String getId() {
+  public final String getId() {
     return id;
   }
-  
-  final String getParameter() {
+
+  public final String getParameter() {
     return parameter;
   }
 
   /////////////////////
   // hashCode & equals
-  
+
   public final int hashCode() {
     int prime = 31;
     int result = 1;

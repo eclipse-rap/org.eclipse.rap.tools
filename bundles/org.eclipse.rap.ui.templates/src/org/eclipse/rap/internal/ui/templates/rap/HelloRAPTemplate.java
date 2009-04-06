@@ -13,7 +13,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.pde.core.plugin.IPluginElement;
 import org.eclipse.pde.core.plugin.IPluginExtension;
-import org.eclipse.rap.internal.ui.templates.IXmlNames;
+import org.eclipse.rap.internal.ui.templates.XmlNames;
 
 class HelloRAPTemplate extends AbstractRAPTemplate {
 
@@ -44,30 +44,30 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
   // helping methods
   // ////////////////
   private void createEntryPointsExtension() throws CoreException {
-    IPluginExtension extension = createExtension( IXmlNames.XID_ENTRYPOINT,
+    IPluginExtension extension = createExtension( XmlNames.XID_ENTRYPOINT,
                                                   true );
     IPluginElement element = createElement( extension );
-    element.setName( IXmlNames.ELEM_ENTRYPOINT );
-    element.setAttribute( IXmlNames.ATT_CLASS, 
+    element.setName( XmlNames.ELEM_ENTRYPOINT );
+    element.setAttribute( XmlNames.ATT_CLASS, 
                           getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_ID,
+    element.setAttribute( XmlNames.ATT_ID,
                           getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_PARAMETER, "hello" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_PARAMETER, "hello" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );
   }
 
   private void createPerspectivesExtension() throws CoreException {
     IPluginExtension extension 
-      = createExtension( IXmlNames.XID_PERSPECTIVES, true );
+      = createExtension( XmlNames.XID_PERSPECTIVES, true );
     
     IPluginElement element = createElement( extension );
-    element.setName( IXmlNames.ELEM_PERSPECTIVE );
-    element.setAttribute( IXmlNames.ATT_CLASS, 
+    element.setName( XmlNames.ELEM_PERSPECTIVE );
+    element.setAttribute( XmlNames.ATT_CLASS, 
                           getPackageName() + ".Perspective" ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_NAME,
+    element.setAttribute( XmlNames.ATT_NAME,
                           Messages.helloRAPTemplate_perspectiveName );
-    element.setAttribute( IXmlNames.ATT_ID, 
+    element.setAttribute( XmlNames.ATT_ID, 
                           getPluginId() + ".perspective" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );

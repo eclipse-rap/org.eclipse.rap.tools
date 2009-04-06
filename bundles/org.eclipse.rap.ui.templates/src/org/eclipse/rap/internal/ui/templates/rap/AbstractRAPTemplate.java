@@ -98,8 +98,7 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
     return plugin.getId();
   }
 
-  protected String getTemplateDirectory() {
+  protected final String getTemplateDirectory() {
     return TEMPLATES_DIRECTORY;
   }
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,13 +15,14 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.eclipse.ant.core.AntRunner;
 import org.eclipse.core.runtime.*;
+import org.eclipse.rap.ui.internal.intro.ErrorUtil;
 import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 
 public final class TargetProvider {
@@ -29,8 +30,24 @@ public final class TargetProvider {
   private static final String COPY_ANT_XML = "copy.ant.xml"; //$NON-NLS-1$
   private static final String CHARSET_NAME = "ISO-8859-1"; //$NON-NLS-1$
 
+  private static final String BUNDLE_VERSION = "Bundle-Version"; //$NON-NLS-1$
+
   private static final String DEFAULT_TARGET_DEST 
-     = "org.eclipse.rap.target-1.2"; //$NON-NLS-1$
+    = "org.eclipse.rap.target-" + TargetProvider.getRAPRuntimeVersion(); //$NON-NLS-1$
+
+  public static String getRAPRuntimeVersion() {
+    // For now, assume that the major and minor version numbers of runtime 
+    // and tooling version are in sync
+    Dictionary headers = IntroPlugin.getDefault().getBundle().getHeaders();
+    String value = ( String )headers.get( BUNDLE_VERSION );
+    Version version; 
+    if( value != null ) {
+      version = new Version( value );
+    } else {
+      version = new Version( "0.0.0.0" );
+    }
+    return version.getMajor() + "." + version.getMinor();
+  }
 
   public static String getDefaultTargetDestination() {
     URL configLocation = Platform.getConfigurationLocation().getURL();
@@ -71,7 +88,7 @@ public final class TargetProvider {
       }
     } catch( IOException e ) {
       String msg = IntroMessages.TargetProvider_FailureCreateScript;
-      Status status = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, e );
+      IStatus status = ErrorUtil.createErrorStatus( msg, e );
       throw new CoreException( status );
     }
     return file;
@@ -87,8 +104,7 @@ public final class TargetProvider {
       String text = IntroMessages.TargetProvider_InvalidTargetDest;
       Object[] args = new Object[] { file.toString() };
       String msg = MessageFormat.format( text, args ); 
-      Status status 
-        = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, null );
+      IStatus status = ErrorUtil.createErrorStatus( msg, null );
       throw new CoreException( status );
     }
   }
@@ -109,15 +125,13 @@ public final class TargetProvider {
       URL targetEntry = bundle.getEntry( "target/target.zip" ); //$NON-NLS-1$
       if( targetEntry == null ) {
         String msg = IntroMessages.TargetProvider_ArchiveNotFound; 
-        Status status 
-          = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, null );
+        IStatus status = ErrorUtil.createErrorStatus( msg, null );
         throw new CoreException( status );
       }
       result = FileLocator.resolve( targetEntry );
     } catch( IOException e ) {
       String msg = IntroMessages.TargetProvider_SourceNotFound; 
-      Status status 
-        = new Status( IStatus.ERROR, IntroPlugin.PLUGIN_ID, msg, e );
+      IStatus status = ErrorUtil.createErrorStatus( msg, e );
       throw new CoreException( status );
     }
     return result.getFile();

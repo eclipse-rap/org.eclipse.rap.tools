@@ -19,7 +19,7 @@ import org.osgi.framework.Bundle;
 /**
  * Helper class for template creation.
  */
-public class TemplateUtil {
+public final class TemplateUtil {
 
   public static final String PLUGIN_ID = "org.eclipse.rap.ui.templates"; //$NON-NLS-1$
 
@@ -56,8 +56,8 @@ public class TemplateUtil {
     Platform.getLog( getBundle() ).log( status );
   }
 
+  ///////////////////
   // helping methods
-  // ////////////////
   
   private static Bundle getBundle() {
     return Platform.getBundle( PLUGIN_ID );

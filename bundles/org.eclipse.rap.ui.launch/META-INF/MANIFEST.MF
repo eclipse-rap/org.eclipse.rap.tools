@@ -16,7 +16,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
-Export-Package: org.eclipse.rap.ui.internal.launch;x-internal:=true,
- org.eclipse.rap.ui.internal.launch.junit;x-internal:=true,
- org.eclipse.rap.ui.internal.launch.tab;x-internal:=true,
- org.eclipse.rap.ui.internal.launch.util;x-internal:=true
+Export-Package: org.eclipse.rap.ui.internal.launch;x-friends:="org.eclipse.rap.ui.tests",
+ org.eclipse.rap.ui.internal.launch.junit;x-friends:="org.eclipse.rap.ui.tests",
+ org.eclipse.rap.ui.internal.launch.tab;x-friends:="org.eclipse.rap.ui.tests",
+ org.eclipse.rap.ui.internal.launch.util;x-friends:="org.eclipse.rap.ui.tests"

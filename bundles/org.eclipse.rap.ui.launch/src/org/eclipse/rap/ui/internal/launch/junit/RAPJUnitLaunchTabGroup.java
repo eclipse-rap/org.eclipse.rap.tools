@@ -20,7 +20,7 @@ import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig;
 import org.eclipse.rap.ui.internal.launch.tab.MainTab;
 
 
-// TODO [rh] Could be replace with org.eclipse.debug.ui.launchConfigurationTabs
+// TODO [rh] Could be replaced with org.eclipse.debug.ui.launchConfigurationTabs
 //      extension point introduced in 3.3
 public final class RAPJUnitLaunchTabGroup extends OSGiLauncherTabGroup {
 

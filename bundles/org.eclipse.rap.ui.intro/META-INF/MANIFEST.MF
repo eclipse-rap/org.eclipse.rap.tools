@@ -17,5 +17,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-Activator: org.eclipse.rap.ui.internal.intro.IntroPlugin
 Bundle-Vendor: %Bundle-Vendor
-Export-Package: org.eclipse.rap.ui.internal.intro;x-internal:=true,
- org.eclipse.rap.ui.internal.intro.target;x-internal:=true
+Export-Package: org.eclipse.rap.ui.internal.intro;x-friends:="org.eclipse.rap.ui.tests",
+ org.eclipse.rap.ui.internal.intro.target;x-friends:="org.eclipse.rap.ui.tests"

@@ -13,7 +13,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.pde.core.plugin.IPluginElement;
 import org.eclipse.pde.core.plugin.IPluginExtension;
-import org.eclipse.rap.internal.ui.templates.IXmlNames;
+import org.eclipse.rap.internal.ui.templates.XmlNames;
 
 class MailRAPTemplate extends AbstractRAPTemplate {
 
@@ -52,13 +52,13 @@ class MailRAPTemplate extends AbstractRAPTemplate {
   // helping methods
   // ////////////////
   private void createCommandsExtension() throws CoreException {
-    IPluginExtension extension = createExtension( IXmlNames.XID_COMMANDS, true );
+    IPluginExtension extension = createExtension( XmlNames.XID_COMMANDS, true );
     IPluginElement element = createElement( extension );
-    element.setName( IXmlNames.ELEM_CATEGORY );
-    element.setAttribute( IXmlNames.ATT_NAME,
+    element.setName( XmlNames.ELEM_CATEGORY );
+    element.setAttribute( XmlNames.ATT_NAME,
                           Messages.mailRAPTemplate_categoryName );
     String categoryId = getPackageName() + ".category"; //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_ID, categoryId );
+    element.setAttribute( XmlNames.ATT_ID, categoryId );
     extension.add( element );
     createCommandElement( extension,
                           Messages.mailRAPTemplate_mailboxCmdName,
@@ -81,64 +81,64 @@ class MailRAPTemplate extends AbstractRAPTemplate {
     throws CoreException
   {
     IPluginElement element = createElement( extension );
-    element.setName( IXmlNames.ELEM_COMMAND );
-    element.setAttribute( IXmlNames.ATT_NAME, name );
-    element.setAttribute( IXmlNames.ATT_DESCRIPTION, description );
-    element.setAttribute( IXmlNames.ATT_CATID, categoryId );
-    element.setAttribute( IXmlNames.ATT_ID, commandId );
+    element.setName( XmlNames.ELEM_COMMAND );
+    element.setAttribute( XmlNames.ATT_NAME, name );
+    element.setAttribute( XmlNames.ATT_DESCRIPTION, description );
+    element.setAttribute( XmlNames.ATT_CATID, categoryId );
+    element.setAttribute( XmlNames.ATT_ID, commandId );
     extension.add( element );
   }
 
   private void createEntryPointsExtension() throws CoreException {
-    IPluginExtension extension = createExtension( IXmlNames.XID_ENTRYPOINT,
+    IPluginExtension extension = createExtension( XmlNames.XID_ENTRYPOINT,
                                                   true );
     IPluginElement element = createElement( extension );
-    element.setName( IXmlNames.ELEM_ENTRYPOINT );
-    element.setAttribute( IXmlNames.ATT_CLASS, 
+    element.setName( XmlNames.ELEM_ENTRYPOINT );
+    element.setAttribute( XmlNames.ATT_CLASS, 
                           getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_ID, 
+    element.setAttribute( XmlNames.ATT_ID, 
                           getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_PARAMETER, "mail" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_PARAMETER, "mail" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );
   }
 
   private void createPerspectivesExtension() throws CoreException {
-    IPluginExtension extension = createExtension( IXmlNames.XID_PERSPECTIVES,
+    IPluginExtension extension = createExtension( XmlNames.XID_PERSPECTIVES,
                                                   true );
     IPluginElement element = createElement( extension );
-    element.setName( IXmlNames.ELEM_PERSPECTIVE );
-    element.setAttribute( IXmlNames.ATT_CLASS, 
+    element.setName( XmlNames.ELEM_PERSPECTIVE );
+    element.setAttribute( XmlNames.ATT_CLASS, 
                           getPackageName() + ".Perspective" ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_NAME, "RAP Perspective" ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_ID, 
+    element.setAttribute( XmlNames.ATT_NAME, "RAP Perspective" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_ID, 
                           getPluginId() + ".perspective" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );
   }
 
   private void createViewsExtension() throws CoreException {
-    IPluginExtension extension = createExtension( IXmlNames.XID_VIEWS, true );
+    IPluginExtension extension = createExtension( XmlNames.XID_VIEWS, true );
     
     IPluginElement element = createElement( extension );
-    element.setName( IXmlNames.ELEM_VIEW );
-    element.setAttribute( IXmlNames.ATT_CLASS, 
+    element.setName( XmlNames.ELEM_VIEW );
+    element.setAttribute( XmlNames.ATT_CLASS, 
                           getPackageName() + ".View" ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_NAME,
+    element.setAttribute( XmlNames.ATT_NAME,
                           Messages.mailRAPTemplate_messageViewName );
-    element.setAttribute( IXmlNames.ATT_ID, getPluginId() + ".view" ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_ALLOWMULTIPLE, "true" ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_ICON, "icons/sample2.gif" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_ID, getPluginId() + ".view" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_ALLOWMULTIPLE, "true" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_ICON, "icons/sample2.gif" ); //$NON-NLS-1$
     extension.add( element );
     
     element = createElement( extension );
-    element.setName( IXmlNames.ELEM_VIEW );
-    element.setAttribute( IXmlNames.ATT_CLASS,
+    element.setName( XmlNames.ELEM_VIEW );
+    element.setAttribute( XmlNames.ATT_CLASS,
                           getPackageName() + ".NavigationView" ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_NAME,
+    element.setAttribute( XmlNames.ATT_NAME,
                           Messages.mailRAPTemplate_mailboxViewName );
-    element.setAttribute( IXmlNames.ATT_ID, getPluginId() + ".navigationView" ); //$NON-NLS-1$
-    element.setAttribute( IXmlNames.ATT_ICON, "icons/sample3.gif" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_ID, getPluginId() + ".navigationView" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_ICON, "icons/sample3.gif" ); //$NON-NLS-1$
     extension.add( element );
     
     addExtensionToPlugin( extension );

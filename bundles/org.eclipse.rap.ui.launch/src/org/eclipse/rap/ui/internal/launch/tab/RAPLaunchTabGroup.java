@@ -16,7 +16,7 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.pde.ui.launcher.OSGiLauncherTabGroup;
 
 
-// TODO [rh] Could be replace with org.eclipse.debug.ui.launchConfigurationTabs
+// TODO [rh] Could be replaced with org.eclipse.debug.ui.launchConfigurationTabs
 //      extension point introduced in 3.3
 public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
 {

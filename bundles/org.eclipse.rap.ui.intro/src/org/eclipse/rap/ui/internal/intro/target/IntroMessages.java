@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007,2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007,2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,7 @@ public class IntroMessages extends NLS {
   public static String InstallDialog_Browse;
   public static String InstallDialog_DialogTitle;
   public static String InstallDialog_Message_selectDirMsg;
-
   public static String InstallDialog_Message_selectDirText;
-
   public static String InstallDialog_Message_selectLocation;
   public static String InstallDialog_Location;
   public static String InstallDialog_ShellTitle;
@@ -34,15 +32,12 @@ public class IntroMessages extends NLS {
   public static String InstallRAPTargetAction_FailedExecuteCommand;
 
   public static String InstallRAPTargetHandler_InstallFailed;
-
   public static String InstallRAPTargetHandler_InstallInterrupted;
-
   public static String InstallRAPTargetHandler_SwitchTargetFailed;
-
   public static String InstallRAPTargetHandler_SwitchTargetInterrupted;
+
   public static String TargetProvider_ArchiveNotFound;
   public static String TargetProvider_FailureCreateScript;
-
   public static String TargetProvider_InvalidTargetDest;
   public static String TargetProvider_SourceNotFound;
   

@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
 public final class ErrorUtil {
   
   public static void show( final String message, final Throwable throwable ) {
-    final IStatus status = createStatus( message, throwable );
+    final IStatus status = createErrorStatus( message, throwable );
     IntroPlugin.getDefault().getLog().log( status );
     Display display = Display.getCurrent();
     if( display == null ) {
@@ -34,27 +34,31 @@ public final class ErrorUtil {
   }
 
   public static void log( final String message, final Throwable throwable ) {
-    IStatus status = createStatus( message, throwable );
+    IStatus status = createErrorStatus( message, throwable );
     IntroPlugin.getDefault().getLog().log( status );
   }
   
-  private static IStatus createStatus( final String message, 
-                                       final Throwable throwable ) 
+  public static IStatus createErrorStatus( final String message, 
+                                           final Throwable throwable ) 
   {
     Throwable cause = throwable;
     if( cause instanceof InvocationTargetException ) {
       cause = ( ( InvocationTargetException )cause ).getTargetException();
     }
-    final IStatus result;
+    IStatus result;
     if( throwable instanceof CoreException ) {
       result = ( ( CoreException )throwable ).getStatus();
     } else {
       String statusMessage = message;
-      if( statusMessage == null ) {
-        statusMessage = throwable.getMessage();
+      if( statusMessage == null && throwable != null ) {
+        if( throwable.getMessage() != null ) {
+          statusMessage = throwable.getMessage();
+        } else {
+          statusMessage = throwable.toString();
+        }
       }
       if( statusMessage == null ) {
-        statusMessage = throwable.toString();
+        statusMessage = "";
       }
       result = new Status( IStatus.ERROR, 
                            IntroPlugin.getPluginId(),

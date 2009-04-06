@@ -19,13 +19,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.window.Window;
-import org.eclipse.pde.ui.launcher.BundlesTab;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfigValidator;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
@@ -98,7 +96,6 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     createServletNameAndEntryPointSection( container );
     createBrowserModeSection( container );
     createRuntimeSettingsSection( container );
-    createInfoSection( container );
     // Set container for this tab page
     Dialog.applyDialogFont( container );
     setControl( container );
@@ -296,32 +293,6 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     } );
   }
 
-  // TODO [rh] This could be omitted if we could figure out which OSGi  
-  //      framework is currently set. But my ingestigations so far showed that
-  //      it would involve internal API of org.eclipse.pde.ui to obtain the 
-  //      default OSGi framework
-  private void createInfoSection( final Composite parent ) {
-    Group group = new Group( parent, SWT.NONE );
-    group.setLayoutData( fillHorizontal.create() );
-    group.setText( "Important Information" );
-    group.setLayout( new GridLayout( 2, false ) );
-    Label lblImage = new Label( group, SWT.NONE );
-    lblImage.setLayoutData( new GridData( SWT.TOP, SWT.LEFT, false, false ) );
-    lblImage.setImage( warnImage );
-    String text 
-      = "Please note, that the RAP Application Launcher only works with "
-      + "the  Equinox OSGi Framework (this is the default setting on page "
-      + "<a>'Bundles'</a>).";
-    Link lblText = new Link( group, SWT.WRAP );
-    lblText.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
-    lblText.setText( text );
-    lblText.addSelectionListener( new SelectionAdapter() {
-      public void widgetSelected( final SelectionEvent event ) {
-        handleSelectBundlesTab();
-      }
-    } );
-  }
-
   ////////////////
   // Layout helper
   
@@ -406,21 +377,9 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
                                                   null,
                                                   null );
     dialog.open();
+    dialog.close();
   }
 
-  private void handleSelectBundlesTab() {
-    ILaunchConfigurationTab bundlesTab = null;
-    ILaunchConfigurationTab[] tabs = getLaunchConfigurationDialog().getTabs();
-    for( int i = 0; bundlesTab == null && i < tabs.length; i++ ) {
-      if( tabs[ i ] instanceof BundlesTab ) {
-        bundlesTab= tabs[ i ];
-      }
-    }
-    if( bundlesTab != null ) {
-      getLaunchConfigurationDialog().setActiveTab( bundlesTab );
-    }
-  }
-  
   /////////////////////////////////////////////////////////
   // Helpers to get entered/selected values from UI widgets  
 

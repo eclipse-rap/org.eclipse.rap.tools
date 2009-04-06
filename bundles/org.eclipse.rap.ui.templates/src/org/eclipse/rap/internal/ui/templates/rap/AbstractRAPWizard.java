@@ -7,36 +7,14 @@
  ******************************************************************************/
 package org.eclipse.rap.internal.ui.templates.rap;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.resources.IResourceRuleFactory;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.resources.*;
+import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.ui.templates.NewPluginTemplateWizard;
-import org.eclipse.rap.internal.ui.templates.Activator;
 import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 
 /**
@@ -87,7 +65,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
         InputStream stream = readLaunchConfig( project, model );
         launchConfig.create( stream, true, new NullProgressMonitor() );
       } catch( final CoreException ce ) {
-        Activator.getDefault().getLog().log( ce.getStatus() );
+        TemplateUtil.log( ce.getStatus() );
       }
     }
   }
@@ -112,7 +90,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
         br.close();
       }
     } catch( final Exception ex ) {
-      String pluginId = Activator.getPluginId();
+      String pluginId = TemplateUtil.PLUGIN_ID;
       String msg = "Could not read launch template"; //$NON-NLS-1$
       throw new CoreException( new Status( IStatus.ERROR, pluginId, msg, ex ) );
     }
@@ -128,8 +106,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
                                           final String placeholder, 
                                           final String replacement ) 
   {
-    int index;
-    index = buffer.indexOf( placeholder );
+    int index = buffer.indexOf( placeholder );
     while( index != -1 ) {
       buffer.replace( index, index + placeholder.length(), replacement );
       index = buffer.indexOf( placeholder );
@@ -154,6 +131,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
     private static final String MANIFEST_FILE = "MANIFEST.MF"; //$NON-NLS-1$
     private static final String NL = "\r\n"; //$NON-NLS-1$
+    
     private final ManifestListener listener;
     private boolean isDone = false;
 
@@ -226,8 +204,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       IResourceRuleFactory ruleFactory 
         = ResourcesPlugin.getWorkspace().getRuleFactory();
       ISchedulingRule rule = ruleFactory.createRule( file );
-      Job job = new WorkspaceJob( "Modifing " + MANIFEST_FILE ) { //$NON-NLS-1$
-
+      Job job = new WorkspaceJob( "Modifing " + MANIFEST_FILE ) {
         public IStatus runInWorkspace( final IProgressMonitor monitor )
           throws CoreException
         {

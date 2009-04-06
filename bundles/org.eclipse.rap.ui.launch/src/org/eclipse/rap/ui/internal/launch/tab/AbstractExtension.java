@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.rap.ui.internal.launch.tab;
  * Abstract base class that should be used to represent an extension with the 
  * project it is contained in. 
  */
-abstract class AbstractExtension {
+public abstract class AbstractExtension {
 
   final String project;
   
@@ -23,10 +23,7 @@ abstract class AbstractExtension {
     this.project = project;
   }
 
-  /////////
-  // Getter
-
-  final String getProject() {
+  public final String getProject() {
     return project;
   }
 }

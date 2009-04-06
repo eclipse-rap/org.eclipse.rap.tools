@@ -29,11 +29,20 @@ final class ExtensionUtil {
     final IProgressMonitor monitor )
     throws CoreException
   {
+    return getPluginExtensions( null, extensionPoint, monitor );
+  }
+
+  static IPluginExtension[] getPluginExtensions(
+    final String[] pluginIds,
+    final String extensionPoint,
+    final IProgressMonitor monitor )
+    throws CoreException
+  {
     IPluginExtension[] result;
     if( isPDECore33() ) {
-      result = getWorkspaceExtensions33( extensionPoint, monitor );
+      result = getWorkspaceExtensions33( pluginIds, extensionPoint, monitor );
     } else {
-      result = getWorkspaceExtensions34( extensionPoint, monitor );
+      result = getWorkspaceExtensions34( pluginIds, extensionPoint, monitor );
     }
     return result;
   }
@@ -65,7 +74,8 @@ final class ExtensionUtil {
   //////////////////
   // Helping methods
 
-  private static IPluginExtension[] getWorkspaceExtensions33( 
+  private static IPluginExtension[] getWorkspaceExtensions33(
+    final String[] pluginIdFilter,
     final String extensionPoint,
     final IProgressMonitor monitor )
     throws CoreException
@@ -97,10 +107,15 @@ final class ExtensionUtil {
                               new PluginHandler( false ) );
         modelBase = workspacePlugin;
       }
-      IPluginExtension[] extensions = modelBase.getExtensions().getExtensions();
-      for( int k = 0; k < extensions.length; k++ ) {
-        if( extensionPoint.equals( extensions[ k ].getPoint() ) ) {
-          list.add( extensions[ k ] );
+      
+      String pluginId = modelBase.getPluginBase().getId();
+      if( isContained( pluginIdFilter, pluginId ) ) {
+        IPluginExtension[] extensions 
+          = modelBase.getExtensions().getExtensions();
+        for( int k = 0; k < extensions.length; k++ ) {
+          if( extensionPoint.equals( extensions[ k ].getPoint() ) ) {
+            list.add( extensions[ k ] );
+          }
         }
       }
     }
@@ -116,17 +131,21 @@ final class ExtensionUtil {
   }
 
   private static IPluginExtension[] getWorkspaceExtensions34(
+    final String[] pluginIds,
     final String extensionPoint,
     final IProgressMonitor monitor )
   {
     List list = new ArrayList();
     IPluginModelBase[] pluginModels = PluginRegistry.getWorkspaceModels();
     for( int i = 0; !isCanceled( monitor ) && i < pluginModels.length; i++ ) {
-      IPluginExtension[] extensions
-        = pluginModels[ i ].getExtensions().getExtensions();
-      for( int k = 0; k < extensions.length; k++ ) {
-        if( extensionPoint.equals( extensions[ k ].getPoint() ) ) {
-          list.add( extensions[ k ] );
+      String pluginId = pluginModels[ i ].getPluginBase().getId();
+      if( isContained( pluginIds, pluginId ) ) {
+        IPluginExtension[] extensions
+          = pluginModels[ i ].getExtensions().getExtensions();
+        for( int k = 0; k < extensions.length; k++ ) {
+          if( extensionPoint.equals( extensions[ k ].getPoint() ) ) {
+            list.add( extensions[ k ] );
+          }
         }
       }
     }
@@ -169,6 +188,23 @@ final class ExtensionUtil {
     Dictionary headers = bundle.getHeaders();
     String version = ( String )headers.get( "Bundle-Version" ); //$NON-NLS-1$
     return version.startsWith( "3.3" ); //$NON-NLS-1$
+  }
+
+  private static boolean isContained( final String[] pluginIds, 
+                                      final String pluginId )
+  {
+    boolean result;
+    if( pluginIds == null ) {
+      result = true;
+    } else {
+      result = false;
+      for( int i = 0; !result && i < pluginIds.length; i++ ) {
+        if( pluginId.equals( pluginIds[ i ] ) ) {
+          result = true;
+        }
+      }
+    }
+    return result;
   }
 
   private ExtensionUtil() {
