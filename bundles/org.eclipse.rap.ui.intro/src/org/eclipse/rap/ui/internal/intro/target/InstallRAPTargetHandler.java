@@ -42,7 +42,6 @@ public class InstallRAPTargetHandler extends AbstractHandler {
                               final boolean switchTarget )
     throws ExecutionException
   {
-// FIXME [rh] revise usage of ProgressMonitors here    
     IRunnableWithProgress runnable = new IRunnableWithProgress() {
       public void run( final IProgressMonitor monitor )
         throws InvocationTargetException, InterruptedException

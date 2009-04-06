@@ -59,12 +59,18 @@ public final class TargetProvider {
                               final IProgressMonitor monitor ) 
     throws CoreException 
   {
-    checkTargetDestination( targetDest );
-    File scriptFile = createScriptFile();
-    AntRunner runner = new AntRunner();
-    runner.setBuildFileLocation( scriptFile.getAbsolutePath() );
-    runner.addUserProperties( getProperties( targetDest ) );
-    runner.run( monitor );
+    monitor.beginTask( "Installing RAP target platform", 
+                       IProgressMonitor.UNKNOWN );
+    try {
+      checkTargetDestination( targetDest );
+      File scriptFile = createScriptFile();
+      AntRunner runner = new AntRunner();
+      runner.setBuildFileLocation( scriptFile.getAbsolutePath() );
+      runner.addUserProperties( getProperties( targetDest ) );
+      runner.run( new NullProgressMonitor() );
+    } finally {
+      monitor.done();
+    }
   }
   
   private static File createScriptFile() throws CoreException {
