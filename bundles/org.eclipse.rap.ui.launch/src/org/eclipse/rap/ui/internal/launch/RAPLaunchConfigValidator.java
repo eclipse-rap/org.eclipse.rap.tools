@@ -18,9 +18,7 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.*;
-import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.internal.ui.PDEPlugin;
-import org.eclipse.pde.internal.ui.launcher.BundleLauncherHelper;
 import org.eclipse.pde.internal.ui.launcher.OSGiFrameworkManager;
 import org.eclipse.pde.ui.launcher.IPDELauncherConstants;
 import org.eclipse.rap.ui.internal.launch.tab.EntryPointExtension;
