@@ -61,26 +61,6 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( findStatusCode( states, code ) );
   }
   
-  public void testEntryPointNotInSelectedBundles() throws Exception {
-    IStatus[] states;
-    int entryPointUnavailableCode
-      = RAPLaunchConfigValidator.ERR_ENTRY_POINT_NOT_IN_SELECTED_BUNDLES;
-    int emptyEntryPointCode = RAPLaunchConfigValidator.ERR_ENTRY_POINT_EMPTY;
-    TestPluginProject project = new TestPluginProject();
-    config.setAttribute( IPDELauncherConstants.AUTOMATIC_ADD, false );
-    config.setAttribute( IPDELauncherConstants.TARGET_BUNDLES, "" );
-    config.setAttribute( IPDELauncherConstants.WORKSPACE_BUNDLES, 
-                         project.getName() );
-    rapConfig.setEntryPoint( "ep.param" );
-    states = rapConfig.getValidator().validate();
-    assertTrue( findStatusCode( states, entryPointUnavailableCode ) );
-    createEntryPointExtension( project, "ep.id", "ep.param" );
-    states = rapConfig.getValidator().validate();
-    assertFalse( findStatusCode( states, entryPointUnavailableCode ) );
-    assertFalse( findStatusCode( states, emptyEntryPointCode ) );
-    project.delete();
-  }
-  
   public void testPort() {
     rapConfig.setUseManualPort( true );
     rapConfig.setPort( -1 );

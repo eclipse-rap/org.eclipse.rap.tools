@@ -30,7 +30,6 @@ public final class RAPLaunchConfigValidator {
 
   public static final int ERR_SERVLET_NAME = 6001;
   public static final int ERR_ENTRY_POINT_EMPTY = 6002;
-  public static final int ERR_ENTRY_POINT_NOT_IN_SELECTED_BUNDLES = 6002;
   public static final int ERR_PORT = 6004;
   public static final int ERR_URL = 6005;
   public static final int ERR_LOG_LEVEL = 6006;
@@ -96,24 +95,6 @@ public final class RAPLaunchConfigValidator {
     if( EMPTY.equals( entryPoint ) ) {
       String msg = "The entry point must not be empty";
       result = createError( msg, ERR_ENTRY_POINT_EMPTY, null );
-    }
-    if( result.isOK() ) {
-      String[] selectedBundles = config.getSelectedBundles();
-      EntryPointExtension[] selectedExtensions
-        = EntryPointExtension.findInPlugins( selectedBundles, monitor );
-      boolean found = false;
-      for( int i = 0; !found && i < selectedExtensions.length; i++ ) {
-        if( entryPoint.equals( selectedExtensions[ i ].getParameter() ) ) {
-          found = true;
-        }
-      }
-      if( !found ) {
-        String msg
-          = "None of the selected bundles contributes the selected entry point.";
-        result = createError( msg, 
-                              ERR_ENTRY_POINT_NOT_IN_SELECTED_BUNDLES, 
-                              null );
-      }
     }
     return result;
   }
