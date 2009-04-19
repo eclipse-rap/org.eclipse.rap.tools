@@ -1,0 +1,407 @@
+<html>
+<head>
+<meta name="copyright" content="Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title>RAP look and feel</title>
+<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+</head>
+<body>
+
+<h1>RAP look and feel</h1>
+<p>
+Eclipse RAP provides an API to change the look and feel of a RAP application. 
+This article is a step-by-step guide to using the interaction design API to 
+apply changes to your WorkbenchWindow components from a single bundle.
+</p>
+<p>
+Let's begin by looking at what we can achieve with a  RAP application and the 
+interaction design API:<br>
+<img src="../../images/interactiondesign/newLook.png"/>
+</p>
+
+<h2>Getting started</h2>
+<p>
+First let's take a look at the list of elements that we'll be working with. 
+<ul>
+	<li>
+	WorkbenchWindow components such as the ToolBar, MenuBar and the ViewToolbar.
+	</li>
+	<li>
+	Presentations for Stacks or, in other words, the look and feel of views and 
+	editors. You'll see later how the interaction design API allows you to make 
+	stack independent changes on-the-fly.  
+	</li>
+	<li>
+	The graphical layout. When you change the look and feel of an application, you 
+	generally also need to change elements in the graphical layout, such as moving 
+	a menubar or the perspective switcher, or selecting a different font.
+	</li>
+	<li>
+	Activation by servlet name. You can leverage the servlets in RAP and use the 
+	servlet name to access the whole layout from a single point.
+	</li>
+	<li>
+	Reusable web components. Elements such as the header for an application are 
+	very likely to be reused in their web versions. Layout information can also be 
+	reused for web components. So a developer has not to develop many different 
+	web components, he can use the technique described bellow to create a component
+	which can be reused in many applications.  
+	</li>
+</ul>
+</p>
+<p>
+Finally, one additional but important requirement for a good look and feel is 
+to change interaction concepts to match the new UI. To assist in this, the API 
+provides an automatic service called personalization. For instance it hide all 
+Viewactions by default and make it's visibility customizable.
+</p>
+
+<h2>WorkbenchWindow components</h2>
+<p>
+The best place to start is to create a PresentationFactory. You'll need to 
+create an extension for the <code>org.eclipse.ui.presentationFactories</code> 
+extension point. <br>
+<img src="../../images/interactiondesign/presentationFactoryExt.png"/>
+</p>
+<p>
+Here is the same as it appears in the plugin.xml.
+<pre>
+&lt;extension point="org.eclipse.ui.presentationFactories"&gt;
+  &lt;factory
+    class="org.eclipse.rap.presentation.example.PresentationFactoryImpl"
+    id="org.eclipse.rap.presentation"
+    name="RAP Presentation"&gt;
+  &lt;/factory&gt;
+&lt;/extension&gt;
+</pre>
+The presentationFactory contains the following attributes.
+<ul>
+	<li>
+	<b>class</b><br>
+	The class refers to an implementation of 
+	<code>org.eclipse.rap.ui.interactiondesign.PresentationFactory</code>. It's 
+	very important not to extend from the original 
+	<code>org.eclipse.ui.presentation.AbstractPresentationFactory</code> as it does 
+	not support the concepts described here.
+	</li>
+	<li>
+	<b>name</b><br>
+	A human readable name for the PresentationFacotry implementation.
+	</li>
+</ul>
+The <code>org.eclipse.rap.ui.interactiondesign.PresentationFactory</code> is 
+abstract, so you'll need to implement its abstract methods. Most are create 
+methods for different Managers, for example, the MenuBar MenuManager or the 
+Manager for the ToolBar. A ToolBar or MenuBar manager is a contribution manager which 
+realizes itself and its items in a control. In these implementations you can 
+change the look of the components such as styling a toolbar with icons and text 
+or making it transparent.
+</p>
+
+<h2>Presentations for Stacks</h2>
+<p>
+If you're not familiar with the original AbstractPresentationFactory you might 
+consider reading up on StackPresentations. You'll find a basic overview of the 
+partstack in the 
+<a href="http://www.eclipse.org/articles/Article-UI-Workbench/workbench.html">
+Inside Workbench document</a>. <br> 
+The look and feel of a partstack can be changed using StackPresentations. In the 
+previous PresentationFactory the presentation had to be implemented 
+programatically. The interaction design API allows you to declare 
+StackPresentations as an extension for the extension point 
+<code>org.eclipse.rap.ui.stackPresentations</code>.<br>
+<img src="../../images/interactiondesign/stackPresentationExt.png"/>
+</p> 
+<p>
+Here is the same as it appears in the plugin.xml.
+<pre>
+&lt;extension point="org.eclipse.rap.ui.stackPresentations"&gt;
+  &lt;stackPresentation
+    id="org.eclipse.rap.presentation.macBarStackPresentation"
+    class="org.eclipse.rap.presentation.example.stacks.MacBarStackPresentation"
+    name="MacBar"
+    type="view"
+    actionClass="org.eclipse.rap.presentation.example.configaction.ExampleConfigAction"
+    actionIcon="icons/configAction.png"                        
+    menuIcon="icons/menuIcon.gif"&gt;
+  &lt;/stackPresentation&gt;
+&lt;/extension&gt;
+</pre>
+<b>stackPresentation</b> contain the following attributes:
+<ul>
+	<li>
+	<b>class</b><br>
+	To be backward compatible with Eclipse 3.4 or earlier, you can 
+	implement <code>org.eclipse.ui.presentation.StackPresentation</code>. But to use 
+	all the features of the interaction design API the 
+	<code>org.eclipse.rap.ui.interactiondesign.ConfigurableStack</code>. should be 
+	implemented. The ConfigurableStack is an abstract class and provides additional 
+	methods i.e. to get the part's ToolbarManager. <br>
+	The parts ToolbarManager contains all the actions of the parts toolbar and adds 
+	the personalization features. To create a clean UI all actions are invisible, 
+	but this visibility can be changed by the user during runtime. <br>
+	Another benefit of the ConfigurableStack is the ability to change the 
+	look of the stack during runtime without reloading the whole 
+	application. Therefore it provides a method called 
+	<code>setCurrentStackPresentation( String id )</code>. The id should be the id 
+	of the presentation defined in the extension. When you call this method, you 
+	will change the presentation of a whole stack to the presentation defined with 
+	the given id. The reloading happens automatically.
+	</li>
+	<li>
+	<b>type</b><br>
+	There are three types of stacks. Editor-, view- and standaloneViewStacks. You 
+	can define a presentation for a specific type using the following arguments: 
+	view, standaloneView, editor.
+	</li>
+	<li>
+	<b>actionClass</b><br>
+	This should be an implementation of 
+	<code>org.eclipse.rap.ui.interactiondesign.ConfigurationAction</code>. This is 
+	an abstract class providing methods for personalization. For example, you can 
+	use this to implement a popup dialog which allows the user to configure 
+	viewaction visibility or the stack's presentation. To apply configuration 
+	changes in your ConfigurableStack you will need to implement the Interface 
+	<code>org.eclipse.rap.ui.interactiondesign.IConfigurationChangedListener</code> 
+	and register it in the ConfigurationAction.
+	</li>
+	<li>  
+	<b>actionIcon</b><br>
+	A ConfigurationAction can contain an icon which can be used i.e. as a button's 
+	icon. The icon is associated with the <code>ConfigurationAction</code>.
+	</li>
+	<li>  
+	<b>menuIcon</b><br>
+	This is the icon for the view's menu and can be used to replace the standard 
+	triangle. To access this image use the <code>getMenuIcon()</code> Method inside 
+	the ConfigurableStack.
+	</li>
+</ul>
+</p>
+
+<h2>The graphical layout</h2>
+<p>
+RAP provides the ability to define graphical layouts where you have control over 
+the elements  such as the position of the workbench components like the toolbar, 
+menubar or the perspective switcher. The WorkbenchWindowAdvisors 
+<code>createWindowContents( Shell )</code> method is one method, but the 
+result of this technique is a fixed coupling between the look and feel and your 
+application code. <br>
+You can now separate the application code and the look and feel by using the 
+<code>org.eclipse.rap.ui.interactiondesign.IWindowComposer</code> Interface. An 
+implementation of 
+<code>org.eclipse.rap.ui.interactiondesign.PresentationFactory</code> defines 
+the method <code>createWindowComposer()</code> which is called within the 
+WorkbenchWindow.  This is a simple replacement for the advisor's method that 
+results in a loose coupling between application elements. <br>
+In order to organize graphical layout information such as images, colors, fonts 
+and position data, the following registry was created. 
+<code>org.eclipse.rap.ui.interactiondesign.layout.LayoutRegistry</code><br>
+The LayoutRegistry is a singleton object which contains all existing layouts 
+represented by <code>org.eclipse.rap.ui.interactiondesign.model.Layout</code> 
+and <code>org.eclipse.rap.ui.interactiondesign.model.LayoutSet</code>. 
+A Layout can be declared by creating an extension for the extension point 
+<code>org.eclipse.rap.ui.layouts</code>.<br> 
+<img src="../../images/interactiondesign/layoutExt.png"/>
+</p>
+<p>
+And here is the same as it appears in the plugin.xml.
+<pre>
+&lt;extension point="org.eclipse.rap.ui.layouts"&gt;
+  &lt;layout
+    id="org.eclipse.presentation.example.layout"
+    name="Example Layout"&gt;
+      &lt;layoutSet
+        class="org.eclipse.rap.presentation.example.layoutset.HeaderLayoutSet2"
+        id="header.layoutset"
+        name="Header2"&gt;
+      &lt;/layoutSet&gt;
+  &lt;/layout&gt;
+&lt;/extension>
+</pre>
+Layout contains the following attributes: 
+<ul>
+	<li>
+	<b>id</b><br>
+	This id can be used to get a Layout object from the LayoutRegistry.
+	</li>
+	<li>
+	<b>name</b><br>
+	A human readable name for this layout.
+	</li>
+</ul>
+Every Layout can have multiple layoutSets:<br>
+<b>Element layoutSet</b><br>
+A layoutSet is a representation of the following class: 
+<code>org.eclipse.rap.ui.interactiondesign.layout.model.LayoutSet</code>. The 
+object contains the information described above. Every layoutSet has a 
+maximum of one Layout as a parent and has the following attributes:
+<ul>
+	<li>
+	<b>id</b><br>
+	This id can be used to get a LayoutSet object from a Layout using the 
+	<code>getLayoutSet( String id )</code> method.
+	</li>
+	<li>
+	<b>class</b><br>
+	This should be an implementation of the following interface: <br>
+	<code>org.eclipse.rap.ui.interactiondesign.layout.ILayoutSetInitializer</code>.  
+	This interface contains one method which is used to declared layout information 
+	for a LayoutSet object. All IlayoutSetInitializers will be called during the 
+	LayoutRegistry initialisation.
+	</li>
+</ul>
+The following is an example use case for a declarative layout. <br>
+A button should display its text in a specific font. Instead of defining the 
+font directly in the source code, you can define a layout and a layoutSet over 
+the extension described above. Let start by creating two id's. <br>
+For the Layout = <code>org.eclipse.layout</code><br> 
+For the layoutSet = <code>org.eclipse.layoutSet</code><br>
+To define the font you can call the 
+<code>LayoutSet.addFont( String key, Font font )</code> method in your 
+IlayoutSetInitializer implementation. We use "fontKey" as the key value. Here 
+is the source code for this font definition: 
+<pre>
+	Button button = new Button( composite, SWT.NONE );
+	LayoutRegistry registry = LayoutRegistry.getInstance();
+	registry.setActiveLayout( "org.eclipse.layout" );
+	Layout layout = registry.getActiveLayout();
+	LayoutSet set = layout.getLayoutSet( "org.eclipse.layoutSet" );
+	button.setFont( set.getFont( "fontKey" );
+</pre>
+An alternative to accomplish this is theming, but the declarative layout give 
+you more options such as defining images or position data. Another big advantage 
+of using the declarative layout is that you can change a layout during runtime. 
+And, to do this is just a two step process. <br>
+<ol>
+	<li>
+	Define two layouts with layoutSets. The layoutSets must have the same ids as in 
+	their equivalent and the key values for the information need to be identical.
+	</li>
+	<li>
+	Call the <code>setActiveLayout( String id )</code> method within the 
+	LayoutRegistry. This sets the active layout to the one with the given id. 
+	The PresentationFactory will be called automatically and prompt a rebuild of the 
+	styled components.
+	</li>
+</ol>
+</p>
+
+<h2>Activation over servlet name</h2>
+<p>
+Different layouts can be activated from a central point by using the servlet 
+name. To activate a PresentationFactory and a Layout over a servlet name you 
+can use the 
+<a href="branding.html"><code>org.eclipse.rap.ui.branding</code> extension 
+point</a>.<br>
+<img src="../../images/interactiondesign/brandingExt.png"/>
+</p>
+<p>
+And here is the same as it appears in the plugin.xml.
+<pre>
+&lt;extension point="org.eclipse.rap.ui.branding"&gt;
+  &lt;branding
+    defaultEntrypointId="org.eclipse.rap.demo.entrypoint1"
+    favicon="icons/perspective.gif"
+    id="org.eclipse.rap.presentation.macBarBranding"
+    servletName="api"
+    themeId="org.eclipse.rap.presentation.macBarTheme"
+    title="Interactiondesign API"&gt;
+    &lt;presentationFactory
+      defaultLayoutId="org.eclipse.rap.presentation.defaultlayout"
+      id="org.eclipse.rap.presentation"
+      name="ConfigurablePF"&gt;
+      &lt;defaultStackPresentation
+        id="org.eclipse.rap.presentation.navigationPaneStackPresentation"
+        name="Default"&gt;
+      &lt;/defaultStackPresentation&gt;
+      &lt;stackPresentation
+        id="org.eclipse.rap.presentation.macBarStackPresentation"
+        name="topLeftMapping"
+        partId="topLeft"&gt;
+      &lt;/stackPresentation&gt;
+    &lt;/presentationFactory&gt;
+  &lt;/branding&gt;
+&lt;/extension&gt;
+</pre>
+As you can see, the presentationFactory is an element of the branding extension 
+and has the following attributes:
+<ul>
+	<li>
+	<b>id</b><br>
+	This is the id of the PresentationFactory which should be loaded when the 
+	servlet name defined in the branding has been called.
+	</li>
+	<li>
+	<b>defaultLayoutId</b><br>
+	This optional argument represents the id of the Layout which should be activated 
+	when the servlet name has been called. If no id is defined, the standard workbench
+	layout should be loaded.
+	</li>
+</ul>
+The presentationFactory element can have two different sub elements.
+<ol>
+	<li>
+	<b>defaultStackPresentation</b><br>
+	This represents the StackPresentation which is loaded for all parts if nothing 
+	else is defined. You need to specify the id of the StackPresentation if a 
+	different presentation should be loaded.
+	</li>
+	<li>
+	<b>stackPresentation</b><br>
+	This element couples a stackPresentation to a specific part. The id attribute 
+	should be the id of the stackPresentation to load. The partId represents the id 
+	of a part which has been defined in a perspective.
+	</li>
+</ol>
+</p>
+
+<h2>Reusable web components</h2>
+<p>
+To style the look and feel of a RAP application many web components are also 
+required. For example, you may want to place the menubar on a header with 
+rounded corners or place the statusline in a nicely styled footer. You can 
+accomplish this with SWT Widgets but if you want to reuse these components, 
+you'll need to use also 
+<code>org.eclipse.rap.ui.interactiondesign.layout.ElementBuilder</code>. An 
+ElementBuilder is an abstract class which works hand in hand with the 
+declarative layout. You can extend it to build your own web components.<br>
+This is a two step process.
+<ol>
+	<li>
+	Extend <code>org.eclipse.rap.ui.interactiondesign.ElementBuilder</code> and 
+	implement its abstract methods. The most important method is 
+	<code>build()</code>. You should build your component with SWT widgets when 
+	<code>build()</code> is called. Every ElementBuilder is associated to a LayoutSet 
+	id which will get from the LayoutRegsitry during the instantiation of the 
+	ElementBuilder. During the instantiation the builder register itself in the 
+	LayoutRegistry. If a new Layout is activated the <code>dispose()</code> methods 
+	from all registered ElementBuilders will be called. This means that you need to 
+	be sure you dispose your component correctly in this method. If not, switching the 
+	Layout on-the-fly may not work correctly.
+	</li>
+	<li>
+	The second step is to instantiate an ElementBuilder.  As an example, YourBuilder 
+	is instantiated by the following snippet:
+	<pre>
+	Composite parent = new Composite( aShell, SWT.NONE );
+	ElementBuilder builder = new YourBuilder( parent, "org.eclipse.layoutSet" );
+	</pre>
+	Be sure that your ElementBuilder implementation is initialized with a layoutSet 
+	you've associated with it.
+	</li>
+</ol>
+You may recognize the idea behind the ElementBuilder - it is based on the 
+builder design pattern. This separates the component from your application 
+code allowing you to reuse the component in different places. 
+</p>
+<p>
+This completes our tour of the interaction design API. For questions please 
+feel free to visit the <a href="http://www.eclipse.org/rap/newsgroup.php">
+RAP newsgroup</a>. We'd also be glad to hear about your experiences with this 
+API and to have a look at the great new look and feels you're building for 
+your apps.
+</p>
+</body>
+</html>
