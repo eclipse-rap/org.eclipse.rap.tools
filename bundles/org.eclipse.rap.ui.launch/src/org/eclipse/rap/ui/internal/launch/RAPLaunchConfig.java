@@ -17,8 +17,6 @@ import java.util.logging.Level;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.pde.core.plugin.IPluginModelBase;
-import org.eclipse.pde.internal.ui.launcher.BundleLauncherHelper;
 
 
 public final class RAPLaunchConfig {
@@ -190,16 +188,6 @@ public final class RAPLaunchConfig {
     return new RAPLaunchConfigValidator( this );
   }
   
-  public String[] getSelectedBundles() throws CoreException {
-    IPluginModelBase[] plugins
-      = BundleLauncherHelper.getMergedBundles( config );
-    String[] result = new String[ plugins.length ];
-    for( int i = 0; i < plugins.length; i++ ) {
-      result[ i ] = plugins[ i ].getPluginBase().getId();
-    }
-    return result;
-  }
-
   //////////////////////////////////////////////////////////
   // Accessor and mutator methods for wrapped launch config
 

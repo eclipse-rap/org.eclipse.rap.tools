@@ -10,18 +10,14 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.pde.ui.launcher.IPDELauncherConstants;
 import org.eclipse.rap.ui.tests.Fixture;
-import org.eclipse.rap.ui.tests.TestPluginProject;
 
 
 public class RAPLaunchConfigValidator_Test extends TestCase {
@@ -89,53 +85,6 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( findStatusCode( states, code ) );
   }
   
-  public void testDuplicateEntryPointParam() throws CoreException {
-    IStatus[] states;
-    int code = RAPLaunchConfigValidator.WARN_AMBIGUOUS_ENTRY_POINT;
-    TestPluginProject project = new TestPluginProject();
-    config.setAttribute( IPDELauncherConstants.AUTOMATIC_ADD, false );
-    config.setAttribute( IPDELauncherConstants.TARGET_BUNDLES, "" );
-    config.setAttribute( IPDELauncherConstants.WORKSPACE_BUNDLES, 
-                         project.getName() );
-    rapConfig.setEntryPoint( "same-param" );
-    // one entry point: all ok
-    createEntryPointExtension( project, "id1", "same-param" );
-    states = rapConfig.getValidator().validate();
-    assertFalse( findStatusCode( states, code ) );
-    // two entry points with same param name: warning
-    createEntryPointExtension( project, "id2", "same-param" );
-    states = rapConfig.getValidator().validate();
-    assertTrue( findStatusCode( states, code ) );
-    // three entry points with same param name: warning
-    createEntryPointExtension( project, "id3", "same-param" );
-    states = rapConfig.getValidator().validate();
-    assertTrue( findStatusCode( states, code ) );
-    // clean up
-    project.delete();
-  }
-  
-  public void testDuplicateEntryPointParamInUnselectedPlugin() 
-    throws CoreException 
-  {
-    IStatus[] states;
-    int code = RAPLaunchConfigValidator.WARN_AMBIGUOUS_ENTRY_POINT;
-    TestPluginProject project = new TestPluginProject();
-    config.setAttribute( IPDELauncherConstants.AUTOMATIC_ADD, false );
-    config.setAttribute( IPDELauncherConstants.TARGET_BUNDLES, "" );
-    config.setAttribute( IPDELauncherConstants.WORKSPACE_BUNDLES, "" );
-    rapConfig.setEntryPoint( "same-param" );
-    // one entry point in unselected prlugin: all ok
-    createEntryPointExtension( project, "id1", "same-param" );
-    states = rapConfig.getValidator().validate();
-    assertFalse( findStatusCode( states, code ) );
-    // two entry points in unselected prlugin: also ok
-    createEntryPointExtension( project, "id2", "same-param" );
-    states = rapConfig.getValidator().validate();
-    assertFalse( findStatusCode( states, code ) );
-    // clean up
-    project.delete();
-  }
-  
   public void testValidateOSGiFramework() {
     IStatus[] states;
     int code = RAPLaunchConfigValidator.WARN_OSGI_FRAMEWORK;
@@ -146,19 +95,6 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   
   //////////////////
   // helping methods
-
-  private static void createEntryPointExtension( final TestPluginProject proj, 
-                                                 final String id, 
-                                                 final String parameter )
-    throws CoreException
-  {
-    Map attributes = new HashMap();
-    attributes.put( "id", id );
-    attributes.put( "parameter", parameter );
-    proj.createExtension( "org.eclipse.rap.ui.entrypoint", 
-                          "entrypoint", 
-                          attributes );
-  }
 
   private static boolean findStatusCode( final IStatus[] states, 
                                          final int code ) 

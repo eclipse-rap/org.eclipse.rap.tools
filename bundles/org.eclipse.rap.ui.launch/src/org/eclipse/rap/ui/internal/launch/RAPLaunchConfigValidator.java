@@ -21,7 +21,6 @@ import org.eclipse.debug.core.*;
 import org.eclipse.pde.internal.ui.PDEPlugin;
 import org.eclipse.pde.internal.ui.launcher.OSGiFrameworkManager;
 import org.eclipse.pde.ui.launcher.IPDELauncherConstants;
-import org.eclipse.rap.ui.internal.launch.tab.EntryPointExtension;
 
 
 public final class RAPLaunchConfigValidator {
@@ -32,7 +31,6 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_URL = 6005;
   public static final int ERR_LOG_LEVEL = 6006;
 
-  public static final int WARN_AMBIGUOUS_ENTRY_POINT = 7001;
   public static final int WARN_OSGI_FRAMEWORK = 7002;
 
   private static final String RAP_LAUNCH_CONFIG_TYPE
@@ -45,11 +43,9 @@ public final class RAPLaunchConfigValidator {
 
 
   private final RAPLaunchConfig config;
-  private final IProgressMonitor monitor;
 
   public RAPLaunchConfigValidator( final RAPLaunchConfig config ) {
     this.config = config;
-    monitor = new NullProgressMonitor();
   }
 
   public IStatus[] validate() {
@@ -57,7 +53,6 @@ public final class RAPLaunchConfigValidator {
     try {
       addNonOKState( states, validateServletName() );
       addNonOKState( states, validateEntryPoint() );
-      addNonOKState( states, validateEntryPointUniqueness() );
       addNonOKState( states, validatePort() );
       addNonOKState( states, validateUniquePort() );
       addNonOKState( states, validateURL() );
@@ -93,31 +88,6 @@ public final class RAPLaunchConfigValidator {
     if( EMPTY.equals( entryPoint ) ) {
       String msg = "The entry point must not be empty";
       result = createError( msg, ERR_ENTRY_POINT_EMPTY, null );
-    }
-    return result;
-  }
-
-  private IStatus validateEntryPointUniqueness() throws CoreException {
-    IStatus result = Status.OK_STATUS;
-    String entryPoint = config.getEntryPoint();
-    String[] selectedPlugins = config.getSelectedBundles();
-    EntryPointExtension[] entryPoints
-      = EntryPointExtension.findInPlugins( selectedPlugins, monitor );
-    String[] id = new String[ 2 ];
-    int count = 0;
-    for( int i = 0; count < 2 && i < entryPoints.length; i++ ) {
-      if( entryPoint.equals( entryPoints[ i ].getParameter() ) ) {
-        id[ count ] = entryPoints[ i ].getId();
-        count++;
-      }
-    }
-    if( count > 1 ) {
-      String text
-        = "The entry point parameter is defined by multiple extensions "
-        + "(ids ''{0}'', ''{1}'')";
-      Object[] args = new Object[] { id[ 0 ], id[ 1 ] };
-      String msg = MessageFormat.format( text, args );
-      result = createWarning( msg, WARN_AMBIGUOUS_ENTRY_POINT, null );
     }
     return result;
   }
