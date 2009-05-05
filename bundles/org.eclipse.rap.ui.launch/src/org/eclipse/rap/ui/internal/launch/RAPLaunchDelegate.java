@@ -129,7 +129,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   
   private void warnIfPortBusy( SubProgressMonitor monitor ) throws CoreException 
   {
-    String taskName = "Checking manual port";
+    String taskName = LaunchMessages.RAPLaunchDelegate_CheckPortTaskName;
     monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
       if( config.getUseManualPort() && isPortBusy( config.getPort() ) ) {
@@ -140,7 +140,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
           Object resolution = prompter.handleStatus( status, config );
           if( Boolean.FALSE.equals( resolution ) ) {
             String text
-              = "Port {0,number,#} in use. Launch ''{1}'' interrupted by user.";
+              = LaunchMessages.RAPLaunchDelegate_PortInUse;
             Object[] args = new Object[] { 
               new Integer( config.getPort() ),
               config.getName()
@@ -161,7 +161,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException 
   {
     int result;
-    String taskName = "Determining port number";
+    String taskName = LaunchMessages.RAPLaunchDelegate_DeterminePortTaskName;
     monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
       if( config.getUseManualPort() ) {
@@ -229,7 +229,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException 
   {
     if( config.getTerminatePrevious() ) {
-      String taskName = "Terminating previous launch";
+      String taskName = LaunchMessages.RAPLaunchDelegate_TerminatePreviousTaskName;
       monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
       try {
         final ILaunch runningLaunch = findRunning();
@@ -327,7 +327,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   
   private void waitForHttpService( final IProgressMonitor monitor ) {
     SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
-    String taskName = "Waiting for HTTP service";
+    String taskName = LaunchMessages.RAPLaunchDelegate_WaitForHTTPTaskName;
     subMonitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
       waitForHttpService();
@@ -374,9 +374,9 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
             // Start a separate job to wait for http service and launch the 
             // browser. Otherwise we would block the application on whose 
             // service we are waiting for
-            Job job = new Job( "Starting client application" ) {
+            Job job = new Job( LaunchMessages.RAPLaunchDelegate_StartClientTaskName ) {
               protected IStatus run( final IProgressMonitor monitor ) {
-                monitor.beginTask( "Starting client application", 2 );
+                monitor.beginTask( LaunchMessages.RAPLaunchDelegate_StartClientTaskName, 2 );
                 try {
                   waitForHttpService( monitor );
                   monitor.worked( 1 );
@@ -398,7 +398,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   
   private void openBrowser( final IProgressMonitor monitor ) {
     SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
-    String taskName = "Starting client application";
+    String taskName = LaunchMessages.RAPLaunchDelegate_StartClientTaskName;
     subMonitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
       URL url = null;
@@ -407,7 +407,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
         IWebBrowser browser = getBrowser();
         openUrl( browser, url );
       } catch( final CoreException e ) {
-        String text = "Failed to open browser for URL ''{0}''.";
+        String text = LaunchMessages.RAPLaunchDelegate_OpenBrowserFailed;
         String msg = MessageFormat.format( text, new Object[]{ url } );
         ErrorUtil.show( msg, e );
       }
@@ -461,7 +461,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
         try {
           browser.openURL( url );
         } catch( PartInitException e ) {
-          String text = "Failed to open URL ''{0}'' in browser.";
+          String text = LaunchMessages.RAPLaunchDelegate_OpenUrlFailed;
           String msg = MessageFormat.format( text, new Object[] { url } );
           String pluginId = Activator.getPluginId();
           Status status = new Status( IStatus.ERROR, pluginId, msg, e );

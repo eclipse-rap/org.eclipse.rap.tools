@@ -26,7 +26,7 @@
       <command
             defaultHandler="org.eclipse.rap.ui.internal.intro.target.InstallRAPTargetHandler"
             id="org.eclipse.rap.ui.intro.installTarget"
-            name="Install RAP target platform">
+            name="%installTargetCommand.name">
       </command>
    </extension>
    <!--

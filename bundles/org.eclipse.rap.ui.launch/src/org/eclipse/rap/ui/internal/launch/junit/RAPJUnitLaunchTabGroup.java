@@ -35,8 +35,8 @@ public final class RAPJUnitLaunchTabGroup extends OSGiLauncherTabGroup {
 
   public void setDefaults( final ILaunchConfigurationWorkingCopy config ) {
     super.setDefaults( config );
-    config.setAttribute( RAPLaunchConfig.SERVLET_NAME, "rap" );
-    config.setAttribute( RAPLaunchConfig.ENTRY_POINT, "rapjunit" );
+    config.setAttribute( RAPLaunchConfig.SERVLET_NAME, "rap" ); //$NON-NLS-1$
+    config.setAttribute( RAPLaunchConfig.ENTRY_POINT, "rapjunit" ); //$NON-NLS-1$
   }
   
   private static ILaunchConfigurationTab[] insertTab( 

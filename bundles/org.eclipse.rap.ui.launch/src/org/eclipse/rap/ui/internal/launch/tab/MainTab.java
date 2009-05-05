@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.window.Window;
-import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig;
-import org.eclipse.rap.ui.internal.launch.RAPLaunchConfigValidator;
+import org.eclipse.rap.ui.internal.launch.*;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
@@ -102,7 +101,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   }
 
   public String getName() {
-    return "&Main";
+    return LaunchMessages.MainTab_Name;
   }
 
   public Image getImage() {
@@ -186,26 +185,26 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     Group group = new Group( parent, SWT.NONE );
     group.setLayout( new GridLayout( 3, false ) );
     group.setLayoutData( fillHorizontal.create() );
-    group.setText( "Servlet and Entry Point to Run" );
+    group.setText( LaunchMessages.MainTab_ServletAndEntryPoint );
     Label lblServletName = new Label( group, SWT.NONE );
-    lblServletName.setText( "Ser&vlet Name" );
+    lblServletName.setText( LaunchMessages.MainTab_ServletName );
     txtServletName = new Text( group, SWT.BORDER );
     txtServletName.setLayoutData( fillHorizontal.create() );
     txtServletName.addModifyListener( modifyListener );
     Button btnBrowseServletName = new Button( group, SWT.PUSH );
-    btnBrowseServletName.setText( "Bro&wse..." );
+    btnBrowseServletName.setText( LaunchMessages.MainTab_BrowseServletName );
     btnBrowseServletName.addSelectionListener( new SelectionAdapter() {
       public void widgetSelected( final SelectionEvent event ) {
         handleBrowseServletName();
       }
     } );
     Label lblEntryPoint = new Label( group, SWT.NONE );
-    lblEntryPoint.setText( "&Entry Point" );
+    lblEntryPoint.setText( LaunchMessages.MainTab_EntryPoint );
     txtEntryPoint = new Text( group, SWT.BORDER );
     txtEntryPoint.setLayoutData( fillHorizontal.create() );
     txtEntryPoint.addModifyListener( modifyListener );
     Button btnBrowseEntryPoint = new Button( group, SWT.PUSH );
-    btnBrowseEntryPoint.setText( "&Browse..." );
+    btnBrowseEntryPoint.setText( LaunchMessages.MainTab_BrowseEntryPoint );
     btnBrowseEntryPoint.addSelectionListener( new SelectionAdapter() {
       public void widgetSelected( final SelectionEvent event ) {
         handleBrowseEntryPoint();
@@ -213,7 +212,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     } );
     cbTerminatePrevious = new Button( group, SWT.CHECK );
     cbTerminatePrevious.setLayoutData( spanHorizontal( 3, 0 ) );
-    String text = "&Terminate possibly running previous launch";
+    String text = LaunchMessages.MainTab_TerminatePrevious;
     cbTerminatePrevious.setText( text );
     cbTerminatePrevious.addSelectionListener( selectionListener );
   }
@@ -221,16 +220,16 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   private void createBrowserModeSection( final Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
-    group.setText( "Browser" );
+    group.setText( LaunchMessages.MainTab_Browser );
     group.setLayout( new GridLayout( 2, false ) );
     cbOpenBrowser = new Button( group, SWT.CHECK );
     GridDataFactory grab = GridDataFactory.swtDefaults();
     grab.grab( true, false );
     cbOpenBrowser.setLayoutData( grab.create() );
-    cbOpenBrowser.setText( "Open Application in" );
+    cbOpenBrowser.setText( LaunchMessages.MainTab_OpenApplicationIn );
     cbOpenBrowser.addSelectionListener( selectionListener );
     Link lnkBrowserPrefs = new Link( group, SWT.NONE );
-    lnkBrowserPrefs.setText( "<a>Configure Browsers...</a>" );
+    lnkBrowserPrefs.setText( LaunchMessages.MainTab_ConfigureBrowsers );
     lnkBrowserPrefs.addSelectionListener( new SelectionAdapter() {
       public void widgetSelected( final SelectionEvent event ) {
         handleBrowserPrefsLink();
@@ -238,11 +237,11 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     } );
     rbInternalBrowser = new Button( group, SWT.RADIO );
     rbInternalBrowser.setLayoutData( spanHorizontal( 2, 17 ) );
-    rbInternalBrowser.setText( "Intern&al Browser" );
+    rbInternalBrowser.setText( LaunchMessages.MainTab_InternalBrowser );
     rbInternalBrowser.addSelectionListener( selectionListener );
     rbExternalBrowser = new Button( group, SWT.RADIO );
     rbExternalBrowser.setLayoutData( spanHorizontal( 2, 17 ) );
-    rbExternalBrowser.setText( "E&xternal Browser" );
+    rbExternalBrowser.setText( LaunchMessages.MainTab_ExternalBrowser );
     rbExternalBrowser.addSelectionListener( selectionListener );
     cbOpenBrowser.addSelectionListener( new SelectionAdapter() {
 
@@ -257,10 +256,10 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   private void createRuntimeSettingsSection( final Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
-    group.setText( "Runtime Settings" );
+    group.setText( LaunchMessages.MainTab_RuntimeSettings );
     group.setLayout( new GridLayout( 2, false ) );
     cbManualPort = new Button( group, SWT.CHECK );
-    cbManualPort.setText( "Manual &Port configuration" );
+    cbManualPort.setText( LaunchMessages.MainTab_ManualPortConfig );
     cbManualPort.addSelectionListener( selectionListener );
     spnPort = new Spinner( group, SWT.BORDER );
     spnPort.setLayoutData( new GridData( 60, SWT.DEFAULT ) );
@@ -268,7 +267,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     spnPort.setMaximum( RAPLaunchConfig.MAX_PORT_NUMBER );
     spnPort.addModifyListener( modifyListener );
     Label lblLogLevel = new Label( group, SWT.NONE );
-    lblLogLevel.setText( "Client-side &Log Level" );
+    lblLogLevel.setText( LaunchMessages.MainTab_ClientLogLevel );
     cmbLogLevel = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
     int itemCount = RAPLaunchConfig.LOG_LEVELS.length;
     cmbLogLevel.getCombo().setVisibleItemCount( itemCount );
@@ -281,7 +280,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
       }
     } );
     Label lblLibraryVariant = new Label( group, SWT.NONE );
-    lblLibraryVariant.setText( "Client-side Library Variant" );
+    lblLibraryVariant.setText( LaunchMessages.MainTab_ClientLibraryVariant );
     cmbLibVariant = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
     cmbLibVariant.setLabelProvider( new LibraryVariantLabelProvider() );
     cmbLibVariant.setContentProvider( new ArrayContentProvider() );
@@ -361,7 +360,8 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
           parameter = defaultEntryPoint.getParameter();
         }
       } catch( CoreException e ) {
-        String msg = "Failed to obtain default entry point from branding";
+        String msg
+          = LaunchMessages.MainTab_ObtainDefaultEntryPointForBrandingFailed;
         ErrorUtil.show( msg, e );
       }
       if( txtEntryPoint.getText().length() == 0 && parameter != null ) {
@@ -414,15 +414,15 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   private static final class LogLevelLabelProvider extends LabelProvider {
     private static final Map lables = new HashMap();
     static {
-      lables.put( Level.ALL, "All" );
-      lables.put( Level.OFF, "Off" );
-      lables.put( Level.CONFIG, "Config" );
-      lables.put( Level.WARNING, "Warning" );
-      lables.put( Level.SEVERE, "Severe" );
-      lables.put( Level.FINE, "Fine" );
-      lables.put( Level.FINER, "Finer" );
-      lables.put( Level.FINEST, "Finest" );
-      lables.put( Level.INFO, "Info" );
+      lables.put( Level.ALL, LaunchMessages.MainTab_LogLevelAll );
+      lables.put( Level.OFF, LaunchMessages.MainTab_LogLevelOff );
+      lables.put( Level.CONFIG, LaunchMessages.MainTab_LogLevelConfig );
+      lables.put( Level.WARNING, LaunchMessages.MainTab_LogLevelWarning );
+      lables.put( Level.SEVERE, LaunchMessages.MainTab_LogLevelSevere );
+      lables.put( Level.FINE, LaunchMessages.MainTab_LogLevelFine );
+      lables.put( Level.FINER, LaunchMessages.MainTab_LogLevelFiner );
+      lables.put( Level.FINEST, LaunchMessages.MainTab_LogLevelFinest );
+      lables.put( Level.INFO, LaunchMessages.MainTab_LogLevelInfo );
     }
     public String getText( final Object element ) {
       String result = ( String )lables.get( element );
@@ -437,9 +437,9 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     public String getText( final Object element ) {
       String result;
       if( LibraryVariant.STANDARD.equals( element ) ) {
-        result = "Standard";
+        result = LaunchMessages.MainTab_LibraryVariantStandard;
       } else if( LibraryVariant.DEBUG.equals( element ) ) {
-        result = "Debug";
+        result = LaunchMessages.MainTab_LibraryVariantDebug;
       } else {
         result = super.getText( element );
       }

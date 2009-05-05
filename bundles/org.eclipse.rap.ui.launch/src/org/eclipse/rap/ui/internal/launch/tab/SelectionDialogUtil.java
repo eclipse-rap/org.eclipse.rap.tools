@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.tab;
 
+import org.eclipse.rap.ui.internal.launch.LaunchMessages;
 import org.eclipse.ui.dialogs.SearchPattern;
 
 
@@ -22,13 +23,13 @@ final class SelectionDialogUtil {
   static String getLabel( final String project, final String attribute ) {
     StringBuffer result = new StringBuffer();
     if( attribute == null ) {
-      result.append( "(unknown)" );
+      result.append( LaunchMessages.SelectionDialogUtil_Unknown );
     } else {
       result.append( attribute );
     }
     result.append( " - " ); //$NON-NLS-1$
     if( project == null ) {
-      result.append( "(unknown project)" );
+      result.append( LaunchMessages.SelectionDialogUtil_UnknownProject );
     } else {
       result.append( project );
     }

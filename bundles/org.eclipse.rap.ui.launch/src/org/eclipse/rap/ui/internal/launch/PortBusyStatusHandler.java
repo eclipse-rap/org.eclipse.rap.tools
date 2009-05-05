@@ -22,17 +22,15 @@ import org.eclipse.ui.*;
 public final class PortBusyStatusHandler implements IStatusHandler {
 
   static final IStatus STATUS
-    = new Status( IStatus.INFO, Activator.PLUGIN_ID, 601, "", null );
+    = new Status( IStatus.INFO, Activator.PLUGIN_ID, 601, "", null ); //$NON-NLS-1$
 
 
   public Object handleStatus( final IStatus status, final Object source )
     throws CoreException
   {
     RAPLaunchConfig config = ( RAPLaunchConfig )source;
-    String title = "Port in use";
-    String text 
-      = "Port {0,number,#} is currently in use.\n" 
-      + "Proceed with launching ''{1}''?";
+    String title = LaunchMessages.PortBusyStatusHandler_PortInUseTitle;
+    String text = LaunchMessages.PortBusyStatusHandler_PortInUseMessage; 
     Object[] args = new Object[] {
       new Integer( config.getPort() ),
       config.getName()

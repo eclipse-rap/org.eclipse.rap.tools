@@ -38,6 +38,8 @@ public class IntroMessages extends NLS {
 
   public static String TargetProvider_ArchiveNotFound;
   public static String TargetProvider_FailureCreateScript;
+  public static String TargetProvider_Installing;
+
   public static String TargetProvider_InvalidTargetDest;
   public static String TargetProvider_SourceNotFound;
   

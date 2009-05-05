@@ -44,9 +44,9 @@ public final class TargetProvider {
     if( value != null ) {
       version = new Version( value );
     } else {
-      version = new Version( "0.0.0.0" );
+      version = new Version( "0.0.0.0" ); //$NON-NLS-1$
     }
-    return version.getMajor() + "." + version.getMinor();
+    return version.getMajor() + "." + version.getMinor(); //$NON-NLS-1$
   }
 
   public static String getDefaultTargetDestination() {
@@ -59,7 +59,7 @@ public final class TargetProvider {
                               final IProgressMonitor monitor ) 
     throws CoreException 
   {
-    monitor.beginTask( "Installing RAP target platform", 
+    monitor.beginTask( IntroMessages.TargetProvider_Installing, 
                        IProgressMonitor.UNKNOWN );
     try {
       checkTargetDestination( targetDest );

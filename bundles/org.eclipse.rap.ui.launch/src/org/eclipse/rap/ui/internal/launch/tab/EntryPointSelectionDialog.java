@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.*;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.rap.ui.internal.launch.Activator;
+import org.eclipse.rap.ui.internal.launch.LaunchMessages;
 import org.eclipse.rap.ui.internal.launch.util.Images;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
@@ -27,19 +28,18 @@ import org.eclipse.ui.dialogs.SearchPattern;
 
 final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
 
-  private static final String SETTINGS_ID 
+  private static final String SETTINGS_ID
     = Activator.PLUGIN_ID + ".ENTRY_POINT_SELECTION_DIALOG"; //$NON-NLS-1$
 
   private static final Comparator COMPARATOR = new EntryPointComparator();
-  
+
   private EntryPointExtension[] entryPoints;
 
   EntryPointSelectionDialog( final Shell shell ) {
     super( shell );
-    setTitle( "Select Entry Point" );
-    String msg 
-      = "&Select an entry point to open (? = any character, * = any string, " 
-      + "EP = EntryPoint)";
+    setTitle( LaunchMessages.EntryPointSelectionDialog_Title );
+    String msg
+      = LaunchMessages.EntryPointSelectionDialog_Message;
     setMessage( msg );
     setSelectionHistory( new EntryPointSelectionHistory() );
     setListLabelProvider( new EntryPointLabelProvider() );
@@ -47,8 +47,8 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   //////////////////////////////////////////////////////////
-  // FilteredItemsSelectionDialog overrides - UI adjustments  
-  
+  // FilteredItemsSelectionDialog overrides - UI adjustments
+
   protected Control createExtendedContentArea( final Composite parent ) {
     return null;
   }
@@ -63,8 +63,8 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   ///////////////////////////////////////////////////////////
-  // FilteredItemsSelectionDialog overrides - item management   
-  
+  // FilteredItemsSelectionDialog overrides - item management
+
   protected void fillContentProvider( final AbstractContentProvider provider,
                                       final ItemsFilter itemsFilter,
                                       final IProgressMonitor monitor )
@@ -72,7 +72,7 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
   {
     if( entryPoints == null ) {
       if( monitor != null ) {
-        String msg = "Searching for entry points in workspace";
+        String msg = LaunchMessages.EntryPointSelectionDialog_Searching;
         monitor.beginTask( msg, IProgressMonitor.UNKNOWN );
       }
       entryPoints = EntryPointExtension.findInWorkspace( monitor );
@@ -107,20 +107,20 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
 
   ////////////////
   // Inner classes
-  
+
   private static final class EntryPointComparator implements Comparator {
-    
+
     public int compare( final Object object1, final Object object2 ) {
       EntryPointExtension extension1 = ( EntryPointExtension )object1;
       EntryPointExtension extension2 = ( EntryPointExtension )object2;
-      String string1 = extension1.getProject() + extension1.getParameter(); 
+      String string1 = extension1.getProject() + extension1.getParameter();
       String string2 = extension2.getProject() + extension2.getParameter();
       return string1.compareTo( string2 );
     }
   }
 
   private final class EntryPointItemsFilter extends ItemsFilter {
-    
+
     public EntryPointItemsFilter( final SearchPattern searchPattern ) {
       super( searchPattern );
     }
@@ -133,7 +133,7 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
       return matches( ( ( EntryPointExtension )item ).getParameter() );
     }
   }
-  
+
   private static final class EntryPointLabelProvider extends LabelProvider {
 
     private final Image image = Images.EXTENSION.createImage();
@@ -160,17 +160,17 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   /* Empty SelectionHistory implementation, necessary to be able pass something
-   * non-null to setSelectionHistory. Without calling it, an exception would 
+   * non-null to setSelectionHistory. Without calling it, an exception would
    * occur when the dialog is canceled. */
-  private static final class EntryPointSelectionHistory extends SelectionHistory 
+  private static final class EntryPointSelectionHistory extends SelectionHistory
   {
-    
+
     protected Object restoreItemFromMemento( final IMemento memento ) {
       return null;
     }
 
-    protected void storeItemToMemento( final Object item, 
-                                       final IMemento memento ) 
+    protected void storeItemToMemento( final Object item,
+                                       final IMemento memento )
     {
       // do nothing
     }

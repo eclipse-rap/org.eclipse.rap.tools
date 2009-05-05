@@ -25,11 +25,11 @@ import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 public final class TargetSwitcher34 {
 
   private static final String TARGET_MODEL
-    = "org.eclipse.pde.internal.core.target.TargetModel";
+    = "org.eclipse.pde.internal.core.target.TargetModel"; //$NON-NLS-1$
   private static final String LOAD_TARGET_OPERATION
-    = "org.eclipse.pde.internal.core.LoadTargetOperation";
+    = "org.eclipse.pde.internal.core.LoadTargetOperation"; //$NON-NLS-1$
   private static final String I_TARGET
-   = "org.eclipse.pde.internal.core.itarget.ITarget";
+   = "org.eclipse.pde.internal.core.itarget.ITarget"; //$NON-NLS-1$
 
   private static final String TARGET_FILE = "target/rap.target"; //$NON-NLS-1$
   private static final String ECLIPSE = "eclipse"; //$NON-NLS-1$
@@ -40,10 +40,10 @@ public final class TargetSwitcher34 {
   {
     Object targetModel = getTargetModel34( targetDestination );
     Boolean isLoaded
-      = ( Boolean )invoke( targetModel, "isLoaded", new Object[ 0 ] );
+      = ( Boolean )invoke( targetModel, "isLoaded", new Object[ 0 ] ); //$NON-NLS-1$
     if( isLoaded.booleanValue() ) {
       // ITarget target = targetModel.getTarget();
-      Object target = invoke( targetModel, "getTarget", new Object[ 0 ] );
+      Object target = invoke( targetModel, "getTarget", new Object[ 0 ] ); //$NON-NLS-1$
       // LoadTargetOperation operation = new LoadTargetOperation( target );
       IWorkspaceRunnable operation
         = ( IWorkspaceRunnable )construct( LOAD_TARGET_OPERATION,
@@ -62,7 +62,7 @@ public final class TargetSwitcher34 {
       InputStream inputStream = new BufferedInputStream( entry.openStream() );
       try {
         // result.load( inputStream, true );
-        invoke( result, "load", new Object[] { inputStream, Boolean.TRUE } );
+        invoke( result, "load", new Object[] { inputStream, Boolean.TRUE } ); //$NON-NLS-1$
       } finally {
         inputStream.close();
       }
@@ -73,9 +73,9 @@ public final class TargetSwitcher34 {
     }
     File path = new File( targetDestination, ECLIPSE );
     // result.getTarget().getLocationInfo().setPath( path.toString() );
-    Object target = invoke( result, "getTarget", new Object[ 0 ] );
-    Object locationInfo = invoke( target, "getLocationInfo", new Object[ 0 ] );
-    invoke( locationInfo, "setPath", new Object[] { path.toString() } );
+    Object target = invoke( result, "getTarget", new Object[ 0 ] ); //$NON-NLS-1$
+    Object locationInfo = invoke( target, "getLocationInfo", new Object[ 0 ] ); //$NON-NLS-1$
+    invoke( locationInfo, "setPath", new Object[] { path.toString() } ); //$NON-NLS-1$
     return result;
   }
 

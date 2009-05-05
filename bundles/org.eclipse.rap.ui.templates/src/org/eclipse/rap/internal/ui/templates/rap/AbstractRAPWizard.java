@@ -13,6 +13,7 @@ import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.ui.templates.NewPluginTemplateWizard;
 import org.eclipse.rap.internal.ui.templates.TemplateUtil;
@@ -36,7 +37,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   private static final String TAG_ENTRY_POINT = "${entryPoint}"; //$NON-NLS-1$
   private static final String TAG_PLUGIN_ID = "${pluginId}"; //$NON-NLS-1$
   private static final String TAG_PROJECT_NAME = "${projectName}"; //$NON-NLS-1$
-  
+
   public boolean performFinish( final IProject project,
                                 final IPluginModelBase model,
                                 final IProgressMonitor monitor )
@@ -49,17 +50,17 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     }
     return result;
   }
-  
+
   protected abstract String getEntryPointName();
 
   ////////////////////////////
   // Copy launch config helper
 
-  private void copyLaunchConfig( final IProject project, 
-                                 final IPluginModelBase model ) 
+  private void copyLaunchConfig( final IProject project,
+                                 final IPluginModelBase model )
   {
     String name = project.getName() + ".launch"; //$NON-NLS-1$
-    IFile launchConfig = project.getFile( name ); 
+    IFile launchConfig = project.getFile( name );
     if( !launchConfig.exists() ) {
       try {
         InputStream stream = readLaunchConfig( project, model );
@@ -74,7 +75,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
                                         final IPluginModelBase model )
     throws CoreException
   {
-    InputStream template 
+    InputStream template
       = AbstractRAPWizard.class.getResourceAsStream( LAUNCH_TEMPLATE );
     StringBuffer buffer = new StringBuffer();
     try {
@@ -98,13 +99,13 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     replacePlaceholder( buffer, TAG_PROJECT_NAME, project.getName() );
     String pluginId = model.getPluginBase().getId();
     replacePlaceholder( buffer, TAG_PLUGIN_ID, pluginId );
-    replacePlaceholder( buffer, TAG_ENTRY_POINT, getEntryPointName() ); 
+    replacePlaceholder( buffer, TAG_ENTRY_POINT, getEntryPointName() );
     return new ByteArrayInputStream( buffer.toString().getBytes() );
   }
 
-  private static void replacePlaceholder( final StringBuffer buffer, 
-                                          final String placeholder, 
-                                          final String replacement ) 
+  private static void replacePlaceholder( final StringBuffer buffer,
+                                          final String placeholder,
+                                          final String replacement )
   {
     int index = buffer.indexOf( placeholder );
     while( index != -1 ) {
@@ -115,7 +116,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   ///////////////////
   // helping classes
-  
+
   private class ManifestListener implements IResourceChangeListener {
 
     public void resourceChanged( final IResourceChangeEvent event ) {
@@ -131,7 +132,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
     private static final String MANIFEST_FILE = "MANIFEST.MF"; //$NON-NLS-1$
     private static final String NL = "\r\n"; //$NON-NLS-1$
-    
+
     private final ManifestListener listener;
     private boolean isDone = false;
 
@@ -158,11 +159,11 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     {
       final IFile file = ( IFile )resource;
       try {
-        BufferedReader reader 
+        BufferedReader reader
           = new BufferedReader( new InputStreamReader( file.getContents() ) );
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-          BufferedWriter writer 
+          BufferedWriter writer
             = new BufferedWriter( new OutputStreamWriter( baos ) );
           try {
             String line = reader.readLine();
@@ -198,17 +199,19 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       }
     }
 
-    private void scheduleJob( final IFile file, 
+    private void scheduleJob( final IFile file,
                               final ByteArrayOutputStream baos )
     {
-      IResourceRuleFactory ruleFactory 
+      IResourceRuleFactory ruleFactory
         = ResourcesPlugin.getWorkspace().getRuleFactory();
       ISchedulingRule rule = ruleFactory.createRule( file );
-      Job job = new WorkspaceJob( "Modifing " + MANIFEST_FILE ) {
+      String jobName = NLS.bind( TemplateMessages.AbstractRAPWizard_Modifying,
+                                 MANIFEST_FILE );
+      Job job = new WorkspaceJob( jobName ) {
         public IStatus runInWorkspace( final IProgressMonitor monitor )
           throws CoreException
         {
-          ByteArrayInputStream bais 
+          ByteArrayInputStream bais
             = new ByteArrayInputStream( baos.toByteArray() );
           file.setContents( bais, true, false, new NullProgressMonitor() );
           return Status.OK_STATUS;

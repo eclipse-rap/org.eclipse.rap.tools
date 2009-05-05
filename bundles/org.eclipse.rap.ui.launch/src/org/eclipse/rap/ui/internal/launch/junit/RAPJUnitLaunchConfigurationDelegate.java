@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2002, 2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2002, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,6 @@
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.rap.ui.internal.launch.junit;
 
 import java.util.List;
@@ -24,6 +23,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.pde.core.plugin.*;
 import org.eclipse.pde.internal.ui.PDEUIMessages;
 import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
+import org.eclipse.rap.ui.internal.launch.LaunchMessages;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchDelegate;
 
 public class RAPJUnitLaunchConfigurationDelegate
@@ -93,7 +93,7 @@ public class RAPJUnitLaunchConfigurationDelegate
   public String verifyMainTypeName( final ILaunchConfiguration configuration )
     throws CoreException
   {
-    return "org.eclipse.equinox.launcher.Main";
+    return "org.eclipse.equinox.launcher.Main"; //$NON-NLS-1$
   }
 
   public String[] getClasspath( final ILaunchConfiguration configuration )
@@ -113,7 +113,7 @@ public class RAPJUnitLaunchConfigurationDelegate
     StringBuffer result = new StringBuffer();
     for( int i = 0; i < arguments.length; i++ ) {
       result.append( arguments[ i ] );
-      result.append( " " );
+      result.append( " " ); //$NON-NLS-1$
     }
     return result.toString().trim();
   }
@@ -131,10 +131,10 @@ public class RAPJUnitLaunchConfigurationDelegate
     throws CoreException
   {
     super.collectExecutionArguments( config, vmArguments, programArguments );
-    String name = "-loaderpluginname";
-    String value = "org.eclipse.rap.junit.runtime";
+    String name = "-loaderpluginname"; //$NON-NLS-1$
+    String value = "org.eclipse.rap.junit.runtime"; //$NON-NLS-1$
     replaceArguments( programArguments, name, value );
-    programArguments.add( "-testpluginname" );
+    programArguments.add( "-testpluginname" ); //$NON-NLS-1$
     programArguments.add( getTestPluginId( config ) );
 
   }

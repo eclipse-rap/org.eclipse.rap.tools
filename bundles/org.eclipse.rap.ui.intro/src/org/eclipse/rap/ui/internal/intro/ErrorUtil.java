@@ -58,7 +58,7 @@ public final class ErrorUtil {
         }
       }
       if( statusMessage == null ) {
-        statusMessage = "";
+        statusMessage = ""; //$NON-NLS-1$
       }
       result = new Status( IStatus.ERROR, 
                            IntroPlugin.getPluginId(),

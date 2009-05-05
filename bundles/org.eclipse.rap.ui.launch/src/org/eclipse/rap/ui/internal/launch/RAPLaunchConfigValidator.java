@@ -60,7 +60,7 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateOSGiFramework() );
     } catch( CoreException e ) {
       String text
-        = "An error occured while validating the launch configuration: {0}";
+        = LaunchMessages.RAPLaunchConfigValidator_ErrorWhileValidating;
       Object[] args = new Object[] { e.getLocalizedMessage() };
       String msg = MessageFormat.format( text, args );
       states.add( createError( msg, 0, e ) );
@@ -76,7 +76,7 @@ public final class RAPLaunchConfigValidator {
   private IStatus validateServletName() throws CoreException {
     IStatus result = Status.OK_STATUS;
     if( EMPTY.equals( config.getServletName() ) ) {
-      String msg = "The servlet name must not be empty";
+      String msg = LaunchMessages.RAPLaunchConfigValidator_ServletNameEmpty;
       result = createError( msg, ERR_SERVLET_NAME, null );
     }
     return result;
@@ -86,7 +86,7 @@ public final class RAPLaunchConfigValidator {
     IStatus result = Status.OK_STATUS;
     String entryPoint = config.getEntryPoint();
     if( EMPTY.equals( entryPoint ) ) {
-      String msg = "The entry point must not be empty";
+      String msg = LaunchMessages.RAPLaunchConfigValidator_EntryPointEmpty;
       result = createError( msg, ERR_ENTRY_POINT_EMPTY, null );
     }
     return result;
@@ -99,7 +99,7 @@ public final class RAPLaunchConfigValidator {
       if(    port < RAPLaunchConfig.MIN_PORT_NUMBER
           || port > RAPLaunchConfig.MAX_PORT_NUMBER )
       {
-        String text = "Port number must be between {0} and {1}";
+        String text = LaunchMessages.RAPLaunchConfigValidator_PortNumberInvalid;
         Object[] args = new Object[] {
           new Integer( RAPLaunchConfig.MIN_PORT_NUMBER ),
           new Integer( RAPLaunchConfig.MAX_PORT_NUMBER )
@@ -123,7 +123,7 @@ public final class RAPLaunchConfigValidator {
         }
       }
       if( duplicate != null ) {
-        String text = "The port {0,number,#} is already used by {1}.";
+        String text = LaunchMessages.RAPLaunchConfigValidator_PortInUse;
         Object[] args = new Object[] {
           new Integer( config.getPort() ),
           duplicate.getName()
@@ -140,7 +140,7 @@ public final class RAPLaunchConfigValidator {
     try {
       URLBuilder.fromLaunchConfig( config, 80, false );
     } catch( MalformedURLException e ) {
-      String text = "Servlet name and/or entry point cause a malformed URL.";
+      String text = LaunchMessages.RAPLaunchConfigValidator_MalformedUrl;
       result = createWarning( text, ERR_URL, e );
     }
     return result;
@@ -157,7 +157,7 @@ public final class RAPLaunchConfigValidator {
     }
     if( !isValid ) {
       Object[] args = new Object[] { logLevel.getName() };
-      String msg = MessageFormat.format( "Invalid log level: ''{0}''.", args );
+      String msg = MessageFormat.format( LaunchMessages.RAPLaunchConfigValidator_LogLevelInvalid, args );
       result = createError( msg, ERR_LOG_LEVEL, null );
     }
     return result;
@@ -167,7 +167,7 @@ public final class RAPLaunchConfigValidator {
     IStatus result = Status.OK_STATUS;
     String frameworkId = getOSGiFrameworkId();
     if( !EQUINOX_FRAMEWORK.equals( frameworkId ) ) {
-      String msg = "The RAP launcher only works with the Equinox OSGi Framework";
+      String msg = LaunchMessages.RAPLaunchConfigValidator_EquinoxOnly;
       result = createWarning( msg, WARN_OSGI_FRAMEWORK, null );
     }
     return result;
