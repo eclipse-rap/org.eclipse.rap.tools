@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,22 +8,17 @@
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.rap.ui.internal.launch.junit;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.pde.ui.launcher.JUnitWorkbenchLaunchShortcut;
 import org.eclipse.pde.ui.launcher.OSGiLaunchShortcut;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig;
 
 
-public final class RAPJUnitLaunchShortcut 
-  extends JUnitWorkbenchLaunchShortcut 
-  implements ILaunchShortcut 
-{
+public final class RAPJUnitLaunchShortcut extends JUnitWorkbenchLaunchShortcut {
 
   private static final String LAUNCH_CONFIGURATION_TYPE 
     = "org.eclipse.rap.ui.launch.RAPJUnitTestLauncher"; //$NON-NLS-1$

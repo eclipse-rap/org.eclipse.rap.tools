@@ -12,16 +12,12 @@ package org.eclipse.rap.ui.internal.launch;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.pde.ui.launcher.OSGiLaunchShortcut;
 import org.eclipse.ui.IEditorPart;
 
 
-public final class RAPLaunchShortcut
-  extends OSGiLaunchShortcut
-  implements ILaunchShortcut
-{
+public final class RAPLaunchShortcut extends OSGiLaunchShortcut {
 
   private static final String LAUNCH_CONFIGURATION_TYPE
     = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
