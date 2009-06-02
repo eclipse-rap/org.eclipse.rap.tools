@@ -77,10 +77,16 @@
         href="help/html/reference/extension-points/org_eclipse_rap_ui_branding.html"/>
       <topic label="org.eclipse.rap.ui.entrypoint" 
         href="help/html/reference/extension-points/org_eclipse_rap_ui_entrypoint.html"/>
+      <topic label="org.eclipse.rap.ui.layouts" 
+        href="help/html/reference/extension-points/org_eclipse_rap_ui_layouts.html"/>
       <topic label="org.eclipse.rap.ui.phaselistener" 
         href="help/html/reference/extension-points/org_eclipse_rap_ui_phaselistener.html"/>
       <topic label="org.eclipse.rap.ui.resources" 
         href="help/html/reference/extension-points/org_eclipse_rap_ui_resources.html"/>
+      <topic label="org.eclipse.rap.ui.settingstores" 
+        href="help/html/reference/extension-points/org_eclipse_rap_ui_settingstores.html"/>
+      <topic label="org.eclipse.rap.ui.stackPresentations" 
+        href="help/html/reference/extension-points/org_eclipse_rap_ui_stackPresentations.html"/>
       <topic label="org.eclipse.rap.ui.themeableWidgets" 
         href="help/html/reference/extension-points/org_eclipse_rap_ui_themeableWidgets.html"/>
       <topic label="org.eclipse.rap.ui.themes" 
