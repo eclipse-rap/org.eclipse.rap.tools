@@ -33,14 +33,14 @@
   &lt;extension
         point="org.eclipse.rap.ui.branding">
      &lt;branding
-           id="org.eclipse.rap.demo.branding1"
+           id="org.eclipse.rap.demo.teaBranding"
            servletName="tea"
-           defaultEntrypointId="org.eclipse.rap.demo.entrypoint1"
-           themeId="org.eclipse.rap.demo.alttheme"
+           defaultEntrypointId="org.eclipse.rap.demo.defaultEntrypoint"
+           themeId="org.eclipse.rap.demo.teaTheme"
            title="It&apos;s tea-time"
-           favicon="icons/favicon2.ico"
+           favicon="icons/teapot.ico"
            body="body.html"
-           exitConfirmation="Do you really want to leave the party?">
+           exitConfirmationClass="org.eclipse.rap.demo.DemoExitConfirmation">
      &lt;/branding>
   &lt;/extension&gt;
   </code>
@@ -77,8 +77,9 @@
   
   <h4>favicon</h4>
   <p>
-  The favicon is the icon shown in the address bar of the browser. This has to be
-  a valid <a href="http://en.wikipedia.org/wiki/ICO_%28icon_image_file_format%29">.ico file</a>
+  The <a href="http://en.wikipedia.org/wiki/Favicon">favicon</a> is a 16x16 pixel 
+  square icon shown in the address bar of the browser. This has to be a valid 
+  <a href="http://en.wikipedia.org/wiki/ICO_%28icon_image_file_format%29">.ico file</a>
   to be correctly displayed in the browser.
   </p>
   
@@ -89,18 +90,19 @@
   in the body tag of the generated index page.
   </p>
   
-  <h4>exitConfirmation</h4>
+  <h4>exitConfirmationClass</h4>
   <p>
-  If not empty the string in <code>exitConfirmation</code> will be shown to the user
-  if he wants to leave the RAP application. This is useful to prevent users to accidentally
-  close the browser window/tab.
+  This attribute is optional. If specified, the value must denote a class that 
+  implements the interface <code>IExitConfirmation</code>.
+  Implementations of this interface can control the exit confirmation that is 
+  shown whenever the user tries to close the browser window or tab or navigates 
+  to another URL.
   </p>
   <img src="../../images/branding/exitConfirmation.png" />
   <p>
     <b>NOTE:</b>
-    This will only work in browsers of the Mozilla family and Internet Explorer. Some
-    of the supported browser don't only use the specified string but instead wrapping
-    it in some other explaination why this popup is opened.
+    Note that this is feature is not supported by every browser. Furthermore, 
+    some browsers may show additional text in the confirmation dialog.
   </p>
   
   <h4>Element additionalHeaders</h4>
