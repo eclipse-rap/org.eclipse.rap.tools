@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta name="copyright" content="Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta name="copyright" content="Copyright (c) 2009 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title>RAP look and feel</title>
@@ -11,18 +11,22 @@
 <h1>RAP look and feel</h1>
 <p>
 Eclipse RAP provides an API to change the look and feel of a RAP application. 
-This article is a step-by-step guide to using the interaction design API to 
-apply changes to your WorkbenchWindow components from a single bundle.
+This article is a step-by-step guide to using the this socalled "interaction 
+design API" to control the look of the WorkbenchWindow. All look and feel artefacts
+can be bundled into a separate plug-in and contributed to an existing application
+without touching the application itself.
 </p>
 <p>
-Let's begin by looking at what we can achieve with a  RAP application and the 
-interaction design API:<br>
-<img src="../../images/interactiondesign/newLook.png"/>
+
+Let's have a look at a RAP application that with a customized look and feel:
+</p>
+<p>
+  <img src="../../images/interactiondesign/newLook.png"/>
 </p>
 
 <h2>Getting started</h2>
 <p>
-First let's take a look at the list of elements that we'll be working with. 
+Thesea are the elements that we will be working with. 
 <ul>
 	<li>
 	WorkbenchWindow components such as the ToolBar, MenuBar and the ViewToolbar.
@@ -53,16 +57,18 @@ First let's take a look at the list of elements that we'll be working with.
 <p>
 Finally, one additional but important requirement for a good look and feel is 
 to change interaction concepts to match the new UI. To assist in this, the API 
-provides an automatic service called personalization. For instance it hide all 
-Viewactions by default and make it's visibility customizable.
+provides an automatic service called personalization. For instance it hides all 
+ViewActions by default and makes it's visibility customizable.
 </p>
 
 <h2>WorkbenchWindow components</h2>
 <p>
-The best place to start is to create a PresentationFactory. You'll need to 
+The best place to start is to create a PresentationFactory. You will need to 
 create an extension for the <code>org.eclipse.ui.presentationFactories</code> 
-extension point. <br>
-<img src="../../images/interactiondesign/presentationFactoryExt.png"/>
+extension point.
+</p>
+<p>
+  <img src="../../images/interactiondesign/presentationFactoryExt.png"/>
 </p>
 <p>
 Here is the same as it appears in the plugin.xml.
@@ -75,37 +81,39 @@ Here is the same as it appears in the plugin.xml.
   &lt;/factory&gt;
 &lt;/extension&gt;
 </pre>
-The presentationFactory contains the following attributes.
+
+The presentationFactory contains the following attributes:
 <ul>
-	<li>
-	<b>class</b><br>
-	The class refers to an implementation of 
-	<code>org.eclipse.rap.ui.interactiondesign.PresentationFactory</code>. It's 
-	very important not to extend from the original 
-	<code>org.eclipse.ui.presentation.AbstractPresentationFactory</code> as it does 
-	not support the concepts described here.
-	</li>
-	<li>
+  <li>
+    <b>class</b><br>
+    The class refers to an implementation of 
+    <code>org.eclipse.rap.ui.interactiondesign.PresentationFactory</code>. It is
+    very important not to extend from the original 
+    <code>org.eclipse.ui.presentation.AbstractPresentationFactory</code> as this
+    class does not support the concepts described here.
+  </li>
+  <li>
 	<b>name</b><br>
-	A human readable name for the PresentationFacotry implementation.
-	</li>
+    A human readable name for the PresentationFacotry implementation.
+  </li>
 </ul>
 The <code>org.eclipse.rap.ui.interactiondesign.PresentationFactory</code> is 
-abstract, so you'll need to implement its abstract methods. Most are create 
+abstract, so you will need to implement its abstract methods. Most are create 
 methods for different Managers, for example, the MenuBar MenuManager or the 
-Manager for the ToolBar. A ToolBar or MenuBar manager is a contribution manager which 
-realizes itself and its items in a control. In these implementations you can 
+Manager for the ToolBar. A ToolBar or MenuBar manager is a contribution manager
+which  realizes itself and its items in a control. In these implementations you can 
 change the look of the components such as styling a toolbar with icons and text 
 or making it transparent.
 </p>
 
 <h2>Presentations for Stacks</h2>
 <p>
-If you're not familiar with the original AbstractPresentationFactory you might 
+If you are not familiar with the original AbstractPresentationFactory you might 
 consider reading up on StackPresentations. You'll find a basic overview of the 
 partstack in the 
 <a href="http://www.eclipse.org/articles/Article-UI-Workbench/workbench.html">
-Inside Workbench document</a>. <br> 
+Inside the Workbench</a> article. 
+<br> 
 The look and feel of a partstack can be changed using StackPresentations. In the 
 previous PresentationFactory the presentation had to be implemented 
 programatically. The interaction design API allows you to declare 
@@ -288,13 +296,15 @@ And, to do this is just a two step process. <br>
 </ol>
 </p>
 
-<h2>Activation over servlet name</h2>
+<h2>Activation by servlet name</h2>
 <p>
 Different layouts can be activated from a central point by using the servlet 
-name. To activate a PresentationFactory and a Layout over a servlet name you 
+name. To activate a PresentationFactory and a Layout by a servlet name, you 
 can use the 
 <a href="branding.html"><code>org.eclipse.rap.ui.branding</code> extension 
-point</a>.<br>
+point</a>.
+</p>
+<p>
 <img src="../../images/interactiondesign/brandingExt.png"/>
 </p>
 <p>
