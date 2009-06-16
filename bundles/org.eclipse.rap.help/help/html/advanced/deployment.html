@@ -17,8 +17,8 @@
   contains the <code>org.eclipse.rap.demo</code> project as RAP application.</p>
   
   <p>Note: As with RCP applications there are a wide variety of possible
-  configurations. What's given in <code>org.eclipse.rap.demo.feature</code> is just
-  one possibility.</p>
+  configurations. What's given in <code>org.eclipse.rap.demo.feature</code> is
+  just one possibility.</p>
   
   <p>As prerequisites we assume that you are familiar with the bundles- and 
   build information section of the 
@@ -42,7 +42,7 @@
   <li>Right-Click on the <code>webAppBuilder.xml</code> script in the IDE and 
       "Run Ant". (Note: In order to make the <code>pde.exportFeatures</code> task
       available in the IDE select "Run in the same JRE as the workspace" on the
-      JRE tab from "Run Ant..").</li>
+      JRE tab from "Run Ant...").</li>
   <li>Refresh the feature project - a build folder should appear. (Note:
       The <code>pde.exportFeatures</code> target will build the plug-ins
       asynchronously and may take a while till finished. After that the complete 
@@ -52,9 +52,9 @@
   
   <h3>Adjust the <code>config.ini</code></h3>
   <ul>
-  <li>Adjust the path to the plugin directory of your build in the
-  <code>ConfigIniCreator</code> (see docu in <code>ConfigIniCreator</code> 
-  class).</li>
+  <li>Adjust the path to the plug-in directory of your build in the
+  <code>ConfigIniCreator</code> (see the comment in the 
+  <code>ConfigIniCreator</code> class).</li>
   <li>Run the ConfigIniCreator as java application.</li>
   <li>Copy the console output to the <code>config.ini</code> file of your
   build.</li>
@@ -62,11 +62,11 @@
   <img src="../../images/config.png">
   
   
-  <p>After that pack the <code>WAR</code> of the application build available in the 
+  <p>After that, pack the <code>WAR</code> of the application build available in the 
   build folder (in our case the content of <code>build/rapdemo</code>). Deploy
   the <code>WAR</code> to a servlet container to see whether the build was successful :-)</p>
   <img src="../../images/runtime.png"><br>
-  (screenshot shows application running with osgi-console. See web.xml in the
+  (screenshot shows application running with OSGi-console. See web.xml in the
   templates directory for more infos on how activating the console)
   
   <h2>How to deploy my own application?</h2>
@@ -74,33 +74,37 @@
   <p>To deploy your own application like described above you will have
   to create your own feature. The feature should contain the same plug-in 
   references as the demo feature (except the demo-plug-in of course!) plus the
-  plug-ins that make up your application. It is important that your plug-ins that
-  reference the servlet API use the <code>Import-Package</code> header to do 
-  this (see <code>MANIFEST.MF</code> of the demo project).</p>
+  plug-ins that make up your application. It is important that your plug-ins
+  reference the servlet API by using the <code>Import-Package</code> directive
+  instead of the <code>Require-Bundle</code> directive. See the 
+  <code>MANIFEST.MF</code> of the demo project for an example.</p>
   
   <p>Copy the script and templates folder to the feature and modifiy them
   according to your project structure. Following the steps above should lead
   to a full functional <code>WAR</code> of your application.</p>
   
-  <p><strong>Note</strong>: If you are encountering problems during the build
-  you may consider to use the PDE-Export (available from the feature.xml editor)
+  <p><strong>Note</strong>: If you encounter problems during the build, you
+  may consider to use the PDE-Export (available from the feature editor)
   before exporting the whole WAR at once. This proved helpful for
-  trouble-shooting as the export may shows problem relevant dialogs that are
-  suppressed in the ant export.</p>
+  trouble-shooting as the export may show problem-relevant dialogs that are
+  suppressed in the Ant export.</p>
   
   <p><strong>Note also</strong>: Besides the application server log files
-  there exists an equinox framework log that can be found under the webapp's
-  work directory, e.g. on tomcat:
+  there also exists an Equinox framework log that can be found under the webapp's
+  work directory, e.g. on Tomcat:
   <pre>
   <code>&lt;tomcat-installation&gt;\work\Catalina\localhost\demo\eclipse\workspace\.metadata\.log</code>
   </pre>
-  In case equinox isn't able to start at all you may also have a look for log
-  files at:
+  In case equinox isn't able to start at all, you may also look for log files 
+  at:
   <pre>
   <code>&lt;tomcat-installation&gt;\work\Catalina\localhost\demo\eclipse\configuration</code>
   </pre>
-  
+
   </p>
+  
+  <p>Further hints can be found in the
+  <a href="http://wiki.eclipse.org/RAP/FAQ">RAP FAQ</a></p>
   
 </body>
 </html>
