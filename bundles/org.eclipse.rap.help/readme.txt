@@ -6,5 +6,3 @@ entries about non-existing files. The most of them can be found in the
 
 See "org.eclipse.rap.releng.tooling" for more informations how these files are
 generated during the automated build.
-
-test
