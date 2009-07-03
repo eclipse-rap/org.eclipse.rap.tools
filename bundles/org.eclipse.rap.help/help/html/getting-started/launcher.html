@@ -70,6 +70,14 @@
   expires.
 </p>
 
+<h3>Servlet engine log</h3>
+By default the servlet engine (namely Jetty) is configured to suppress most logging 
+information. This can be changed by adding the VM argument
+<code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log leve&gt;</code> 
+to the launch configuration. Valid log levels are <code>debug</code>, 
+<code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
+The default value is <code>warn</code>.
+
 <a name="rap"><h2>Using the RAP Launcher</h2></a>
   
   <p>The RAP Launcher is based on the 
