@@ -259,6 +259,13 @@ maximum of one Layout as a parent and has the following attributes:
 	for a LayoutSet object. All IlayoutSetInitializers will be called during the 
 	LayoutRegistry initialisation.
 	</li>
+	<li>
+	<b>overridesId</b><br>
+	This optional attribute should be an existing LayoutSet id. It's value will be
+	used to override a LayoutSet. This is usefull i.e. if a bundle defines a LayoutSet
+	which contributes a Logo. Than another bundle can override this LayoutSet and
+	contrbute it's own logo.
+	</li>
 </ul>
 The following is an example use case for a declarative layout. <br>
 A button should display its text in a specific font. Instead of defining the 
