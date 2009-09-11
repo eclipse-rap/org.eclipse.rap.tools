@@ -25,12 +25,15 @@ import org.eclipse.rap.ui.internal.launch.Activator;
 public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
 {
 
+  private static final String NEW_LINE = "\n"; //$NON-NLS-1$
   private static final String ATTR_VM_ARGUMENTS
     = IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS;
   private static final String RWT_COMPRESSION_ON
     = "-Dorg.eclipse.rwt.compression=true"; //$NON-NLS-1$
   private static final String RWT_COMPRESSION_OFF
     = "-Dorg.eclipse.rwt.compression=false"; //$NON-NLS-1$
+  private static final String JETTY_LOG_LEVEL
+    = "-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=info"; //$NON-NLS-1$
 
   public void createTabs( final ILaunchConfigurationDialog dialog,
                           final String mode )
@@ -40,36 +43,13 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
     setTabs( insertTab( getTabs(), 0, new MainTab() ) );
   }
 
-  public void setDefaults( final ILaunchConfigurationWorkingCopy config )
-  {
-    super.setDefaults( config );
-    // add VM argument which enables RAP gzip compression
-    String oldVmArgs = ""; //$NON-NLS-1$
-    try {
-      oldVmArgs = config.getAttribute( ATTR_VM_ARGUMENTS, "" );
-    } catch( CoreException e ) {
-      Activator.getDefault().getLog().log( e.getStatus() );
-    }
-    StringBuffer newVmArgs = new StringBuffer();
-    newVmArgs.append( oldVmArgs );
-    if(    oldVmArgs.indexOf( RWT_COMPRESSION_ON ) == -1
-        && oldVmArgs.indexOf( RWT_COMPRESSION_OFF ) == -1 )
-    {
-      if( oldVmArgs.length() > 0 ) {
-        newVmArgs.append( "\n" ); //$NON-NLS-1$
-      }
-      newVmArgs.append( RWT_COMPRESSION_ON );
-    }
-    config.setAttribute( ATTR_VM_ARGUMENTS, newVmArgs.toString() );
-  }
-
   private static ILaunchConfigurationTab[] insertTab(
     final ILaunchConfigurationTab[] tabs,
     final int position,
     final ILaunchConfigurationTab newTab )
   {
     ILaunchConfigurationTab[] result
-      = new ILaunchConfigurationTab[ tabs.length + 1 ];
+    = new ILaunchConfigurationTab[ tabs.length + 1 ];
     int offset = 0;
     for( int i = 0; i < result.length; i++ ) {
       if( i == position ) {
@@ -79,6 +59,41 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
         result[ i ] = tabs[ i + offset ];
       }
     }
+    return result;
+  }
+
+  public void setDefaults( final ILaunchConfigurationWorkingCopy config ) {
+    super.setDefaults( config );
+    String vmArguments = ""; //$NON-NLS-1$
+    try {
+      vmArguments = config.getAttribute( ATTR_VM_ARGUMENTS, "" );
+    } catch( CoreException e ) {
+      Activator.getDefault().getLog().log( e.getStatus() );
+    }
+    vmArguments = appendRwtCompression( vmArguments );
+    vmArguments = appendJettyLogLevel( vmArguments );
+    config.setAttribute( ATTR_VM_ARGUMENTS, vmArguments );
+  }
+  
+  private static String appendRwtCompression( final String vmArguments ) {
+    String result = vmArguments;
+    if(    vmArguments.indexOf( RWT_COMPRESSION_ON ) == -1
+        && vmArguments.indexOf( RWT_COMPRESSION_OFF ) == -1 )
+    {
+      if( result.length() > 0 ) {
+        result += NEW_LINE;
+      }
+      result += RWT_COMPRESSION_ON;
+    }
+    return result;
+  }
+  
+  private static String appendJettyLogLevel( final String vmArguments ) {
+    String result = vmArguments;
+    if( result.length() > 0 ) {
+      result += NEW_LINE;
+    }
+    result += JETTY_LOG_LEVEL;
     return result;
   }
 }
