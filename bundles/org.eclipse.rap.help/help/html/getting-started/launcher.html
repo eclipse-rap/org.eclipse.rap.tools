@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <meta name="copyright" content="Copyright (c) 2007-2008-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+  <meta name="copyright" content="Copyright (c) 2007-2009 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Content-Style-Type" content="text/css">
   <title>Launching RAP Applications</title>
@@ -41,6 +41,7 @@
   <li>org.eclipse.equinox.http.servlet</li>
   <li>org.eclipse.equinox.preferences</li>
   <li>org.eclipse.equinox.registry</li>
+  <li>org.eclipse.help</li>
   <li>org.eclipse.osgi</li>
   <li>org.eclipse.osgi.services</li>
   <li>org.eclipse.rap.demo</li>
@@ -73,7 +74,7 @@
 <h3>Servlet engine log</h3>
 By default the servlet engine (namely Jetty) is configured to suppress most logging 
 information. This can be changed by adding the VM argument
-<code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log leve&gt;</code> 
+<code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</code> 
 to the launch configuration. Valid log levels are <code>debug</code>, 
 <code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
 The default value is <code>warn</code>.
@@ -110,10 +111,11 @@ The default value is <code>warn</code>.
     The outcome depends on the browser preference settings that can be reached
     with the <strong>Configure Browsers...</strong> link.</p>
     
-    <h3>Manual Port Configration</h3>
+    <h3>Manual Port Configuration</h3>
     <p>It is recommended to let the launcher dynamically choose a free port for 
     client-server communication. However if you would like to have full control 
-    over the communication channel, you can explicity specify a port number.</p>
+    over the communication channel, you can explicitly specify a port number.
+    </p>
     
     <h3>Client-side Log Level</h3>
     <p>This setting controls to which extent log messages from the client-side
