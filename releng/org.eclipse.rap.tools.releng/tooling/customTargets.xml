@@ -134,10 +134,10 @@
         dest="${tmpTarget}"
         tag="${mapsCheckoutTag}" />
     <cvs cvsRoot=":pserver:anonymous@dev.eclipse.org:/cvsroot/rt"
-        package="org.eclipse.rap/releng/org.eclipse.rap.releng.tooling"
+        package="org.eclipse.rap/releng/org.eclipse.rap.releng/tooling"
         dest="${tmpTarget}"
         tag="${mapsCheckoutTag}" />
-    <ant dir="${tmpTarget}/org.eclipse.rap/releng/org.eclipse.rap.releng.tooling/theming">
+    <ant dir="${tmpTarget}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/theming">
       <property name="src.dir"
           value="${tmpTarget}/org.eclipse.rap/runtime.rwt/org.eclipse.rap.rwt/src" />
       <property name="dest.dir"
