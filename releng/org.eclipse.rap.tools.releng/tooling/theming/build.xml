@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2008 Innoopract Informationssysteme GmbH.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/legal/epl-v10.html
+
+  Contributors:
+      Innoopract Informationssysteme GmbH - initial API and implementation
+  -->
+
+<project name="theme-doc" default="default">
+  <description>
+    Create documentation for CSS theming
+  </description>
+
+  <property name="plugin.dir"
+      location="../../" />
+  <property name="src.dir"
+      location="${plugin.dir}/org.eclipse.rap.rwt/src" />
+  <property name="dest.dir"
+      location="${plugin.dir}/org.eclipse.rap.ui.help/help/html/reference/theming" />
+  <property name="tmp.dir"
+      location="${dest.dir}/tmp" />
+
+  <target name="default">
+    <!-- Create temp directory and copy theme.xml files into it -->
+    <delete dir="${tmp.dir}" quiet="true" />
+    <copy todir="${tmp.dir}" flatten="true">
+      <fileset dir="${src.dir}">
+        <include name="**/*.theme.xml"/>
+      </fileset>
+    </copy>
+    <!-- Create HTML files -->
+    <xslt basedir="${tmp.dir}" includes="*.theme.xml" destdir="${tmp.dir}"
+        style="theme.xsl">
+      <globmapper from="*.theme.xml" to="*.html" />
+    </xslt>
+    <!-- Create index HTML file -->
+    <xslt basedir="${tmp.dir}" includes="*.theme.xml" destdir="${tmp.dir}"
+        style="index-part.xsl"
+        filenameparameter="filename">
+      <globmapper from="*.theme.xml" to="*.index.xml" />
+    </xslt>
+    <concat destfile="${tmp.dir}/index.xml">&lt;index&gt;</concat>
+    <concat destfile="${tmp.dir}/index.xml" append="true">
+      <fileset dir="${tmp.dir}">
+        <include name="*.index.xml"/>
+      </fileset>
+    </concat>
+    <concat destfile="${tmp.dir}/index.xml" append="true">&lt;/index&gt;</concat>
+    <xslt in="${tmp.dir}/index.xml" out="${tmp.dir}/index.html" style="index.xsl" />
+    <!-- Copy results to target -->
+    <copy todir="${dest.dir}">
+      <fileset dir="${tmp.dir}">
+        <include name="*.html"/>
+      </fileset>
+    </copy>
+    <!-- Clean up -->
+    <delete dir="${tmp.dir}" quiet="true" />
+  </target>
+
+</project>
