@@ -18,9 +18,7 @@
    </license>
 
    <url>
-      <update 
-          label="%updateSiteName"
-          url="http://download.eclipse.org/rt/rap/1.2/update"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/rt/rap/1.2/update"/>
    </url>
 
    <requires>
@@ -63,6 +61,7 @@
          id="org.eclipse.rap.ui.intro"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
