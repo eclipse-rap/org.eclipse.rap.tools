@@ -134,7 +134,8 @@ public final class TargetProvider {
         IStatus status = ErrorUtil.createErrorStatus( msg, null );
         throw new CoreException( status );
       }
-      result = FileLocator.resolve( targetEntry );
+      // Convert to File-URL. This is necessary if the intro-plug-in is jar'ed.
+      result = FileLocator.toFileURL( targetEntry );
     } catch( IOException e ) {
       String msg = IntroMessages.TargetProvider_SourceNotFound; 
       IStatus status = ErrorUtil.createErrorStatus( msg, e );
