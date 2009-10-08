@@ -18,8 +18,8 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.*;
+import org.eclipse.pde.internal.launching.launcher.OSGiFrameworkManager;
 import org.eclipse.pde.internal.ui.PDEPlugin;
-import org.eclipse.pde.internal.ui.launcher.OSGiFrameworkManager;
 import org.eclipse.pde.ui.launcher.IPDELauncherConstants;
 
 
@@ -36,9 +36,6 @@ public final class RAPLaunchConfigValidator {
   private static final String RAP_LAUNCH_CONFIG_TYPE
     = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
   
-  private static final String EQUINOX_FRAMEWORK
-    = "org.eclipse.pde.ui.EquinoxFramework"; //$NON-NLS-1$
-
   private static final String EMPTY = ""; //$NON-NLS-1$
 
 
@@ -57,7 +54,6 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateUniquePort() );
       addNonOKState( states, validateURL() );
       addNonOKState( states, validateLogLevel() );
-      addNonOKState( states, validateOSGiFramework() );
     } catch( CoreException e ) {
       String text
         = LaunchMessages.RAPLaunchConfigValidator_ErrorWhileValidating;
@@ -163,16 +159,6 @@ public final class RAPLaunchConfigValidator {
     return result;
   }
   
-  private IStatus validateOSGiFramework() throws CoreException {
-    IStatus result = Status.OK_STATUS;
-    String frameworkId = getOSGiFrameworkId();
-    if( !EQUINOX_FRAMEWORK.equals( frameworkId ) ) {
-      String msg = LaunchMessages.RAPLaunchConfigValidator_EquinoxOnly;
-      result = createWarning( msg, WARN_OSGI_FRAMEWORK, null );
-    }
-    return result;
-  }
-
   /////////////////////////
   // Status creation helper
 
@@ -214,17 +200,5 @@ public final class RAPLaunchConfigValidator {
     return    otherConfig.getUseManualPort()
            && !config.getName().equals( otherConfig.getName() )
            && config.getPort() == otherConfig.getPort();
-  }
-  
-  ////////////////////////////////////////////
-  // Helping methods for validateOSGiFramework
-
-  private String getOSGiFrameworkId() throws CoreException {
-    ILaunchConfiguration launchConfig = config.getUnderlyingLaunchConfig();
-    OSGiFrameworkManager manager
-      = PDEPlugin.getDefault().getOSGiFrameworkManager();
-    String defaultFrameworkId = manager.getDefaultFramework();
-    String attributeName = IPDELauncherConstants.OSGI_FRAMEWORK_ID;
-    return launchConfig.getAttribute( attributeName, defaultFrameworkId );
   }
 }

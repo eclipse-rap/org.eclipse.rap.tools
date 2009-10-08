@@ -37,7 +37,8 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchDelegate_StartClientTaskName;
   public static String RAPLaunchDelegate_TerminatePreviousTaskName;
   public static String RAPLaunchDelegate_WaitForHTTPTaskName;
-
+  public static String RAPLaunchDelegate_Error_NotAPlugin;
+  
   public static String SelectionDialogUtil_Unknown;
   public static String SelectionDialogUtil_UnknownProject;
 
