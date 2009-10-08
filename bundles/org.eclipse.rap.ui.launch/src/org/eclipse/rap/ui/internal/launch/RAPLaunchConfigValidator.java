@@ -18,9 +18,6 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.*;
-import org.eclipse.pde.internal.launching.launcher.OSGiFrameworkManager;
-import org.eclipse.pde.internal.ui.PDEPlugin;
-import org.eclipse.pde.ui.launcher.IPDELauncherConstants;
 
 
 public final class RAPLaunchConfigValidator {

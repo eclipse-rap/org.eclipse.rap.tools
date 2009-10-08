@@ -22,7 +22,6 @@ import org.eclipse.jdt.junit.launcher.JUnitLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.pde.core.plugin.*;
-import org.eclipse.pde.internal.ui.PDEUIMessages;
 import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
 import org.eclipse.rap.ui.internal.launch.LaunchMessages;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchDelegate;
@@ -157,7 +156,7 @@ public class RAPJUnitLaunchConfigurationDelegate
     IPluginModelBase model = PluginRegistry.findModel( project );
     if( model == null ) {
       String msg
-        = NLS.bind( PDEUIMessages.JUnitLaunchConfiguration_error_notaplugin,
+        = NLS.bind( LaunchMessages.RAPLaunchDelegate_Error_NotAPlugin,
                     project.getName() );
       abort( msg, null, IStatus.OK );
     }
