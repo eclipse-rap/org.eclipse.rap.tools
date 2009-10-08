@@ -112,11 +112,12 @@
         windowtitle="Eclipse Rich Ajax Platform API Specification"
         packagenames="org.eclipse.rwt.*"
         excludePackageNames="org.eclipse.rwt.internal.*,org.eclipse.swt.internal.*">
-      <fileset dir="${tmpTarget}/org.eclipse.rap/runtime.rwt/org.eclipse.rap.rwt/src"
+      <fileset
+          dir="${tmpTarget}/org.eclipse.rap/runtime.rwt/org.eclipse.rap.rwt/src"
           defaultexcludes="yes">
         <include name="org/eclipse/**/*.java"/>
-          <exclude name="org/eclipse/**/internal/**/*.java"/>
-        </fileset>
+        <exclude name="org/eclipse/**/internal/**/*.java"/>
+      </fileset>
 
         <doctitle><![CDATA[<h1>Eclipse Rich Ajax Platform API Specification</h1>]]></doctitle>
         <bottom><![CDATA[<font size="-1"><p>Copyright (c) Innoopract Informationssysteme GmbH and others 2002, 2009. All rights reserved.</p></font>]]></bottom>
