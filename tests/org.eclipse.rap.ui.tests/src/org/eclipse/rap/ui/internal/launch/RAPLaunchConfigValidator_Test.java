@@ -16,7 +16,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.pde.ui.launcher.IPDELauncherConstants;
 import org.eclipse.rap.ui.tests.Fixture;
 
 
@@ -82,14 +81,6 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     rapConfig.setLogLevel( new MyLevel( "custom", 1234 ) );
     IStatus[] states = rapConfig.getValidator().validate();
     int code = RAPLaunchConfigValidator.ERR_LOG_LEVEL;
-    assertTrue( findStatusCode( states, code ) );
-  }
-  
-  public void testValidateOSGiFramework() {
-    IStatus[] states;
-    int code = RAPLaunchConfigValidator.WARN_OSGI_FRAMEWORK;
-    config.setAttribute( IPDELauncherConstants.OSGI_FRAMEWORK_ID, "new.id" );
-    states = rapConfig.getValidator().validate();
     assertTrue( findStatusCode( states, code ) );
   }
   
