@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007,2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *     EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
@@ -111,7 +112,7 @@ public final class InstallTargetDialog extends TitleAreaDialog {
 
   private void createSwitchTargetArea( final Composite parent ) {
     Composite container = new Composite( parent, SWT.NONE );
-    container.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, true ) );
+    container.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     FillLayout layout = new FillLayout();
     layout.marginWidth = 5;
     layout.marginHeight = 5;
