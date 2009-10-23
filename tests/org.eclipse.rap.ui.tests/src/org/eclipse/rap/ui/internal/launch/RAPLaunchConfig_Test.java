@@ -42,6 +42,8 @@ public class RAPLaunchConfig_Test extends TestCase {
     assertTrue( "".equals( rapConfig.getEntryPoint() ) );
     assertEquals( Level.OFF, rapConfig.getLogLevel() );
     assertEquals( LibraryVariant.STANDARD, rapConfig.getLibraryVariant() );
+    assertEquals( 0, rapConfig.getSessionTimeout() );
+    assertFalse( rapConfig.getUseSessionTimeout() );
   }
   
   public void testEntryPoint() throws CoreException {

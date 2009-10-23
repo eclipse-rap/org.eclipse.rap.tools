@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *     EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
@@ -40,6 +41,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     = "-Dorg.eclipse.rwt.clientLibraryVariant="; //$NON-NLS-1$
   private static final String VMARG_AWT_HEADLESS 
     = "-Djava.awt.headless="; //$NON-NLS-1$
+  private static final String VMARG_SESSION_TIMEOUT 
+    = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval="; //$NON-NLS-1$
   
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
   
@@ -118,6 +121,11 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
     if( Platform.OS_MACOSX.equals( Platform.getOS() ) ) {
       list.add( VMARG_AWT_HEADLESS + Boolean.TRUE );
+    }
+    if( config.getUseSessionTimeout() ) {
+      list.add( VMARG_SESSION_TIMEOUT + config.getSessionTimeout() );
+    } else {
+      list.add( VMARG_SESSION_TIMEOUT + RAPLaunchConfig.MIN_SESSION_TIMEOUT );
     }
     String[] result = new String[ list.size() ];
     list.toArray( result );

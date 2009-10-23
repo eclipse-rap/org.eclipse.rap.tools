@@ -58,6 +58,8 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   private Button rbExternalBrowser;
   private Button cbManualPort;
   private Spinner spnPort;
+  private Button cbUseSessionTimeout;
+  private Spinner spnSessionTimeout;  
   private ComboViewer cmbLogLevel;
   private ComboViewer cmbLibVariant;
 
@@ -134,6 +136,9 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
         rbExternalBrowser.setSelection( false );
         rbInternalBrowser.setSelection( true );
       }
+      // SessionTimeout
+      cbUseSessionTimeout.setSelection( rapConfig.getUseSessionTimeout() );
+      spnSessionTimeout.setSelection( rapConfig.getSessionTimeout() );
       // LogLevel
       Level logLevel = rapConfig.getLogLevel();
       StructuredSelection logSelection = new StructuredSelection( logLevel );
@@ -164,6 +169,10 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     // Port Number
     rapConfig.setUseManualPort( cbManualPort.getSelection() );
     rapConfig.setPort( spnPort.getSelection() );
+    // Session Timeout
+    spnSessionTimeout.setEnabled( cbUseSessionTimeout.getSelection() );
+    rapConfig.setUseSessionTimeout( cbUseSessionTimeout.getSelection() );
+    rapConfig.setSessionTimeout( spnSessionTimeout.getSelection() );
     // Client-side log level
     rapConfig.setLogLevel( getLogLevel() );
     rapConfig.setLibraryVariant( getLibraryVariant() );
@@ -267,6 +276,14 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     spnPort.setMinimum( RAPLaunchConfig.MIN_PORT_NUMBER );
     spnPort.setMaximum( RAPLaunchConfig.MAX_PORT_NUMBER );
     spnPort.addModifyListener( modifyListener );
+    cbUseSessionTimeout = new Button( group, SWT.CHECK );
+    cbUseSessionTimeout.setText( LaunchMessages.MainTab_ManualTimeoutConfig );
+    cbUseSessionTimeout.addSelectionListener( selectionListener );
+    spnSessionTimeout = new Spinner( group, SWT.BORDER );
+    spnSessionTimeout.setLayoutData( new GridData( 60, SWT.DEFAULT ) );
+    spnSessionTimeout.setMinimum( RAPLaunchConfig.MIN_SESSION_TIMEOUT );
+    spnSessionTimeout.setMaximum( RAPLaunchConfig.MAX_SESSION_TIMEOUT );
+    spnSessionTimeout.addModifyListener( modifyListener );
     Label lblLogLevel = new Label( group, SWT.NONE );
     lblLogLevel.setText( LaunchMessages.MainTab_ClientLogLevel );
     cmbLogLevel = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );

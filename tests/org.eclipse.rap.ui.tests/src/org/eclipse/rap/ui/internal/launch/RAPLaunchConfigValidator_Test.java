@@ -63,8 +63,31 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     IStatus[] states = val.validate();
     int code = RAPLaunchConfigValidator.ERR_PORT;
     assertTrue( findStatusCode( states, code ) );
-    // Fix valiation error and retry
+    // Fix validation error and retry
     rapConfig.setPort( 8080 );
+    states = val.validate();
+    assertFalse( findStatusCode( states, code ) );
+  }
+
+  public void testTimeout() {
+    rapConfig.setUseSessionTimeout( true );
+    RAPLaunchConfigValidator val = rapConfig.getValidator();
+    int code = RAPLaunchConfigValidator.ERR_TIMEOUT;
+    // invalid values
+    rapConfig.setSessionTimeout( -1 );
+    IStatus[] states = val.validate();
+    assertTrue( findStatusCode( states, code ) );
+    rapConfig.setSessionTimeout( Integer.MIN_VALUE );
+    states = val.validate();
+    assertTrue( findStatusCode( states, code ) );
+    // valid values
+    rapConfig.setSessionTimeout( 0 );
+    states = val.validate();
+    assertFalse( findStatusCode( states, code ) );
+    rapConfig.setSessionTimeout( 1 );
+    states = val.validate();
+    assertFalse( findStatusCode( states, code ) );
+    rapConfig.setSessionTimeout( Integer.MAX_VALUE );
     states = val.validate();
     assertFalse( findStatusCode( states, code ) );
   }

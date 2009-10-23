@@ -53,7 +53,56 @@ public class RAPLaunchDelegate_Test extends TestCase {
     assertTrue( autoPortIndex > manualPortIndex );
   }
   
-  private static int indexOf( String[] strings, final String string ) {
+  /*
+   * Make sure that the user specified session timeout value is used, when the
+   * "use session timeout" checkbox is selected.
+   */
+  public void testUseSessionTimeout() throws CoreException {
+    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
+    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
+    // prepare launch configuration
+    rapConfig.setUseSessionTimeout( true );
+    rapConfig.setSessionTimeout( 100 );
+    // setup launch configuration
+    try {
+      launchDelegate.launch( config, null, null, null );
+    } catch( Throwable thr ) {
+      // ignore any exceptions, the only purpose of the above call is to
+      // set the 'config' field of the RAPLaunchDelegate
+    }
+    String[] arguments = launchDelegate.getVMArguments( config );
+    int timeoutIndex = indexOf( arguments,
+      "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval=100" );
+    assertTrue( timeoutIndex > -1 );
+  }
+
+  /*
+   * Make sure that the default session timeout value (zero) is used, when the
+   * "use session timeout" checkbox is NOT selected.
+   */
+  public void testDefaultSessionTimeout() throws CoreException {
+    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
+    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
+    // prepare launch configuration
+    rapConfig.setUseSessionTimeout( false );
+    rapConfig.setSessionTimeout( 100 );
+    // setup launch configuration
+    try {
+      launchDelegate.launch( config, null, null, null );
+    } catch( Throwable thr ) {
+      // ignore any exceptions, the only purpose of the above call is to
+      // set the 'config' field of the RAPLaunchDelegate
+    }
+    String[] arguments = launchDelegate.getVMArguments( config );
+    String expected
+      = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval=0";
+    int timeoutIndex = indexOf( arguments, expected );
+    assertTrue( timeoutIndex > -1 );
+  }
+  
+  private static int indexOf( final String[] strings, final String string ) {
     int result = -1;
     for( int i = 0; result == -1 && i < strings.length; i++ ) {
       if( string.equals( strings[ i ] ) ) {

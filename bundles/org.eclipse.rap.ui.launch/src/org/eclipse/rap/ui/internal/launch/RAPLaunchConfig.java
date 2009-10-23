@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *     EclipseSource - ongoing development
  ******************************************************************************/
 
 package org.eclipse.rap.ui.internal.launch;
@@ -118,6 +119,8 @@ public final class RAPLaunchConfig {
 
   public static final int MIN_PORT_NUMBER = 0;
   public static final int MAX_PORT_NUMBER = 65535;
+  public static final int MIN_SESSION_TIMEOUT = 0;
+  public static final int MAX_SESSION_TIMEOUT = Integer.MAX_VALUE;
 
   // Launch configuration attribute names
   private static final String PREFIX = "org.eclipse.rap.launch."; //$NON-NLS-1$
@@ -135,6 +138,10 @@ public final class RAPLaunchConfig {
     = PREFIX + "port"; //$NON-NLS-1$
   public static final String USE_MANUAL_PORT
     = PREFIX + "useManualPort"; //$NON-NLS-1$
+  public static final String SESSION_TIMEOUT
+    = PREFIX + "sessionTimeout"; //$NON-NLS-1$  
+  public static final String USE_SESSION_TIMEOUT
+    = PREFIX + "useSessionTimeout"; //$NON-NLS-1$
   public static final String LOG_LEVEL
     = PREFIX + "logLevel"; //$NON-NLS-1$
   public static final String LIBRARY_VARIANT
@@ -147,6 +154,8 @@ public final class RAPLaunchConfig {
   private static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
   private static final int DEFAULT_PORT = 10080;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
+  private static final int DEFAULT_SESSION_TIMEOUT = MIN_SESSION_TIMEOUT;
+  private static final boolean DEFAULT_USE_SESSION_TIMEOUT = false;
   private static final String DEFAULT_LOG_LEVEL = Level.OFF.getName();
   private static final String DEFAULT_LIBRARY_VARIANT
     = LibraryVariant.STANDARD.getName();
@@ -160,6 +169,8 @@ public final class RAPLaunchConfig {
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE.getName() );
     config.setAttribute( PORT, DEFAULT_PORT );
     config.setAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
+    config.setAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
+    config.setAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
     config.setAttribute( LOG_LEVEL, DEFAULT_LOG_LEVEL );
     config.setAttribute( LIBRARY_VARIANT, DEFAULT_LIBRARY_VARIANT );
   }
@@ -263,6 +274,24 @@ public final class RAPLaunchConfig {
   public void setPort( final int port ) {
     checkWorkingCopy();
     workingCopy.setAttribute( PORT, port );
+  }
+  
+  public boolean getUseSessionTimeout() throws CoreException {
+    return config.getAttribute( USE_SESSION_TIMEOUT, false );
+  }
+
+  public void setUseSessionTimeout( final boolean useSessionTimeout  ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( USE_SESSION_TIMEOUT, useSessionTimeout );
+  }
+
+  public int getSessionTimeout() throws CoreException {
+    return config.getAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
+  }
+
+  public void setSessionTimeout( final int timeout ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( SESSION_TIMEOUT, timeout );
   }
 
   public Level getLogLevel() throws CoreException {

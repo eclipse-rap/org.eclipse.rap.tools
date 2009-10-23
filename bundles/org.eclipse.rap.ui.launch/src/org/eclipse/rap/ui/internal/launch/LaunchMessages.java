@@ -28,6 +28,7 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchConfigValidator_PortInUse;
   public static String RAPLaunchConfigValidator_PortNumberInvalid;
   public static String RAPLaunchConfigValidator_ServletNameEmpty;
+  public static String RAPLaunchConfigValidator_TimeoutInvalid;
 
   public static String RAPLaunchDelegate_CheckPortTaskName;
   public static String RAPLaunchDelegate_DeterminePortTaskName;
@@ -47,59 +48,33 @@ public class LaunchMessages extends NLS {
   public static String EntryPointSelectionDialog_Title;
 
   public static String MainTab_BrowseEntryPoint;
-
   public static String MainTab_Browser;
-
   public static String MainTab_BrowseServletName;
-
   public static String MainTab_ClientLibraryVariant;
-
   public static String MainTab_ClientLogLevel;
-
   public static String MainTab_ConfigureBrowsers;
-
   public static String MainTab_EntryPoint;
-
   public static String MainTab_ExternalBrowser;
-
   public static String MainTab_InternalBrowser;
-
   public static String MainTab_LibraryVariantDebug;
-
   public static String MainTab_LibraryVariantStandard;
-
   public static String MainTab_LogLevelAll;
-
   public static String MainTab_LogLevelConfig;
-
   public static String MainTab_LogLevelFine;
-
   public static String MainTab_LogLevelFiner;
-
   public static String MainTab_LogLevelFinest;
-
   public static String MainTab_LogLevelInfo;
-
   public static String MainTab_LogLevelOff;
-
   public static String MainTab_LogLevelSevere;
-
   public static String MainTab_LogLevelWarning;
-
   public static String MainTab_ManualPortConfig;
-
+  public static String MainTab_ManualTimeoutConfig;
   public static String MainTab_Name;
-
   public static String MainTab_ObtainDefaultEntryPointForBrandingFailed;
-
   public static String MainTab_OpenApplicationIn;
-
   public static String MainTab_RuntimeSettings;
-
   public static String MainTab_ServletAndEntryPoint;
-
   public static String MainTab_ServletName;
-
   public static String MainTab_TerminatePrevious;
 
   public static String ServletNameSelectionDialog_Message;

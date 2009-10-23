@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *     EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
@@ -27,6 +28,7 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_PORT = 6004;
   public static final int ERR_URL = 6005;
   public static final int ERR_LOG_LEVEL = 6006;
+  public static final int ERR_TIMEOUT = 6007;
 
   public static final int WARN_OSGI_FRAMEWORK = 7002;
 
@@ -51,6 +53,7 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateUniquePort() );
       addNonOKState( states, validateURL() );
       addNonOKState( states, validateLogLevel() );
+      addNonOKState( states, validateSessionTimeout() );
     } catch( CoreException e ) {
       String text
         = LaunchMessages.RAPLaunchConfigValidator_ErrorWhileValidating;
@@ -150,8 +153,20 @@ public final class RAPLaunchConfigValidator {
     }
     if( !isValid ) {
       Object[] args = new Object[] { logLevel.getName() };
-      String msg = MessageFormat.format( LaunchMessages.RAPLaunchConfigValidator_LogLevelInvalid, args );
+      String msg = MessageFormat.format
+        ( LaunchMessages.RAPLaunchConfigValidator_LogLevelInvalid, args );
       result = createError( msg, ERR_LOG_LEVEL, null );
+    }
+    return result;
+  }
+  
+  private IStatus validateSessionTimeout() throws CoreException {
+    IStatus result = Status.OK_STATUS;
+    boolean isValid
+      = config.getSessionTimeout() >= RAPLaunchConfig.MIN_SESSION_TIMEOUT;
+    if( !isValid ) {
+      String msg = LaunchMessages.RAPLaunchConfigValidator_TimeoutInvalid;
+      result = createError( msg, ERR_TIMEOUT, null );
     }
     return result;
   }
