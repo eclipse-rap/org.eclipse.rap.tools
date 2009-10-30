@@ -46,7 +46,7 @@
          <b>Perform</b> and select the above mentioned launch configuration.
       </description>
       <command 
-        serialization="org.eclipse.rap.ui.launch.RAPLaunchShortcut.run" 
+        serialization="org.eclipse.rap.ui.internal.intro.commands.launchRAPApplication" 
         confirm="false">
       </command>
    </item>

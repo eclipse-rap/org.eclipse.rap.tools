@@ -28,6 +28,12 @@
             id="org.eclipse.rap.ui.intro.installTarget"
             name="%installTargetCommand.name">
       </command>
+      <command
+            name="%launchRAPApplication.name"
+            description="%launchRAPApplication.description"
+            id="org.eclipse.rap.ui.internal.intro.commands.launchRAPApplication"
+            defaultHandler="org.eclipse.rap.ui.internal.intro.commands.LaunchRAPApplication">
+      </command>
    </extension>
    <!--
    <extension
