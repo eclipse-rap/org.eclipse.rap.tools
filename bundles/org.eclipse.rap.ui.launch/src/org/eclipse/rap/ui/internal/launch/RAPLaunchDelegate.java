@@ -338,36 +338,32 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     String taskName = LaunchMessages.RAPLaunchDelegate_WaitForHTTPTaskName;
     subMonitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
-      waitForHttpService();
+      long start = System.currentTimeMillis();
+      boolean canConnect = false;
+      boolean interrupted = false;
+      while(    System.currentTimeMillis() - start <= CONNECT_TIMEOUT 
+             && !canConnect
+             && !interrupted
+             && !monitor.isCanceled()
+             && !launch.isTerminated() ) 
+      {
+        try {
+          Socket socket = new Socket( URLBuilder.getHost(), port );
+          socket.close();
+          canConnect = true;
+        } catch( Exception e ) {
+          // http service not yet started - wait a bit
+          try {
+            Thread.sleep( 200 );
+          } catch( InterruptedException ie ) {
+            interrupted = true;
+          }
+        } 
+      }
     } finally {
       subMonitor.done();
     }
   }
-
-  private void waitForHttpService() {
-    long start = System.currentTimeMillis();
-    boolean canConnect = false;
-    boolean interrupted = false;
-    while(    System.currentTimeMillis() - start <= CONNECT_TIMEOUT 
-           && !canConnect
-           && !interrupted
-           && !launch.isTerminated() ) 
-    {
-      try {
-        Socket socket = new Socket( URLBuilder.getHost(), port );
-        socket.close();
-        canConnect = true;
-      } catch( Exception e ) {
-        // http service not yet started - wait a bit
-        try {
-          Thread.sleep( 200 );
-        } catch( InterruptedException ie ) {
-          interrupted = true;
-        }
-      } 
-    }
-  }
-  
   /////////////////////////////////////////////////
   // Helping methods to create browser and open URL
   
@@ -379,12 +375,14 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
           DebugEvent event = events[ i ];
           if( isCreateEventFor( event, launch ) ) {
             DebugPlugin.getDefault().removeDebugEventListener( this );
-            // Start a separate job to wait for http service and launch the 
+            // Start a separate job to wait for the http service and launch the 
             // browser. Otherwise we would block the application on whose 
             // service we are waiting for
             Job job = new Job( LaunchMessages.RAPLaunchDelegate_StartClientTaskName ) {
               protected IStatus run( final IProgressMonitor monitor ) {
-                monitor.beginTask( LaunchMessages.RAPLaunchDelegate_StartClientTaskName, 2 );
+                String taskName
+                  = LaunchMessages.RAPLaunchDelegate_StartClientTaskName;
+                monitor.beginTask( taskName, 2 );
                 try {
                   waitForHttpService( monitor );
                   monitor.worked( 1 );
