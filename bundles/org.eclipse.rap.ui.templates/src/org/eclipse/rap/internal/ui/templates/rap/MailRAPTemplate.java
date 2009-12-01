@@ -64,12 +64,12 @@ class MailRAPTemplate extends AbstractRAPTemplate {
                           Messages.mailRAPTemplate_mailboxCmdName,
                           Messages.mailRAPTemplate_mailboxCmdDescr,
                           categoryId,
-                          getPackageName() + ".open" ); //$NON-NLS-1$
+                          getPluginId() + ".open" ); //$NON-NLS-1$
     createCommandElement( extension,
                           Messages.mailRAPTemplate_openMsgCmdName,
                           Messages.mailRAPTemplate_openMsgCmdDescr,
                           categoryId,
-                          getPackageName() + ".openMessage" ); //$NON-NLS-1$
+                          getPluginId() + ".openMessage" ); //$NON-NLS-1$
     addExtensionToPlugin( extension );
   }
 
@@ -94,9 +94,9 @@ class MailRAPTemplate extends AbstractRAPTemplate {
                                                   true );
     IPluginElement element = createElement( extension );
     element.setName( XmlNames.ELEM_ENTRYPOINT );
-    element.setAttribute( XmlNames.ATT_CLASS, 
+    element.setAttribute( XmlNames.ATT_CLASS,
                           getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
-    element.setAttribute( XmlNames.ATT_ID, 
+    element.setAttribute( XmlNames.ATT_ID,
                           getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_PARAMETER, "mail" ); //$NON-NLS-1$
     extension.add( element );
@@ -108,10 +108,10 @@ class MailRAPTemplate extends AbstractRAPTemplate {
                                                   true );
     IPluginElement element = createElement( extension );
     element.setName( XmlNames.ELEM_PERSPECTIVE );
-    element.setAttribute( XmlNames.ATT_CLASS, 
+    element.setAttribute( XmlNames.ATT_CLASS,
                           getPackageName() + ".Perspective" ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_NAME, "RAP Perspective" ); //$NON-NLS-1$
-    element.setAttribute( XmlNames.ATT_ID, 
+    element.setAttribute( XmlNames.ATT_ID,
                           getPluginId() + ".perspective" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );
@@ -119,10 +119,10 @@ class MailRAPTemplate extends AbstractRAPTemplate {
 
   private void createViewsExtension() throws CoreException {
     IPluginExtension extension = createExtension( XmlNames.XID_VIEWS, true );
-    
+
     IPluginElement element = createElement( extension );
     element.setName( XmlNames.ELEM_VIEW );
-    element.setAttribute( XmlNames.ATT_CLASS, 
+    element.setAttribute( XmlNames.ATT_CLASS,
                           getPackageName() + ".View" ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_NAME,
                           Messages.mailRAPTemplate_messageViewName );
@@ -130,7 +130,7 @@ class MailRAPTemplate extends AbstractRAPTemplate {
     element.setAttribute( XmlNames.ATT_ALLOWMULTIPLE, "true" ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_ICON, "icons/sample2.gif" ); //$NON-NLS-1$
     extension.add( element );
-    
+
     element = createElement( extension );
     element.setName( XmlNames.ELEM_VIEW );
     element.setAttribute( XmlNames.ATT_CLASS,
@@ -140,7 +140,7 @@ class MailRAPTemplate extends AbstractRAPTemplate {
     element.setAttribute( XmlNames.ATT_ID, getPluginId() + ".navigationView" ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_ICON, "icons/sample3.gif" ); //$NON-NLS-1$
     extension.add( element );
-    
+
     addExtensionToPlugin( extension );
   }
 
