@@ -127,18 +127,6 @@
   
   <h2>Translate plug-in manifest</h2>
   <p>
-  Extension definitions in the plug-in manifest file can also contain strings
-  that are subject to internationalization.
-  
-  In order to get this working a few prerequisites are necessary:
-  <ul>
-    <li>check out the plug-in <code>org.eclipse.rap.equinox.registry</code> 
-      from the RAP CVS</li>
-    <li>also include the plug-in into your workspace.</li>
-  </ul>
-  </p>
-  
-  <p>
   Also the plug-in manifest file (<code>plugin.xml</code>) may contain
   translatable strings.
   Like in RCP, those stings are replaced by unique keys, prefixed with a
@@ -181,24 +169,10 @@
   </p>
   
   <p>
-  Again, RAP needs a special treatment to support the internationalization of
-  extensions because of it's server-side, multi-user nature.
-  The problem is that the Equinox extension registry does the translation on
-  startup and caches the results.
-  In RAP, different sessions may require translations into different languages.
-  In order to allow for this, we had to exploit the compatibility mechanism of
-  the Equinox extension registry.
-  As a side effect, the internationalization of Eclipse 3.2 plug-ins won't work.
-  </p>
-  
-  <p>  
-  To launch it from Eclipse, you need to include the plug-in
-  <code>org.eclipse.equinox.registry</code> as a source plug-in into your
-  workspace.
-  Make sure that this plug-in is also included in the launch configuration
-  (from the workspace, not from the target platform).
-  We hope that we can remove these inconveniences once Equinox supports
-  server-side applications with user sessions.
+  In the end the Equinox extension registry must be made aware that it has to 
+  serve strings in multiple locaes simultaneously. This is done by setting the
+  system property <code>eclipse.registry.MultiLanguage</code> to
+  <code>true</code>.
   </p>
   
   <h2>Create translations of your *.properties files</h2>
@@ -209,7 +183,7 @@
   localized resources.
   Localization properties files have a suffix that determines the language,
   optionally also the country, and a variant (refer to the
-  <code>java.util.Locale</code> Javadoc for these concepts), all preceded
+  <code>java.util.Locale</code> JavaDoc for these concepts), all preceded
   by an underscore character.
   For example, to create a translation to Swiss German, create a copy of the
   <code>messages.properties</code> file and name it
