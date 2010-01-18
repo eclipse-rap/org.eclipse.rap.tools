@@ -176,6 +176,18 @@
   <code>registryMultiLanguage</code>.
   </p>
   
+  <p>
+  If you are <a href="deployment.html">deploying your application as a WAR</a>,
+  make sure to include the framework property in the <code>web.xml</code> like 
+  shown below:
+  <pre><code>
+    &lt;init-param&gt;
+      &lt;param-name>commandline&lt;/param-name&gt;
+      &lt;param-value>-registryMultiLanguage&lt;/param-value&gt;     
+    &lt;/init-param&gt;
+  </code></pre>
+  </p>
+  
   <h2>Create translations of your *.properties files</h2>
   <p>
   The last step of the internationalization is to actually translate.
