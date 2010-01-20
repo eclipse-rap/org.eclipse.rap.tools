@@ -390,52 +390,63 @@
     JSWriter writer = JSWriter.getWriterFor( widget );
     String id = WidgetUtil.getId( widget );
     writer.newWidget( "org.eclipse.rap.gmaps.GMap", new Object[] { id } );
-    writer.set( "appearance", "composite" );
     writer.set( "overflow", "hidden" );
     ControlLCAUtil.writeStyleFlags( ( GMap )widget );
   }
   </code>
   </pre>
   <p>
-  Basically the class <code>JSWriter</code> is responsible for transforming our java calls
-  and setters into the corresponding javascript which gets transfered to the client.
-  The <code>JSWriter</code> is also responsible to only write out changes which are different
-  than their preserved value. For each widget you have an own <code>JSWriter</code> instance
-  so RAP can decide to which widget the call belongs.
+  The <code>JSWriter</code> provides methods to generate Javasccript code that
+  updates the client-side state of our widget.
+  Each widget has its own <code>JSWriter</code> instance so that RAP can decide 
+  to which widget the call belongs.
   As you can see in the snippet, <code>JSWriter#newWidget</code> is called to create a new widget
   on the client side. The second parameters is an array of <code>Object</code>s which are
   passed to the constructor of the qooxdoo class (see above).
   With <code>JSWriter#set</code> you can easily set different attributes of your qooxdoo object.
-  This could also be done in Javascript and is just a showcase in here.
-  The next step is to preserve our values therewith RAP can decide in the next request if there
-  has something changed in the meantime. As we just have the address which could change this is
-  relative straight forward.
+  Note that there are overloaded methods of <code>set</code> that take care
+  that Javascript code is only generated if <em>necessary</em>. That means if a 
+  certain property was left unchanged during the request processing, no Javascript 
+  code is generated.
+  </p>
+  <p>
+  The next step is to preserve the relevant properties of our widget. After that
+  the <code>set</code>-methods from <code>JSWriter</code> can determine wether 
+  it is necessary to actually generate Javascript code.
+  As there is only the <code>address</code> property which could change, this 
+  is straight forward.
   </p>
   <pre>
   <code>
   private static final String PROP_ADDRESS = "address";
   
   public void preserveValues( Widget widget ) {
+    // Preserve properties that are inherited from Control
     ControlLCAUtil.preserveValues( ( Control )widget );
+    
+    // Preserve the 'address' propety
     IWidgetAdapter adapter = WidgetUtil.getAdapter( widget );
     adapter.preserve( PROP_ADDRESS, ( ( GMap )widget ).getAddress() );
     
-    // only needed for custom variants (themeing)
+    // Only needed for custom variants (themeing)
     WidgetLCAUtil.preserveCustomVariant( widget );
   }
   </code>
   </pre>
   <p>
-  First we use <code>ControlLCAUtil#preserveValues</code> to have most of the work done
-  by the framework. It's responsible for preserving values like tooltip, tabindex, size, etc.
+  First we use <code>ControlLCAUtil#preserveValues</code> to preserve all
+  properties that are inherited by <code>Control</code> (tooltip, tabindex, 
+  size, etc.).
   So we only need to care about the things implemented in our widget.
-  We just request a so called <code>IWidgetAdapter</code> which is responsible for different
-  aspects in the lifecycle of a widget. In this case we only use it to preserve the <code>address</code> value
+  We just request a socalled <code>IWidgetAdapter</code> which is responsible for different
+  aspects in the lifecycle of a widget. In this case we only use it to preserve 
+  the <code>address</code> value
   with a predefined key (<code>PROP_ADRESS</code>) to associate it later.<br />
-  The last line calling <code>preserveCustomVariant</code> is only added for the sake of completeness.
-  Variants is a way to have different looks of the same widget and is part of the
-  theme engine provided by RAP. Please see the <a href="theming-custom.html">Prepare Custom Widgets for Theming</a>
-  article for more informations about theming a custom widget.
+  The last line calling <code>preserveCustomVariant</code> is only added for the 
+  sake of completeness.
+  Variants are a way to have different looks of the same widget and is part of the
+  theme engine. Please see the <a href="theming-custom.html">Prepare Custom 
+  Widgets for Theming</a> article for further information.
   </p>
   <p>
   The following step is one of most interesting parts of your lifecycle adapter - the
