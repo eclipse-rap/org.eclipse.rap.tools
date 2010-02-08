@@ -73,17 +73,17 @@ public class InstallRAPTargetHandler extends AbstractHandler {
                                     final IProgressMonitor monitor ) 
     throws CoreException 
   {
-    if( isPDECore35() ) {
-      TargetSwitcher35.switchTarget( targetDestination, monitor );
-    } else {
+    if( isPDECore34() ) {
       TargetSwitcher34.switchTarget( targetDestination, monitor );
+    } else {
+      TargetSwitcher35.switchTarget( targetDestination, monitor );
     }
   }
 
-  private static boolean isPDECore35() {
+  private static boolean isPDECore34() {
     Bundle bundle = Platform.getBundle( "org.eclipse.pde.core" ); //$NON-NLS-1$
     Dictionary headers = bundle.getHeaders();
     String version = ( String )headers.get( "Bundle-Version" ); //$NON-NLS-1$
-    return version.startsWith( "3.5" ); //$NON-NLS-1$
+    return version.startsWith( "3.4" ); //$NON-NLS-1$
   }
 }
