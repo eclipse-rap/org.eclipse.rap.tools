@@ -329,6 +329,7 @@ And here is the same as it appears in the plugin.xml.
       defaultLayoutId="org.eclipse.rap.presentation.defaultlayout"
       id="org.eclipse.rap.presentation"
       name="ConfigurablePF"&gt;
+      viewactionsVisible=true;
       &lt;defaultStackPresentation
         id="org.eclipse.rap.presentation.navigationPaneStackPresentation"
         name="Default"&gt;
@@ -355,6 +356,12 @@ and has the following attributes:
 	This optional argument represents the id of the Layout which should be activated 
 	when the servlet name has been called. If no id is defined, the standard workbench
 	layout should be loaded.
+	</li>
+	<li>
+	<b>viewActionsVisible</b><br>
+	This boolean value is responsible for making all view contribution items
+	visible by default (true) or to let the user decide which items are 
+	visible (false).
 	</li>
 </ul>
 The presentationFactory element can have two different sub elements.
