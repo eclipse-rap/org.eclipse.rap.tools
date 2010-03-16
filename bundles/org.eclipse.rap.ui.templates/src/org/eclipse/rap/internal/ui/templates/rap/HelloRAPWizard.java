@@ -26,4 +26,9 @@ public class HelloRAPWizard extends AbstractRAPWizard {
   protected String getEntryPointName() {
 	  return "hello"; //$NON-NLS-1$
   }
+
+  protected String getServletName() {
+    return "rap";
+  }
+  
 }

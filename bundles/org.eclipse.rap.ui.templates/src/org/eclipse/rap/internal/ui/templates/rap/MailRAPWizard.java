@@ -26,4 +26,8 @@ public class MailRAPWizard extends AbstractRAPWizard {
   protected String getEntryPointName() {
     return "mail"; //$NON-NLS-1$
   }
+
+  protected String getServletName() {
+    return "mail";
+  }
 }

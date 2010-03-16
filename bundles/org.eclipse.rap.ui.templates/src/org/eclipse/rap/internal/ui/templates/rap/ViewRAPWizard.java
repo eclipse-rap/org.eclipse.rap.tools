@@ -26,4 +26,9 @@ public class ViewRAPWizard extends AbstractRAPWizard {
   protected String getEntryPointName() {
     return "view"; //$NON-NLS-1$
   }
+
+  protected String getServletName() {
+    return "view";
+  }
+  
 }

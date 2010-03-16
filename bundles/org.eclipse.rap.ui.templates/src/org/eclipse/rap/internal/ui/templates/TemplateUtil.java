@@ -22,6 +22,16 @@ import org.osgi.framework.Bundle;
 public final class TemplateUtil {
 
   public static final String PLUGIN_ID = "org.eclipse.rap.ui.templates"; //$NON-NLS-1$
+  public static final String BUSINESS_THEME_ID 
+    = "org.eclipse.rap.design.example.business.theme"; //$NON-NLS-1$
+  public static final String FANCY_THEME_ID 
+    = "org.eclipse.rap.design.example.fancy.theme"; //$NON-NLS-1$
+  public static final String BUSINESS_FACTORY_ID 
+    = "org.eclipse.rap.design.example.business.factory"; //$NON-NLS-1$
+  public static final String BUSINESS_LAYOUT_ID 
+    = "org.eclipse.rap.design.example.business.layout"; //$NON-NLS-1$
+  public static final String STACK_ID 
+    = "org.eclipse.rap.design.example.stack.view"; //$NON-NLS-1$
 
   private TemplateUtil() {
     // prevent instantiation

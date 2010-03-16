@@ -13,6 +13,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.pde.core.plugin.IPluginElement;
 import org.eclipse.pde.core.plugin.IPluginExtension;
+import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 import org.eclipse.rap.internal.ui.templates.XmlNames;
 
 class ViewRAPTemplate extends AbstractRAPTemplate {
@@ -40,6 +41,7 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
     createEntryPointsExtension();
     createPerspectivesExtension();
     createViewsExtension();
+    createBrandingExtension();
   }
 
   // helping methods
@@ -50,12 +52,16 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
     IPluginElement element = createElement( extension );
     element.setName( XmlNames.ELEM_ENTRYPOINT );
     element.setAttribute( XmlNames.ATT_CLASS, 
-                          getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
+                          getEntrypointId() ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_ID,
-                          getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
+                          getEntrypointId() ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_PARAMETER, "view" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );
+  }
+
+  private String getEntrypointId() {
+    return getPackageName() + "." + getApplicationName();
   }
 
   private void createPerspectivesExtension() throws CoreException {
@@ -81,6 +87,24 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
     element.setAttribute( XmlNames.ATT_NAME, Messages.viewRAPTemplate_viewName );
     element.setAttribute( XmlNames.ATT_ID, getPluginId() + ".view" ); //$NON-NLS-1$
     extension.add( element );
+    addExtensionToPlugin( extension );
+  }
+  
+  private void createBrandingExtension() throws CoreException {
+    IPluginExtension extension = createExtension( XmlNames.XID_BRANDING, true );
+    IPluginElement brandingElement = createElement( extension );
+    // create branding
+    brandingElement.setName( XmlNames.ELEM_BRANDING );    
+    String brandingId = getPackageName() + ".branding"; //$NON-NLS-1$
+    brandingElement.setAttribute( XmlNames.ATT_ID, brandingId );
+    brandingElement.setAttribute( XmlNames.ATT_SERVLET, "view" );
+    brandingElement.setAttribute( XmlNames.ATT_DEFAULT_ENTRYPOINT, 
+                                  getEntrypointId() );
+    brandingElement.setAttribute( XmlNames.ATT_THEME_ID, 
+                                  TemplateUtil.FANCY_THEME_ID );
+    brandingElement.setAttribute( XmlNames.ATT_TITLE, "RAP Single View" );
+    // write extension
+    extension.add( brandingElement );
     addExtensionToPlugin( extension );
   }
 

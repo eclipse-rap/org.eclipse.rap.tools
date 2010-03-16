@@ -49,12 +49,16 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
     IPluginElement element = createElement( extension );
     element.setName( XmlNames.ELEM_ENTRYPOINT );
     element.setAttribute( XmlNames.ATT_CLASS, 
-                          getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
+                          getEntrypointId() ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_ID,
-                          getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
+                          getEntrypointId() ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_PARAMETER, "hello" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );
+  }
+
+  private String getEntrypointId() {
+    return getPackageName() + "." + getApplicationName();
   }
 
   private void createPerspectivesExtension() throws CoreException {

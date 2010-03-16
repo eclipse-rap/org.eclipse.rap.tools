@@ -35,6 +35,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   private static final String CHARSET = "ISO-8859-1"; //$NON-NLS-1$
 
   private static final String TAG_ENTRY_POINT = "${entryPoint}"; //$NON-NLS-1$
+  private static final String TAG_SERVLET_NAME = "${servletName}"; //$NON-NLS-1$
   private static final String TAG_PLUGIN_ID = "${pluginId}"; //$NON-NLS-1$
   private static final String TAG_PROJECT_NAME = "${projectName}"; //$NON-NLS-1$
 
@@ -52,6 +53,8 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   }
 
   protected abstract String getEntryPointName();
+  
+  protected abstract String getServletName();
 
   ////////////////////////////
   // Copy launch config helper
@@ -100,6 +103,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     String pluginId = model.getPluginBase().getId();
     replacePlaceholder( buffer, TAG_PLUGIN_ID, pluginId );
     replacePlaceholder( buffer, TAG_ENTRY_POINT, getEntryPointName() );
+    replacePlaceholder( buffer, TAG_SERVLET_NAME, getServletName() );
     return new ByteArrayInputStream( buffer.toString().getBytes() );
   }
 

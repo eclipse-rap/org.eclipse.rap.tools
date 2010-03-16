@@ -13,6 +13,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.pde.core.plugin.IPluginElement;
 import org.eclipse.pde.core.plugin.IPluginExtension;
+import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 import org.eclipse.rap.internal.ui.templates.XmlNames;
 
 class MailRAPTemplate extends AbstractRAPTemplate {
@@ -47,6 +48,7 @@ class MailRAPTemplate extends AbstractRAPTemplate {
     createPerspectivesExtension();
     createViewsExtension();
     createCommandsExtension();
+    createBrandingExtension();
   }
 
   // helping methods
@@ -95,12 +97,16 @@ class MailRAPTemplate extends AbstractRAPTemplate {
     IPluginElement element = createElement( extension );
     element.setName( XmlNames.ELEM_ENTRYPOINT );
     element.setAttribute( XmlNames.ATT_CLASS,
-                          getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
+                          getEntrypointId() ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_ID,
-                          getPackageName() + "." + getApplicationName() ); //$NON-NLS-1$
+                          getEntrypointId() ); //$NON-NLS-1$
     element.setAttribute( XmlNames.ATT_PARAMETER, "mail" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );
+  }
+
+  private String getEntrypointId() {
+    return getPackageName() + "." + getApplicationName();
   }
 
   private void createPerspectivesExtension() throws CoreException {
@@ -141,6 +147,39 @@ class MailRAPTemplate extends AbstractRAPTemplate {
     element.setAttribute( XmlNames.ATT_ICON, "icons/sample3.gif" ); //$NON-NLS-1$
     extension.add( element );
 
+    addExtensionToPlugin( extension );
+  }
+  
+  private void createBrandingExtension() throws CoreException {
+    IPluginExtension extension = createExtension( XmlNames.XID_BRANDING, true );
+    IPluginElement brandingElement = createElement( extension );
+    // create branding
+    brandingElement.setName( XmlNames.ELEM_BRANDING );    
+    String brandingId = getPackageName() + ".branding"; //$NON-NLS-1$
+    brandingElement.setAttribute( XmlNames.ATT_ID, brandingId );
+    brandingElement.setAttribute( XmlNames.ATT_SERVLET, "mail" );
+    brandingElement.setAttribute( XmlNames.ATT_DEFAULT_ENTRYPOINT, 
+                                  getEntrypointId() );
+    brandingElement.setAttribute( XmlNames.ATT_THEME_ID, 
+                                  TemplateUtil.BUSINESS_THEME_ID );
+    brandingElement.setAttribute( XmlNames.ATT_TITLE, "RAP Maildemo" );
+    // create presentationFactory
+    IPluginElement presentationElement = createElement( extension );
+    presentationElement.setName( XmlNames.ELEM_PRESENTATIONFACTORY );   
+    presentationElement.setAttribute( XmlNames.ATT_ID, 
+                                      TemplateUtil.BUSINESS_FACTORY_ID );
+    presentationElement.setAttribute( XmlNames.ATT_DEFAULT_LAYOUT, 
+                                      TemplateUtil.BUSINESS_LAYOUT_ID );
+    presentationElement.setAttribute( XmlNames.ATT_NAME, 
+                                      "Business PresentationFactory" );
+    brandingElement.add( presentationElement );
+    // create defaultStackPresentation
+    IPluginElement stackElement = createElement( extension );
+    stackElement.setName( XmlNames.ELEM_DEFAULTSTACKPRESENTATION );
+    stackElement.setAttribute( XmlNames.ATT_ID, TemplateUtil.STACK_ID );
+    presentationElement.add( stackElement );
+    // write extension
+    extension.add( brandingElement );
     addExtensionToPlugin( extension );
   }
 
