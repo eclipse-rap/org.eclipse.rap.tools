@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,17 @@
 package org.eclipse.rap.ui.internal.intro.target;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Dictionary;
 
 import org.eclipse.core.commands.*;
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
-import org.osgi.framework.Bundle;
+
 
 public class InstallRAPTargetHandler extends AbstractHandler {
 
@@ -49,7 +49,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
         try {
           TargetProvider.install( targetDestination, monitor );
           if( switchTarget ) {
-            switchTarget( targetDestination, monitor );
+            TargetSwitcher.switchTarget( targetDestination, monitor );
           }
         } catch( CoreException e ) {
           throw new InvocationTargetException( e );
@@ -67,23 +67,5 @@ public class InstallRAPTargetHandler extends AbstractHandler {
       String msg = IntroMessages.InstallRAPTargetHandler_InstallInterrupted;
       throw new ExecutionException( msg );
     }
-  }
-  
-  private static void switchTarget( final String targetDestination,
-                                    final IProgressMonitor monitor ) 
-    throws CoreException 
-  {
-    if( isPDECore34() ) {
-      TargetSwitcher34.switchTarget( targetDestination, monitor );
-    } else {
-      TargetSwitcher35.switchTarget( targetDestination, monitor );
-    }
-  }
-
-  private static boolean isPDECore34() {
-    Bundle bundle = Platform.getBundle( "org.eclipse.pde.core" ); //$NON-NLS-1$
-    Dictionary headers = bundle.getHeaders();
-    String version = ( String )headers.get( "Bundle-Version" ); //$NON-NLS-1$
-    return version.startsWith( "3.4" ); //$NON-NLS-1$
   }
 }
