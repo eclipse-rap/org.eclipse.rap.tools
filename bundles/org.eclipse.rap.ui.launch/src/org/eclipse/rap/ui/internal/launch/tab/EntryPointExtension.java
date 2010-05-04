@@ -13,7 +13,6 @@ package org.eclipse.rap.ui.internal.launch.tab;
 
 import java.util.*;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.pde.core.plugin.*;
 
@@ -24,9 +23,7 @@ public final class EntryPointExtension extends AbstractExtension {
   private static final String ATTR_PARAMETER = "parameter"; //$NON-NLS-1$
   private static final String ATTR_ID = "id"; //$NON-NLS-1$
 
-  public static EntryPointExtension findById( final String id )
-    throws CoreException
-  {
+  public static EntryPointExtension findById( final String id ) {
     EntryPointExtension result = null;
     if( id != null ) {
       EntryPointExtension[] extensions = findInWorkspace( null );
@@ -42,7 +39,6 @@ public final class EntryPointExtension extends AbstractExtension {
   public static EntryPointExtension[] findInPlugins(
     final String[] pluginIds,
     final IProgressMonitor monitor )
-    throws CoreException
   {
     IPluginExtension[] extensions
       = ExtensionUtil.getPluginExtensions( pluginIds, EXTENSION_ID, monitor );
@@ -51,7 +47,6 @@ public final class EntryPointExtension extends AbstractExtension {
 
   public static EntryPointExtension[] findInWorkspace(
     final IProgressMonitor monitor )
-    throws CoreException
   {
     IPluginExtension[] extensions
       = ExtensionUtil.getWorkspaceExtensions( EXTENSION_ID, monitor );

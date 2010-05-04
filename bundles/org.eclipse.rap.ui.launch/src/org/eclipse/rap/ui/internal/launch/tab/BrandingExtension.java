@@ -12,7 +12,6 @@ package org.eclipse.rap.ui.internal.launch.tab;
 
 import java.util.*;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.pde.core.plugin.*;
 
@@ -26,9 +25,7 @@ final class BrandingExtension extends AbstractExtension {
   private static final String DEFAULT_ENTRYPOINT_ID 
     = "defaultEntrypointId"; //$NON-NLS-1$
 
-  static BrandingExtension[] findInWorkspace( final IProgressMonitor monitor ) 
-    throws CoreException 
-  {
+  static BrandingExtension[] findInWorkspace( final IProgressMonitor monitor ) {
     IPluginExtension[] extensions 
       = ExtensionUtil.getWorkspaceExtensions( EXTENSION_ID, monitor );
     List list = new ArrayList();

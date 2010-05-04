@@ -371,16 +371,10 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
       txtServletName.setText( branding.getServletName() );
       String defaultEntryPointId = branding.getDefaultEntryPointId();
       String parameter = null;
-      try {
-        EntryPointExtension defaultEntryPoint 
-          = EntryPointExtension.findById( defaultEntryPointId );
-        if( defaultEntryPoint != null ) {
-          parameter = defaultEntryPoint.getParameter();
-        }
-      } catch( CoreException e ) {
-        String msg
-          = LaunchMessages.MainTab_ObtainDefaultEntryPointForBrandingFailed;
-        ErrorUtil.show( msg, e );
+      EntryPointExtension defaultEntryPoint 
+        = EntryPointExtension.findById( defaultEntryPointId );
+      if( defaultEntryPoint != null ) {
+        parameter = defaultEntryPoint.getParameter();
       }
       if( txtEntryPoint.getText().length() == 0 && parameter != null ) {
         txtEntryPoint.setText( parameter );
