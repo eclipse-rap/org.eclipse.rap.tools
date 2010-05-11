@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
 </head>
 <body>
-  <h1>How to deploy a RAP application to a servlet container?</h1> 
+  <h1>How to Deploy a RAP Application to a Servlet Container?</h1> 
   
   <p>The current eclipse build tools and wizards do not directly support 
   building this style of application so for the time being the build can be
@@ -47,6 +47,11 @@
       "Run Ant". (Note: In order to make the <code>pde.exportFeatures</code> task
       available in the IDE select "Run in the same JRE as the workspace" on the
       JRE tab from "Run Ant...").</li>
+  <li>The actual build (i.e. the <code>pde.exportFeatures</code> task) is run 
+      asynchronously. This means you need to wait a little more after the Ant 
+      script finished.
+      Watch the progress monitor in the status bar to detrmine when the build 
+      is done.</li>
   <li>Refresh the feature project - a build folder should appear. (Note:
       The <code>pde.exportFeatures</code> target will build the plug-ins
       asynchronously and may take a while till finished. After that the complete 
@@ -55,13 +60,23 @@
   <img src="../../images/build.png">
   
   <h3>Adjust the <code>config.ini</code></h3>
+  <p>The <code>config.ini</code> tells Equinox, the OSGi framework, which 
+    plug-ins there are in the system. The sole fact that a plug-in is located 
+    in the right folder (i.e. <code>eclipse/plugins</code>) doesn't make it 
+    known to the running OSGi framework.
+  </p>
   <ul>
-  <li>Adjust the path to the plug-in directory of your build in the
-  <code>ConfigIniCreator</code> (see the comment in the 
-  <code>ConfigIniCreator</code> class).</li>
-  <li>Run the ConfigIniCreator as java application.</li>
-  <li>Copy the console output to the <code>config.ini</code> file of your
-  build.</li>
+    <li>Adjust the path to the plug-in directory of your build in the
+      <code>ConfigIniCreator</code> (see the comment in the 
+      <code>ConfigIniCreator</code> class).</li>
+    <li>Run the ConfigIniCreator as java application.</li>
+    <li>Manually verify the output. 
+      The ConfigIniCreator uses a very rough estimation to tell the 
+      bundle id (its <code>Bundle-Symbolic-Name</code>) from the file name.
+      Therefore it may generate errornous content.
+    </li>
+    <li>Copy the console output to the <code>config.ini</code> file of your
+      build.</li>
   </ul>
   <img src="../../images/config.png">
   
@@ -79,13 +94,13 @@
   to create your own feature. The feature should contain the same plug-in 
   references as the demo feature (except the demo-plug-in of course!) plus the
   plug-ins that make up your application. It is important that your plug-ins
-  reference the servlet API by using the <code>Import-Package</code> directive
+  reference the Servlet API by using the <code>Import-Package</code> directive
   instead of the <code>Require-Bundle</code> directive. See the 
   <code>MANIFEST.MF</code> of the demo project for an example.</p>
   
   <p>Copy the script and templates folder to the feature and modifiy them
   according to your project structure. Following the steps above should lead
-  to a full functional <code>WAR</code> of your application.</p>
+  to a fully functional <code>WAR</code> of your application.</p>
   
   <p><strong>Note</strong>: If you encounter problems during the build, you
   may consider to use the PDE-Export (available from the feature editor)
@@ -99,7 +114,7 @@
   <pre>
   <code>&lt;tomcat-installation&gt;\work\Catalina\localhost\demo\eclipse\workspace\.metadata\.log</code>
   </pre>
-  In case equinox isn't able to start at all, you may also look for log files 
+  In case Equinox isn't able to start at all, you may also look for log files 
   at:
   <pre>
   <code>&lt;tomcat-installation&gt;\work\Catalina\localhost\demo\eclipse\configuration</code>
