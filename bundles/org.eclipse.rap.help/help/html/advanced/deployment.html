@@ -60,16 +60,26 @@
   <img src="../../images/build.png">
   
   <h3>Adjust the <code>config.ini</code></h3>
-  <p>The <code>config.ini</code> tells Equinox, the OSGi framework, which 
-    plug-ins there are in the system. The sole fact that a plug-in is located 
-    in the right folder (i.e. <code>eclipse/plugins</code>) doesn't make it 
-    known to the running OSGi framework.
+  <p>The <code>osgi.bundles</code> property from the <code>config.ini</code> 
+    tells Equinox, the OSGi framework, which plug-ins there are in the system. 
+    The sole fact that a plug-in is located in the right folder (i.e. 
+    <code>eclipse/plugins</code>) doesn't make it known to the running OSGi 
+    framework.
+    <br />
+    For futher information on the <code>config.ini</code> and related 
+    configuration options, please read the
+    <a href="http://help.eclipse.org/galileo/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/misc/runtime-options.html">
+    Eclipse Runtime Options</a> chapter.
+    The latest version can also be viewed from within the IDE. From the menu, 
+    chose Help &gt; Help Contents. In the upcoming help window, chose
+    Platform Plugin Developer Guide &gt; Other Reference Information &gt;
+    Runtime Options
   </p>
   <ul>
     <li>Adjust the path to the plug-in directory of your build in the
       <code>ConfigIniCreator</code> (see the comment in the 
       <code>ConfigIniCreator</code> class).</li>
-    <li>Run the ConfigIniCreator as java application.</li>
+    <li>Run the ConfigIniCreator as Java application.</li>
     <li>Manually verify the output. 
       The ConfigIniCreator uses a very rough estimation to tell the 
       bundle id (its <code>Bundle-Symbolic-Name</code>) from the file name.
