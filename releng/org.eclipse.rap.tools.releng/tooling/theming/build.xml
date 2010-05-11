@@ -16,7 +16,7 @@
   </description>
 
   <property name="plugin.dir"
-      location="../../" />
+      location="../../../" />
   <property name="src.dir"
       location="${plugin.dir}/org.eclipse.rap.rwt/src" />
   <property name="dest.dir"
