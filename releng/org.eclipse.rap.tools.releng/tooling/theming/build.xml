@@ -51,10 +51,13 @@
     </concat>
     <concat destfile="${tmp.dir}/index.xml" append="true">&lt;/index&gt;</concat>
     <xslt in="${tmp.dir}/index.xml" out="${tmp.dir}/index.html" style="index.xsl" />
+    <!-- Create widgets reference toc file -->
+    <xslt in="${tmp.dir}/index.xml" out="${tmp.dir}/widgets-toc.xml" style="widgets-toc.xsl" />
     <!-- Copy results to target -->
     <copy todir="${dest.dir}">
       <fileset dir="${tmp.dir}">
         <include name="*.html"/>
+        <include name="*-toc.xml"/>
       </fileset>
     </copy>
     <!-- Clean up -->

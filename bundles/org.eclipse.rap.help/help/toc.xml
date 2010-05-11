@@ -93,7 +93,8 @@
         href="help/html/reference/extension-points/org_eclipse_rap_ui_themes.html"/>
     </topic>
   
-    <topic label="RAP Theming Reference" href="help/html/reference/theming/index.html">
+    <topic label="RAP Theming Reference">
+      <link toc="help/html/reference/theming/widgets-toc.xml" />
     </topic>
   </topic>
 

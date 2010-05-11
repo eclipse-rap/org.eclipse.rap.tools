@@ -5,6 +5,8 @@
          point="org.eclipse.help.toc">
       <toc file="help/toc.xml" primary="true">
       </toc>
+      <toc file="help/html/reference/theming/widgets-toc.xml">
+      </toc>
    </extension>
 
 </plugin>
