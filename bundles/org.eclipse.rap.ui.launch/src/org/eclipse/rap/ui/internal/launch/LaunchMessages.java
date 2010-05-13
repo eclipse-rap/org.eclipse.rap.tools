@@ -20,7 +20,6 @@ public class LaunchMessages extends NLS {
   public static String PortBusyStatusHandler_PortInUseMessage;
   public static String PortBusyStatusHandler_PortInUseTitle;
   
-  public static String RAPLaunchConfigValidator_EntryPointEmpty;
   public static String RAPLaunchConfigValidator_EquinoxOnly;
   public static String RAPLaunchConfigValidator_ErrorWhileValidating;
   public static String RAPLaunchConfigValidator_LogLevelInvalid;

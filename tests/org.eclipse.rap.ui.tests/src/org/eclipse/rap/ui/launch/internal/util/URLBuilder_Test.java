@@ -39,5 +39,6 @@ public class URLBuilder_Test extends TestCase {
     url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
     assertEquals( "http://127.0.0.1:80/servletName?startup=entryPoint", 
                   url.toString() );
+    
   }
 }

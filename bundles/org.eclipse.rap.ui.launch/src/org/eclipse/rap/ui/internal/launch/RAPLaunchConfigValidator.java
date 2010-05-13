@@ -24,7 +24,6 @@ import org.eclipse.debug.core.*;
 public final class RAPLaunchConfigValidator {
 
   public static final int ERR_SERVLET_NAME = 6001;
-  public static final int ERR_ENTRY_POINT_EMPTY = 6002;
   public static final int ERR_PORT = 6004;
   public static final int ERR_URL = 6005;
   public static final int ERR_LOG_LEVEL = 6006;
@@ -48,7 +47,6 @@ public final class RAPLaunchConfigValidator {
     List states = new ArrayList();
     try {
       addNonOKState( states, validateServletName() );
-      addNonOKState( states, validateEntryPoint() );
       addNonOKState( states, validatePort() );
       addNonOKState( states, validateUniquePort() );
       addNonOKState( states, validateURL() );
@@ -74,16 +72,6 @@ public final class RAPLaunchConfigValidator {
     if( EMPTY.equals( config.getServletName() ) ) {
       String msg = LaunchMessages.RAPLaunchConfigValidator_ServletNameEmpty;
       result = createError( msg, ERR_SERVLET_NAME, null );
-    }
-    return result;
-  }
-
-  private IStatus validateEntryPoint() throws CoreException {
-    IStatus result = Status.OK_STATUS;
-    String entryPoint = config.getEntryPoint();
-    if( EMPTY.equals( entryPoint ) ) {
-      String msg = LaunchMessages.RAPLaunchConfigValidator_EntryPointEmpty;
-      result = createError( msg, ERR_ENTRY_POINT_EMPTY, null );
     }
     return result;
   }
