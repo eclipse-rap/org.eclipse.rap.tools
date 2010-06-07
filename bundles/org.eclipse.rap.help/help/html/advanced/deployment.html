@@ -122,18 +122,86 @@
   there also exists an Equinox framework log that can be found under the webapp's
   work directory, e.g. on Tomcat:
   <pre>
-  <code>&lt;tomcat-installation&gt;\work\Catalina\localhost\demo\eclipse\workspace\.metadata\.log</code>
+  <code>&lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/workspace/.metadata/.log</code>
   </pre>
   In case Equinox isn't able to start at all, you may also look for log files 
   at:
   <pre>
-  <code>&lt;tomcat-installation&gt;\work\Catalina\localhost\demo\eclipse\configuration</code>
+  <code>&lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/configuration</code>
   </pre>
 
   </p>
-  
+
+  <h2>Troubleshooting</h2>
+  You can use the following checklist to find errors when your exported application
+  does not work:
+
+  <ul>
+    <li>Check your <code>build.properties</code> file
+      <ul>
+        <li>Are you exporting the <code>plugin.xml</code>?</li>
+        <li>If you are using <code>plugin.properties</code> files, make sure 
+          they are exported.</li>
+        <li>Are all libraries you are using listed on the plug-ins class path?</li> 
+        <li>Tip: As PDE build sometimes swallows error messages try exporting
+          your feature with <em>Deployable Feature</em> export, this may turn up
+          error messages.</li>
+      </ul>
+    </li>
+    <li>Enable the OSGi console by adding this init-param to the <code>web.xml</code>:
+      <pre>&lt;init-param&gt;
+  &lt;param-name&gt;commandline&lt;/param-name&gt;
+  &lt;param-value&gt;-console&lt;/param-value&gt; 
+&lt;/init-param&gt;</pre>
+      <ul>
+        <li>You can add a port after <code>-console</code> and then telnet to
+          the OSGi console: <code>telnet localhost &lt;port&gt;</code>.</li>
+        <li>Type <code>ss</code> in the console and see if all bundles are 
+          started. If not try starting them with
+          <code>start &lt;bundle-id&gt;</code>.
+          The stack traces may hint to what is missing.</li>
+        <li>Make sure that there is a 
+        <code>org.eclipse.equinox.servletbridge.extensionbundle</code> in 
+        the <code>ss</code>-listing who's state is <code>RESOVLED</code>.</li>
+      </ul>
+    </li>
+    <li>Make sure that the WAR does <b>not</b> contain the
+      <code>javax.servlet</code> bundle.
+      In the plug-in maniferst the <code>javax.servlet</code> <b>must</b> be
+      listed in the <code>Import-Package</code> section, not in
+      <code>Require-Bundle</code>.</li>
+    <li>Make sure that the WAR does <b>not</b> contain the
+      <code>org.eclipse.update.configurator</code> bundle.</li>
+    <li>Does the WAR contain compile errors?
+      If so, you will probably find a zip archive somewhere in your output
+      folder. It contains log files with the compiler output.</li>
+    <li>Start with a working example:
+      Download
+      <a href="http://rap.eclipsesource.com/download/rapdemo.war">rapdemo.war</a>
+      and integrate your plug-ins.</li>
+    <li>Use the product export to validate your feature:
+      <ul>
+        <li>Create a product configuration with an arbitrary
+        name (<em>File &gt; New &gt; Other &gt; Product Configuration</em>).</li>
+        <li>Select <q>The product configuration is based on <em>features</em></q>
+        on the <em>Overview</em> page.</li>
+        <li>Add your feature to the list of features on the <em>Dependencies</em>
+          page.
+        </li>
+        <li>Press the <em>Validate</em> button in the top-left corner of the editor.
+          Ignore complaints about missing <code>javax.servlet</code> packages.
+          Be aware that unresolved optional dependencies aren't reported as errors.
+        </li>
+      </ul>
+    </li>
+    <li>If you are re-deploying, make sure to delete the work directory of your 
+      servlet engine (e.g.
+      <code>&lt;tomcat_install&gt;/work/Catalina/localhost/&lt;webapp_name&gt;</code>
+      in Tomcat).</li>
+  </ul>
+
   <p>Further hints can be found in the
   <a href="http://wiki.eclipse.org/RAP/FAQ">RAP FAQ</a></p>
-  
+
 </body>
 </html>
