@@ -99,7 +99,7 @@
       <xsl:apply-templates select="property">
         <xsl:sort select="@name" />
       </xsl:apply-templates>
-    </ul>
+      </ul>
     </xsl:if>
     <xsl:if test="not( property )">
       <p><em>none</em></p>
@@ -145,8 +145,12 @@
 
   <xsl:template match="property">
     <li>
-      <span class="css-name"><xsl:value-of select="@name" /></span>
-      <xsl:text> : </xsl:text>
+      <a class="css-name">
+        <xsl:attribute name="href">
+          <xsl:value-of select="concat( 'Properties.html#', @name ) " />
+        </xsl:attribute>
+        <xsl:value-of select="@name" />
+      </a>
       <xsl:apply-templates select="@type" />
       <p class="css-desc">
         <xsl:value-of select="description|@description" />

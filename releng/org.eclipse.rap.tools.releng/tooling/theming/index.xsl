@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-  Copyright (c) 2008 Innoopract Informationssysteme GmbH.
+  Copyright (c) 2008, 2010 Innoopract Informationssysteme GmbH.
   All rights reserved. This program and the accompanying materials
   are made available under the terms of the Eclipse Public License v1.0
   which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
 
   Contributors:
       Innoopract Informationssysteme GmbH - initial API and implementation
+      EclipseSource - ongoing development
   -->
 
 <!--
@@ -31,15 +32,14 @@
   <xsl:template match="/">
     <html>
       <head>
-        <title>RWT Theming Reference</title>
+        <title>Themeable RWT Widgets</title>
         <link rel="stylesheet" type="text/css" href="../../style.css" />
       </head>
       <body>
-        <h1>RWT Theming Reference</h1>
-        <h2>Themeable RWT Widgets</h2>
-        <du>
+        <h1>Themeable RWT Widgets</h1>
+        <ul>
           <xsl:apply-templates select="index/file[ element ]" />
-        </du>
+        </ul>
       </body>
     </html>
   </xsl:template>
@@ -71,3 +71,4 @@
   </xsl:template>
 
 </xsl:stylesheet>
+

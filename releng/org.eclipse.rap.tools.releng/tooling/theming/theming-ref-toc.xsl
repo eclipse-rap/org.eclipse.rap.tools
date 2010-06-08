@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-  Copyright (c) 2010 Innoopract Informationssysteme GmbH.
+  Copyright (c) 2010 EclipseSource.
   All rights reserved. This program and the accompanying materials
   are made available under the terms of the Eclipse Public License v1.0
   which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/epl-v10.html
 
   Contributors:
-      Innoopract Informationssysteme GmbH - initial API and implementation
+      EclipseSource - initial API and implementation
   -->
 
 <!--
-  Creates the widgets-toc.xml for the RWT theming reference.
+  Creates the toc.xml for the RWT theming reference.
   -->
 
 <xsl:stylesheet
@@ -21,10 +21,11 @@
   <xsl:output method="xml" />
 
   <xsl:template match="/">
-    <toc label="Widgets Theming Reference">
+    <toc label="RWT Theming Reference">
       <topic label="Widgets" href="help/html/reference/theming/index.html">
         <xsl:apply-templates select="index/file[ element ]" />
       </topic>
+      <topic label="Properties" href="help/html/reference/theming/Properties.html"/>
     </toc>  
   </xsl:template>
 
@@ -48,7 +49,7 @@
     <topic>
       <xsl:attribute name="label">
         <xsl:value-of select="@name" />
-      </xsl:attribute>  
+      </xsl:attribute>
       <xsl:attribute name="href">
         <xsl:value-of select="concat( 'help/html/reference/theming/', $prefix, '.html#', @name )" />
       </xsl:attribute>
@@ -56,3 +57,4 @@
   </xsl:template>
 
 </xsl:stylesheet>
+
