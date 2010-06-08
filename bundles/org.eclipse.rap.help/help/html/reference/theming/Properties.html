@@ -44,6 +44,613 @@
 <body>
 
 <h2>CSS Property Reference</h2>
+<p>
+  This is a description of CSS properties recognized by RAP and their admissible values.
+</p>
+
+<a name="animation"><h3>animation</h3></a>
+<p>
+  Defines one or more animated effects.
+</p>
+<p>
+  Any number of animations can be set at once, seperated by commas.
+  To disables all animations, set only <code>none</code>.
+</p>
+<p>
+  Format: <code><a href="#animation-name">&lt;animation-name&gt;</a> <a href="#animation-name">&lt;animation-duration&gt;</a> <a href="#animation-name">&lt;animation-timing-function&gt;</a> (,  <a href="#animation-name">&lt;animation-name&gt;</a> <a href="#animation-name">&lt;animation-duration&gt;</a> <a href="#animation-name">&lt;animation-timing-function&gt;</a>  )* | none</code>
+</p>
+
+<p>
+Examples:
+</p>
+<ul>
+  <li><code>animation: none;</code></li>
+  <li><code>animation: hoverOut 500ms ease-out;</code></li>
+  <li><code>animation: fadeIn 200ms linear, fadeOut 400ms ease-out;</code></li>
+</ul>
+
+<a name="animation-name"><h4>&lt;animation-name&gt;</h4></a>
+<p>
+  References the name of an effect the widget supports. (See the <code>animation</code>-description of the individual widgets.)
+  Unsupported effects will be ignored. (However the effect might be supported in the future and then not be ignored anymore.)
+  If the given effects contradict each other (e.g. <code>fadeIn</code> and <code>slideIn</code>), the widget may use either one.
+</p>
+
+Currently existing effects:
+<ul>
+  <li><code>hoverIn</code>, <code>hoverOut</code>
+    <p>
+    Animates the transition of the background when the mouse is moved over
+    (<code>hover-in</code>) or leaves (<code>hover-out</code>) the widget.
+    Requires that the pseudo class <code>hover</code> is used to define the
+    alternate background.
+    The effect only works between two background colors or two gradients.
+    The gradients should have the same number of colors.
+    Other changes like the border or text-color are currently not animated.
+    </p>
+  </li>
+  <li><code>fadeIn</code>, <code>fadeOut</code>
+    <p>
+    Animates the emergence (<code>fadeIn</code>) or disappearance (<code>fadeOut</code>) of a widget by gradually changing its opacity.
+    </p>
+  </li>
+  <li><code>slideIn</code>, <code>slideOut</code>
+    <p>
+    Animates the emergence (<code>slideIn</code>) or disappearance (<code>slideOut</code>) of a widget by gradually changing its height.
+    </p>
+  </li>
+</ul>
+
+<a name="animation-duration"><h4>&lt;animation-duration&gt;</h4></a>
+<p>
+  The duration of the effect in seconds or millisconds.
+</p>
+<p>
+  Format: positive integer, immediately followed by <code>s</code> or <code>ms</code>.
+</p>
+
+<a name="animation-timing-function"><h4>&lt;animation-timing-function&gt;</h4></a>
+<p>
+  Describes how the animation progresses over time.
+</p><p>
+  Valid values are:
+    <code>ease</code>,
+    <code>linear</code>,
+    <code>ease-in</code>,
+    <code>ease-out</code> and
+    <code>ease-in-out</code>.
+</p>
+
+<a name="background-color"><h3>background-color</h3></a>
+<p>
+Defines the color used as the background of the element:
+</p>
+<p>
+Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | transparent
+</p>
+
+<a name="background-image"><h3>background-image</h3></a>
+<p>
+Defines either an image or a color-gradient to cover the background of a widget.
+May also be <code>none</code>, in this case <a name="#background-color">background-color</a> will be used.
+</p>
+<p>
+Format: <code><a href="#image-url">&lt;image-url&gt;</a> | <a href="#color-gradient">&lt;color-gradient&gt;</a> | none</code>
+</p>
+
+<p>
+Examples:
+</p>
+<ul>
+  <li><code>background-image: none;</code></li>
+  <li><code>background-image: url( path/my-image.png );</code></li>
+  <li><pre><code>background-image: gradient(
+    linear, left top, left bottom,
+    from( #ffffff ),
+    color-stop( 48%, #f0f0f0 ),
+    color-stop( 52%, #e0e0e0 ),
+    to( #ffffff )
+  );</code></pre></li> 
+</ul>
+
+<a name="image-url"><h4>&lt;image-url&gt;</h4></a>
+Supported image-formats are <code>jpeg</code>, <code>gif</code> and <code>png</code>.
+The path is relative to the root of the bundle.
+<p>
+  Format: <code>url(</code>, followed by the path and filename, followed by <code>)</code>.
+</p>
+
+<a name="color-gradient"><h4>&lt;color-gradient&gt;</h4></a>
+<p>
+  Format: <code>gradient(</code>, followed by a list of comma-sperated arguments, followed by <code>)</code>.
+</p>
+<p>
+  The first three arguments define the type and direction of the gradient.
+  RAP currently only supports linear vertical gradients from the top to the bottom,
+  therefore these arguments have to be exactly "<code>linear, left top, left bottom</code>".
+  Any other arguments will produce an error.
+</p><p>
+  After this, the colors are defined. At least two colors have to be given, using <code>from( COLOR )</code> and <code>to( COLOR )</code>.
+  Between these two, any number of colors may be defined using <code>color-stop( POSITION, COLOR )</code>.
+</p><p>
+  <code>POSITION</code> is a ascending percentage value.
+  <br/>
+  <code>COLOR</code> is <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a>.
+</p>
+
+For the same widget, <code>background-image</code> should not be combined with any <code>background-color</code> other than <code>transparent</code>, as the behavior of RAP for this case is not defined and may differ from case to case.
+
+<a name="border"><h3>border</h3></a>
+<p>
+  Used to define the border that is drawn around a widget or a part of a widget.
+</p>
+<p>
+  Format: <code><a href="#border-width">&lt;border-width&gt;</a> <a href="#border-style">&lt;border-style&gt;</a> <a href="#border-color">&lt;border-color&gt;</a></code>
+</p>
+<p>
+  All 3 values are optional, though at least one must be given.
+</p>
+<p>
+  Examples:
+</p>
+<ul>
+  <li><code>border: none;</code></li>
+  <li><code>border: 1px solid red;</code></li>
+  <li><code>border: 3px outset;</code></li>
+</ul>
+
+<a name="border-width"><h4>&lt;border-width&gt;</h4></a>
+<p>
+  The width of the border. Defaults to <code>0px</code>.
+</p>
+<p>
+Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
+</p>
+
+<a name="border-style"><h4>&lt;border-style&gt;</h4></a>
+<p>
+  One of the following values:
+  <code>solid</code>,
+  <code>dotted</code>,
+  <code>dashed</code>,
+  <code>hidden</code>,
+  <code>double</code>,
+  <code>inset</code>,
+  <code>outset</code>,
+  <code>groove</code>,
+  <code>ridge</code>,
+  <code>none</code>.<br/>
+  Defaults to <code>solid</code>.
+</p>
+<p>
+  Note that if <a href="#border-radius"><code>border-radius</code></a> of the same widget has a value larger
+  than <code>0px</code>, any <code>border-style</code> other than
+  <code>none</code> or <code>hidden</code> is interpreted as <code>solid</code>.
+</p>
+
+<a name="border-color"><h4>&lt;border-color&gt;</h4></a>
+<p>
+  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | transparent
+  Is <code>black</code> by default.
+</p>
+
+<a name="border-bottom"><h3>border-bottom</h3></a>
+<p>
+  See <a href="#border">border</a>.
+</p>
+
+<a name="border-color"><h3>border-color</h3></a>
+<p>
+  Defines only the color of the border.
+</p>
+<p>
+  Format: <code><a href="#border-color">&lt;border-color&gt;</a> 
+</p>
+
+<a name="border-radius"><h3>border-radius</h3></a>
+<p>
+  Defines the four radii of a rounded border.
+</p>
+<p>
+  Format: <code><a href="#box-dimension">&lt;box-dimension&gt;</a></code>
+</p><p>
+  Note that in this case the box-dimension values stand for <code>top-right bottom-right bottom-left top-left</code>.
+</p>
+
+<a name="background-gradient-color"><h3>background-gradient-color</h3></a>
+<p>
+  This property is currently ignored.
+</p>
+<p>
+  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a>
+</p>
+
+<a name="border-top-color"><h3>border-top-color</h3></a>
+<p>
+  Defines only the color of the upper border.
+</p>
+<p>
+  Format: <code><a href="#border-color">&lt;border-color&gt;</a> 
+</p>
+
+<a name="border-bottom-color"><h3>border-bottom-color</h3></a>
+<p>
+  Defines only the color of the lower border.
+</p>
+<p>
+  Format: <code><a href="#border-color">&lt;border-color&gt;</a> 
+</p>
+
+<a name="color"><h3>color</h3></a>
+<p>
+  The color used for foreground-elements, e.g. Text.
+</p>
+<p>
+  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | inherit
+</p>
+
+<a name="named-color"><h4>&lt;named-color&gt;</h4></a>
+  Valid color-names are:
+  <em>black</em>,
+  <em>gray</em>,
+  <em>silver</em>,
+  <em>white</em>,
+  <em>maroon</em>,
+  <em>red</em>,
+  <em>purple</em>,
+  <em>fuchsia</em>,
+  <em>green</em>,
+  <em>lime</em>,
+  <em>navy</em>,
+  <em>blue</em>,
+  <em>olive</em>,
+  <em>yellow</em>,
+  <em>teal</em>,
+  <em>aqua</em>.
+
+<a name="hex-color"><h4>&lt;hex-color&gt;</h4></a>
+<p>
+  The format in hexadecimal notation is a <code>#</code> immediately followed by
+  either three or six hexadecimal characters.
+  The three-digit RGB notation (#rgb) is converted into six-digit form (#rrggbb)
+  by replicating digits, not by adding zeros.
+</p>
+<p>
+  Examples:
+</p>
+<ul>
+  <li><code>color: #FF8800;<code></li>
+  <li><code>color: #F80; /* same as above */</code></li>
+</ul>
+
+<a name="rgb-color"><h4>&lt;rgb-color&gt;</h4></a>
+  The format in the rgb notation is <code>rgb(</code>,
+  followed by a comma-separated list of three numerical values
+  (either integer or percentage), followed by <code>)</code>.
+  The integer value 255 corresponds to 100%.
+<p>
+  Examples:
+</p>
+<ul>
+  <li><code>color: rgb( 255, 128, 0 );</code></li>
+  <li><code>color: rgb( 100%, 50%, 0% ); /* same as above */</code></li>
+</ul>
+
+<a name="cursor"><h3>cursor</h3></a>
+<p>
+  Defines a the form of the mouse pointer over a certain widget.
+</p>
+<p>
+  Format: <code><a href="#cursor-type">&lt;cursor-type&gt;</a> | <a href="#image-url">&lt;image-url&gt;</a> </code>
+</p>
+
+<a name="cursor-type"><h4>&lt;cursor-type&gt;</h4></a>
+<p>
+  One of the following: <code>default</code>, <code>wait</code>, <code>crosshair</code>, <code>help</code>, <code>move</code>, <code>text</code>, <code>pointer</code>, <code>e-resize</code>, <code>n-resize</code>, <code>w-resize</code>, <code>s-resize</code>, <code>ne-resize</code>, <code>se-resize</code>, <code>nw-resize</code>, <code>sw-resize</code>, <code>col-resize</code>, <code>row-resize</code>, <code>progress</code>, <code>not-allowed</code>, <code>no-drop</code>.
+</p>
+
+<a name="font"><h3>font</h3></a>
+<p>
+  The font used to render the text.
+</p>
+<p>
+  Format: <code> (<a href="#font-style">&lt;font-style&gt;</a>)? (<a href="#font-weight">&lt;font-weight&gt;</a>)? <a href="#font-size">&lt;font-size&gt;</a> <a href="#font-family">&lt;font-family&gt;</a></code>
+</p>
+
+<a name="font-style"><h4>&lt;font-style&gt;</h4></a>
+<p>
+  Optional value, may be <code>normal</code> or <code>italic</code>. Is <code>normal</code> by default.
+</p>
+
+<a name="font-weight"><h4>&lt;font-weight&gt;</h4></a>
+<p>
+  Optional value, may be <code>normal</code> or <code>bold</code>.
+  Default is <code>normal</code>.
+</p>
+
+<a name="font-size"><h4>&lt;font-size&gt;</h4></a>
+<p>
+  Height of the text in pixels. See <a href="#dimension">&lt;dimension&gt;</a>.
+</p>
+
+<a name="font-family"><h4>&lt;font-family&gt;</h4></a>
+<p>
+  Name of the font that should be used.
+  Is ignored if the font is not available on the client-system.<br/>
+  Several comma-seperated values can be given.
+  The order is relevant, as the first available font will be used.<br/>
+  Font names containing any white spaces must be quoted. 
+</p>
+
+<p>
+  As a fallback mechanism, one of the following generic fonts should be given
+  as the last value:
+  <code>serif</code>,
+  <code>sans-serif</code>,
+  <code>cursive</code>,
+  <code>fantasy</code>,
+  <code>monospace</code>.
+</p>
+
+<p>
+  For the color of the text, the <code>color</code>-property is used.
+  Effects can be added using <code>text-decoration</code>.
+</p>
+
+<p>
+  Examples:
+</p>
+<ul>
+  <li><code>font: italic bold 16px serif;</code></li>
+  <li><code>font: 11px 'Segoe UI', Corbel, Calibri, Tahoma, 'Lucida Sans Unicode', sans-serif;</code></li>
+</ul>
+
+<a name="height"><h3>height</h3></a>
+<p>
+  A dimension that defines the height of certain parts of a widget.
+</p>
+<p>
+  Format: <a href="#dimension">&lt;dimension&gt;</a>
+</p>
+
+<a name="dimension"><h4>&lt;dimension&gt;</h4></a>
+<p>
+  A non-negative integer with <code>px</code> as unit. May be zero.
+</p>
+<p>
+  Examples:
+</p>
+<ul>
+  <li><code>0px</code></li>
+  <li><code>20px</code></li>
+  <li><code>100px</code></li>
+</ul>
+
+<a name="margin"><h3>margin</h3></a>
+<p>
+  Defines the distance between the element and its surroundings.
+</p>
+<p>
+  Format: <code><a href="#box-dimension">&lt;box-dimension&gt;</a></code>
+</p>
+
+<a name="box-dimension"><h4>&lt;box-dimension&gt;</h4></a>
+<p>
+  Defines four dimensions, in the order of <code>top right bottom left</code>. 
+</p>
+
+<ul>
+  <li>When only one value is given, it is used for all four dimension.</li>
+  <li>When two values are given, the first is used for <code>top</code> and <code>bottom</code>, the second for <code>left</code> and <code>right</code>.
+  <li>When three values are given, the first value is used for <code>top</code>, the second for <code>left</code> and <code>right</code>, and the third for <code>bottom</code>.</li>
+</ul>
+
+<p>
+Examples:
+</p>
+<ul>
+  <li><code>padding: 0px;</code></li>
+  <li><code>margin: 3px 5px 3px 5px;</code></li>
+  <li><code>margin: 3px 5px; /* same as above */ </code></li>
+  <li><code>border-radius: 5px;</code></li>
+</ul>
+
+<a name="opacity"><h3>opacity</h3></a>
+<p>
+  A rational number between (and including) 0 and 1 without a unit.
+</p>
+<p>
+  Examples:
+</p>
+<ul>
+  <li><code>opacity: 1;</code></li>
+  <li><code>opacity: 0.764467;</code></li>
+  <li><code>opacity: 0;</code></li>
+</ul>
+
+<a name="padding"><h3>padding</h3></a>
+<p>
+  Defines the distance between the elements border and its content.
+</p>
+<p>
+  Format: <code><a href="#box-dimension">&lt;box-dimension&gt;</a></code>
+</p>
+
+<a name="rwt-fontlist"><h3>rwt-fontlist</h3></a>
+<p>
+  The font list returned by Display#getFontList().
+</p>
+<p>
+  See <a href="#font">font</a>
+</p>
+
+<a name="rwt-error-image"><h3>rwt-error-image</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+
+<a name="rwt-information-image"><h3>rwt-information-image</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+
+<a name="rwt-working-image"><h3>rwt-working-image</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+
+<a name="rwt-question-image"><h3>rwt-question-image</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+
+<a name="rwt-warning-image"><h3>rwt-warning-image</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+<a name="rwt-shadow-color"><h3>rwt-shadow-color</h3></a>
+<p>
+  Defines an RWT system color.
+</p>
+<p>
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+</p>
+
+<a name="rwt-highlight-color"><h3>rwt-highlight-color</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+<a name="rwt-shadow-color"><h3>rwt-shadow-color</h3></a>
+<p>
+  Defines an RWT system color.
+</p>
+<p>
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+</p>
+
+<a name="rwt-darkshadow-color"><h3>rwt-darkshadow-color</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+<a name="rwt-shadow-color"><h3>rwt-shadow-color</h3></a>
+<p>
+  Defines an RWT system color.
+</p>
+<p>
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+</p>
+
+<a name="rwt-lightshadow-color"><h3>rwt-lightshadow-color</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+<a name="rwt-shadow-color"><h3>rwt-shadow-color</h3></a>
+<p>
+  Defines an RWT system color.
+</p>
+<p>
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+</p>
+
+<a name="rwt-thinborder-color"><h3>rwt-thinborder-color</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+<a name="rwt-shadow-color"><h3>rwt-shadow-color</h3></a>
+<p>
+  Defines an RWT system color.
+</p>
+<p>
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+</p>
+
+<a name="rwt-selectionmarker-color"><h3>rwt-selectionmarker-color</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+<a name="rwt-shadow-color"><h3>rwt-shadow-color</h3></a>
+<p>
+  Defines an RWT system color.
+</p>
+<p>
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+</p>
+
+<a name="rwt-infobackground-color"><h3>rwt-infobackground-color</h3></a>
+<p>
+  Defines an RWT system image.
+</p>
+<p>
+  Format: <code><a href="#image-url">&lt;image-url&gt;</a></code>
+</p>
+<a name="rwt-shadow-color"><h3>rwt-shadow-color</h3></a>
+<p>
+  Defines an RWT system color.
+</p>
+<p>
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+</p>
+
+<a name="spacing"><h3>spacing</h3></a>
+<p>
+  A dimension that defines the distance between certain parts of a widget.
+</p>
+<p>
+  Format: <a href="#dimension">&lt;dimension&gt;</a>
+</p>
+
+<a name="text-decoration"><h3>text-decoration</h3></a>
+<p>
+  Additional decorative effects to render a text with.
+</p>
+<p>
+  Format: <code>underline | overline | line-through | none</code>
+</p>
+<p>
+  Examples:
+</p>
+<ul>
+  <li><code>text-decoration: line-through;</code></li>
+</ul>
+
+
+<a name="width"><h3>width</h3></a>
+<p>
+  A dimension that defines the width of certain parts of a widget.
+</p>
+<p>
+  Format: <a href="#dimension">&lt;dimension&gt;</a>
+</p>
 
 </body>
 </html>
