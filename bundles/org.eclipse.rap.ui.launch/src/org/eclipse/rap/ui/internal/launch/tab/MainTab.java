@@ -217,7 +217,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     btnBrowseEntryPoint.setText( LaunchMessages.MainTab_BrowseEntryPoint );
     btnBrowseEntryPoint.addSelectionListener( new SelectionAdapter() {
       public void widgetSelected( final SelectionEvent event ) {
-        handleBrowseEntryPoint();
+        handleBrowseEntryPointAndApplications();
       }
     } );
     cbTerminatePrevious = new Button( group, SWT.CHECK );
@@ -352,13 +352,19 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   ////////////////
   // Handle events
 
-  private void handleBrowseEntryPoint() {
-    EntryPointSelectionDialog dialog 
-      = new EntryPointSelectionDialog( getShell() );
+  private void handleBrowseEntryPointAndApplications() {
+    EntryPointApplicationSelectionDialog dialog 
+      = new EntryPointApplicationSelectionDialog( getShell() );
     if( dialog.open() == Window.OK ) {
       Object[] selection = dialog.getResult();
-      EntryPointExtension entryPoint = ( EntryPointExtension )selection[ 0 ];
-      txtEntryPoint.setText( entryPoint.getParameter() );
+      AbstractExtension extension = ( AbstractExtension )selection[ 0 ];
+      if( extension instanceof EntryPointExtension ) {
+        EntryPointExtension entrypoint = ( EntryPointExtension )extension;
+        txtEntryPoint.setText( entrypoint.getParameter() );
+      } else if( extension instanceof ApplicationExtension ) {
+        ApplicationExtension app = ( ApplicationExtension )extension;
+        txtEntryPoint.setText( app.getProject() + "." + app.getId() );
+      }
     }
   }
 

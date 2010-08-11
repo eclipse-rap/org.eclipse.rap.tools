@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,8 +7,8 @@
  *
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *     EclipseSource - ongoing development
  ******************************************************************************/
-
 package org.eclipse.rap.ui.internal.launch.tab;
 
 import java.util.Comparator;
@@ -26,16 +26,18 @@ import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
 import org.eclipse.ui.dialogs.SearchPattern;
 
 
-final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
+final class EntryPointApplicationSelectionDialog
+  extends FilteredItemsSelectionDialog
+{
 
   private static final String SETTINGS_ID
     = Activator.PLUGIN_ID + ".ENTRY_POINT_SELECTION_DIALOG"; //$NON-NLS-1$
 
   private static final Comparator COMPARATOR = new EntryPointComparator();
 
-  private EntryPointExtension[] entryPoints;
+  private AbstractExtension[] entryPoints;
 
-  EntryPointSelectionDialog( final Shell shell ) {
+  EntryPointApplicationSelectionDialog( final Shell shell ) {
     super( shell );
     setTitle( LaunchMessages.EntryPointSelectionDialog_Title );
     String msg
@@ -75,7 +77,22 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
         String msg = LaunchMessages.EntryPointSelectionDialog_Searching;
         monitor.beginTask( msg, IProgressMonitor.UNKNOWN );
       }
-      entryPoints = EntryPointExtension.findInWorkspace( monitor );
+      AbstractExtension[] tempEntryPoints 
+        = EntryPointExtension.findInWorkspace( monitor );
+      AbstractExtension[] tempApplications 
+        = ApplicationExtension.findInWorkspace( monitor );
+      entryPoints = new AbstractExtension[ tempEntryPoints.length 
+                                           + tempApplications.length ];
+      System.arraycopy( tempEntryPoints, 
+                        0, 
+                        entryPoints, 
+                        0, 
+                        tempEntryPoints.length );
+      System.arraycopy( tempApplications, 
+                        0, 
+                        entryPoints, 
+                        tempEntryPoints.length, 
+                        tempApplications.length );
     }
     for( int i = 0; i < entryPoints.length; i++ ) {
       provider.add( entryPoints[ i ], itemsFilter );
@@ -91,10 +108,15 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   public String getElementName( final Object element ) {
-    EntryPointExtension entryPoint = ( EntryPointExtension )element;
+    AbstractExtension entryPoint = ( AbstractExtension )element;
     String project = entryPoint.getProject();
-    String parameter = entryPoint.getParameter();
-    return SelectionDialogUtil.getLabel( project, parameter );
+    String decorator = "";
+    if( element instanceof EntryPointExtension ) {
+      decorator = ( ( EntryPointExtension )entryPoint ).getParameter();
+    } else if( element instanceof ApplicationExtension ) {
+      decorator = ( ( ApplicationExtension )entryPoint ).getId();
+    }
+    return SelectionDialogUtil.getLabel( project, decorator );
   }
 
   protected Comparator getItemsComparator() {
@@ -111,12 +133,39 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
   private static final class EntryPointComparator implements Comparator {
 
     public int compare( final Object object1, final Object object2 ) {
-      EntryPointExtension extension1 = ( EntryPointExtension )object1;
-      EntryPointExtension extension2 = ( EntryPointExtension )object2;
-      String string1 = extension1.getProject() + extension1.getParameter();
-      String string2 = extension2.getProject() + extension2.getParameter();
+      int result = -1;
+      AbstractExtension extension1 = ( AbstractExtension )object1;
+      AbstractExtension extension2 = ( AbstractExtension )object2;
+      if(    extension1 instanceof EntryPointExtension 
+          && extension2 instanceof EntryPointExtension ) {
+        result = handleEntryPointExtension( extension1, extension2 );
+      } else if(    extension1 instanceof ApplicationExtension 
+                 && extension2 instanceof ApplicationExtension ) {
+        result = handleApplicationExtension( extension1, extension2 );
+      }
+      return result;
+    }
+
+    private int handleEntryPointExtension( final AbstractExtension extension1,
+                                           final AbstractExtension extension2 )
+    {
+      EntryPointExtension entryExtension1 = ( EntryPointExtension )extension1;
+      String string1 = extension1.getProject() + entryExtension1.getParameter();
+      EntryPointExtension entryExtension2 = ( EntryPointExtension )extension2;
+      String string2 = extension2.getProject() + entryExtension2.getParameter();
       return string1.compareTo( string2 );
     }
+    
+    private int handleApplicationExtension( final AbstractExtension extension1,
+                                            final AbstractExtension extension2 )
+    {
+      ApplicationExtension appExtension1 = ( ApplicationExtension )extension1;
+      String string1 = extension1.getProject() + appExtension1.getId();
+      ApplicationExtension appExtension2 = ( ApplicationExtension )extension2;
+      String string2 = extension2.getProject() + appExtension2.getId();
+      return string1.compareTo( string2 );
+    }
+    
   }
 
   private final class EntryPointItemsFilter extends ItemsFilter {
@@ -130,7 +179,13 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
     }
 
     public boolean matchItem( final Object item ) {
-      return matches( ( ( EntryPointExtension )item ).getParameter() );
+      boolean result = false;
+      if( item instanceof EntryPointExtension ) {
+        result = matches( ( ( EntryPointExtension )item ).getParameter() );
+      } else if( item instanceof ApplicationExtension ) {
+        result = matches( ( ( ApplicationExtension )item ).getId() );
+      }
+      return result;
     }
   }
 
@@ -141,10 +196,15 @@ final class EntryPointSelectionDialog extends FilteredItemsSelectionDialog {
     public String getText( final Object element ) {
       String result = null;
       if( element != null ) {
-        EntryPointExtension entryPoint = ( EntryPointExtension )element;
-        String project = entryPoint.getProject();
-        String parameter = entryPoint.getParameter();
-        result = SelectionDialogUtil.getLabel( project, parameter );
+        AbstractExtension extension = ( AbstractExtension )element;
+        String project = extension.getProject();
+        String decorator = "";
+        if( extension instanceof EntryPointExtension ) {
+          decorator = ( ( EntryPointExtension )extension ).getParameter();
+        } else if( extension instanceof ApplicationExtension ) {
+          decorator = ( ( ApplicationExtension )extension ).getId();
+        }        
+        result = SelectionDialogUtil.getLabel( project, decorator );
       }
       return result;
     }

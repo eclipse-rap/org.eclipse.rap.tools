@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package org.eclipse.rap.ui.internal.launch;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.CoreException;
 
 public final class URLBuilder {
 
@@ -30,14 +30,14 @@ public final class URLBuilder {
   public static String getHost() {
     return HOST;
   }
-  
-  public static URL fromLaunchConfig( final RAPLaunchConfig config, 
-                                      final int port, 
-                                      final boolean testMode ) 
-    throws CoreException, MalformedURLException 
+
+  public static URL fromLaunchConfig( final RAPLaunchConfig config,
+                                      final int port,
+                                      final boolean testMode )
+    throws CoreException, MalformedURLException
   {
     String servletName = config.getServletName();
-    if( !servletName.startsWith( SLASH ) ) { 
+    if( !servletName.startsWith( SLASH ) ) {
       servletName = SLASH + servletName;
     }
     String entryPoint = config.getEntryPoint();

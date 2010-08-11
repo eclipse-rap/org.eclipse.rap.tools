@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 EclipseSource.
+ * Copyright (c) 2009, 2010 EclipseSource.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,31 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.tests;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import org.eclipse.core.resources.*;
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.*;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.pde.core.plugin.IPluginBase;
 import org.eclipse.pde.internal.core.bundle.BundlePluginBase;
@@ -70,7 +88,19 @@ public final class TestPluginProject {
                                final Map attributes )
     throws CoreException
   {
-    extensions.add( new Extension( point, element, attributes ) );
+    extensions.add( new Extension( point, element, attributes, null ) );
+    String contents = createPluginXmlContents();
+    savePluginXml( contents.toString() );
+    ensureSingletonBundle();
+  }
+
+  public void createExtensionWithExtensionId( final String point,
+                                              final String element,
+                                              final Map attributes,
+                                              final String id )
+    throws CoreException
+  {
+    extensions.add( new Extension( point, element, attributes, id ) );
     String contents = createPluginXmlContents();
     savePluginXml( contents.toString() );
     ensureSingletonBundle();
@@ -215,14 +245,17 @@ public final class TestPluginProject {
     private final String point;
     private final String element;
     private final Map attributes;
+    private String id;
 
     private Extension( final String point, 
                        final String element, 
-                       final Map attributes ) 
+                       final Map attributes,
+                       final String id ) 
     {
       this.point = point;
       this.element = element;
       this.attributes = new HashMap();
+      this.id = id;
       if( attributes != null ) {
         this.attributes.putAll( attributes );
       }
@@ -230,7 +263,11 @@ public final class TestPluginProject {
     
     private String toXml() {
       StringBuffer result = new StringBuffer();
-      result.append( "<extension point=\"" );
+      result.append( "<extension" );
+      if( id != null ) {
+        result.append( " id=\"" + id + "\"" );
+      }
+      result.append( " point=\"" );
       result.append( point );
       result.append( "\">\n" );
       result.append( "  <");
