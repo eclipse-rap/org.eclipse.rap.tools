@@ -58,6 +58,9 @@
         h3 + p {
           margin: 8px 0 3px 24px;
         }
+        .deprecated {
+          text-decoration: line-through;
+        }
         .css-name {
           font-weight: bold;
           color: #0000aa;
@@ -145,22 +148,22 @@
 
   <xsl:template match="property">
     <li>
-      <a class="css-name">
+      <a>
         <xsl:attribute name="href">
-          <xsl:value-of select="concat( 'Properties.html#', @name ) " />
+          <xsl:value-of select="concat( 'Properties.html#', @name )" />
+        </xsl:attribute>
+        <xsl:attribute name="class">
+          <xsl:text>css-name</xsl:text>
+          <xsl:if test="translate( @deprecated, 'TRUE', 'true' ) = 'true'">
+            <xsl:text> deprecated</xsl:text>
+          </xsl:if>
         </xsl:attribute>
         <xsl:value-of select="@name" />
       </a>
-      <xsl:apply-templates select="@type" />
       <p class="css-desc">
         <xsl:value-of select="description|@description" />
       </p>
     </li>
-    <xsl:if test="not( @type )">
-      <xsl:message>
-        Type missing for property <xsl:value-of select="@name" />
-      </xsl:message>
-    </xsl:if>
     <xsl:if test="not( description|@description )">
       <xsl:message>
         Description missing for property <xsl:value-of select="@name" />
@@ -198,35 +201,6 @@
         Description missing for state <xsl:value-of select="@name" />
       </xsl:message>
     </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="@type">
-    <xsl:choose>
-    <xsl:when test=". = 'boxdim'">
-      <xsl:text>box dimension</xsl:text>
-    </xsl:when>
-    <xsl:when test=". = 'color'">
-      <xsl:text>color definition</xsl:text>
-    </xsl:when>
-    <xsl:when test=". = 'border'">
-      <xsl:text>border definition</xsl:text>
-    </xsl:when>
-    <xsl:when test=". = 'font'">
-      <xsl:text>font definition</xsl:text>
-    </xsl:when>
-    <xsl:when test=". = 'image'">
-      <xsl:text>image url</xsl:text>
-    </xsl:when>
-    <xsl:when test=". = 'dimension'">
-      <xsl:text>dimension</xsl:text>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:text>?</xsl:text>
-      <xsl:message>
-        Unknown type: <xsl:value-of select="." />
-      </xsl:message>
-    </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
