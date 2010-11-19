@@ -166,8 +166,10 @@ The path is relative to the root of the bundle.
 </p>
 <p>
   The first three arguments define the type and direction of the gradient.
-  RAP currently only supports linear vertical gradients from the top to the bottom,
-  therefore these arguments have to be exactly "<code>linear, left top, left bottom</code>".
+  RAP currently only supports linear vertical gradients from the top to the bottom and 
+  linear vertical gradients from left to right. 
+  Therefore these arguments have to be either exactly "<code>linear, left top, left bottom</code>"
+  or exactly "<code>linear, left top, right top</code>".
   Any other arguments will produce an error.
 </p><p>
   After this, the colors are defined. At least two colors have to be given, using <code>from( COLOR )</code> and <code>to( COLOR )</code>.
