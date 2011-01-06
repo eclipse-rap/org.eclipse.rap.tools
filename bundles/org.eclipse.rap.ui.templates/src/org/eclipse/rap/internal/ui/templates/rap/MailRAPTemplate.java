@@ -18,7 +18,7 @@ import org.eclipse.rap.internal.ui.templates.XmlNames;
 
 class MailRAPTemplate extends AbstractRAPTemplate {
 
-  public MailRAPTemplate() {
+  MailRAPTemplate() {
     setPageCount( 1 );
     createTemplateOptions();
   }

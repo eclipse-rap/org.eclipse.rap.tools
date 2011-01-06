@@ -18,7 +18,7 @@ import org.eclipse.rap.internal.ui.templates.XmlNames;
 
 class ViewRAPTemplate extends AbstractRAPTemplate {
 
-  public ViewRAPTemplate() {
+  ViewRAPTemplate() {
     setPageCount( 1 );
     createTemplateOptions();
   }

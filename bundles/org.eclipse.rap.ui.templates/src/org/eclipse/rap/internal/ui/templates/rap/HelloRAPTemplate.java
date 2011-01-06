@@ -17,7 +17,7 @@ import org.eclipse.rap.internal.ui.templates.XmlNames;
 
 class HelloRAPTemplate extends AbstractRAPTemplate {
 
-  public HelloRAPTemplate() {
+  HelloRAPTemplate() {
     setPageCount( 1 );
     createTemplateOptions();
   }
@@ -41,8 +41,9 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
     createPerspectivesExtension();
   }
 
+  ///////////////////
   // helping methods
-  // ////////////////
+  
   private void createEntryPointsExtension() throws CoreException {
     IPluginExtension extension = createExtension( XmlNames.XID_ENTRYPOINT,
                                                   true );

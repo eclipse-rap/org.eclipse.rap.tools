@@ -13,6 +13,8 @@ package org.eclipse.rap.internal.ui.templates.rap;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
+  public static String AbstractRAPWizard_Modifying;
+
   public static String helloRAPTemplate_appClass;
   public static String helloRAPTemplate_appWindowTitle;
   public static String helloRAPTemplate_packageNmae;

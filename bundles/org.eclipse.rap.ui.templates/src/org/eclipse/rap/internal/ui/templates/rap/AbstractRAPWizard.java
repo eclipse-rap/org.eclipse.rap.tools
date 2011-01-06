@@ -209,7 +209,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       IResourceRuleFactory ruleFactory
         = ResourcesPlugin.getWorkspace().getRuleFactory();
       ISchedulingRule rule = ruleFactory.createRule( file );
-      String jobName = NLS.bind( TemplateMessages.AbstractRAPWizard_Modifying,
+      String jobName = NLS.bind( Messages.AbstractRAPWizard_Modifying,
                                  MANIFEST_FILE );
       Job job = new WorkspaceJob( jobName ) {
         public IStatus runInWorkspace( final IProgressMonitor monitor )
