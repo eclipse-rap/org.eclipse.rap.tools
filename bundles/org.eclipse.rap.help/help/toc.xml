@@ -83,6 +83,8 @@
         href="help/html/reference/extension-points/org_eclipse_rap_ui_phaselistener.html"/>
       <topic label="org.eclipse.rap.ui.resources"
         href="help/html/reference/extension-points/org_eclipse_rap_ui_resources.html"/>
+      <topic label="org.eclipse.rap.ui.serviceHandler"
+        href="help/html/reference/extension-points/org_eclipse_rap_ui_serviceHandler.html"/>
       <topic label="org.eclipse.rap.ui.settingstores"
         href="help/html/reference/extension-points/org_eclipse_rap_ui_settingstores.html"/>
       <topic label="org.eclipse.rap.ui.stackPresentations"
