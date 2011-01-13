@@ -39,8 +39,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     = "-Dorg.eclipse.rwt.clientLogLevel="; //$NON-NLS-1$
   private static final String VMARG_LIBRARY_VARIANT
     = "-Dorg.eclipse.rwt.clientLibraryVariant="; //$NON-NLS-1$
-  private static final String VMARG_AWT_HEADLESS 
-    = "-Djava.awt.headless="; //$NON-NLS-1$
   private static final String VMARG_SESSION_TIMEOUT 
     = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval="; //$NON-NLS-1$
   
@@ -118,9 +116,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     LibraryVariant libraryVariant = config.getLibraryVariant();
     if( libraryVariant != LibraryVariant.STANDARD ) {
       list.add( VMARG_LIBRARY_VARIANT + libraryVariant.getName() );
-    }
-    if( Platform.OS_MACOSX.equals( Platform.getOS() ) ) {
-      list.add( VMARG_AWT_HEADLESS + Boolean.TRUE );
     }
     if( config.getUseSessionTimeout() ) {
       list.add( VMARG_SESSION_TIMEOUT + config.getSessionTimeout() );
