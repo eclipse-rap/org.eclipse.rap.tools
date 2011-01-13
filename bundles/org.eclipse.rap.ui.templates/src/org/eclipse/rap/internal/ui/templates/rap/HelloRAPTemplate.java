@@ -33,33 +33,39 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
   public String getSectionId() {
     return "helloRAP"; //$NON-NLS-1$
   }
+  
+  public String getApplicationId() {
+    return "helloapp";
+  }
 
   protected void updateModel( final IProgressMonitor monitor )
     throws CoreException
   {
-    createEntryPointsExtension();
+    createApplicationExtension();
     createPerspectivesExtension();
   }
 
   ///////////////////
   // helping methods
   
-  private void createEntryPointsExtension() throws CoreException {
-    IPluginExtension extension = createExtension( XmlNames.XID_ENTRYPOINT,
+  private void createApplicationExtension() throws CoreException {
+    IPluginExtension extension = createExtension( XmlNames.XID_APPLICATION,
                                                   true );
-    IPluginElement element = createElement( extension );
-    element.setName( XmlNames.ELEM_ENTRYPOINT );
-    element.setAttribute( XmlNames.ATT_CLASS, 
-                          getEntrypointId() ); //$NON-NLS-1$
-    element.setAttribute( XmlNames.ATT_ID,
-                          getEntrypointId() ); //$NON-NLS-1$
-    element.setAttribute( XmlNames.ATT_PARAMETER, "hello" ); //$NON-NLS-1$
-    extension.add( element );
+    extension.setId( getApplicationId() );
+    IPluginElement applicationElement = createElement( extension );
+    applicationElement.setName( XmlNames.ELEM_APPLICATION );
+    applicationElement.setAttribute( XmlNames.ATT_VISIBLE, 
+                                     "true" ); //$NON-NLS-1$
+    applicationElement.setAttribute( XmlNames.ATT_CARDINALITY,
+                                     "singleton-global" ); //$NON-NLS-1$
+    applicationElement.setAttribute( XmlNames.ATT_THREAD, 
+                                     "main" ); //$NON-NLS-1$
+    extension.add( applicationElement );
+    IPluginElement runElement = createElement( extension );
+    runElement.setName( XmlNames.ELEM_RUN ); //$NON-NLS-1$
+    runElement.setAttribute( XmlNames.ATT_CLASS, getApplicationClass() ); //$NON-NLS-1$
+    applicationElement.add( runElement );
     addExtensionToPlugin( extension );
-  }
-
-  private String getEntrypointId() {
-    return getPackageName() + "." + getApplicationName();
   }
 
   private void createPerspectivesExtension() throws CoreException {

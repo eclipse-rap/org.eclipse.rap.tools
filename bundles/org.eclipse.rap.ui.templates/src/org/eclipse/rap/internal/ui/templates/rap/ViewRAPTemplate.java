@@ -34,11 +34,15 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
   public String getSectionId() {
     return "viewRAP"; //$NON-NLS-1$
   }
+  
+  public String getApplicationId() {
+    return "viewapp";
+  }
 
   protected void updateModel( final IProgressMonitor monitor )
     throws CoreException
   {
-    createEntryPointsExtension();
+    createApplicationExtension();
     createPerspectivesExtension();
     createViewsExtension();
     createBrandingExtension();
@@ -46,22 +50,25 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
 
   // helping methods
   // ////////////////
-  private void createEntryPointsExtension() throws CoreException {
-    IPluginExtension extension = createExtension( XmlNames.XID_ENTRYPOINT,
+  
+  private void createApplicationExtension() throws CoreException {
+    IPluginExtension extension = createExtension( XmlNames.XID_APPLICATION,
                                                   true );
-    IPluginElement element = createElement( extension );
-    element.setName( XmlNames.ELEM_ENTRYPOINT );
-    element.setAttribute( XmlNames.ATT_CLASS, 
-                          getEntrypointId() ); //$NON-NLS-1$
-    element.setAttribute( XmlNames.ATT_ID,
-                          getEntrypointId() ); //$NON-NLS-1$
-    element.setAttribute( XmlNames.ATT_PARAMETER, "view" ); //$NON-NLS-1$
-    extension.add( element );
+    extension.setId( getApplicationId() );
+    IPluginElement applicationElement = createElement( extension );
+    applicationElement.setName( XmlNames.ELEM_APPLICATION );
+    applicationElement.setAttribute( XmlNames.ATT_VISIBLE, 
+                                     "true" ); //$NON-NLS-1$
+    applicationElement.setAttribute( XmlNames.ATT_CARDINALITY,
+                                     "singleton-global" ); //$NON-NLS-1$
+    applicationElement.setAttribute( XmlNames.ATT_THREAD, 
+                                     "main" ); //$NON-NLS-1$
+    extension.add( applicationElement );
+    IPluginElement runElement = createElement( extension );
+    runElement.setName( XmlNames.ELEM_RUN ); //$NON-NLS-1$
+    runElement.setAttribute( XmlNames.ATT_CLASS, getApplicationClass() ); //$NON-NLS-1$
+    applicationElement.add( runElement );
     addExtensionToPlugin( extension );
-  }
-
-  private String getEntrypointId() {
-    return getPackageName() + "." + getApplicationName();
   }
 
   private void createPerspectivesExtension() throws CoreException {
@@ -99,7 +106,7 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
     brandingElement.setAttribute( XmlNames.ATT_ID, brandingId );
     brandingElement.setAttribute( XmlNames.ATT_SERVLET, "view" );
     brandingElement.setAttribute( XmlNames.ATT_DEFAULT_ENTRYPOINT, 
-                                  getEntrypointId() );
+                                  getFullApplicationId() );
     brandingElement.setAttribute( XmlNames.ATT_THEME_ID, 
                                   TemplateUtil.FANCY_THEME_ID );
     brandingElement.setAttribute( XmlNames.ATT_TITLE, "RAP Single View" );

@@ -12,19 +12,22 @@ import org.eclipse.pde.ui.templates.ITemplateSection;
 
 public class HelloRAPWizard extends AbstractRAPWizard {
 
+  private AbstractRAPTemplate template;
+
   public void init( final IFieldData data ) {
     super.init( data );
     setWindowTitle( Messages.helloRAPWizard_windowTitle );
   }
 
   public ITemplateSection[] createTemplateSections() {
+    template = new HelloRAPTemplate();
     return new ITemplateSection[] {
-      new HelloRAPTemplate()
+      template
     };
   }
 
   protected String getEntryPointName() {
-	  return "hello"; //$NON-NLS-1$
+	  return template.getFullApplicationId();
   }
 
   protected String getServletName() {

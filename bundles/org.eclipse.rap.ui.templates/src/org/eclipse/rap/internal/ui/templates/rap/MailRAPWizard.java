@@ -12,19 +12,22 @@ import org.eclipse.pde.ui.templates.ITemplateSection;
 
 public class MailRAPWizard extends AbstractRAPWizard {
 
+  private AbstractRAPTemplate template;
+  
   public void init( final IFieldData data ) {
     super.init( data );
     setWindowTitle( Messages.mailRAPWizard_windowTitle );
   }
 
   public ITemplateSection[] createTemplateSections() {
+    template = new MailRAPTemplate();
     return new ITemplateSection[] {
-      new MailRAPTemplate()
+      template
     };
   }
 
   protected String getEntryPointName() {
-    return "mail"; //$NON-NLS-1$
+    return template.getFullApplicationId();
   }
 
   protected String getServletName() {

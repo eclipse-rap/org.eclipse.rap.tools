@@ -12,19 +12,22 @@ import org.eclipse.pde.ui.templates.ITemplateSection;
 
 public class ViewRAPWizard extends AbstractRAPWizard {
 
+  private AbstractRAPTemplate template;
+
   public void init( final IFieldData data ) {
     super.init( data );
     setWindowTitle( Messages.viewRAPWizard_windowTitle );
   }
 
   public ITemplateSection[] createTemplateSections() {
+    template = new ViewRAPTemplate();
     return new ITemplateSection[] {
-      new ViewRAPTemplate()
+      template
     };
   }
 
   protected String getEntryPointName() {
-    return "view"; //$NON-NLS-1$
+    return template.getFullApplicationId();
   }
 
   protected String getServletName() {

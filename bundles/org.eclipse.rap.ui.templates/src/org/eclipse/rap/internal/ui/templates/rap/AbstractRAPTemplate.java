@@ -32,6 +32,8 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
   protected static final String KEY_WINDOW_TITLE = "windowTitle"; //$NON-NLS-1$
   protected static final String TEMPLATES_DIRECTORY = "templates"; //$NON-NLS-1$
 
+  public abstract String getApplicationId();
+
   protected final URL getInstallURL() {
     return TemplateUtil.getInstallURL();
   }
@@ -86,10 +88,14 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
     return factory.createElement( extension );
   }
 
-  protected final String getApplicationName() {
-    return getStringOption( KEY_APPLICATION_CLASS );
+  protected final String getApplicationClass() {
+    return getPackageName() + "." + getStringOption( KEY_APPLICATION_CLASS );
   }
 
+  public final String getFullApplicationId() {
+    return getPluginId() + "." + getApplicationId();
+  }
+  
   protected final String getPackageName() {
     return getStringOption( KEY_PACKAGE_NAME );
   }
