@@ -12,13 +12,13 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
  */
 public class $applicationClass$ implements IApplication {
 
-  public Object start( final IApplicationContext context ) throws Exception {
-    Display display = PlatformUI.createDisplay();
-    WorkbenchAdvisor advisor = new ApplicationWorkbenchAdvisor();
-    return PlatformUI.createAndRunWorkbench( display, advisor );
-  }
+	public Object start(IApplicationContext context) throws Exception {
+		Display display = PlatformUI.createDisplay();
+		WorkbenchAdvisor advisor = new ApplicationWorkbenchAdvisor();
+		return PlatformUI.createAndRunWorkbench(display, advisor);
+	}
 
-  public void stop() {
-    // Do nothing
-  }
+	public void stop() {
+		// Do nothing
+	}
 }

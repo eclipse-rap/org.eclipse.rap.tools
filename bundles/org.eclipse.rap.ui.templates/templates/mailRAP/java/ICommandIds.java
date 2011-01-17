@@ -9,7 +9,7 @@ package $packageName$;
  */
 public interface ICommandIds {
 
-    public static final String CMD_OPEN = "$pluginId$.open";
-    public static final String CMD_OPEN_MESSAGE = "$pluginId$.openMessage";
-    
+	public static final String CMD_OPEN = "$pluginId$.open";
+	public static final String CMD_OPEN_MESSAGE = "$pluginId$.openMessage";
+
 }

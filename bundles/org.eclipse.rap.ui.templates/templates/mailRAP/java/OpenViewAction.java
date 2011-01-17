@@ -11,22 +11,22 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * When run, this action will open another instance of a view.
  */
 public class OpenViewAction extends Action {
-	
+
 	private final IWorkbenchWindow window;
 	private int instanceNum = 0;
 	private final String viewId;
-	
+
 	public OpenViewAction(IWorkbenchWindow window, String label, String viewId) {
 		this.window = window;
 		this.viewId = viewId;
-        setText(label);
-        // The id is used to refer to the action in a menu or toolbar
+		setText(label);
+		// The id is used to refer to the action in a menu or toolbar
 		setId(ICommandIds.CMD_OPEN);
-        // Associate the action with a pre-defined command, to allow key bindings.
+		// Associate the action with a pre-defined command, to allow key bindings.
 		setActionDefinitionId(ICommandIds.CMD_OPEN);
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("$pluginId$", "/icons/sample2.gif"));
 	}
-	
+
 	public void run() {
 		if(window != null) {	
 			try {

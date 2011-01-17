@@ -20,7 +20,7 @@ import org.eclipse.ui.part.ViewPart;
 public class NavigationView extends ViewPart {
 	public static final String ID = "$pluginId$.navigationView";
 	private TreeViewer viewer;
-	 
+
 	class TreeObject {
 		private String name;
 		private TreeParent parent;
@@ -41,7 +41,7 @@ public class NavigationView extends ViewPart {
 			return getName();
 		}
 	}
-	
+
 	class TreeParent extends TreeObject {
 		private ArrayList children;
 		public TreeParent(String name) {
@@ -67,23 +67,23 @@ public class NavigationView extends ViewPart {
 	class ViewContentProvider implements IStructuredContentProvider, 
 										   ITreeContentProvider {
 
-        public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
-        
+
 		public void dispose() {
 		}
-        
+
 		public Object[] getElements(Object parent) {
 			return getChildren(parent);
 		}
-        
+
 		public Object getParent(Object child) {
 			if (child instanceof TreeObject) {
 				return ((TreeObject)child).getParent();
 			}
 			return null;
 		}
-        
+
 		public Object[] getChildren(Object parent) {
 			if (parent instanceof TreeParent) {
 				return ((TreeParent)parent).getChildren();
@@ -91,13 +91,13 @@ public class NavigationView extends ViewPart {
 			return new Object[0];
 		}
 
-        public boolean hasChildren(Object parent) {
+		public boolean hasChildren(Object parent) {
 			if (parent instanceof TreeParent)
 				return ((TreeParent)parent).hasChildren();
 			return false;
 		}
 	}
-	
+
 	class ViewLabelProvider extends LabelProvider {
 
 		public String getText(Object obj) {
@@ -111,33 +111,33 @@ public class NavigationView extends ViewPart {
 		}
 	}
 
-    /**
-     * We will set up a dummy model to initialize tree heararchy. In real
-     * code, you will connect to a real model and expose its hierarchy.
-     */
-    private TreeObject createDummyModel() {
-        TreeObject to1 = new TreeObject("Inbox");
-        TreeObject to2 = new TreeObject("Drafts");
-        TreeObject to3 = new TreeObject("Sent");
-        TreeParent p1 = new TreeParent("me@this.com");
-        p1.addChild(to1);
-        p1.addChild(to2);
-        p1.addChild(to3);
-
-        TreeObject to4 = new TreeObject("Inbox");
-        TreeParent p2 = new TreeParent("other@aol.com");
-        p2.addChild(to4);
-
-        TreeParent root = new TreeParent("");
-        root.addChild(p1);
-        root.addChild(p2);
-        return root;
-    }
+	/**
+	 * We will set up a dummy model to initialize tree heararchy. In real
+	 * code, you will connect to a real model and expose its hierarchy.
+	 */
+	private TreeObject createDummyModel() {
+		TreeObject to1 = new TreeObject("Inbox");
+		TreeObject to2 = new TreeObject("Drafts");
+		TreeObject to3 = new TreeObject("Sent");
+		TreeParent p1 = new TreeParent("me@this.com");
+		p1.addChild(to1);
+		p1.addChild(to2);
+		p1.addChild(to3);
+	
+		TreeObject to4 = new TreeObject("Inbox");
+		TreeParent p2 = new TreeParent("other@aol.com");
+		p2.addChild(to4);
+	
+		TreeParent root = new TreeParent("");
+		root.addChild(p1);
+		root.addChild(p2);
+		return root;
+	}
 
 	/**
-     * This is a callback that will allow us to create the viewer and initialize
-     * it.
-     */
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
+	 */
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		viewer.setContentProvider(new ViewContentProvider());
