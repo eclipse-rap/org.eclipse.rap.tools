@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="copy.temp" default="default">
+  <target name="default" description="">
+  	<copy todir="${dest}">
+  		<fileset dir="${src}"/>
+  	</copy>
+  	<jar destfile="${dest}/plugins/org.eclipse.rap.target.test_1.0.0.201101271445.jar" 
+  	  basedir="${dest}/plugins">
+  		<manifest>
+  		    <attribute name="Manifest-Version" value="1.0"/>
+  		    <attribute name="Bundle-Version" value="1.0.0.201101271445"/>
+  		    <attribute name="Bundle-Name" value="Test"/>
+  		    <attribute name="Bundle-ManifestVersion" value="2"/>
+  			<attribute name="Bundle-SymbolicName" value="org.eclipse.rap.target.test"/>
+  		</manifest>
+  	</jar>
+  	<jar destfile="${dest}/features/org.eclipse.rap.target.test.feature_1.0.0.201101271445.jar" 
+  	  basedir="${dest}/features"/>
+  </target>
+</project>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,20 +11,30 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.commands.*;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
+import org.eclipse.rap.ui.internal.intro.ErrorUtil;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.progress.IProgressService;
-
 
 public class InstallRAPTargetHandler extends AbstractHandler {
+
+  // forces target installations to be queued
+  private final static ISchedulingRule INSTALL_RULE = new ISchedulingRule()
+  {
+
+    public boolean contains( final ISchedulingRule rule ) {
+      return rule == this;
+    }
+
+    public boolean isConflicting( final ISchedulingRule rule ) {
+      return rule == this;
+    }
+  };
 
   public Object execute( final ExecutionEvent event ) throws ExecutionException
   {
@@ -33,39 +43,39 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     InstallTargetDialog dialog = new InstallTargetDialog( shell );
     int result = dialog.open();
     if( result == Window.OK ) {
-      execute( dialog.getTargetDestination(), dialog.shouldSwitchTarget() );
+      execute( dialog.shouldSwitchTarget(),
+               dialog.getTargetRepository(),
+               dialog.getTargetVersion(),
+               dialog.getRootIUs() );
     }
     return null;
   }
 
-  public static void execute( final String targetDestination, 
-                              final boolean switchTarget )
-    throws ExecutionException
+  public static void execute( final boolean switchTarget,
+                              final String targetRepository,
+                              final String targetVersion,
+                              final String[] rootIUs )
   {
-    IRunnableWithProgress runnable = new IRunnableWithProgress() {
-      public void run( final IProgressMonitor monitor )
-        throws InvocationTargetException, InterruptedException
-      {
+    Job installTargetJob = new Job( IntroMessages.TargetProvider_Installing ) {
+
+      protected IStatus run( final IProgressMonitor monitor ) {
+        IStatus result = Status.CANCEL_STATUS;
         try {
-          TargetProvider.install( targetDestination, monitor );
-          if( switchTarget ) {
-            TargetSwitcher.switchTarget( targetDestination, monitor );
-          }
-        } catch( CoreException e ) {
-          throw new InvocationTargetException( e );
+          TargetSwitcher.install( targetRepository, 
+                                  rootIUs, 
+                                  targetVersion,
+                                  switchTarget, 
+                                  monitor );
+          result = Status.OK_STATUS;
+        } catch( final CoreException e ) {
+          String msg = IntroMessages.InstallRAPTargetHandler_InstallFailed;
+          result = ErrorUtil.createErrorStatus( msg, e );
         }
+        return result;
       }
     };
-    IProgressService service = PlatformUI.getWorkbench().getProgressService();
-    try {
-      service.busyCursorWhile( runnable );
-    } catch( InvocationTargetException e ) {
-      Throwable cause = e.getCause() == null ? e : e.getCause();
-      String msg = IntroMessages.InstallRAPTargetHandler_InstallFailed;
-      throw new ExecutionException( msg, cause );
-    } catch( InterruptedException e ) {
-      String msg = IntroMessages.InstallRAPTargetHandler_InstallInterrupted;
-      throw new ExecutionException( msg );
-    }
+    installTargetJob.setUser( true );
+    installTargetJob.setRule( INSTALL_RULE );
+    installTargetJob.schedule();
   }
 }
