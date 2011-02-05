@@ -60,16 +60,6 @@
   </target>
 
   <!-- ===================================================================== -->
-  <!-- Steps to do after fetching the build elements -->
-  <!-- ===================================================================== -->
-  <target name="postFetch">
-    <property name="rapTargetDestFile"
-        value="${buildDirectory}/plugins/org.eclipse.rap.ui.intro/target/target.zip" />
-    <copy file="${rapTarget}" tofile="${rapTargetDestFile}" />
-  </target>
-
-
-  <!-- ===================================================================== -->
   <!-- Steps to do after generating the build scripts. -->
   <!-- ===================================================================== -->
   <target name="postGenerate">
@@ -122,7 +112,7 @@
           <![CDATA[<h1>Eclipse Rich Ajax Platform API Specification</h1>]]>
       </doctitle>
       <bottom>
-          <![CDATA[<font size="-1"><p>Copyright (c) Innoopract Informationssysteme GmbH and others 2002, 2009. All rights reserved.</p></font>]]>
+          <![CDATA[<font size="-1"><p>Copyright (c) Innoopract Informationssysteme GmbH and others 2002, 2011. All rights reserved.</p></font>]]>
       </bottom>
       <header>
           <![CDATA[<b>Eclipse Rich Ajax Platform</b><br/>Release 1.3]]>
@@ -180,6 +170,7 @@
 
   <!-- unused targets -->
   <target name="preFetch"></target>
+  <target name="postFetch"></target>
   <target name="preGenerate"></target>
   <target name="preProcess"></target>
   <target name="preAssemble"></target>
