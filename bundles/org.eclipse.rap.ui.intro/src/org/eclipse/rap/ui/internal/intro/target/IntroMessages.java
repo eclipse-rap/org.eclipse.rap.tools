@@ -37,6 +37,8 @@ public class IntroMessages extends NLS {
   public static String InstallRAPTargetHandler_SwitchTargetFailed;
   public static String InstallRAPTargetHandler_SwitchTargetInterrupted;
 
+  public static String InstallTargetDialog_DownloadWarningMsg;
+
   public static String InstallTargetDialog_LatestBuildText;
 
   public static String InstallTargetDialog_LatestReleaseText;

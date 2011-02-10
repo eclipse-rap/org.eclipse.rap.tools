@@ -18,6 +18,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
@@ -31,7 +32,7 @@ public final class InstallTargetDialog extends TitleAreaDialog {
   private final static String TARGET_REPOSITORY_LATEST_RELEASE 
     = "http://download.eclipse.org/rt/rap/1.3/runtime"; //$NON-NLS-1$
   private final static String TARGET_VERSION_LATEST_BUILD = "1.4"; //$NON-NLS-1$
-  private final static String TARGET_VERSION_LATEST_RELEASE = "1.3";
+  private final static String TARGET_VERSION_LATEST_RELEASE = "1.3"; //$NON-NLS-1$
   private boolean isLatestBuild = true;
   private boolean shouldSwitchTarget = true;
   private Image titleImage;
@@ -60,6 +61,11 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     return ROOT_IUs;
   }
 
+  protected Point getInitialSize() {
+    Point initialSize = super.getInitialSize();
+    return new Point( initialSize.x, initialSize.y - 160 );
+  }
+  
   protected Control createDialogArea( final Composite parent ) {
     Composite result = ( Composite )super.createDialogArea( parent );
     configureDialog();
@@ -104,6 +110,8 @@ public final class InstallTargetDialog extends TitleAreaDialog {
       = IntroMessages.InstallTargetDialog_TargetVersionGroupTitle;
     targetSelectionGroup.setText( targetVersionGroupTitle );
     createButtons( targetSelectionGroup );
+    Label warningLabel = new Label( targetSelectionGroup, SWT.NONE );
+    warningLabel.setText( IntroMessages.InstallTargetDialog_DownloadWarningMsg );
   }
 
   private void createButtons( final Group targetSelectionGroup ) {
@@ -129,7 +137,7 @@ public final class InstallTargetDialog extends TitleAreaDialog {
 
   private void createSwitchTargetArea( final Composite parent ) {
     Composite container = new Composite( parent, SWT.NONE );
-    container.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+    container.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
     FillLayout layout = new FillLayout();
     layout.marginWidth = 5;
     layout.marginHeight = 5;
