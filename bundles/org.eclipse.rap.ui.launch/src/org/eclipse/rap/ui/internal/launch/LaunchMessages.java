@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 EclipseSource and others.
+ * Copyright (c) 2009, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,8 @@ public class LaunchMessages extends NLS {
   public static String MainTab_LogLevelOff;
   public static String MainTab_LogLevelSevere;
   public static String MainTab_LogLevelWarning;
+
+  public static String MainTab_LogWarningMsg;
   public static String MainTab_ManualPortConfig;
   public static String MainTab_ManualTimeoutConfig;
   public static String MainTab_Name;

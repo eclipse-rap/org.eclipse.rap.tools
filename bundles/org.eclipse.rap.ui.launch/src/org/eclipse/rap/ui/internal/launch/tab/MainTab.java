@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2009, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.fieldassist.*;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.*;
@@ -292,11 +293,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     cmbLogLevel.setLabelProvider( new LogLevelLabelProvider() );
     cmbLogLevel.setContentProvider( new ArrayContentProvider() );
     cmbLogLevel.setInput( RAPLaunchConfig.LOG_LEVELS );
-    cmbLogLevel.addSelectionChangedListener( new ISelectionChangedListener() {
-      public void selectionChanged( final SelectionChangedEvent event ) {
-        updateLaunchConfigurationDialog();
-      }
-    } );
+    createLogControlDecorator();
     Label lblLibraryVariant = new Label( group, SWT.NONE );
     lblLibraryVariant.setText( LaunchMessages.MainTab_ClientLibraryVariant );
     cmbLibVariant = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
@@ -308,6 +305,34 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
         updateLaunchConfigurationDialog();
       }
     } );
+  }
+
+  private void createLogControlDecorator() {
+    final ControlDecoration logDecorator = 
+      new ControlDecoration( cmbLogLevel.getControl(), SWT.LEFT );
+    FieldDecorationRegistry registry = FieldDecorationRegistry.getDefault();
+    FieldDecoration warningDecoration = registry
+      .getFieldDecoration( FieldDecorationRegistry.DEC_WARNING );
+    logDecorator.setImage( warningDecoration.getImage() );
+    logDecorator.setShowHover( true );
+    logDecorator.setDescriptionText( LaunchMessages.MainTab_LogWarningMsg );
+    logDecorator.setMarginWidth( 5 );
+    updateLogDecorator( logDecorator );
+    cmbLogLevel.addSelectionChangedListener( new ISelectionChangedListener() {
+      public void selectionChanged( final SelectionChangedEvent event ) {
+        updateLaunchConfigurationDialog();
+        updateLogDecorator( logDecorator );
+      }
+    } );
+  }
+
+  private void updateLogDecorator( final ControlDecoration decorator ) {
+    Level logLevel = getLogLevel();
+    if( logLevel == Level.OFF ) {
+      decorator.hide();
+    } else {
+      decorator.show();
+    }
   }
 
   ////////////////
@@ -363,7 +388,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
         txtEntryPoint.setText( entrypoint.getParameter() );
       } else if( extension instanceof ApplicationExtension ) {
         ApplicationExtension app = ( ApplicationExtension )extension;
-        txtEntryPoint.setText( app.getProject() + "." + app.getId() );
+        txtEntryPoint.setText( app.getProject() + "." + app.getId() ); //$NON-NLS-1$
       }
     }
   }
