@@ -208,34 +208,36 @@ public class TargetSwitcher_Test extends TestCase {
   }
   
   private String createFakeRepository() throws Exception{
-    URL repositoryContentURL = getResourceURL( "/target" );
     URL repositoryDest = createRepositoryDest();
-    URL copyRepositoryScriptURL = getResourceURL( "copy_repository.ant.xml" );
-    Path copyRepositoryPath = new Path( copyRepositoryScriptURL.getPath() );
-    Path repositoryContentPath = new Path( repositoryContentURL.getPath() );
     Path repositoryDestPath = new Path( repositoryDest.getPath() );
     filesToDelete.add( repositoryDestPath.toFile() );
-    
+    AntRunner runner = new AntRunner();
+    URL copyRepositoryScriptURL = getResourceURL( "copy_repository.ant.xml" );
+    URL repositoryContentURL = getResourceURL( "/target" );
+    Path repositoryContentPath = new Path( repositoryContentURL.getPath() );
     Map scriptProperties = getProperties( repositoryContentPath.toString(), 
                                           repositoryDestPath.toString() );
-    AntRunner runner = new AntRunner();
+    runAntTask( copyRepositoryScriptURL, runner, scriptProperties );
+    return repositoryDest.toString();
+  }
+
+  private void runAntTask( final URL copyRepositoryScriptURL,
+                           final AntRunner runner,
+                           final Map scriptProperties ) throws CoreException
+  {
+    Path copyRepositoryPath = new Path( copyRepositoryScriptURL.getPath() );
     runner.setBuildFileLocation( copyRepositoryPath.toString() );
     runner.addUserProperties( scriptProperties );
     runner.run( new NullProgressMonitor() );
-    
-    return repositoryDest.toURI().toString();
   }
 
-  private Map getProperties( final String srcProp, 
-                                    final String destProp ) 
-{
-  Map result = new HashMap();
-  result.put( "src", srcProp ); //$NON-NLS-1$
-  result.put( "dest", destProp ); //$NON-NLS-1$
-  return result;
-}
+  private Map getProperties( final String srcProp, final String destProp ) {
+    Map result = new HashMap();
+    result.put( "src", srcProp ); //$NON-NLS-1$
+    result.put( "dest", destProp ); //$NON-NLS-1$
+    return result;
+  }
 
-  
   private URL createRepositoryDest() throws IOException {
     File fakeRepositoryDest = File.createTempFile( "fakeRepository", "" );
     fakeRepositoryDest.delete();
