@@ -41,7 +41,9 @@ public final class EntryPointExtension extends AbstractExtension {
     final IProgressMonitor monitor )
   {
     IPluginExtension[] extensions
-      = ExtensionUtil.getPluginExtensions( pluginIds, EXTENSION_ID, monitor );
+      = ExtensionUtil.getWorkspacePluginExtensions( pluginIds, 
+                                                    EXTENSION_ID, 
+                                                    monitor );
     return findInPluginExtensions( extensions );
   }
 
@@ -53,6 +55,15 @@ public final class EntryPointExtension extends AbstractExtension {
     return findInPluginExtensions( extensions );
   }
 
+  public static EntryPointExtension[] findAllActive(
+    final IProgressMonitor monitor )
+  {
+    IPluginExtension[] extensions
+      = ExtensionUtil.getActiveExtensions( EXTENSION_ID, monitor );
+    return findInPluginExtensions( extensions );
+  }
+
+  
   private static EntryPointExtension[] findInPluginExtensions( 
     final IPluginExtension[] extensions )
   {

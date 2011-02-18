@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,14 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.rap.ui.internal.launch.Activator;
 import org.eclipse.rap.ui.internal.launch.LaunchMessages;
 import org.eclipse.rap.ui.internal.launch.util.Images;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.IMemento;
-import org.eclipse.ui.dialogs.*;
+import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
+import org.eclipse.ui.dialogs.SearchPattern;
 
 
 final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
@@ -32,6 +36,7 @@ final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
   private static final Comparator COMPARATOR = new BrandingComparator();
 
   private BrandingExtension[] brandings;
+  private boolean hasWorkspaceScope;
 
   ServletNameSelectionDialog( final Shell shell ) {
     super( shell );
@@ -48,7 +53,17 @@ final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
   // FilteredItemsSelectionDialog overrides - UI adjustments
 
   protected Control createExtendedContentArea( final Composite parent ) {
-    return null;
+    final Button scopeButton = new Button( parent, SWT.CHECK );
+    String text = LaunchMessages.ServletNameSelectionDialog_WorkspaceFilterMsg;
+    scopeButton.setText( text );
+    scopeButton.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected(final SelectionEvent e) {
+        hasWorkspaceScope = scopeButton.getSelection();
+        brandings = null;
+        applyFilter();
+      }
+    });
+    return scopeButton;
   }
 
   protected IDialogSettings getDialogSettings() {
@@ -73,7 +88,11 @@ final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
         String msg = LaunchMessages.ServletNameSelectionDialog_Searching;
         monitor.beginTask( msg, IProgressMonitor.UNKNOWN );
       }
-      brandings = BrandingExtension.findInWorkspace( monitor );
+      if( hasWorkspaceScope ) {
+        brandings = BrandingExtension.findInWorkspace( monitor );
+      }else {
+        brandings = BrandingExtension.findAllActive( monitor );
+      }
     }
     for( int i = 0; i < brandings.length; i++ ) {
       provider.add( brandings[ i ], itemsFilter );
@@ -84,7 +103,8 @@ final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
   }
 
   protected ItemsFilter createFilter() {
-    return new BrandingItemsFilter( SelectionDialogUtil.createSearchPattern() );
+    return new BrandingItemsFilter( SelectionDialogUtil.createSearchPattern(),
+                                    hasWorkspaceScope );
   }
 
   public String getElementName( final Object element ) {
@@ -118,8 +138,13 @@ final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
 
   private final class BrandingItemsFilter extends ItemsFilter {
 
-    public BrandingItemsFilter( final SearchPattern searchPattern ) {
+    private final boolean scope;
+
+    public BrandingItemsFilter( final SearchPattern searchPattern, 
+                                final boolean workspaceScope )
+    {
       super( searchPattern );
+      this.scope = workspaceScope;
     }
 
     public boolean isConsistentItem( final Object item ) {
@@ -129,8 +154,28 @@ final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
     public boolean matchItem( final Object item ) {
       return matches( ( ( BrandingExtension )item ).getServletName() );
     }
+    
+    public boolean isSubFilter( final ItemsFilter filter ) {
+      boolean result;
+      if( scope != ((BrandingItemsFilter)filter).scope ) {
+        result = false;
+      } else{
+        result = super.isSubFilter( filter );
+      }
+      return result;
+    }
+    
+    public boolean equalsFilter( final ItemsFilter filter ) {
+      boolean result;
+      if( scope != ((BrandingItemsFilter)filter).scope ) {
+        result = false;
+      }else {
+        result = super.equalsFilter( filter );
+      }
+      return result;
+    }
   }
-
+  
   private static final class BrandingLabelProvider
     extends LabelProvider
   {

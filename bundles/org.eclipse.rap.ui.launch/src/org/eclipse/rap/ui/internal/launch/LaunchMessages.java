@@ -81,6 +81,7 @@ public class LaunchMessages extends NLS {
   public static String ServletNameSelectionDialog_Message;
   public static String ServletNameSelectionDialog_Searching;
   public static String ServletNameSelectionDialog_Title;
+  public static String ServletNameSelectionDialog_WorkspaceFilterMsg;
 
   static {
     // initialize resource bundle

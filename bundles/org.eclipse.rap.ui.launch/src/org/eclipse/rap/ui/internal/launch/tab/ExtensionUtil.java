@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.rap.ui.internal.launch.tab;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.pde.core.plugin.*;
 
@@ -24,15 +25,25 @@ final class ExtensionUtil {
     final String extensionPoint,
     final IProgressMonitor monitor )
   {
-    return getPluginExtensions( null, extensionPoint, monitor );
+    return getWorkspacePluginExtensions( null, extensionPoint, monitor );
   }
 
-  static IPluginExtension[] getPluginExtensions(
+  static IPluginExtension[] getActiveExtensions( 
+    final String extensionPoint,
+    final IProgressMonitor monitor )
+  {
+    IPluginModelBase[] pluginModels = PluginRegistry.getActiveModels();
+    return getExtensions( null, extensionPoint, pluginModels, monitor );
+  }
+
+  
+  static IPluginExtension[] getWorkspacePluginExtensions(
     final String[] pluginIds,
     final String extensionPoint,
     final IProgressMonitor monitor )
   {
-    return getWorkspaceExtensions( pluginIds, extensionPoint, monitor );
+    IPluginModelBase[] pluginModels = PluginRegistry.getWorkspaceModels();
+    return getExtensions( pluginIds, extensionPoint, pluginModels, monitor );
   }
 
   static String getAttribute( final IPluginElement element,
@@ -43,20 +54,27 @@ final class ExtensionUtil {
   }
 
   static String getProjectName( final IPluginExtension pluginExtension ) {
+    String name = null;
     IPluginModelBase pluginModel = pluginExtension.getPluginModel();
-    return pluginModel.getUnderlyingResource().getProject().getName();
+    IResource workspaceResource = pluginModel.getUnderlyingResource();
+    if( workspaceResource == null ) {
+      name = pluginModel.getBundleDescription().getSymbolicName();
+    } else {
+      name = workspaceResource.getProject().getName();
+    }
+    return name;
   }
 
   //////////////////
   // Helping methods
 
-  private static IPluginExtension[] getWorkspaceExtensions(
+  private static IPluginExtension[] getExtensions(
     final String[] pluginIds,
     final String extensionPoint,
+    final IPluginModelBase[] pluginModels, 
     final IProgressMonitor monitor )
   {
     List list = new ArrayList();
-    IPluginModelBase[] pluginModels = PluginRegistry.getWorkspaceModels();
     for( int i = 0; !isCanceled( monitor ) && i < pluginModels.length; i++ ) {
       String pluginId = pluginModels[ i ].getPluginBase().getId();
       if( isContained( pluginIds, pluginId ) ) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,18 @@ final class BrandingExtension extends AbstractExtension {
   static BrandingExtension[] findInWorkspace( final IProgressMonitor monitor ) {
     IPluginExtension[] extensions 
       = ExtensionUtil.getWorkspaceExtensions( EXTENSION_ID, monitor );
+    return createBrandingExtensions( extensions );
+  }
+
+  static BrandingExtension[] findAllActive( final IProgressMonitor monitor ) {
+    IPluginExtension[] extensions 
+      = ExtensionUtil.getActiveExtensions( EXTENSION_ID, monitor );
+    return createBrandingExtensions( extensions );
+  }
+
+  private static BrandingExtension[] createBrandingExtensions( 
+    final IPluginExtension[] extensions )
+  {
     List list = new ArrayList();
     for( int i = 0; i < extensions.length; i++ ) {
       BrandingExtension[] brandings = getBrandingExtensions( extensions[ i ] );

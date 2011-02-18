@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.rap.ui.internal.launch.Activator;
 import org.eclipse.rap.ui.internal.launch.LaunchMessages;
 import org.eclipse.rap.ui.internal.launch.util.Images;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.IMemento;
@@ -36,6 +39,7 @@ final class EntryPointApplicationSelectionDialog
   private static final Comparator COMPARATOR = new EntryPointComparator();
 
   private AbstractExtension[] entryPoints;
+  private boolean hasWorkspaceScope;
 
   EntryPointApplicationSelectionDialog( final Shell shell ) {
     super( shell );
@@ -52,7 +56,17 @@ final class EntryPointApplicationSelectionDialog
   // FilteredItemsSelectionDialog overrides - UI adjustments
 
   protected Control createExtendedContentArea( final Composite parent ) {
-    return null;
+    final Button scopeButton = new Button( parent, SWT.CHECK );
+    String text = LaunchMessages.ServletNameSelectionDialog_WorkspaceFilterMsg;
+    scopeButton.setText( text );
+    scopeButton.addSelectionListener( new SelectionAdapter() {
+      public void widgetSelected(final SelectionEvent e) {
+        hasWorkspaceScope = scopeButton.getSelection();
+        entryPoints = null;
+        applyFilter();
+      }
+    });
+    return scopeButton;
   }
 
   protected IDialogSettings getDialogSettings() {
@@ -77,10 +91,15 @@ final class EntryPointApplicationSelectionDialog
         String msg = LaunchMessages.EntryPointSelectionDialog_Searching;
         monitor.beginTask( msg, IProgressMonitor.UNKNOWN );
       }
-      AbstractExtension[] tempEntryPoints 
-        = EntryPointExtension.findInWorkspace( monitor );
-      AbstractExtension[] tempApplications 
-        = ApplicationExtension.findInWorkspace( monitor );
+      AbstractExtension[] tempEntryPoints;
+      AbstractExtension[] tempApplications;
+      if( hasWorkspaceScope == true ) {
+        tempEntryPoints = EntryPointExtension.findInWorkspace( monitor );
+        tempApplications = ApplicationExtension.findInWorkspace( monitor );
+      }else {
+        tempEntryPoints = EntryPointExtension.findAllActive( monitor );
+        tempApplications = ApplicationExtension.findAllActive( monitor );
+      }
       entryPoints = new AbstractExtension[ tempEntryPoints.length 
                                            + tempApplications.length ];
       System.arraycopy( tempEntryPoints, 
@@ -104,7 +123,7 @@ final class EntryPointApplicationSelectionDialog
 
   protected ItemsFilter createFilter() {
     SearchPattern searchPattern = SelectionDialogUtil.createSearchPattern();
-    return new EntryPointItemsFilter( searchPattern );
+    return new EntryPointItemsFilter( searchPattern, hasWorkspaceScope );
   }
 
   public String getElementName( final Object element ) {
@@ -170,8 +189,13 @@ final class EntryPointApplicationSelectionDialog
 
   private final class EntryPointItemsFilter extends ItemsFilter {
 
-    public EntryPointItemsFilter( final SearchPattern searchPattern ) {
+    private final boolean scope;
+
+    public EntryPointItemsFilter( final SearchPattern searchPattern, 
+                                  final boolean scope )
+    {
       super( searchPattern );
+      this.scope = scope;
     }
 
     public boolean isConsistentItem( final Object item ) {
@@ -184,6 +208,26 @@ final class EntryPointApplicationSelectionDialog
         result = matches( ( ( EntryPointExtension )item ).getParameter() );
       } else if( item instanceof ApplicationExtension ) {
         result = matches( ( ( ApplicationExtension )item ).getId() );
+      }
+      return result;
+    }
+    
+    public boolean isSubFilter( final ItemsFilter filter ) {
+      boolean result;
+      if( scope != ((EntryPointItemsFilter)filter).scope ) {
+        result = false;
+      } else{
+        result = super.isSubFilter( filter );
+      }
+      return result;
+    }
+    
+    public boolean equalsFilter( final ItemsFilter filter ) {
+      boolean result;
+      if( scope != ((EntryPointItemsFilter)filter).scope ) {
+        result = false;
+      }else {
+        result = super.equalsFilter( filter );
       }
       return result;
     }

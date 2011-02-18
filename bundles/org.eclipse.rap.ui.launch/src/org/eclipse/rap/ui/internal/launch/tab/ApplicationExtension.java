@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2010 EclipseSource and others.
+ * Copyright (c) 2010, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@ public final class ApplicationExtension extends AbstractExtension {
     final IProgressMonitor monitor )
   {
     IPluginExtension[] extensions
-      = ExtensionUtil.getPluginExtensions( pluginIds, EXTENSION_ID, monitor );
+      = ExtensionUtil.getWorkspacePluginExtensions( pluginIds,
+                                                    EXTENSION_ID,
+                                                    monitor );
     return findInPluginExtensions( extensions );
   }
 
@@ -47,6 +49,14 @@ public final class ApplicationExtension extends AbstractExtension {
   {
     IPluginExtension[] extensions
       = ExtensionUtil.getWorkspaceExtensions( EXTENSION_ID, monitor );
+    return findInPluginExtensions( extensions );
+  }
+
+  public static ApplicationExtension[] findAllActive(
+    final IProgressMonitor monitor )
+  {
+    IPluginExtension[] extensions
+      = ExtensionUtil.getActiveExtensions( EXTENSION_ID, monitor );
     return findInPluginExtensions( extensions );
   }
 
