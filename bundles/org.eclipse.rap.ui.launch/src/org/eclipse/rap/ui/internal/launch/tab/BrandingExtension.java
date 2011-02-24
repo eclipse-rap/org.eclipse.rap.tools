@@ -16,16 +16,18 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.pde.core.plugin.*;
 
 
-final class BrandingExtension extends AbstractExtension {
+public final class BrandingExtension extends AbstractExtension {
   
-  private static final String EXTENSION_ID 
+  public static final String EXTENSION_ID 
     = "org.eclipse.rap.ui.branding"; //$NON-NLS-1$
   private static final String ATTR_SERVLET_NAME 
     = "servletName"; //$NON-NLS-1$
   private static final String DEFAULT_ENTRYPOINT_ID 
     = "defaultEntrypointId"; //$NON-NLS-1$
 
-  static BrandingExtension[] findInWorkspace( final IProgressMonitor monitor ) {
+  public static BrandingExtension[] findInWorkspace(
+    final IProgressMonitor monitor )
+  {
     IPluginExtension[] extensions 
       = ExtensionUtil.getWorkspaceExtensions( EXTENSION_ID, monitor );
     return createBrandingExtensions( extensions );
@@ -37,6 +39,17 @@ final class BrandingExtension extends AbstractExtension {
     return createBrandingExtensions( extensions );
   }
 
+  public static BrandingExtension[] findInActivePlugins(
+    final String[] pluginIds,
+    final IProgressMonitor monitor )
+  {
+    IPluginExtension[] extensions
+      = ExtensionUtil.getActivePluginExtensions( pluginIds, 
+                                                 EXTENSION_ID, 
+                                                 monitor );
+    return createBrandingExtensions( extensions );
+  }
+  
   private static BrandingExtension[] createBrandingExtensions( 
     final IPluginExtension[] extensions )
   {
@@ -80,7 +93,7 @@ final class BrandingExtension extends AbstractExtension {
     this.defaultEntryPointId = defaultEntryPointId;
   }
   
-  final String getServletName() {
+  public final String getServletName() {
     return servletName;
   }
   

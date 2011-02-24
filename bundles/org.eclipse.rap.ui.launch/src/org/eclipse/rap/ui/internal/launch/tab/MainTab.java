@@ -17,8 +17,7 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.*;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.*;
@@ -29,8 +28,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.rap.ui.internal.launch.*;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
-import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
-import org.eclipse.rap.ui.internal.launch.util.Images;
+import org.eclipse.rap.ui.internal.launch.util.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
@@ -63,6 +61,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   private Spinner spnSessionTimeout;  
   private ComboViewer cmbLogLevel;
   private ComboViewer cmbLibVariant;
+  private ILaunchConfigurationListener launchConfigListener;
 
   public MainTab() {
     tabImage = Images.DESC_MAIN_TAB.createImage();
@@ -79,14 +78,17 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
         updateLaunchConfigurationDialog();
       }
     };
+    addLaunchConfigListener();
   }
-  
+
   ////////////
   // Overrides
   
   public void dispose() {
     tabImage.dispose();
     warnImage.dispose();
+    ILaunchManager launchManager = getLaunchManager();
+    launchManager.removeLaunchConfigurationListener( launchConfigListener );
     super.dispose();
   }
 
@@ -192,6 +194,29 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   ///////////////////////////////////
   // Helping methods to create the UI
   
+  private void addLaunchConfigListener() {
+    launchConfigListener = new ILaunchConfigurationListener() {
+      public void launchConfigurationChanged( 
+        final ILaunchConfiguration configuration )
+      {
+        RAPLaunchConfig rapConfig = new RAPLaunchConfig( configuration );
+        validate( rapConfig );
+      }
+
+      public void launchConfigurationAdded( 
+        final ILaunchConfiguration configuration )
+      { // Do nothing
+      }
+
+      public void launchConfigurationRemoved( 
+        final ILaunchConfiguration configuration )
+      { // Do nothing
+      }
+    };
+    ILaunchManager launchManager = getLaunchManager();
+    launchManager.addLaunchConfigurationListener( launchConfigListener );
+  }
+  
   private void createServletNameAndEntryPointSection( final Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayout( new GridLayout( 3, false ) );
@@ -256,7 +281,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     rbExternalBrowser.addSelectionListener( selectionListener );
     cbOpenBrowser.addSelectionListener( new SelectionAdapter() {
 
-      public void widgetSelected( SelectionEvent e ) {
+      public void widgetSelected( final SelectionEvent e ) {
         boolean openBrowser = cbOpenBrowser.getSelection();
         rbInternalBrowser.setEnabled( openBrowser );
         rbExternalBrowser.setEnabled( openBrowser );
@@ -338,7 +363,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   ////////////////
   // Layout helper
   
-  private static GridData spanHorizontal( final int span, int indent ) {
+  private static GridData spanHorizontal( final int span, final int indent ) {
     GridData result
       = new GridData( SWT.FILL, SWT.CENTER, true, false, span, SWT.DEFAULT );
     result.horizontalIndent = indent;
@@ -382,14 +407,22 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
       = new EntryPointApplicationSelectionDialog( getShell() );
     if( dialog.open() == Window.OK ) {
       Object[] selection = dialog.getResult();
-      AbstractExtension extension = ( AbstractExtension )selection[ 0 ];
-      if( extension instanceof EntryPointExtension ) {
-        EntryPointExtension entrypoint = ( EntryPointExtension )extension;
-        txtEntryPoint.setText( entrypoint.getParameter() );
-      } else if( extension instanceof ApplicationExtension ) {
-        ApplicationExtension app = ( ApplicationExtension )extension;
-        txtEntryPoint.setText( app.getProject() + "." + app.getId() ); //$NON-NLS-1$
-      }
+      AbstractExtension selectedExtension = ( AbstractExtension )selection[ 0 ];
+      handleSelectedExtension( selectedExtension );
+    }
+  }
+
+  private void handleSelectedExtension( AbstractExtension selectedExtension ) {
+    if( selectedExtension instanceof EntryPointExtension ) {
+      EntryPointExtension entry = ( EntryPointExtension )selectedExtension;
+      String serializedEntryPoint 
+        = LauncherSerializationUtil.serializeEntryPointExntesion( entry );
+      txtEntryPoint.setText( serializedEntryPoint );
+    } else if( selectedExtension instanceof ApplicationExtension ) {
+      ApplicationExtension ext = ( ApplicationExtension )selectedExtension;
+      String serializedAppExt 
+        = LauncherSerializationUtil.serializeApplicationExtension( ext );
+      txtEntryPoint.setText( serializedAppExt ); //$NON-NLS-1$
     }
   }
 
@@ -399,13 +432,16 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     if( dialog.open() == Window.OK ) {
       Object[] selection = dialog.getResult();
       BrandingExtension branding = ( BrandingExtension )selection[ 0 ];
-      txtServletName.setText( branding.getServletName() );
+      String serializedBranding 
+        = LauncherSerializationUtil.serializeBrandingExtension( branding );
+      txtServletName.setText( serializedBranding );
       String defaultEntryPointId = branding.getDefaultEntryPointId();
       String parameter = null;
-      EntryPointExtension defaultEntryPoint 
+      EntryPointExtension etryPoint 
         = EntryPointExtension.findById( defaultEntryPointId );
-      if( defaultEntryPoint != null ) {
-        parameter = defaultEntryPoint.getParameter();
+      if( etryPoint != null ) {
+        parameter 
+          = LauncherSerializationUtil.serializeEntryPointExntesion( etryPoint );
       }
       if( txtEntryPoint.getText().length() == 0 && parameter != null ) {
         txtEntryPoint.setText( parameter );

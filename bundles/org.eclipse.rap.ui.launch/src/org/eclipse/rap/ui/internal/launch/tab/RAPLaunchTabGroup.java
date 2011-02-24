@@ -66,7 +66,7 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
     super.setDefaults( config );
     String vmArguments = ""; //$NON-NLS-1$
     try {
-      vmArguments = config.getAttribute( ATTR_VM_ARGUMENTS, "" );
+      vmArguments = config.getAttribute( ATTR_VM_ARGUMENTS, "" ); //$NON-NLS-1$
     } catch( CoreException e ) {
       Activator.getDefault().getLog().log( e.getStatus() );
     }

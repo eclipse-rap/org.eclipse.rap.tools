@@ -16,10 +16,10 @@ public class LaunchMessages extends NLS {
 
   private static final String BUNDLE_NAME
     = "org.eclipse.rap.ui.internal.launch.messages"; //$NON-NLS-1$
-  
   public static String PortBusyStatusHandler_PortInUseMessage;
   public static String PortBusyStatusHandler_PortInUseTitle;
-  
+  public static String RAPLaunchConfigValidator_BrandingMissing;
+  public static String RAPLaunchConfigValidator_EntryPointMissing;
   public static String RAPLaunchConfigValidator_EquinoxOnly;
   public static String RAPLaunchConfigValidator_ErrorWhileValidating;
   public static String RAPLaunchConfigValidator_LogLevelInvalid;
@@ -28,7 +28,6 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchConfigValidator_PortNumberInvalid;
   public static String RAPLaunchConfigValidator_ServletNameEmpty;
   public static String RAPLaunchConfigValidator_TimeoutInvalid;
-
   public static String RAPLaunchDelegate_CheckPortTaskName;
   public static String RAPLaunchDelegate_DeterminePortTaskName;
   public static String RAPLaunchDelegate_OpenBrowserFailed;
@@ -38,14 +37,11 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchDelegate_TerminatePreviousTaskName;
   public static String RAPLaunchDelegate_WaitForHTTPTaskName;
   public static String RAPLaunchDelegate_Error_NotAPlugin;
-  
   public static String SelectionDialogUtil_Unknown;
   public static String SelectionDialogUtil_UnknownProject;
-
   public static String EntryPointSelectionDialog_Message;
   public static String EntryPointSelectionDialog_Searching;
   public static String EntryPointSelectionDialog_Title;
-
   public static String MainTab_BrowseEntryPoint;
   public static String MainTab_Browser;
   public static String MainTab_BrowseServletName;
@@ -66,7 +62,6 @@ public class LaunchMessages extends NLS {
   public static String MainTab_LogLevelOff;
   public static String MainTab_LogLevelSevere;
   public static String MainTab_LogLevelWarning;
-
   public static String MainTab_LogWarningMsg;
   public static String MainTab_ManualPortConfig;
   public static String MainTab_ManualTimeoutConfig;
@@ -77,7 +72,6 @@ public class LaunchMessages extends NLS {
   public static String MainTab_ServletAndEntryPoint;
   public static String MainTab_ServletName;
   public static String MainTab_TerminatePrevious;
-
   public static String ServletNameSelectionDialog_Message;
   public static String ServletNameSelectionDialog_Searching;
   public static String ServletNameSelectionDialog_Title;

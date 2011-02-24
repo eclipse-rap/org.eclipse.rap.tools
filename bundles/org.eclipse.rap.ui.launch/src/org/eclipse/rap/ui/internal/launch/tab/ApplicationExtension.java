@@ -17,7 +17,7 @@ import org.eclipse.pde.core.plugin.IPluginExtension;
 
 public final class ApplicationExtension extends AbstractExtension {
 
-  private static final String EXTENSION_ID
+  public static final String EXTENSION_ID
     = "org.eclipse.core.runtime.applications"; //$NON-NLS-1$
 
   public static ApplicationExtension findById( final String id ) {
@@ -33,7 +33,7 @@ public final class ApplicationExtension extends AbstractExtension {
     return result;
   }
 
-  public static ApplicationExtension[] findInPlugins(
+  public static ApplicationExtension[] findInWorkspacePlugins(
     final String[] pluginIds,
     final IProgressMonitor monitor )
   {
@@ -44,6 +44,18 @@ public final class ApplicationExtension extends AbstractExtension {
     return findInPluginExtensions( extensions );
   }
 
+  public static ApplicationExtension[] findInActivePlugins(
+    final String[] pluginIds,
+    final IProgressMonitor monitor )
+ {
+    IPluginExtension[] extensions
+      = ExtensionUtil.getActivePluginExtensions( pluginIds,
+                                                 EXTENSION_ID,
+                                                 monitor );
+    return findInPluginExtensions( extensions );
+ }
+
+  
   public static ApplicationExtension[] findInWorkspace(
     final IProgressMonitor monitor )
   {

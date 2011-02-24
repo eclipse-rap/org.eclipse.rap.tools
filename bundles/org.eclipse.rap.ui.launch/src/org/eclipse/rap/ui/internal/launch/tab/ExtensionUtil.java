@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.pde.core.plugin.*;
 
 
-final class ExtensionUtil {
+public final class ExtensionUtil {
 
   static IPluginExtension[] getWorkspaceExtensions(
     final String extensionPoint,
@@ -28,6 +28,16 @@ final class ExtensionUtil {
     return getWorkspacePluginExtensions( null, extensionPoint, monitor );
   }
 
+  static IPluginExtension[] getWorkspacePluginExtensions(
+    final String[] pluginIds,
+    final String extensionPoint,
+    final IProgressMonitor monitor )
+  {
+    IPluginModelBase[] pluginModels = PluginRegistry.getWorkspaceModels();
+    return getExtensions( pluginIds, extensionPoint, pluginModels, monitor );
+  }
+
+  
   static IPluginExtension[] getActiveExtensions( 
     final String extensionPoint,
     final IProgressMonitor monitor )
@@ -37,12 +47,12 @@ final class ExtensionUtil {
   }
 
   
-  static IPluginExtension[] getWorkspacePluginExtensions(
+  static IPluginExtension[] getActivePluginExtensions(
     final String[] pluginIds,
     final String extensionPoint,
     final IProgressMonitor monitor )
   {
-    IPluginModelBase[] pluginModels = PluginRegistry.getWorkspaceModels();
+    IPluginModelBase[] pluginModels = PluginRegistry.getActiveModels();
     return getExtensions( pluginIds, extensionPoint, pluginModels, monitor );
   }
 

@@ -129,7 +129,7 @@ final class EntryPointApplicationSelectionDialog
   public String getElementName( final Object element ) {
     AbstractExtension entryPoint = ( AbstractExtension )element;
     String project = entryPoint.getProject();
-    String decorator = "";
+    String decorator = ""; //$NON-NLS-1$
     if( element instanceof EntryPointExtension ) {
       decorator = ( ( EntryPointExtension )entryPoint ).getParameter();
     } else if( element instanceof ApplicationExtension ) {
@@ -242,7 +242,7 @@ final class EntryPointApplicationSelectionDialog
       if( element != null ) {
         AbstractExtension extension = ( AbstractExtension )element;
         String project = extension.getProject();
-        String decorator = "";
+        String decorator = ""; //$NON-NLS-1$
         if( extension instanceof EntryPointExtension ) {
           decorator = ( ( EntryPointExtension )extension ).getParameter();
         } else if( extension instanceof ApplicationExtension ) {

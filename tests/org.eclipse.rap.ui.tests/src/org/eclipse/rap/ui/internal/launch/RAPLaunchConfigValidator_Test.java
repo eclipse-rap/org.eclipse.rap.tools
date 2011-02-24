@@ -11,19 +11,27 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.rap.ui.tests.Fixture;
+import org.eclipse.rap.ui.tests.TestPluginProject;
 
 
 public class RAPLaunchConfigValidator_Test extends TestCase {
   
   private static final class MyLevel extends Level {
     private static final long serialVersionUID = 1L;
+    
     protected MyLevel( final String name, final int value ) {
       super( name, value );
     }
@@ -31,14 +39,21 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   
   private ILaunchConfigurationWorkingCopy config;
   private RAPLaunchConfig rapConfig;
+  private List projectsToDelete = new ArrayList();
 
   protected void setUp() throws Exception {
     config = Fixture.createRAPLaunchConfig();
     rapConfig = new RAPLaunchConfig( config );
+    projectsToDelete.clear();
   }
   
   protected void tearDown() throws Exception {
     config.delete();
+    Iterator iter = projectsToDelete.iterator();
+    while( iter.hasNext() ) {
+      TestPluginProject project = ( TestPluginProject )iter.next();
+      project.delete();
+    }
   }
   
   public void testValidateServletName() {
@@ -48,6 +63,164 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     IStatus[] states = val.validate();
     int code = RAPLaunchConfigValidator.ERR_SERVLET_NAME;
     assertTrue( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateServletNameWithBrandingNotInBundles()
+    throws CoreException
+  {
+    String servletName = "servletTest";
+    rapConfig.setServletName( servletName );
+    createBrandingExtensionProject( "test.project", "test.id", servletName );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_SERVLET_BUNDLE;
+    assertTrue( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateServletNameWithBrandingInBundles()
+    throws CoreException
+  {
+    String servletName = "servletTest";
+    rapConfig.setServletName( servletName );
+    createBrandingExtensionProject( "test.project", "test.id", servletName );
+    config.setAttribute( "workspace_bundles", "test.project@default:default" );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_SERVLET_BUNDLE;
+    assertFalse( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateServletNameSameServletNames() throws CoreException {
+    String servletName = "servletTest";
+    rapConfig.setServletName( servletName );
+    createBrandingExtensionProject( "test.project", "test.id", servletName );
+    createBrandingExtensionProject( "test.project2", "test.id2", servletName );
+    config.setAttribute( "workspace_bundles", 
+                         "test.project2@default:default" );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_SERVLET_BUNDLE;
+    assertFalse( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateServletNameRap() throws CoreException {
+    String servletName = "servletTest";
+    createBrandingExtensionProject( "test.project", "test.id", servletName );
+    config.setAttribute( "workspace_bundles", "test.project@default:default" );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_SERVLET_BUNDLE;
+    assertFalse( findStatusCode( states, code ) );
+  }
+  
+  
+  public void testValidateEntryPointProjectNotInSelectedBundles()
+    throws CoreException
+  {
+    String id = "entrypoint.id.1";
+    String param = "param1";
+    createEntryPointExtensionProject( "test.project", id, param );
+    rapConfig.setEntryPoint( param );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertTrue( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateEntryPointNotExisting() {
+    rapConfig.setEntryPoint( "test.Entrypoint" );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertTrue( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateEntryPointEmptyWorkspaceBundles() {
+    config.setAttribute( "workspace_bundles", "" );
+    rapConfig = new RAPLaunchConfig( config );
+    rapConfig.setEntryPoint( "test.Entrypoint" );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertTrue( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateEntryPointProjectInSelectedBundles()
+    throws CoreException
+  {
+    String id = "entrypoint.id.1";
+    String param = "param1";
+    createEntryPointExtensionProject( "test.project", id, param );
+    config.setAttribute( "workspace_bundles", "test.project@default:default" );
+    rapConfig = new RAPLaunchConfig( config );
+    rapConfig.setEntryPoint( param );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertFalse( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateEntryPointSameEntryPoints() throws CoreException {
+    String param = "param1";
+    createEntryPointExtensionProject( "test.project", 
+                                      "entrypoint.id.1", param );
+    createEntryPointExtensionProject( "test.project2", 
+                                      "entrypoint.id.2", param );
+    config.setAttribute( "workspace_bundles", "test.project@default:default" );
+    rapConfig = new RAPLaunchConfig( config );
+    rapConfig.setEntryPoint( param );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertFalse( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateEntryPointMultipleProjectsInWorkspace()
+    throws CoreException
+  {
+    String id = "entrypoint.id.1";
+    String param = "param1";
+    createEntryPointExtensionProject( "test.project", id, param );
+    createEntryPointExtensionProject( "test.project.test.2", id + "2", param + "2" );
+    config.setAttribute( "workspace_bundles",
+                         "test.project.test.2@default:default" );
+    rapConfig = new RAPLaunchConfig( config );
+    rapConfig.setEntryPoint( param );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertTrue( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateMultipleEntryPointProjectsInWorkspace()
+    throws CoreException
+  {
+    String id = "entrypoint.id.1";
+    String param = "param1";
+    createEntryPointExtensionProject( "test.project", id, param );
+    createEntryPointExtensionProject( "test.project.test.2", 
+                                      id + "2", param + "2" );
+    config.setAttribute( "workspace_bundles",
+                         "test.project.test.2@default:default,"
+                           + "test.project@default:default" );
+    rapConfig = new RAPLaunchConfig( config );
+    rapConfig.setEntryPoint( param );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertFalse( findStatusCode( states, code ) );
+  }
+  
+  public void testValidateEntryPointWithApplication() throws CoreException {
+    String id = "id";
+    createApplicationExtensionProject( "test.project", id );
+    config.setAttribute( "workspace_bundles", "test.project@default:default" );
+    rapConfig = new RAPLaunchConfig( config );
+    rapConfig.setEntryPoint( "test.project." + id );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertFalse( findStatusCode( states, code ) );
   }
   
   public void testEntryPointEmpty() {
@@ -109,6 +282,9 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   
   //////////////////
   // helping methods
+  private void deleteOnTearDown( TestPluginProject project ) {
+    projectsToDelete.add( project );
+  }
 
   private static boolean findStatusCode( final IStatus[] states, 
                                          final int code ) 
@@ -120,5 +296,53 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
       }
     }
     return result;
+  }
+  
+  private void createEntryPointExtensionProject( final String projectName,
+                                                 final String id,
+                                                 final String parameter )
+    throws CoreException
+  {
+    TestPluginProject project = new TestPluginProject( projectName );
+    deleteOnTearDown( project );
+    Map attributes = new HashMap();
+    attributes.put( "id", id );
+    attributes.put( "class", "class1" );
+    attributes.put( "parameter", parameter );
+    project.createExtension( "org.eclipse.rap.ui.entrypoint",
+                             "entrypoint",
+                             attributes );
+  }
+  
+  private void createApplicationExtensionProject( final String projectName,
+                                                  final String id )
+    throws CoreException
+  {
+    TestPluginProject project = new TestPluginProject( projectName );
+    deleteOnTearDown( project );
+    Map attributes = new HashMap();
+    attributes.put( "cardinality", "singleton-global" );
+    attributes.put( "thread", "main" );
+    attributes.put( "visible", "true" );
+    String extensionId = "org.eclipse.core.runtime.applications";
+    project.createExtensionWithExtensionId( extensionId,
+                                            "application",
+                                            attributes,
+                                            id );
+  }
+  
+  private void createBrandingExtensionProject( final String projectName,
+                                               final String id,
+                                               final String servletName )
+    throws CoreException
+  {
+    TestPluginProject project = new TestPluginProject( projectName );
+    deleteOnTearDown( project );
+    Map attributes = new HashMap();
+    attributes.put( "id", id );
+    attributes.put( "servletName", servletName );
+    project.createExtension( "org.eclipse.rap.ui.branding",
+                             "branding",
+                             attributes );
   }
 }

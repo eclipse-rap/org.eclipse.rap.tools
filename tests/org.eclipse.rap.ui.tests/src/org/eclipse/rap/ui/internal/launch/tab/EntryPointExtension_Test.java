@@ -133,7 +133,7 @@ public class EntryPointExtension_Test extends TestCase {
     String[] plugins = new String[] { project.getName() }; // name == plugin-id
     NullProgressMonitor monitor = new NullProgressMonitor();
     EntryPointExtension[] extensions
-      = EntryPointExtension.findInPlugins( plugins, monitor );
+      = EntryPointExtension.findInWorkspacePlugins( plugins, monitor );
     assertEquals( 1, extensions.length );
     assertEquals( "findMe", extensions[ 0 ].getId() );
     assertEquals( project.getName(), extensions[ 0 ].getProject() );

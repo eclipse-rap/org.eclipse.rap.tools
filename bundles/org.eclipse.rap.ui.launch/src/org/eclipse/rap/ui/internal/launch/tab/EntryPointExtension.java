@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import org.eclipse.pde.core.plugin.*;
 
 public final class EntryPointExtension extends AbstractExtension {
 
-  private static final String EXTENSION_ID
+  public static final String EXTENSION_ID
     = "org.eclipse.rap.ui.entrypoint"; //$NON-NLS-1$
   private static final String ATTR_PARAMETER = "parameter"; //$NON-NLS-1$
   private static final String ATTR_ID = "id"; //$NON-NLS-1$
@@ -36,7 +36,7 @@ public final class EntryPointExtension extends AbstractExtension {
     return result;
   }
 
-  public static EntryPointExtension[] findInPlugins(
+  public static EntryPointExtension[] findInWorkspacePlugins(
     final String[] pluginIds,
     final IProgressMonitor monitor )
   {
@@ -46,7 +46,18 @@ public final class EntryPointExtension extends AbstractExtension {
                                                     monitor );
     return findInPluginExtensions( extensions );
   }
-
+  
+  public static EntryPointExtension[] findInActivePlugins(
+    final String[] pluginIds,
+    final IProgressMonitor monitor )
+  {
+    IPluginExtension[] extensions
+      = ExtensionUtil.getActivePluginExtensions( pluginIds, 
+                                                 EXTENSION_ID, 
+                                                 monitor );
+    return findInPluginExtensions( extensions );
+  }
+  
   public static EntryPointExtension[] findInWorkspace(
     final IProgressMonitor monitor )
   {
