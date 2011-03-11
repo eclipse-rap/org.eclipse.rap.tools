@@ -45,8 +45,7 @@ public class TargetSwitcher_Test extends TestCase {
   
   protected void setUp() throws Exception {
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
-    initialTargets 
-      = targetPlatformService.getTargets( new NullProgressMonitor() );
+    initialTargets = targetPlatformService.getTargets( new NullProgressMonitor() );
     filesToDelete = new ArrayList();
   }
 
@@ -75,33 +74,29 @@ public class TargetSwitcher_Test extends TestCase {
 
   public void testSwitchTarget() throws CoreException {
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
-    ITargetHandle workspaceTargetHandle 
-      = targetPlatformService.getWorkspaceTargetHandle();
+    ITargetHandle workspaceTargetHandle = targetPlatformService.getWorkspaceTargetHandle();
     try {
       ITargetDefinition newTarget = targetPlatformService.newTarget();
       newTarget.setName( "testTarget" );
       targetPlatformService.saveTargetDefinition( newTarget );
       assertNotSame( newTarget.getHandle(), workspaceTargetHandle );
       TargetSwitcher.switchTarget( newTarget );
-      ITargetHandle workspaceTargetHandle2 
-        = targetPlatformService.getWorkspaceTargetHandle();
+      ITargetHandle workspaceTargetHandle2 = targetPlatformService.getWorkspaceTargetHandle();
       assertEquals( newTarget.getHandle(), workspaceTargetHandle2 );
     } finally {
       // Switch back
-      ITargetDefinition targetDefinition 
-        = workspaceTargetHandle.getTargetDefinition();
+      ITargetDefinition targetDefinition = workspaceTargetHandle.getTargetDefinition();
       TargetSwitcher.switchTarget( targetDefinition );
     }
   }
 
   public void testInstallTargetAvailable() throws Exception {
     String p2RepoURI = createFakeRepository();
-    ITargetDefinition targetDefinition 
-      = TargetSwitcher.install( p2RepoURI,
-                                ROOT_IU,
-                                targetVersion,
-                                false,
-                                new NullProgressMonitor() );
+    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
+                                                                 ROOT_IU,
+                                                                 targetVersion,
+                                                                 false,
+                                                                 new NullProgressMonitor() );
     assertNotNull( "Target shuldn't be null if no exception happened",
                    targetDefinition );
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
@@ -109,8 +104,7 @@ public class TargetSwitcher_Test extends TestCase {
       = targetPlatformService.getTargets( new NullProgressMonitor() );
     List availableTargetsAsList = Arrays.asList( availableTargets );
     ITargetHandle handle = targetDefinition.getHandle();
-    assertTrue( "Target wasn't install properly",
-                availableTargetsAsList.contains( handle ) );
+    assertTrue( "Target wasn't install properly", availableTargetsAsList.contains( handle ) );
   }
 
   public void testInstall() throws Exception {
@@ -130,6 +124,19 @@ public class TargetSwitcher_Test extends TestCase {
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
   }
 
+  public void testWsRapSet() throws Exception {
+    String p2RepoURI = createFakeRepository();
+    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
+                                                                 ROOT_IU,
+                                                                 targetVersion,
+                                                                 false,
+                                                                 new NullProgressMonitor() );
+    assertNotNull( "Target shuldn't be null if no exception happened",
+                   targetDefinition );
+    assertEquals( "rap", targetDefinition.getWS() );
+  }
+
+  
   public void testInstallTwice() throws Exception {
     String p2RepoURI = createFakeRepository();
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
@@ -172,14 +179,12 @@ public class TargetSwitcher_Test extends TestCase {
     String VM_ARGS = "-Dosgi.noShutdown=true -Declipse.ignoreApp=true"; //$NON-NLS-1$
     String PROGRAM_ARGS = "-console -consolelog"; //$NON-NLS-1$
     String p2RepoURI = createFakeRepository();
-    ITargetDefinition targetDefinition 
-      = TargetSwitcher.install( p2RepoURI,
-                                ROOT_IU,
-                                targetVersion,
-                                false,
-                                new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened",
-                   targetDefinition );
+    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
+                                                                 ROOT_IU,
+                                                                 targetVersion,
+                                                                 false,
+                                                                 new NullProgressMonitor() );
+    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
     String targetVmArguments = targetDefinition.getVMArguments();
     assertEquals( VM_ARGS, targetVmArguments );
     String targetProgramArguments = targetDefinition.getProgramArguments();

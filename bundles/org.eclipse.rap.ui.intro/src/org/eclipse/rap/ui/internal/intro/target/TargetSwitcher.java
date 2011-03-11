@@ -29,9 +29,10 @@ import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 public final class TargetSwitcher {
 
   private static final String TARGET_NAME_PATTERN = "Rich Ajax Platform {0}"; //$NON-NLS-1$
-  private static final String VM_ARGS 
-    = "-Dosgi.noShutdown=true -Declipse.ignoreApp=true"; //$NON-NLS-1$
+  private static final String VM_ARGS = "-Dosgi.noShutdown=true -Declipse.ignoreApp=true"; //$NON-NLS-1$
   private static final String PROGRAM_ARGS = "-console -consolelog"; //$NON-NLS-1$
+  // FIXME with the official WS_RAP 
+  private static final String WS_RAP = "rap"; //$NON-NLS-1$
   
   private TargetSwitcher() {
     // prevent instantiation
@@ -56,8 +57,7 @@ public final class TargetSwitcher {
     } catch( final OperationCanceledException e ) {
       // do nothing
     } catch( final InterruptedException e ) {
-      String msg 
-        = IntroMessages.InstallRAPTargetHandler_SwitchTargetInterrupted;
+      String msg = IntroMessages.InstallRAPTargetHandler_SwitchTargetInterrupted;
       ErrorUtil.log( msg, e );
     }
   }
@@ -122,6 +122,7 @@ public final class TargetSwitcher {
     target.setName( targetName );
     target.setProgramArguments( PROGRAM_ARGS );
     target.setVMArguments( VM_ARGS );
+    target.setWS( WS_RAP );
     IUBundleContainer bundleContainer = getBundleContainer( service,
                                                             targetRepositoryURI,
                                                             rootIUs, 
@@ -156,13 +157,11 @@ public final class TargetSwitcher {
       Throwable statusException = getDownloadException( status );
       if( statusException instanceof UnknownHostException ){
         //Case no internet connection
-        String message = 
-          IntroMessages.TargetSwitcher_NoInternetConnectionAvailableErrorMsg;
+        String message = IntroMessages.TargetSwitcher_NoInternetConnectionAvailableErrorMsg;
         status = ErrorUtil.createErrorStatus( message, statusException );
       }else if( statusException instanceof SocketTimeoutException ){
         //Case no P2-repository problem
-        String message = 
-          IntroMessages.TargetSwitcher_TargetRepositoryProblemErrorMsg;
+        String message = IntroMessages.TargetSwitcher_TargetRepositoryProblemErrorMsg;
         status = ErrorUtil.createErrorStatus( message, statusException );
       }
       throw new CoreException( status );
@@ -214,8 +213,7 @@ public final class TargetSwitcher {
     };
     String[] versions = getLatestVersions( rootIUs, p2Repos, monitor );
     ContainerCreator creator = ContainerCreator.getInstance();
-    IUBundleContainer container 
-      = creator.createContainer( rootIUs, versions, p2Repos, service );
+    IUBundleContainer container = creator.createContainer( rootIUs, versions, p2Repos, service );
     return container;
   }
 
