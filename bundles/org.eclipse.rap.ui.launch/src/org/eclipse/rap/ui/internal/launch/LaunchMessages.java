@@ -28,6 +28,8 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchConfigValidator_PortNumberInvalid;
   public static String RAPLaunchConfigValidator_ServletNameEmpty;
   public static String RAPLaunchConfigValidator_TimeoutInvalid;
+  public static String RAPLaunchConfigValidator_WsEmpty;
+  public static String RAPLaunchConfigValidator_WsWrong;
   public static String RAPLaunchDelegate_CheckPortTaskName;
   public static String RAPLaunchDelegate_DeterminePortTaskName;
   public static String RAPLaunchDelegate_OpenBrowserFailed;

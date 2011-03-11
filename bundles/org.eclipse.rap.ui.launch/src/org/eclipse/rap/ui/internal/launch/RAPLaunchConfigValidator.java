@@ -22,6 +22,7 @@ import org.eclipse.debug.core.*;
 import org.eclipse.osgi.service.resolver.BundleDescription;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.PluginRegistry;
+import org.eclipse.pde.internal.launching.launcher.LaunchArgumentsHelper;
 import org.eclipse.rap.ui.internal.launch.tab.*;
 import org.eclipse.rap.ui.internal.launch.util.LauncherSerializationUtil;
 
@@ -29,6 +30,8 @@ import org.eclipse.rap.ui.internal.launch.util.LauncherSerializationUtil;
 public final class RAPLaunchConfigValidator {
 
   private static final String DEFAULT_BRAINDING = "rap"; //$NON-NLS-1$
+  // FIXME remove this when Platfrom.WS_RAP defined
+  public static final String WS_RAP = "rap"; //$NON-NLS-1$
   public static final int ERR_SERVLET_NAME = 6001;
   public static final int ERR_PORT = 6004;
   public static final int ERR_URL = 6005;
@@ -37,13 +40,12 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_ENTRY_POINT = 6008;
   public static final int ERR_SERVLET_BUNDLE = 6009;
   public static final int WARN_OSGI_FRAMEWORK = 7002;
-  private static final String RAP_LAUNCH_CONFIG_TYPE
-    = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
+  public static final int WARN_WS_WRONG = 7003;
+  private static final String RAP_LAUNCH_CONFIG_TYPE = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
   private static final String EMPTY = ""; //$NON-NLS-1$
-  private static final String WORKSPACE_BUNDLES_KEY 
-    = "workspace_bundles"; //$NON-NLS-1$
-  private static final String TARGET_BUNDLES_KEY 
-    = "target_bundles"; //$NON-NLS-1$
+  private static final String WORKSPACE_BUNDLES_KEY = "workspace_bundles"; //$NON-NLS-1$
+  private static final String TARGET_BUNDLES_KEY = "target_bundles"; //$NON-NLS-1$
+  private static final String PARAM_WS = "-ws";//$NON-NLS-1$
 
   private final RAPLaunchConfig config;
 
@@ -61,6 +63,7 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateLogLevel() );
       addNonOKState( states, validateSessionTimeout() );
       addNonOKState( states, validateEntryPoint() );
+      addNonOKState( states, validateWS() );
     } catch( final CoreException e ) {
       String text
         = LaunchMessages.RAPLaunchConfigValidator_ErrorWhileValidating;
@@ -208,6 +211,36 @@ public final class RAPLaunchConfigValidator {
         String msg = MessageFormat.format( unformatedMsg, 
                                            new Object[] { entryPoint } );
         result = createError( msg, ERR_ENTRY_POINT, null );
+      }
+    }
+    return result;
+  }
+  
+  private IStatus validateWS() throws CoreException {
+    IStatus result = Status.OK_STATUS;
+    final ILaunchConfiguration launchConfig = config.getUnderlyingLaunchConfig();
+    String[] programArguments = LaunchArgumentsHelper.getUserProgramArgumentArray( launchConfig );
+    String wsValue = extractParameterValue( PARAM_WS, programArguments );
+    String warnMessagePattern = null;
+    if( wsValue == null || "".equals( wsValue ) ) {
+      warnMessagePattern = LaunchMessages.RAPLaunchConfigValidator_WsEmpty;
+    } else if ( !WS_RAP.equals( wsValue ) ) {
+      warnMessagePattern = LaunchMessages.RAPLaunchConfigValidator_WsWrong;
+    }
+    if( warnMessagePattern != null ) {
+      final Object[] args = new Object[]{ PARAM_WS, WS_RAP };
+      String warnMessage = MessageFormat.format( warnMessagePattern, args );
+      result = createWarning( warnMessage, WARN_WS_WRONG, null );
+    }
+    return result;
+  }
+
+  private String extractParameterValue( String name, String[] parameters ) {
+    String result = null;
+    for( int i = 0; i < parameters.length; i++ ) {
+      String key = parameters[ i ];
+      if( name.equals( key ) && i < parameters.length - 1 ) {
+        result = parameters[ i + 1 ];
       }
     }
     return result;

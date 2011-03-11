@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 EclipseSource.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.rap.ui.tests.Fixture;
 import org.eclipse.rap.ui.tests.TestPluginProject;
 
@@ -39,7 +40,7 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   
   private ILaunchConfigurationWorkingCopy config;
   private RAPLaunchConfig rapConfig;
-  private List projectsToDelete = new ArrayList();
+  private final List projectsToDelete = new ArrayList();
 
   protected void setUp() throws Exception {
     config = Fixture.createRAPLaunchConfig();
@@ -62,9 +63,38 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
     IStatus[] states = val.validate();
     int code = RAPLaunchConfigValidator.ERR_SERVLET_NAME;
+  }
+
+  public void testValidateWsRAP() throws Exception {
+    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
+    config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "-ws rap" );
+    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    RAPLaunchConfigValidator validator = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = validator.validate();
+    int code = RAPLaunchConfigValidator.WARN_WS_WRONG;
+    assertFalse( findStatusCode( states, code ) );
+  }
+
+  public void testValidateWsEmpty() throws Exception {
+    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
+    config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "" );
+    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    RAPLaunchConfigValidator validator = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = validator.validate();
+    int code = RAPLaunchConfigValidator.WARN_WS_WRONG;
     assertTrue( findStatusCode( states, code ) );
   }
-  
+
+  public void testValidateWsNotRAP() throws Exception {
+    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
+    config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "-ws test" );
+    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    RAPLaunchConfigValidator validator = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = validator.validate();
+    int code = RAPLaunchConfigValidator.WARN_WS_WRONG;
+    assertTrue( findStatusCode( states, code ) );
+  }
+
   public void testValidateServletNameWithBrandingNotInBundles()
     throws CoreException
   {
@@ -226,7 +256,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   public void testEntryPointEmpty() {
     RAPLaunchConfigValidator val = rapConfig.getValidator();
     IStatus[] states = val.validate();
-    assertEquals( 0, states.length );
+    int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
+    assertFalse( findStatusCode( states, code ) );
   }
   
   public void testPort() {
@@ -297,6 +328,7 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     }
     return result;
   }
+
   
   private void createEntryPointExtensionProject( final String projectName,
                                                  final String id,
@@ -345,4 +377,5 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
                              "branding",
                              attributes );
   }
+
 }
