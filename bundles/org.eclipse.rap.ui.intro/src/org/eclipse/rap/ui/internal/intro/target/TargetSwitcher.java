@@ -122,7 +122,7 @@ public final class TargetSwitcher {
     target.setName( targetName );
     target.setProgramArguments( PROGRAM_ARGS );
     target.setVMArguments( VM_ARGS );
-    target.setWS( WS_RAP );
+//    target.setWS( WS_RAP );
     IUBundleContainer bundleContainer = getBundleContainer( service,
                                                             targetRepositoryURI,
                                                             rootIUs, 

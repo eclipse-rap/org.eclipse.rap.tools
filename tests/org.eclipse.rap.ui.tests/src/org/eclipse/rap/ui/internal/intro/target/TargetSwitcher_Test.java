@@ -124,19 +124,18 @@ public class TargetSwitcher_Test extends TestCase {
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
   }
 
-  public void testWsRapSet() throws Exception {
-    String p2RepoURI = createFakeRepository();
-    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
-                                                                 ROOT_IU,
-                                                                 targetVersion,
-                                                                 false,
-                                                                 new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened",
-                   targetDefinition );
-    assertEquals( "rap", targetDefinition.getWS() );
-  }
+// TODO [rst] Re-enable when bug 338544 is fixed
+//  public void testWsRapSet() throws Exception {
+//    String p2RepoURI = createFakeRepository();
+//    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
+//                                                                 ROOT_IU,
+//                                                                 targetVersion,
+//                                                                 false,
+//                                                                 new NullProgressMonitor() );
+//    assertNotNull( "Target shouldn't be null if no exception happened", targetDefinition );
+//    assertEquals( "rap", targetDefinition.getWS() );
+//  }
 
-  
   public void testInstallTwice() throws Exception {
     String p2RepoURI = createFakeRepository();
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
