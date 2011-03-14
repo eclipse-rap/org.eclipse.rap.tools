@@ -63,7 +63,8 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateLogLevel() );
       addNonOKState( states, validateSessionTimeout() );
       addNonOKState( states, validateEntryPoint() );
-      addNonOKState( states, validateWS() );
+// TODO [rst] Re-enable when bug 338544 is fixed
+//      addNonOKState( states, validateWS() );
     } catch( final CoreException e ) {
       String text
         = LaunchMessages.RAPLaunchConfigValidator_ErrorWhileValidating;
