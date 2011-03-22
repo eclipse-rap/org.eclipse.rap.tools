@@ -37,7 +37,7 @@ public class RAPJUnitLaunchConfigurationDelegate
     = new RAPLaunchDelegate( true );
 
   
-  private final class EquinoxLaunchConfigurationExtension
+  private static final class EquinoxLaunchConfigurationExtension
     extends EquinoxLaunchConfiguration
   {
     

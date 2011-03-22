@@ -26,7 +26,9 @@ public final class RAPJUnitLaunchShortcut extends JUnitWorkbenchLaunchShortcut {
   private OSGiLaunchShortcutExtension ols = new OSGiLaunchShortcutExtension();
 
   
-  private final class OSGiLaunchShortcutExtension extends OSGiLaunchShortcut {
+  private static final class OSGiLaunchShortcutExtension 
+    extends OSGiLaunchShortcut 
+  {
     public void initializeConfiguration( 
       final ILaunchConfigurationWorkingCopy configuration )
     {
