@@ -15,12 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.pde.core.plugin.IPluginBase;
-import org.eclipse.pde.core.plugin.IPluginElement;
-import org.eclipse.pde.core.plugin.IPluginExtension;
-import org.eclipse.pde.core.plugin.IPluginModelBase;
-import org.eclipse.pde.core.plugin.IPluginModelFactory;
-import org.eclipse.pde.core.plugin.IPluginReference;
+import org.eclipse.pde.core.plugin.*;
 import org.eclipse.pde.ui.IFieldData;
 import org.eclipse.pde.ui.templates.OptionTemplateSection;
 import org.eclipse.rap.internal.ui.templates.PluginReference;
@@ -67,7 +62,7 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
 
   public IPluginReference[] getDependencies( final String schemaVersion ) {
     return new IPluginReference[] {
-      new PluginReference( "org.eclipse.rap.ui", null, 0 ) //$NON-NLS-1$
+      new PluginReference( "org.eclipse.rap.ui", null, IMatchRules.NONE ) //$NON-NLS-1$
     };
   }
 

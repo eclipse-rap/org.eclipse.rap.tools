@@ -121,7 +121,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   ///////////////////
   // helping classes
 
-  private class ManifestListener implements IResourceChangeListener {
+  private static class ManifestListener implements IResourceChangeListener {
 
     public void resourceChanged( final IResourceChangeEvent event ) {
       try {

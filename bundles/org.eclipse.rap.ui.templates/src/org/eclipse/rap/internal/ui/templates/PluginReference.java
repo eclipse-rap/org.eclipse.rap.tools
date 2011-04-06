@@ -15,30 +15,9 @@ import org.eclipse.pde.core.plugin.IPluginReference;
  */
 public class PluginReference implements IPluginReference {
 
-  private int match = NONE;
+  private int match;
   private String version;
   private String id;
-
-  /**
-   * Constructor for PluginReference.
-   */
-  public PluginReference() {
-    super();
-  }
-
-  public boolean equals( Object object ) {
-    if( object instanceof IPluginReference ) {
-      IPluginReference source = ( IPluginReference )object;
-      if( id == null )
-        return false;
-      if( id.equals( source.getId() ) == false )
-        return false;
-      if( version == null && source.getVersion() == null )
-        return true;
-      return version.equals( source.getVersion() );
-    }
-    return false;
-  }
 
   public PluginReference( String id, String version, int match ) {
     this.id = id;
@@ -46,45 +25,67 @@ public class PluginReference implements IPluginReference {
     this.match = match;
   }
 
-  /*
-   * @see IPluginReference#getMatch()
-   */
   public int getMatch() {
     return match;
   }
 
-  /*
-   * @see IPluginReference#getVersion()
-   */
   public String getVersion() {
     return version;
   }
 
-  /*
-   * @see IPluginReference#setMatch(int)
-   */
   public void setMatch( int match ) throws CoreException {
     this.match = match;
   }
 
-  /*
-   * @see IPluginReference#setVersion(String)
-   */
   public void setVersion( String version ) throws CoreException {
     this.version = version;
   }
 
-  /*
-   * @see IIdentifiable#getId()
-   */
   public String getId() {
     return id;
   }
 
-  /*
-   * @see IIdentifiable#setId(String)
-   */
   public void setId( String id ) throws CoreException {
     this.id = id;
+  }
+
+  public boolean equals( Object obj ) {
+    if( this == obj ) {
+      return true;
+    }
+    if( obj == null ) {
+      return false;
+    }
+    if( getClass() != obj.getClass() ) {
+      return false;
+    }
+    PluginReference other = ( PluginReference )obj;
+    if( id == null ) {
+      if( other.id != null ) {
+        return false;
+      }
+    } else if( !id.equals( other.id ) ) {
+      return false;
+    }
+    if( match != other.match ) {
+      return false;
+    }
+    if( version == null ) {
+      if( other.version != null ) {
+        return false;
+      }
+    } else if( !version.equals( other.version ) ) {
+      return false;
+    }
+    return true;
+  }
+
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
+    result = prime * result + match;
+    result = prime * result + ( ( version == null ) ? 0 : version.hashCode() );
+    return result;
   }
 }
