@@ -280,8 +280,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
           DebugEvent event = events[ i ];
           if( isTerminateEventFor( event, previousLaunch ) ) {
             DebugPlugin.getDefault().removeDebugEventListener( this );
-            terminated[ 0 ] = true;
             synchronized( signal ) {
+              terminated[ 0 ] = true;
               signal.notifyAll();
             }
           }
@@ -289,14 +289,14 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       }
     } );
     previousLaunch.terminate();
-    if( !terminated[ 0 ] ) {
-      try {
-        synchronized( signal ) {
+    try {
+      synchronized( signal ) {
+        if( !terminated[ 0 ] ) {
           signal.wait();
         }
-      } catch( InterruptedException e ) {
-        // ignore
       }
+    } catch( InterruptedException e ) {
+      // ignore
     }
   }
 
