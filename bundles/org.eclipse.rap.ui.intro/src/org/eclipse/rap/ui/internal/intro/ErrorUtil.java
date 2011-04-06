@@ -46,15 +46,15 @@ public final class ErrorUtil {
       cause = ( ( InvocationTargetException )cause ).getTargetException();
     }
     IStatus result;
-    if( throwable instanceof CoreException ) {
-      result = ( ( CoreException )throwable ).getStatus();
+    if( cause instanceof CoreException ) {
+      result = ( ( CoreException )cause ).getStatus();
     } else {
       String statusMessage = message;
-      if( statusMessage == null && throwable != null ) {
-        if( throwable.getMessage() != null ) {
-          statusMessage = throwable.getMessage();
+      if( statusMessage == null && cause != null ) {
+        if( cause.getMessage() != null ) {
+          statusMessage = cause.getMessage();
         } else {
-          statusMessage = throwable.toString();
+          statusMessage = cause.toString();
         }
       }
       if( statusMessage == null ) {
@@ -64,7 +64,7 @@ public final class ErrorUtil {
                            IntroPlugin.getPluginId(),
                            0,
                            statusMessage, 
-                           throwable );
+                           cause );
     }
     return result;
   }

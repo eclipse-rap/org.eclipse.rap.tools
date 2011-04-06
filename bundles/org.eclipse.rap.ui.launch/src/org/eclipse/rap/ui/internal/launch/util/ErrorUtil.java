@@ -26,21 +26,21 @@ public final class ErrorUtil {
       cause = ( ( InvocationTargetException )cause ).getTargetException();
     }
     final IStatus status;
-    if( throwable instanceof CoreException ) {
-      status = ( ( CoreException )throwable ).getStatus();
+    if( cause instanceof CoreException ) {
+      status = ( ( CoreException )cause ).getStatus();
     } else {
       String statusMessage = message;
       if( statusMessage == null ) {
-        statusMessage = throwable.getMessage();
+        statusMessage = cause.getMessage();
       }
       if( statusMessage == null ) {
-        statusMessage = throwable.toString();
+        statusMessage = cause.toString();
       }
       status = new Status( IStatus.ERROR, 
                            Activator.getPluginId(),
                            0,
                            statusMessage, 
-                           throwable );
+                           cause );
     }
     Activator.getDefault().getLog().log( status );
     Display display = Display.getCurrent();
