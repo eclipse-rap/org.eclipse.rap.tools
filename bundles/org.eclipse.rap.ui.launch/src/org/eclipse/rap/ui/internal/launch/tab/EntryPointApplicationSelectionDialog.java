@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.tab;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.core.runtime.*;
@@ -149,7 +150,11 @@ final class EntryPointApplicationSelectionDialog
   ////////////////
   // Inner classes
 
-  private static final class EntryPointComparator implements Comparator {
+  private static final class EntryPointComparator 
+    implements Comparator, Serializable 
+  {
+
+    private static final long serialVersionUID = 1L;
 
     public int compare( final Object object1, final Object object2 ) {
       int result = -1;

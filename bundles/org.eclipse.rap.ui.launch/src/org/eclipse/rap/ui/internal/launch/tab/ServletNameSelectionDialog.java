@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.tab;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.eclipse.core.runtime.*;
@@ -125,7 +126,11 @@ final class ServletNameSelectionDialog extends FilteredItemsSelectionDialog {
   ////////////////
   // Inner classes
 
-  private static final class BrandingComparator implements Comparator {
+  private static final class BrandingComparator 
+    implements Comparator, Serializable 
+  {
+
+    private static final long serialVersionUID = 1L;
 
     public int compare( final Object object1, final Object object2 ) {
       BrandingExtension extension1 = ( BrandingExtension )object1;
