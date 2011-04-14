@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 EclipseSource
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
 
   protected static final String KEY_APPLICATION_CLASS = "applicationClass"; //$NON-NLS-1$
   protected static final String KEY_WINDOW_TITLE = "windowTitle"; //$NON-NLS-1$
+  protected static final String KEY_VERIFY_RAP_TARGET_ACTIVE = "verifyRapTarget"; //$NON-NLS-1$
   protected static final String TEMPLATES_DIRECTORY = "templates"; //$NON-NLS-1$
 
   public abstract String getApplicationId();
@@ -102,5 +103,9 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
 
   protected final String getTemplateDirectory() {
     return TEMPLATES_DIRECTORY;
+  }
+  
+  protected final boolean isRapTargetInstallSelected() {
+    return getBooleanOption( KEY_VERIFY_RAP_TARGET_ACTIVE );
   }
 }

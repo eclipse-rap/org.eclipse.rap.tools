@@ -1,22 +1,33 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html Contributors:
- * Innoopract Informationssysteme GmbH - initial API and implementation
+ * Copyright (c) 2007, 2011 EclipseSource
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *     EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.internal.ui.templates.rap;
 
 import java.io.*;
 
+import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
+import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.eclipse.pde.ui.templates.NewPluginTemplateWizard;
+import org.eclipse.rap.internal.ui.templates.Activator;
 import org.eclipse.rap.internal.ui.templates.TemplateUtil;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.IHandlerService;
 
 /**
  * <p>
@@ -48,17 +59,11 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       copyLaunchConfig( project, model );
       IResourceChangeListener listener = new ManifestListener();
       ResourcesPlugin.getWorkspace().addResourceChangeListener( listener );
+      handleRapTargetVerification();
     }
     return result;
   }
-
-  protected abstract String getEntryPointName();
   
-  protected abstract String getServletName();
-
-  ////////////////////////////
-  // Copy launch config helper
-
   private void copyLaunchConfig( final IProject project,
                                  final IPluginModelBase model )
   {
@@ -106,6 +111,10 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     replacePlaceholder( buffer, TAG_SERVLET_NAME, getServletName() );
     return new ByteArrayInputStream( buffer.toString().getBytes() );
   }
+  
+  protected abstract String getEntryPointName();
+  
+  protected abstract String getServletName();
 
   private static void replacePlaceholder( final StringBuffer buffer,
                                           final String placeholder,
@@ -117,6 +126,43 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       index = buffer.indexOf( placeholder );
      }
   }
+
+  private void handleRapTargetVerification() {
+    if( isRapTargetInstallSelected() && !containsRapUi() ) {
+      openRapTargetInstalation();
+    }
+  }
+  
+  protected abstract boolean isRapTargetInstallSelected();
+  
+  private boolean containsRapUi() {
+    IPluginModelBase rapUiPluginModel = PluginRegistry.findModel( "org.eclipse.rap.ui" );//$NON-NLS-1$
+    return rapUiPluginModel != null;
+  }
+  
+  private void openRapTargetInstalation() {
+    final Display currentDisplay = Display.getCurrent();
+    currentDisplay.asyncExec( new Runnable() {
+
+      public void run() {
+        executeInstallTargetCommand();
+      }
+    } );
+  }
+  
+  private void executeInstallTargetCommand() {
+    IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+    IHandlerService handlerService 
+      = ( IHandlerService )workbenchWindow.getService( IHandlerService.class );
+    try {
+      handlerService.executeCommand( "org.eclipse.rap.ui.intro.installTarget", null ); //$NON-NLS-1$
+    } catch( CommandException e ) {
+      ILog log = Activator.getDefault().getLog();
+      Status status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e );
+      log.log( status );
+    }
+  }
+
 
   ///////////////////
   // helping classes
