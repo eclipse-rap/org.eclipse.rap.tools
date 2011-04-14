@@ -18,13 +18,13 @@ import java.util.logging.Level;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.*;
-import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.*;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.window.Window;
+import org.eclipse.pde.ui.launcher.AbstractLauncherTab;
 import org.eclipse.rap.ui.internal.launch.*;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
-public final class MainTab extends AbstractLaunchConfigurationTab {
+public final class MainTab extends AbstractLauncherTab {
 
   
   private static final String BROWSER_PREFERENCE_PAGE 
@@ -62,6 +62,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   private ComboViewer cmbLogLevel;
   private ComboViewer cmbLibVariant;
   private ILaunchConfigurationListener launchConfigListener;
+  private DataLocationBlock dataLocationBlock;
 
   public MainTab() {
     tabImage = Images.DESC_MAIN_TAB.createImage();
@@ -101,6 +102,7 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     createServletNameAndEntryPointSection( container );
     createBrowserModeSection( container );
     createRuntimeSettingsSection( container );
+    createDataLocationSection( container );
     // Set container for this tab page
     Dialog.applyDialogFont( container );
     setControl( container );
@@ -150,6 +152,8 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
       LibraryVariant libVariant = rapConfig.getLibraryVariant();
       StructuredSelection libSelection = new StructuredSelection( libVariant );
       cmbLibVariant.setSelection( libSelection );
+      // Data location
+      dataLocationBlock.initializeFrom( rapConfig );
     } catch( CoreException e ) {
       ErrorUtil.show( null, e );
     }
@@ -179,6 +183,12 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     // Client-side log level
     rapConfig.setLogLevel( getLogLevel() );
     rapConfig.setLibraryVariant( getLibraryVariant() );
+    // Data location
+    rapConfig.setDataLocation( dataLocationBlock.getLocation() );
+    boolean useDefaultDataLocation = dataLocationBlock.getUseDefaultDataLocation();
+    rapConfig.setUseDefaultDataLocation( useDefaultDataLocation );
+    rapConfig.setDoClearDataLocation( dataLocationBlock.getDoClearDataLocation() );
+    rapConfig.setAskClearDataLocation( false );
     validate( rapConfig );
     setDirty( true );
   }
@@ -189,6 +199,10 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
   
   public boolean isValid( final ILaunchConfiguration launchConfig ) {
     return getErrorMessage() == null;
+  }
+  
+  public void validateTab() {
+    // We validate on performApply and launcher changes. No need to validate here.
   }
   
   ///////////////////////////////////
@@ -215,6 +229,12 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
     };
     ILaunchManager launchManager = getLaunchManager();
     launchManager.addLaunchConfigurationListener( launchConfigListener );
+  }
+
+  private void createDataLocationSection( Composite container ) {
+    dataLocationBlock = new DataLocationBlock( this );
+    Control blockControl = dataLocationBlock.createControl( container );
+    blockControl.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
   }
   
   private void createServletNameAndEntryPointSection( final Composite parent ) {
@@ -525,4 +545,5 @@ public final class MainTab extends AbstractLaunchConfigurationTab {
       return result;
     }
   }
+
 }

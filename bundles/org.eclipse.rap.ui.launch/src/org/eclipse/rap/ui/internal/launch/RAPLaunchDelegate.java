@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 EclipseSource.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,11 @@ import java.util.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.*;
 import org.eclipse.debug.core.model.RuntimeProcess;
+import org.eclipse.pde.internal.launching.launcher.LauncherUtils;
 import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
@@ -41,7 +44,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     = "-Dorg.eclipse.rwt.clientLibraryVariant="; //$NON-NLS-1$
   private static final String VMARG_SESSION_TIMEOUT 
     = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval="; //$NON-NLS-1$
-  
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
   
 
@@ -107,6 +109,40 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     String[] result = new String[ list.size() ];
     list.toArray( result );
     return result;
+  }
+  
+  public String[] getProgramArguments( ILaunchConfiguration configuration ) throws CoreException {
+    List newProgrammArguments = new ArrayList();
+    String[] originalPogramArguments = super.getProgramArguments( configuration );
+    newProgrammArguments.addAll( Arrays.asList( originalPogramArguments ) );
+    String[] dataLocationArgument = getDataLocationArgument();
+    newProgrammArguments.addAll( Arrays.asList( dataLocationArgument ) );
+    String[] result = new String[ newProgrammArguments.size() ];
+    newProgrammArguments.toArray( result );
+    return result;
+  }
+
+  private String[] getDataLocationArgument() throws CoreException {
+    String[] result;
+    String dataLocationResolved = getResolvedDataLoacation();
+    if( dataLocationResolved.length() > 0 ) {
+      result = new String[] { "-data", dataLocationResolved };
+    } else { 
+      result = new String[ 0 ];
+    }
+    return result;
+  }
+
+  private String getResolvedDataLoacation() throws CoreException {
+    String dataLocation = config.getDataLocation();
+    String dataLocationResolved = resolveDataLocation( dataLocation );
+    return dataLocationResolved;
+  }
+
+  private String resolveDataLocation( String dataLocation ) throws CoreException {
+    final VariablesPlugin variablePlugin = VariablesPlugin.getDefault();
+    IStringVariableManager stringVariableManager = variablePlugin.getStringVariableManager();
+    return stringVariableManager.performStringSubstitution( dataLocation );
   }
   
   private String[] getRAPVMArguments() throws CoreException {
@@ -359,6 +395,24 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       subMonitor.done();
     }
   }
+  
+  public void clear( ILaunchConfiguration configuration, IProgressMonitor monitor ) 
+    throws CoreException
+  {
+    clearDataLocation( configuration, monitor );
+    super.clear( configuration, monitor );
+  }
+  
+  private void clearDataLocation( ILaunchConfiguration configuration, IProgressMonitor monitor )
+    throws CoreException
+  {
+    String resolvedDataLocation = getResolvedDataLoacation();
+    boolean isCleared = LauncherUtils.clearWorkspace( configuration, resolvedDataLocation, monitor );
+    if( !isCleared ) {
+      throw new CoreException( Status.CANCEL_STATUS );
+    }
+  }
+
   /////////////////////////////////////////////////
   // Helping methods to create browser and open URL
   
@@ -373,10 +427,10 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
             // Start a separate job to wait for the http service and launch the 
             // browser. Otherwise we would block the application on whose 
             // service we are waiting for
-            Job job = new Job( LaunchMessages.RAPLaunchDelegate_StartClientTaskName ) {
+            final String jobTaskName = LaunchMessages.RAPLaunchDelegate_StartClientTaskName;
+            Job job = new Job( jobTaskName ) {
               protected IStatus run( final IProgressMonitor monitor ) {
-                String taskName
-                  = LaunchMessages.RAPLaunchDelegate_StartClientTaskName;
+                String taskName = jobTaskName;
                 monitor.beginTask( taskName, 2 );
                 try {
                   waitForHttpService( monitor );

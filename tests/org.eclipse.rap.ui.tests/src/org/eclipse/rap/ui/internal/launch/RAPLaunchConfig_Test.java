@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -69,4 +69,35 @@ public class RAPLaunchConfig_Test extends TestCase {
       assertEquals( "xyz", rapConfig.getServletName() );
     }
   }
+  
+  public void testSetDataLocation() throws CoreException {
+    rapConfig.setDataLocation( "xyz" );
+    assertEquals( "xyz", rapConfig.getDataLocation() );
+  }
+  
+  public void testSetDataLocationThrowsExceptionWithNullValue() throws CoreException {
+    rapConfig.setDataLocation( "xyz" );
+    try {
+      rapConfig.setDataLocation( null );
+      fail( "Must not allow to set data location to null" );
+    } catch( NullPointerException e ) {
+      // expected
+      assertEquals( "xyz", rapConfig.getDataLocation() );
+    }
+  }
+  
+  public void testUseDefaultDataLocation() throws CoreException {
+    rapConfig.setUseDefaultDataLocation( false );
+    assertFalse( rapConfig.getUseDefaultDatatLocation() );
+    rapConfig.setUseDefaultDataLocation( true );
+    assertTrue( rapConfig.getUseDefaultDatatLocation() );
+  }
+  
+  public void testDoClear() throws CoreException {
+    rapConfig.setDoClearDataLocation( false );
+    assertFalse( rapConfig.getDoClearDataLocation() );
+    rapConfig.setDoClearDataLocation( true );
+    assertTrue( rapConfig.getDoClearDataLocation() );
+  }
+
 }

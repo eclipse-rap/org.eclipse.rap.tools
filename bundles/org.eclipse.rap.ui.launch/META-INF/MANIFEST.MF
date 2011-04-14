@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.junit,
  org.eclipse.jdt.launching,
  org.eclipse.pde.ui,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.core.variables
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor

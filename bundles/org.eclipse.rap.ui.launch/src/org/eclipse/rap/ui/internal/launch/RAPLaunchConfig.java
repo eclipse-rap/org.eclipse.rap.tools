@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 EclipseSource.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.pde.launching.IPDELauncherConstants;
 
 
 public final class RAPLaunchConfig {
@@ -146,6 +147,10 @@ public final class RAPLaunchConfig {
     = PREFIX + "logLevel"; //$NON-NLS-1$
   public static final String LIBRARY_VARIANT
     = PREFIX + "libraryVariant"; //$NON-NLS-1$
+  public static final String USE_DEFAULT_DATA_LOCATION 
+    = PREFIX + "useDefaultDataLocation"; //$NON-NLS-1$
+  public static final String DATA_LOCATION 
+  = PREFIX + "dataLocation"; //$NON-NLS-1$
 
   // Default values for launch configuration attribute names
   private static final String DEFAULT_SERVLET_NAME = "rap"; //$NON-NLS-1$
@@ -159,10 +164,10 @@ public final class RAPLaunchConfig {
   private static final String DEFAULT_LOG_LEVEL = Level.OFF.getName();
   private static final String DEFAULT_LIBRARY_VARIANT
     = LibraryVariant.STANDARD.getName();
+  private static final String DEFAULT_DATA_LOCATION
+    = "${workspace_loc}/.metadata/.plugins/"; //$NON-NLS-1$
 
-
-  public static void setDefaults( final ILaunchConfigurationWorkingCopy config )
-  {
+  public static void setDefaults( ILaunchConfigurationWorkingCopy config ) {
     config.setAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
     config.setAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
     config.setAttribute( TERMINATE_PREVIOUS, DEFAULT_TERMINATE_PREVIOUS );
@@ -173,6 +178,15 @@ public final class RAPLaunchConfig {
     config.setAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
     config.setAttribute( LOG_LEVEL, DEFAULT_LOG_LEVEL );
     config.setAttribute( LIBRARY_VARIANT, DEFAULT_LIBRARY_VARIANT );
+    config.setAttribute( USE_DEFAULT_DATA_LOCATION, true );
+    config.setAttribute( IPDELauncherConstants.DOCLEAR, false );
+    config.setAttribute( IPDELauncherConstants.ASKCLEAR, false );
+    String defaultDataLocation = getDefaultDataLocation( config.getName() );
+    config.setAttribute( DATA_LOCATION, defaultDataLocation );
+  }
+
+  public static String getDefaultDataLocation( String name ) {
+    return DEFAULT_DATA_LOCATION + Activator.getPluginId() + "/"+ name.replaceAll( "\\s", "" );
   }
 
   private final ILaunchConfiguration config;
@@ -198,10 +212,49 @@ public final class RAPLaunchConfig {
   public RAPLaunchConfigValidator getValidator() {
     return new RAPLaunchConfigValidator( this );
   }
-  
+
   //////////////////////////////////////////////////////////
   // Accessor and mutator methods for wrapped launch config
 
+  public boolean getAskClearDataLocation() throws CoreException {
+    return config.getAttribute( IPDELauncherConstants.ASKCLEAR, false );
+  }
+
+  public void setAskClearDataLocation( boolean askClear ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( IPDELauncherConstants.ASKCLEAR, askClear );
+  }
+  
+  public boolean getDoClearDataLocation() throws CoreException {
+    return config.getAttribute( IPDELauncherConstants.DOCLEAR, false );
+  }
+
+  public void setDoClearDataLocation( boolean doClear ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( IPDELauncherConstants.DOCLEAR, doClear );
+  }
+
+  public boolean getUseDefaultDatatLocation() throws CoreException {
+    return config.getAttribute( USE_DEFAULT_DATA_LOCATION, true );
+  }
+
+  public void setUseDefaultDataLocation( boolean useDefaultDataLocation ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( USE_DEFAULT_DATA_LOCATION, useDefaultDataLocation );
+  }
+
+  public String getDataLocation() throws CoreException {
+    return config.getAttribute( DATA_LOCATION, getDefaultDataLocation( getName() ) );
+  }
+
+  public void setDataLocation( String dataLocation ) {
+    if( dataLocation == null ) {
+      throw new NullPointerException( "dataLocation" ); //$NON-NLS-1$
+    }
+    checkWorkingCopy();
+    workingCopy.setAttribute( DATA_LOCATION, dataLocation );
+  }
+  
   public String getServletName() throws CoreException {
     return config.getAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
   }

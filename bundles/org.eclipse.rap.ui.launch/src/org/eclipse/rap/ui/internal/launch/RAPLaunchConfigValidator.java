@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 EclipseSource.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_TIMEOUT = 6007;
   public static final int ERR_ENTRY_POINT = 6008;
   public static final int ERR_SERVLET_BUNDLE = 6009;
+  public static final int ERR_DATA_LOCATION = 6010;
   public static final int WARN_OSGI_FRAMEWORK = 7002;
   public static final int WARN_WS_WRONG = 7003;
   private static final String RAP_LAUNCH_CONFIG_TYPE = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
@@ -63,6 +64,7 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateLogLevel() );
       addNonOKState( states, validateSessionTimeout() );
       addNonOKState( states, validateEntryPoint() );
+      addNonOKState( states, validateDataLocation() );
 // TODO [rst] Re-enable when bug 338544 is fixed
 //      addNonOKState( states, validateWS() );
     } catch( final CoreException e ) {
@@ -79,6 +81,16 @@ public final class RAPLaunchConfigValidator {
 
   /////////////////////
   // Validation methods
+
+  private IStatus validateDataLocation() throws CoreException {
+    IStatus result = Status.OK_STATUS;
+    String dataLocation = config.getDataLocation();
+    if( dataLocation == null || dataLocation.length() == 0 ) {
+      String msg = LaunchMessages.RAPLaunchConfigValidator_DataLocationErrorMsg;
+      result = createError( msg, ERR_DATA_LOCATION, null );
+    }
+    return result;
+  }
 
   private IStatus validateServletName() throws CoreException {
     IStatus result = Status.OK_STATUS;

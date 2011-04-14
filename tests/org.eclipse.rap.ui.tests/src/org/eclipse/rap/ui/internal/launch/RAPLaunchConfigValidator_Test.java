@@ -57,6 +57,14 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     }
   }
   
+  public void testValidateDataLocation() {
+    rapConfig.setDataLocation( "" );
+    RAPLaunchConfigValidator validator = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = validator.validate();
+    int code = RAPLaunchConfigValidator.ERR_DATA_LOCATION;
+    assertTrue( findStatusCode( states, code ) );
+  }
+  
   public void testValidateServletName() {
     // servlet name has a default value, clear this
     rapConfig.setServletName( "" );
