@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta name="copyright" content="Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta name="copyright" content="Copyright (c) 2007-2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <title>Deployment</title>
@@ -10,115 +10,95 @@
 <body>
   <h1>How to Deploy a RAP Application to a Servlet Container?</h1> 
   
-  <p>The current eclipse build tools and wizards do not directly support 
-  building this style of application so for the time being the build can be
-  performed with a series of Ant scripts and resource templates. The 
-  <code>org.eclipse.rap.demo.feature</code> shows how to create a <code>WAR</code> that
+  <p> The following tutorial shows how to create a <code>WAR</code> file that
   contains the <code>org.eclipse.rap.demo</code> project as RAP application.</p>
   
   <p>Note: As with RCP applications there are a wide variety of possible
-  configurations. What's given in <code>org.eclipse.rap.demo.feature</code> is
-  just one possibility.</p>
+  configurations. What's given in this tutorial is just one possibility.</p>
   
-  <p>As prerequisites we assume that you are familiar with the bundles- and 
-  build information section of the 
+  <p>As prerequisites we assume that you:
+  <ul>
+  <li> are familiar with the bundles- and build information section of the 
   <a href="http://www.eclipse.org/equinox/server/http_in_container.php">
-  Equinox in a Servlet Container</a> document. We also assume that you checked
-  out the 
-  <a href="servletbridge-anon.psf">servlet bridge and demo feature bundles</a>
-  in your workspace. The link points to a 'team project set' file. 
-  In case you haven't done that so far, use <b>File</b> 
+  Equinox in a Servlet Container</a> document.</li>
+  <li> have installed the WAR Products tooling from this p2 repository 
+  <a href="http://download.eclipse.org/releases/indigo">http://download.eclipse.org/releases/indigo</a> 
+  into your IDE. This tooling is part of <a href="http://eclipse.org/libra">Libra</a> and not 
+  part of RAP. Anyway it can be used to deploy RAP applications in a very comfortable way.</li>
+  <li> set RAP as you target platform. If you are using RAP 1.4 or a newer version you
+  don't need to check out the <a href="servletbridge-anon.psf">servlet bridge</a>
+  bundles in your workspace because they are part of the RAP target. Otherwise 
+  you need to check out the servlet bridge bundles. The link points to a 
+  'team project set' file. In case you haven't done that so far, use <b>File</b> 
   &gt; <b>Import</b> &gt; <b>Team Project Set</b> and enter the location of
   the downloaded file. Press <b>Finish</b> and the necessary 
-  projects will be imported from CVS.</p>
+  projects will be imported from CVS.</li>
+  </ul></p>
   
-  <h3>Prepare the build script</h3>
+  <h3>Import <code>org.eclipse.rap.demo</code> into your workspace</h3>
   <ul>
-  <li>Open the <code>script/webappBuilder.xml</code> of the
-  <code>org.eclipse.rap.demo.feature</code> with the Ant editor.</li>
-  <li>Adjust the <code>servletbridge.dir</code> property
-  (see docu in script file).</li>
+  <li>Open the <code>plug-ins</code> view.
+  <li>Select the <code>org.eclipse.rap.demo</code> plug-in and use the command
+  <b>Import As</b> > <b>Source Project</b> from the context menu to import 
+  <code>org.eclipse.rap.demo</code> as project in your workspace.</li>
+  <img src="../../images/import_rap_demo.png">
   </ul>
-  <img src="../../images/script.png">
   
-  <h3>Create the build content</h3>
+  <h3>Cerate a <code>.warproduct</code> configuration</h3>
+  <p>Building a <code>WAR</code> file using the WAR Products tooling is centered around 
+  a <code>.warproduct</code> configuration. The <code>.warproduct</code> configuration is 
+  entirely managed by the WAR Products tooling to simplify war deployment. It's format 
+  is internal and is not intended to be read by tools other than the WAR Products tooling.
+  To create a <code>.warproduct</code> configuration you can use a working launch 
+  configuration. Follow these steps to create a <code>rapdemo.warproduct</code>
+  configuration for the RAP demo application:
   <ul>
-  <li>Right-Click on the <code>webAppBuilder.xml</code> script in the IDE and 
-      "Run Ant". (Note: In order to make the <code>pde.exportFeatures</code> task
-      available in the IDE select "Run in the same JRE as the workspace" on the
-      JRE tab from "Run Ant...").</li>
-  <li>The actual build (i.e. the <code>pde.exportFeatures</code> task) is run 
-      asynchronously. This means you need to wait a little more after the Ant 
-      script finished.
-      Watch the progress monitor in the status bar to detrmine when the build 
-      is done.</li>
-  <li>Refresh the feature project - a build folder should appear. (Note:
-      The <code>pde.exportFeatures</code> target will build the plug-ins
-      asynchronously and may take a while till finished. After that the complete 
-      <code>WAR</code> content should be available in the build folder.</li>
+  <li> Open the <code>New WAR Product Configuration</code> wizard. </br></li>
+  <img src="../../images/war_product_wizard.png">
+  <li> Enter a name for the  war configuration file and select the 
+  <code>RAP Workbench Demo</code> from the available launch configurations. </br></li>
+  <img src="../../images/war_product_configuration.png">
   </ul>
-  <img src="../../images/build.png">
-  
-  <h3>Adjust the <code>config.ini</code></h3>
-  <p>The <code>osgi.bundles</code> property from the <code>config.ini</code> 
-    tells Equinox, the OSGi framework, which plug-ins there are in the system. 
-    The sole fact that a plug-in is located in the right folder (i.e. 
-    <code>eclipse/plugins</code>) doesn't make it known to the running OSGi 
-    framework.
-    <br />
-    For futher information on the <code>config.ini</code> and related 
-    configuration options, please read the
-    <a href="http://help.eclipse.org/galileo/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/misc/runtime-options.html">
-    Eclipse Runtime Options</a> chapter.
-    The latest version can also be viewed from within the IDE. From the menu, 
-    chose Help &gt; Help Contents. In the upcoming help window, chose
-    Platform Plugin Developer Guide &gt; Other Reference Information &gt;
-    Runtime Options
   </p>
-  <ul>
-    <li>Adjust the path to the plug-in directory of your build in the
-      <code>ConfigIniCreator</code> (see the comment in the 
-      <code>ConfigIniCreator</code> class).</li>
-    <li>Run the ConfigIniCreator as Java application.</li>
-    <li>Manually verify the output. 
-      The ConfigIniCreator uses a very rough estimation to tell the 
-      bundle id (its <code>Bundle-Symbolic-Name</code>) from the file name.
-      Therefore it may generate errornous content.
-    </li>
-    <li>Copy the console output to the <code>config.ini</code> file of your
-      build.</li>
-  </ul>
-  <img src="../../images/config.png">
-  
-  
-  <p>After that, pack the <code>WAR</code> of the application build available in the 
-  build folder (in our case the content of <code>build/rapdemo</code>). Deploy
-  the <code>WAR</code> to a servlet container to see whether the build was successful :-)</p>
-  <img src="../../images/runtime.png"><br>
-  (screenshot shows application running with OSGi-console. See web.xml in the
-  templates directory for more infos on how activating the console)
+
+  <h3>The <code>rapdemo.warproduct</code> configuration</code> </h3>
+  <p> WAR Products tooling provides a form-based multi-page editor to manage a 
+    <code>.warproduct</code> configuration. The editor has the following pages:
+    <ul>
+    <li> <code>Overview</code>: on this page you can enter additional information
+    like <code>ID</code>, <code>Name</code>, <code>Version</code> but they are not
+    needed to export a war archive. Also the <code>WAR Product export</code> wizard 
+    can be started from the <code>Overview page</code>. </br></li>
+    <img src="../../images/war_product_editor.png">
+    <li> <code>Configuration</code>: Here you can manage which plug-ins and libraries
+    to be included into the war archive.  </br></li>
+    <img src="../../images/war_product_editor_configuration.png">
+    <li> <code>Web.xml</code>: On this page the web.xml of the war archive can be edited.  
+    </br></li>
+     <img src="../../images/war_product_editor_webxml.png">
+    </ul>
+   
+  </p>
+  <h3>Create the <code>war</code> archive</code> </h3>
+  <p>From the <code>Overview</code> page of the <code>.warproduct</code> configuration
+  editor start the <code>WAR Product export</code> wizard (this can also be reached by launching 
+  the general Export Wizard), enter the location for the war 
+  archive and press <b>Finish</b> if no validation errors exist. After that you can deploy 
+  the <code>WAR</code> file to a servlet container. See the uncommented sections in the web.xml 
+  for more information on how to activate the OSGi-console. This is useful if you run into troubles 
+  while deploying the generated WAR file.</p>
   
   <h2>How to deploy my own application?</h2>
   
   <p>To deploy your own application like described above you will have
-  to create your own feature. The feature should contain the same plug-in 
-  references as the demo feature (except the demo-plug-in of course!) plus the
-  plug-ins that make up your application. It is important that your plug-ins
-  reference the Servlet API by using the <code>Import-Package</code> directive
-  instead of the <code>Require-Bundle</code> directive. See the 
-  <code>MANIFEST.MF</code> of the demo project for an example.</p>
+  to create your own <code>.warproduct</code> configuration. The configuration
+  should contain the same plug-in references as the <code>rapdemo.configuration</code> 
+  (except the demo-plug-in of course!) plus the plug-ins that make up your application. 
+  It is important that your plug-ins reference the Servlet API by using the 
+  <code>Import-Package</code> directive instead of the <code>Require-Bundle</code> 
+  directive. See the <code>MANIFEST.MF</code> of the demo project for an example.</p>
   
-  <p>Copy the script and templates folder to the feature and modifiy them
-  according to your project structure. Following the steps above should lead
-  to a fully functional <code>WAR</code> of your application.</p>
-  
-  <p><strong>Note</strong>: If you encounter problems during the build, you
-  may consider to use the PDE-Export (available from the feature editor)
-  before exporting the whole WAR at once. This proved helpful for
-  trouble-shooting as the export may show problem-relevant dialogs that are
-  suppressed in the Ant export.</p>
-  
-  <p><strong>Note also</strong>: Besides the application server log files
+  <p><strong>Note</strong>: Besides the application server log files
   there also exists an Equinox framework log that can be found under the webapp's
   work directory, e.g. on Tomcat:
   <pre>
