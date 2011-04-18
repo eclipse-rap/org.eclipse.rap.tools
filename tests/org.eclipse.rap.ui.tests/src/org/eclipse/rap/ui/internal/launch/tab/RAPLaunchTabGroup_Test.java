@@ -19,27 +19,11 @@ import org.eclipse.rap.ui.tests.Fixture;
 
 public class RAPLaunchTabGroup_Test extends TestCase {
   
-  private static final String RWT_COMPRESSION_ON 
-    = "-Dorg.eclipse.rwt.compression=true"; //$NON-NLS-1$
-  private static final String RWT_COMPRESSION_OFF 
-    = "-Dorg.eclipse.rwt.compression=false"; //$NON-NLS-1$
   private static final String JETTY_LOG_LEVEL
     = "-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=info";
   private static final String VM_ARGS 
     = IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS;
 
-  public void testDefaultVMArgumentCompression() throws CoreException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    RAPLaunchTabGroup launchTabGroup = new RAPLaunchTabGroup();
-    LaunchConfigurationDialog dialog 
-      = new LaunchConfigurationDialog( null, config, null );
-    launchTabGroup.createTabs( dialog, "run" );
-    launchTabGroup.setDefaults( config );
-    String vmArgs = config.getAttribute( VM_ARGS, "" );
-    assertTrue( vmArgs.indexOf( RWT_COMPRESSION_ON ) != -1 );
-    assertTrue( vmArgs.indexOf( RWT_COMPRESSION_OFF ) == -1 );    
-  }
-  
   public void testDefaultVMArgumentJettyLogLevel() throws CoreException {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     RAPLaunchTabGroup launchTabGroup = new RAPLaunchTabGroup();

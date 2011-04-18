@@ -28,10 +28,6 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
   private static final String NEW_LINE = "\n"; //$NON-NLS-1$
   private static final String ATTR_VM_ARGUMENTS
     = IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS;
-  private static final String RWT_COMPRESSION_ON
-    = "-Dorg.eclipse.rwt.compression=true"; //$NON-NLS-1$
-  private static final String RWT_COMPRESSION_OFF
-    = "-Dorg.eclipse.rwt.compression=false"; //$NON-NLS-1$
   private static final String JETTY_LOG_LEVEL
     = "-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=info"; //$NON-NLS-1$
 
@@ -70,22 +66,8 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
     } catch( CoreException e ) {
       Activator.getDefault().getLog().log( e.getStatus() );
     }
-    vmArguments = appendRwtCompression( vmArguments );
     vmArguments = appendJettyLogLevel( vmArguments );
     config.setAttribute( ATTR_VM_ARGUMENTS, vmArguments );
-  }
-  
-  private static String appendRwtCompression( final String vmArguments ) {
-    String result = vmArguments;
-    if(    vmArguments.indexOf( RWT_COMPRESSION_ON ) == -1
-        && vmArguments.indexOf( RWT_COMPRESSION_OFF ) == -1 )
-    {
-      if( result.length() > 0 ) {
-        result += NEW_LINE;
-      }
-      result += RWT_COMPRESSION_ON;
-    }
-    return result;
   }
   
   private static String appendJettyLogLevel( final String vmArguments ) {
