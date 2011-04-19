@@ -283,6 +283,51 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Format: <code><a href="#border-color">&lt;border-color&gt;</a> 
 </p>
 
+<a name="border"><h3>box-shadow</h3></a>
+<p>
+  Used to define the shadow that is drawn behind the widget.
+</p>
+<p>
+  Format: <code> &lt;shadow&gt; | none </code>
+</p>
+
+<a name="shadow"><h4>&lt;shadow&gt;</h4></a>
+<p>
+  Format: <code> <a href="#dimension">&lt;dimension&gt;</a> <a href="#dimension">&lt;dimension&gt;</a> (<a href="#dimension">&lt;dimension&gt;</a> (<a href="#dimension">&lt;dimension&gt;</a>)?)? <a href="#shadow-color">&lt;shadow-color&gt;</a></code>
+</p>
+<p>
+<ul>
+  <li> The first value defines the horizontal offset of the shadow. May be negative.</li>
+  <li> The second value defines the vertical offset of the shadow. May be negative.</li>
+  <li> The optional third value defines the radius of the blur effect. Negative values are not allowed. The default value is 0px.</li>
+  <li> The optional fourth value defines the spread of the shadow. It is currentply not supported and therefore must be 0px. The default value is 0px.</li>
+  <li> The final value defines the color of the shadow. </li>
+</ul>
+</p>
+<p> 
+  Examples:
+<ul>
+  <li> box-shadow: 5px 5px black; </li>
+  <li> box-shadow: 2px 3px 3px rgba( 0, 0, 0, 0.5 ); </li>
+  <li> box-shadow: 5px 5px 2px 0px #FF00FF; </li>
+</ul>
+</p>
+
+<a name="shadow-color"><h4>&lt;shadow-color&gt;</h4></a>
+<p>
+  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | <a href="#rgba-color">&lt;rgba-color&gt;</a>  
+</p>
+
+<a name="rgba-color"><h4>&lt;rgba-color&gt;</h4></a>
+  Like the <a href="#rgb-color">&lt;rgb-color&gt;</a> notation, but with one more parameter for
+  opacity as used in the <a href="#opacity">opacity</a> attribute.
+<p>
+  Examples:
+</p>
+<ul>
+  <li><code>color: rgba( 255, 128, 0, 0.33 );</code></li>
+  <li><code>color: rgba( 100%, 50%, 0%, 1 ); </code></li>
+</ul>
 <a name="color"><h3>color</h3></a>
 <p>
   The color used for foreground-elements, e.g. Text.
