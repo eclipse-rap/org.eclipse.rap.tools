@@ -98,6 +98,6 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
                Messages.helloRAPTemplate_appClass,
                "Application", //$NON-NLS-1$ 
                0 ); 
-    addOption( KEY_VERIFY_RAP_TARGET_ACTIVE,Messages.ViewRAPTemplate_InstallTargetLabel, true, 0 );
   }
+  
 }

@@ -37,9 +37,5 @@ public class MailRAPWizard extends AbstractRAPWizard {
   protected String getServletName() {
     return "mail";
   }
-  
-  protected boolean isRapTargetInstallSelected() {
-    return template.isRapTargetInstallSelected();
-  }
-  
+    
 }

@@ -7,6 +7,7 @@ Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Bundle-Activator: org.eclipse.rap.internal.ui.templates.Activator
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.jface,

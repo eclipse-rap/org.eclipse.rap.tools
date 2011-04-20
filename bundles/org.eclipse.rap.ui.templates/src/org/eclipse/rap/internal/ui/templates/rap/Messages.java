@@ -14,6 +14,9 @@ package org.eclipse.rap.internal.ui.templates.rap;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
+  
+  public static String AbstractRAPWizard_targetQuestionDialogMessage;
+  public static String AbstractRAPWizard_targetQuestionDialogTitle;
   public static String AbstractRAPWizard_Modifying;
 
   public static String helloRAPTemplate_appClass;
@@ -42,7 +45,6 @@ public class Messages extends NLS {
 
   public static String viewRAPTemplate_appClass;
   public static String viewRAPTemplate_appWindowTitle;
-  public static String ViewRAPTemplate_InstallTargetLabel;
   public static String viewRAPTemplate_packageName;
   public static String viewRAPTemplate_pageDescr;
   public static String viewRAPTemplate_pageTitle;

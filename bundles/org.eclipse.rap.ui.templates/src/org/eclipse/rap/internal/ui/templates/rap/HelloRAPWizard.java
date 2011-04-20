@@ -37,9 +37,5 @@ public class HelloRAPWizard extends AbstractRAPWizard {
   protected String getServletName() {
     return "rap";
   }
-  
-  protected boolean isRapTargetInstallSelected() {
-    return template.isRapTargetInstallSelected();
-  }
-  
+    
 }

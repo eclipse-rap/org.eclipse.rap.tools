@@ -25,7 +25,6 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
 
   protected static final String KEY_APPLICATION_CLASS = "applicationClass"; //$NON-NLS-1$
   protected static final String KEY_WINDOW_TITLE = "windowTitle"; //$NON-NLS-1$
-  protected static final String KEY_VERIFY_RAP_TARGET_ACTIVE = "verifyRapTarget"; //$NON-NLS-1$
   protected static final String TEMPLATES_DIRECTORY = "templates"; //$NON-NLS-1$
 
   public abstract String getApplicationId();
@@ -105,7 +104,4 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
     return TEMPLATES_DIRECTORY;
   }
   
-  protected final boolean isRapTargetInstallSelected() {
-    return getBooleanOption( KEY_VERIFY_RAP_TARGET_ACTIVE );
-  }
 }

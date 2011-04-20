@@ -18,6 +18,9 @@ import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.PluginRegistry;
@@ -25,6 +28,7 @@ import org.eclipse.pde.ui.templates.NewPluginTemplateWizard;
 import org.eclipse.rap.internal.ui.templates.Activator;
 import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -44,6 +48,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   private static final String LAUNCH_TEMPLATE = "launch.template"; //$NON-NLS-1$
   private static final String CHARSET = "ISO-8859-1"; //$NON-NLS-1$
+  private static final String PREFERENCE_INSTALL_TARGET = "installTarget"; //$NON-NLS-1$
 
   private static final String TAG_ENTRY_POINT = "${entryPoint}"; //$NON-NLS-1$
   private static final String TAG_SERVLET_NAME = "${servletName}"; //$NON-NLS-1$
@@ -128,26 +133,56 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   }
 
   private void handleRapTargetVerification() {
-    if( isRapTargetInstallSelected() && !containsRapUi() ) {
-      openRapTargetInstalation();
+    if( !containsRapUi() ) {
+      handleRapTargetInstalation();
     }
   }
-  
-  protected abstract boolean isRapTargetInstallSelected();
   
   private boolean containsRapUi() {
     IPluginModelBase rapUiPluginModel = PluginRegistry.findModel( "org.eclipse.rap.ui" );//$NON-NLS-1$
     return rapUiPluginModel != null;
   }
   
-  private void openRapTargetInstalation() {
+  private void handleRapTargetInstalation() {
     final Display currentDisplay = Display.getCurrent();
     currentDisplay.asyncExec( new Runnable() {
 
       public void run() {
-        executeInstallTargetCommand();
+        boolean isRapTargetInstallWanted = isRapTargetInstallWanted();
+        if( isRapTargetInstallWanted ) {
+          executeInstallTargetCommand();
+        }
       }
     } );
+  }
+
+  private boolean isRapTargetInstallWanted() {
+    Shell parentShell = Display.getCurrent().getActiveShell();
+    String title = Messages.AbstractRAPWizard_targetQuestionDialogTitle;
+    String message = Messages.AbstractRAPWizard_targetQuestionDialogMessage;
+    IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+    String preferenceInstallTarget = store.getString( PREFERENCE_INSTALL_TARGET );
+    boolean result = false;
+    if( isPromptRequired( preferenceInstallTarget ) ) {
+      MessageDialogWithToggle dialog = 
+        MessageDialogWithToggle.openYesNoQuestion( parentShell, 
+                                                   title, 
+                                                   message,  
+                                                   null, 
+                                                   false, 
+                                                   store, 
+                                                   PREFERENCE_INSTALL_TARGET );
+      result = dialog.getReturnCode() == IDialogConstants.YES_ID;
+    } else {
+      result = MessageDialogWithToggle.ALWAYS.equals( preferenceInstallTarget );
+    }
+    return result;
+  }
+
+  private boolean isPromptRequired( String preferenceInstallTarget ) {
+    boolean preferenceEmpty = preferenceInstallTarget.length() == 0;
+    boolean promptRequired = MessageDialogWithToggle.PROMPT.equals( preferenceInstallTarget );
+    return preferenceEmpty || promptRequired;
   }
   
   private void executeInstallTargetCommand() {
