@@ -28,6 +28,7 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchConfigValidator_PortInUse;
   public static String RAPLaunchConfigValidator_PortNumberInvalid;
   public static String RAPLaunchConfigValidator_ServletNameEmpty;
+  public static String RAPLaunchConfigValidator_InvalidContextPath;
   public static String RAPLaunchConfigValidator_TimeoutInvalid;
   public static String RAPLaunchConfigValidator_WsEmpty;
   public static String RAPLaunchConfigValidator_WsWrong;
@@ -54,6 +55,7 @@ public class LaunchMessages extends NLS {
   public static String MainTab_EntryPoint;
   public static String MainTab_ExternalBrowser;
   public static String MainTab_InternalBrowser;
+  public static String MainTab_ApplicationUrl;
   public static String MainTab_LibraryVariantDebug;
   public static String MainTab_LibraryVariantStandard;
   public static String MainTab_LogLevelAll;
@@ -67,6 +69,7 @@ public class LaunchMessages extends NLS {
   public static String MainTab_LogLevelWarning;
   public static String MainTab_LogWarningMsg;
   public static String MainTab_ManualPortConfig;
+  public static String MainTab_ManualContextPath;
   public static String MainTab_ManualTimeoutConfig;
   public static String MainTab_Name;
   public static String MainTab_ObtainDefaultEntryPointForBrandingFailed;

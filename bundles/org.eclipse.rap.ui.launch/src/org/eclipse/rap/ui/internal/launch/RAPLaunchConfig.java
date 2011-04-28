@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource.
+ * Copyright (c) 2007, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -139,6 +139,10 @@ public final class RAPLaunchConfig {
     = PREFIX + "port"; //$NON-NLS-1$
   public static final String USE_MANUAL_PORT
     = PREFIX + "useManualPort"; //$NON-NLS-1$
+  public static final String CONTEXTPATH
+    = PREFIX + "contextpath"; //$NON-NLS-1$
+  public static final String USE_MANUAL_CONTEXTPATH
+    = PREFIX + "useManualContextPath"; //$NON-NLS-1$
   public static final String SESSION_TIMEOUT
     = PREFIX + "sessionTimeout"; //$NON-NLS-1$  
   public static final String USE_SESSION_TIMEOUT
@@ -159,6 +163,8 @@ public final class RAPLaunchConfig {
   private static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
   private static final int DEFAULT_PORT = 10080;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
+  private static final String DEFAULT_CONTEXTPATH = "";
+  private static final boolean DEFAULT_USE_MANUAL_CONTEXTPATH = false;
   private static final int DEFAULT_SESSION_TIMEOUT = MIN_SESSION_TIMEOUT;
   private static final boolean DEFAULT_USE_SESSION_TIMEOUT = false;
   private static final String DEFAULT_LOG_LEVEL = Level.OFF.getName();
@@ -174,6 +180,8 @@ public final class RAPLaunchConfig {
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE.getName() );
     config.setAttribute( PORT, DEFAULT_PORT );
     config.setAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
+    config.setAttribute( CONTEXTPATH, DEFAULT_CONTEXTPATH );
+    config.setAttribute( USE_MANUAL_CONTEXTPATH, DEFAULT_USE_MANUAL_CONTEXTPATH );
     config.setAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
     config.setAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
     config.setAttribute( LOG_LEVEL, DEFAULT_LOG_LEVEL );
@@ -327,6 +335,27 @@ public final class RAPLaunchConfig {
   public void setPort( final int port ) {
     checkWorkingCopy();
     workingCopy.setAttribute( PORT, port );
+  }
+  
+  public boolean getUseManualContextPath() throws CoreException {
+    return config.getAttribute( USE_MANUAL_CONTEXTPATH, DEFAULT_USE_MANUAL_CONTEXTPATH );
+  }
+
+  public void setUseManualContextPath( boolean useManualContextPath ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( USE_MANUAL_CONTEXTPATH, useManualContextPath );
+  }
+
+  public String getContextPath() throws CoreException {
+    return config.getAttribute( CONTEXTPATH, DEFAULT_CONTEXTPATH );
+  }
+
+  public void setContextPath( String contextPath ) {
+    if( contextPath == null ) {
+      throw new NullPointerException( "contextPath" ); //$NON-NLS-1$
+    }
+    checkWorkingCopy();
+    workingCopy.setAttribute( CONTEXTPATH, contextPath );
   }
   
   public boolean getUseSessionTimeout() throws CoreException {

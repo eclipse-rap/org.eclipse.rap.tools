@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource.
+ * Copyright (c) 2007, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,9 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     = "-Dorg.eclipse.rwt.clientLibraryVariant="; //$NON-NLS-1$
   private static final String VMARG_SESSION_TIMEOUT 
     = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval="; //$NON-NLS-1$
+  private static final String VMARG_CONTEXT_PATH
+    = "-Dorg.eclipse.equinox.http.jetty.context.path="; //$NON-NLS-1$
+  
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
   
 
@@ -157,6 +160,17 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       list.add( VMARG_SESSION_TIMEOUT + config.getSessionTimeout() );
     } else {
       list.add( VMARG_SESSION_TIMEOUT + RAPLaunchConfig.MIN_SESSION_TIMEOUT );
+    }
+    if( config.getUseManualContextPath() ) {
+      String contextPath1 = config.getContextPath();
+      if( !contextPath1.startsWith( URLBuilder.SLASH ) ) {
+        contextPath1 = URLBuilder.SLASH + contextPath1;
+      }
+      if( contextPath1.endsWith( URLBuilder.SLASH ) ) {
+        contextPath1 = contextPath1.substring( 0, contextPath1.length() - 1 );
+      }
+      String contextPath = contextPath1;
+      list.add( VMARG_CONTEXT_PATH + contextPath );
     }
     String[] result = new String[ list.size() ];
     list.toArray( result );

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource.
+ * Copyright (c) 2007, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,12 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
-import java.net.MalformedURLException;
+import java.net.*;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.*;
@@ -31,7 +32,7 @@ import org.eclipse.rap.ui.internal.launch.util.LauncherSerializationUtil;
 
 public final class RAPLaunchConfigValidator {
 
-  private static final String DEFAULT_BRAINDING = "rap"; //$NON-NLS-1$
+  private static final String DEFAULT_BRANDING = "rap"; //$NON-NLS-1$
   // FIXME remove this when Platfrom.WS_RAP defined
   public static final String WS_RAP = "rap"; //$NON-NLS-1$
   public static final int ERR_SERVLET_NAME = 6001;
@@ -42,6 +43,7 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_ENTRY_POINT = 6008;
   public static final int ERR_SERVLET_BUNDLE = 6009;
   public static final int ERR_DATA_LOCATION = 6010;
+  public static final int ERR_CONTEXT_PATH = 6011;
   public static final int WARN_OSGI_FRAMEWORK = 7002;
   public static final int WARN_WS_WRONG = 7003;
   private static final String RAP_LAUNCH_CONFIG_TYPE = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
@@ -62,6 +64,7 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateServletName() );
       addNonOKState( states, validatePort() );
       addNonOKState( states, validateUniquePort() );
+      addNonOKState( states, validateContextPath() );
       addNonOKState( states, validateURL() );
       addNonOKState( states, validateLogLevel() );
       addNonOKState( states, validateSessionTimeout() );
@@ -100,7 +103,7 @@ public final class RAPLaunchConfigValidator {
     if( servletName == null || EMPTY.equals( servletName ) ) {
       String msg = LaunchMessages.RAPLaunchConfigValidator_ServletNameEmpty;
       result = createError( msg, ERR_SERVLET_NAME, null );
-    } else if( !servletName.equals( DEFAULT_BRAINDING ) ) { //$NON-NLS-1$
+    } else if( !servletName.equals( DEFAULT_BRANDING ) ) { //$NON-NLS-1$
       ILaunchConfiguration launchConfig 
         = config.getUnderlyingLaunchConfig();
       String[] selectedBundleIds = getSelectedBundleIds( launchConfig );
@@ -114,6 +117,38 @@ public final class RAPLaunchConfigValidator {
         String msg = MessageFormat.format( unformatedMsg, 
                                            new Object[] { servletName } );
         result = createError( msg, ERR_SERVLET_BUNDLE, null );
+      }
+    }
+    return result;
+  }
+
+  private IStatus validateContextPath() throws CoreException {
+    IStatus result = Status.OK_STATUS;
+    boolean useManualContextPath = config.getUseManualContextPath();
+    if( useManualContextPath ) {
+      String contextPath = config.getContextPath();
+      boolean isValid = isValidContextPath( contextPath );
+      if( !isValid ) {
+        String unformatedMsg = LaunchMessages.RAPLaunchConfigValidator_InvalidContextPath;
+        String msg = MessageFormat.format( unformatedMsg, new Object[] { contextPath } );
+        result = createError( msg, ERR_CONTEXT_PATH, null );
+      }
+    }
+    return result;
+  }
+
+  private boolean isValidContextPath( String contextPath ) {
+    boolean result = true;
+    int length = contextPath.length();
+    if( contextPath.indexOf( "//" ) != -1 ) {
+      result = false;
+    }
+    for( int i = 0; i < length && result; i++ ) {
+      char ch = contextPath.charAt( i );
+      boolean isLetterOrDigit = Character.isLetterOrDigit( ch );
+      boolean isValidSpecialChar = "/_-.".indexOf( ch ) != -1;
+      if( !isLetterOrDigit && !isValidSpecialChar ) {
+        result = false;
       }
     }
     return result;
@@ -165,10 +200,15 @@ public final class RAPLaunchConfigValidator {
   private IStatus validateURL() throws CoreException {
     IStatus result = Status.OK_STATUS;
     try {
-      URLBuilder.fromLaunchConfig( config, 80, false );
+      URL url = URLBuilder.fromLaunchConfig( config, 80, false );
+      // URL constructor only validates for valid protocol, URI validates syntax
+      new URI( url.toExternalForm() );
     } catch( MalformedURLException e ) {
       String text = LaunchMessages.RAPLaunchConfigValidator_MalformedUrl;
-      result = createWarning( text, ERR_URL, e );
+      result = createError( text, ERR_URL, e );
+    } catch( URISyntaxException e ) {
+      String text = LaunchMessages.RAPLaunchConfigValidator_MalformedUrl;
+      result = createError( text, ERR_URL, e );
     }
     return result;
   }

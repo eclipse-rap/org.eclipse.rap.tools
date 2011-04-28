@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.tab;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -21,6 +23,7 @@ import org.eclipse.debug.core.*;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.fieldassist.*;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.jface.window.Window;
@@ -40,7 +43,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public final class MainTab extends AbstractLauncherTab {
 
-  
   private static final String BROWSER_PREFERENCE_PAGE 
     = "org.eclipse.ui.browser.preferencePage"; //$NON-NLS-1$
 
@@ -55,7 +57,10 @@ public final class MainTab extends AbstractLauncherTab {
   private Button cbOpenBrowser;
   private Button rbInternalBrowser;
   private Button rbExternalBrowser;
+  private Text txtApplicationUrl;
   private Button cbManualPort;
+  private Button cbContextPath;
+  private Text txtContextPath;
   private Spinner spnPort;
   private Button cbUseSessionTimeout;
   private Spinner spnSessionTimeout;  
@@ -128,6 +133,9 @@ public final class MainTab extends AbstractLauncherTab {
       // Port
       cbManualPort.setSelection( rapConfig.getUseManualPort() );
       spnPort.setSelection( rapConfig.getPort() );
+      // Context Path
+      cbContextPath.setSelection( rapConfig.getUseManualContextPath() );
+      txtContextPath.setText( rapConfig.getContextPath() );
       // OpenBrowser
       boolean openBrowser = rapConfig.getOpenBrowser();
       cbOpenBrowser.setSelection( openBrowser );
@@ -176,6 +184,10 @@ public final class MainTab extends AbstractLauncherTab {
     // Port Number
     rapConfig.setUseManualPort( cbManualPort.getSelection() );
     rapConfig.setPort( spnPort.getSelection() );
+    // Context Path
+    txtContextPath.setEnabled( cbContextPath.getSelection() );
+    rapConfig.setUseManualContextPath( cbContextPath.getSelection() );
+    rapConfig.setContextPath( txtContextPath.getText() );
     // Session Timeout
     spnSessionTimeout.setEnabled( cbUseSessionTimeout.getSelection() );
     rapConfig.setUseSessionTimeout( cbUseSessionTimeout.getSelection() );
@@ -215,6 +227,7 @@ public final class MainTab extends AbstractLauncherTab {
       {
         RAPLaunchConfig rapConfig = new RAPLaunchConfig( configuration );
         validate( rapConfig );
+        updateApplicationUrl( rapConfig );
       }
 
       public void launchConfigurationAdded( 
@@ -278,6 +291,16 @@ public final class MainTab extends AbstractLauncherTab {
     group.setLayoutData( fillHorizontal.create() );
     group.setText( LaunchMessages.MainTab_Browser );
     group.setLayout( new GridLayout( 2, false ) );
+    Composite urlComposite = new Composite( group, SWT.NONE );
+    Label lblFinalUrl = new Label( urlComposite, SWT.NONE );
+    lblFinalUrl.setText( LaunchMessages.MainTab_ApplicationUrl );
+    // Create a text area which is read-only but not disabled to allow the user to select the text
+    // and copy it, set the background to make it clear to the user this is not a place to edit
+    txtApplicationUrl = new Text( urlComposite, SWT.SINGLE | SWT.READ_ONLY );
+    txtApplicationUrl.setBackground( txtApplicationUrl.getParent().getBackground() );
+    GridDataFactory.fillDefaults().grab( true, false ).applyTo( txtApplicationUrl );
+    GridDataFactory.fillDefaults().grab( true, false ).span( 2, 1 ).applyTo( urlComposite );
+    GridLayoutFactory.fillDefaults().numColumns( 2 ).generateLayout( urlComposite );
     cbOpenBrowser = new Button( group, SWT.CHECK );
     GridDataFactory grab = GridDataFactory.swtDefaults();
     grab.grab( true, false );
@@ -330,6 +353,12 @@ public final class MainTab extends AbstractLauncherTab {
     spnSessionTimeout.setMinimum( RAPLaunchConfig.MIN_SESSION_TIMEOUT );
     spnSessionTimeout.setMaximum( RAPLaunchConfig.MAX_SESSION_TIMEOUT );
     spnSessionTimeout.addModifyListener( modifyListener );
+    cbContextPath = new Button( group, SWT.CHECK );
+    cbContextPath.setText( LaunchMessages.MainTab_ManualContextPath );
+    cbContextPath.addSelectionListener( selectionListener );
+    txtContextPath = new Text( group, SWT.BORDER | SWT.SINGLE );
+    GridDataFactory.fillDefaults().hint( 100, SWT.DEFAULT ).applyTo( txtContextPath );
+    txtContextPath.addModifyListener( modifyListener );
     Label lblLogLevel = new Label( group, SWT.NONE );
     lblLogLevel.setText( LaunchMessages.MainTab_ClientLogLevel );
     cmbLogLevel = new ComboViewer( group, SWT.DROP_DOWN | SWT.READ_ONLY );
@@ -407,6 +436,52 @@ public final class MainTab extends AbstractLauncherTab {
     setErrorMessage( errorMessage );
   }
   
+  private void updateApplicationUrl( final RAPLaunchConfig config ) {
+    String applicationUrl;
+    try {
+      int port = getPort( config );
+      applicationUrl = getApplicationUrl( config, port );
+    } catch( Exception e ) {
+      setErrorMessage( e.getMessage() );
+      applicationUrl = "";
+    }
+    udpateApplicationUrlTextField( applicationUrl );
+  }
+  
+  private int getPort( final RAPLaunchConfig config ) throws CoreException {
+    int port;
+    if( config.getUseManualPort() ) {
+      port = config.getPort();
+    } else {
+      port = 12345;
+    }
+    return port;
+  }
+
+  private String getApplicationUrl( final RAPLaunchConfig config, int port )
+  throws CoreException, MalformedURLException
+  {
+    String applicationUrl;
+    URL url = URLBuilder.fromLaunchConfig( config, port, false );
+    applicationUrl = url.toExternalForm();
+    if( !config.getUseManualPort() ) {
+      final String portAsString = port + "";
+      applicationUrl = applicationUrl.replaceAll( portAsString, "<PORT>" );
+    }
+    return applicationUrl;
+  }
+  
+  private void udpateApplicationUrlTextField( final String finalApplicationUrl ) {
+    if( txtApplicationUrl != null && !txtApplicationUrl.isDisposed() ) {
+      // could be called from a non UI thread
+      txtApplicationUrl.getDisplay().syncExec( new Runnable() {
+        public void run() {
+          txtApplicationUrl.setText( finalApplicationUrl );
+        }
+      } );
+    }
+  }
+
   private static String findMessage( final IStatus[] states, 
                                      final int severity ) 
   {

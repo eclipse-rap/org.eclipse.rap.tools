@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,8 @@ public class RAPLaunchConfig_Test extends TestCase {
     assertEquals( LibraryVariant.STANDARD, rapConfig.getLibraryVariant() );
     assertEquals( 0, rapConfig.getSessionTimeout() );
     assertFalse( rapConfig.getUseSessionTimeout() );
+    assertFalse( rapConfig.getUseManualContextPath() );
+    assertTrue( "".equals( rapConfig.getContextPath() ) );
   }
   
   public void testEntryPoint() throws CoreException {
@@ -83,6 +85,20 @@ public class RAPLaunchConfig_Test extends TestCase {
     } catch( NullPointerException e ) {
       // expected
       assertEquals( "xyz", rapConfig.getDataLocation() );
+    }
+  }
+  
+  public void testSetContextPathValideValue() throws CoreException {
+    rapConfig.setContextPath( "/xyz" );
+    assertEquals( "/xyz", rapConfig.getContextPath() );
+  }
+
+  public void testSetContextPathInvalidValue() {
+    try {
+      rapConfig.setContextPath( null );
+      fail( "Must not allow to set context path to null" );
+    } catch( NullPointerException e ) {
+      // expected
     }
   }
   
