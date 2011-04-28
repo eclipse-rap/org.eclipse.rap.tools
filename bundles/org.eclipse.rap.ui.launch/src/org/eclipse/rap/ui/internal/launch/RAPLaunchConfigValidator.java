@@ -22,7 +22,9 @@ import org.eclipse.debug.core.*;
 import org.eclipse.osgi.service.resolver.BundleDescription;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.PluginRegistry;
+import org.eclipse.pde.internal.launching.launcher.BundleLauncherHelper;
 import org.eclipse.pde.internal.launching.launcher.LaunchArgumentsHelper;
+import org.eclipse.pde.launching.IPDELauncherConstants;
 import org.eclipse.rap.ui.internal.launch.tab.*;
 import org.eclipse.rap.ui.internal.launch.util.LauncherSerializationUtil;
 
@@ -305,9 +307,35 @@ public final class RAPLaunchConfigValidator {
   /////////////////////////////////////////
   // Helping methods for validateEntryPoint
   
-  private static String[] getSelectedBundleIds(
-    final ILaunchConfiguration launchConfiguration) throws CoreException
+  private static String[] getSelectedBundleIds( ILaunchConfiguration launchConfiguration) 
+    throws CoreException
   {
+    String[] result;
+    if( launchConfiguration.getAttribute( IPDELauncherConstants.USE_CUSTOM_FEATURES, false ) ) {
+      result = getBundleIdsFromFeatures( launchConfiguration );
+    } else {
+      result = getBundleIdsFromBundles( launchConfiguration );
+    }
+    return result;
+  }
+
+  private static String[] getBundleIdsFromFeatures( ILaunchConfiguration launchConfiguration )
+    throws CoreException
+  {
+    String[] result;
+    IPluginModelBase[] mergedBundles 
+      = BundleLauncherHelper.getMergedBundles( launchConfiguration, true );
+    result = new String[ mergedBundles.length ];
+    for( int i = 0; i < mergedBundles.length; i++ ) {
+      result[ i ] = mergedBundles[ i ].getBundleDescription().getSymbolicName();
+    }
+    return result;
+  }
+  
+  private static String[] getBundleIdsFromBundles( ILaunchConfiguration launchConfiguration )
+    throws CoreException
+  {
+    String[] result;
     String selectedWorkspaceBundles 
       = launchConfiguration.getAttribute( WORKSPACE_BUNDLES_KEY, EMPTY );
     String selectedTargetBundles 
@@ -316,7 +344,7 @@ public final class RAPLaunchConfigValidator {
     addBundleIds( selectedBundleIds, selectedWorkspaceBundles );
     addBundleIds( selectedBundleIds, selectedTargetBundles );
     List resultAsList = filterNotActiveSelectedBundleIds( selectedBundleIds );
-    String[] result = new String[ resultAsList.size() ];
+    result = new String[ resultAsList.size() ];
     for( int i = 0; i < result.length; i++ ) {
       result[ i ] = ( String )resultAsList.get( i );
     }

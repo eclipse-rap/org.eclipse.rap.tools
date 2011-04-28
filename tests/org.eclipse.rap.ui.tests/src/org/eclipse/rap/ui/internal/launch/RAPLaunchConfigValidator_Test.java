@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource.
+ * Copyright (c) 2007, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,27 +8,50 @@
  * Contributors:
  *     Innoopract Informationssysteme GmbH - initial API and implementation
  *     EclipseSource - ongoing development
+ *     IBM Corporation - original code for feature project creation, from PDE test cases
+ *     Cole Markham - feature-based validation testing
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.pde.core.plugin.IPluginBase;
+import org.eclipse.pde.core.plugin.IPluginModelBase;
+import org.eclipse.pde.core.plugin.PluginRegistry;
+import org.eclipse.pde.internal.ui.wizards.feature.CreateFeatureProjectOperation;
+import org.eclipse.pde.internal.ui.wizards.feature.FeatureData;
+import org.eclipse.pde.launching.IPDELauncherConstants;
 import org.eclipse.rap.ui.tests.Fixture;
 import org.eclipse.rap.ui.tests.TestPluginProject;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.IProgressService;
 
 
 public class RAPLaunchConfigValidator_Test extends TestCase {
+
+  private static final String FEATURE_PROJECT_NAME = "com.junitTest.feature";
   
   private static final class MyLevel extends Level {
     private static final long serialVersionUID = 1L;
@@ -40,21 +63,18 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   
   private ILaunchConfigurationWorkingCopy config;
   private RAPLaunchConfig rapConfig;
-  private final List projectsToDelete = new ArrayList();
+  private List projectsToDelete;
 
   protected void setUp() throws Exception {
     config = Fixture.createRAPLaunchConfig();
     rapConfig = new RAPLaunchConfig( config );
-    projectsToDelete.clear();
+    projectsToDelete = new ArrayList();
   }
   
   protected void tearDown() throws Exception {
     config.delete();
-    Iterator iter = projectsToDelete.iterator();
-    while( iter.hasNext() ) {
-      TestPluginProject project = ( TestPluginProject )iter.next();
-      project.delete();
-    }
+    deleteProjects( projectsToDelete );
+    deleteFeature();
   }
   
   public void testValidateDataLocation() {
@@ -154,6 +174,34 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertFalse( findStatusCode( states, code ) );
   }
   
+  public void testValidateServletNameWithBrandingNotInFeatures() throws Exception {
+    String servletName = "servletTest";
+    rapConfig.setServletName( servletName );
+    createFeature( null, new IPluginBase[] {} );
+    config.setAttribute(  IPDELauncherConstants.USE_CUSTOM_FEATURES, "true" );
+    Set featureSet = Collections.singleton( FEATURE_PROJECT_NAME );
+    config.setAttribute( IPDELauncherConstants.SELECTED_FEATURES, featureSet );
+    RAPLaunchConfigValidator val = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = val.validate();
+    int code = RAPLaunchConfigValidator.ERR_SERVLET_BUNDLE;
+    assertFalse( findStatusCode( states, code ) );
+  }
+
+  public void testValidateServletNameWithBrandingInFeatures() throws Exception {
+    String servletName = "servletTest";
+    rapConfig.setServletName( servletName );
+    createBrandingExtensionProject( "test.project", "test.id", servletName );
+    IProject project = getProject( "test.project" );
+    IPluginModelBase pluginModel = PluginRegistry.findModel( project );
+    createFeature( null, new IPluginBase[] { pluginModel.getPluginBase() } );
+    config.setAttribute( IPDELauncherConstants.USE_CUSTOM_FEATURES, "true" );
+    Set featureSet = Collections.singleton( FEATURE_PROJECT_NAME );
+    config.setAttribute( IPDELauncherConstants.SELECTED_FEATURES, featureSet );
+    RAPLaunchConfigValidator validator = new RAPLaunchConfigValidator( rapConfig );
+    IStatus[] states = validator.validate();
+    int code = RAPLaunchConfigValidator.ERR_SERVLET_BUNDLE;
+    assertFalse( findStatusCode( states, code ) );
+  }
   
   public void testValidateEntryPointProjectNotInSelectedBundles()
     throws CoreException
@@ -268,8 +316,7 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     RAPLaunchConfigValidator val = rapConfig.getValidator();
     IStatus[] states = val.validate();
     int code = RAPLaunchConfigValidator.ERR_ENTRY_POINT;
-    assertFalse( findStatusCode( states, code ) );
-  }
+    assertFalse( findStatusCode( states, code ) );  }
   
   public void testPort() {
     rapConfig.setUseManualPort( true );
@@ -389,4 +436,45 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
                              attributes );
   }
 
+  private static FeatureData createDefaultFeatureData() {
+    FeatureData fd = new FeatureData();
+    fd.id = FEATURE_PROJECT_NAME;
+    fd.name = FEATURE_PROJECT_NAME;
+    fd.version = "1.0.0";
+    return fd;
+  }
+
+  private static void createFeature( FeatureData fd, IPluginBase[] plugins ) throws Exception {
+    FeatureData featureData = fd;
+    if( fd == null ) {
+      featureData = createDefaultFeatureData();
+    }
+    IProject project = getProject( FEATURE_PROJECT_NAME );
+    IPath path = Platform.getLocation();
+    Shell activeShell = Display.getCurrent().getActiveShell();
+    IRunnableWithProgress op
+      = new CreateFeatureProjectOperation( project, path, featureData, plugins, activeShell );
+    IProgressService progressService = PlatformUI.getWorkbench().getProgressService();
+    progressService.runInUI( progressService, op, null );
+  }
+
+  private static void deleteFeature() throws CoreException {
+    IProject featureProject = getProject( FEATURE_PROJECT_NAME );
+    if( featureProject != null ) {
+      featureProject.delete( true, true, new NullProgressMonitor() );
+    }    
+  }
+
+  private static IProject getProject( String projectName ) {
+    IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+    return root.getProject( projectName );
+  }
+
+  private static void deleteProjects( List projects ) throws CoreException {
+    Iterator iter = projects.iterator();
+    while( iter.hasNext() ) {
+      TestPluginProject project = ( TestPluginProject )iter.next();
+      project.delete();
+    }
+  }
 }
