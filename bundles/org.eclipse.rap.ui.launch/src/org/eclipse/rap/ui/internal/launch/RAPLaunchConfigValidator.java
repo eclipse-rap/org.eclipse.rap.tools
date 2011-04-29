@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
@@ -16,7 +16,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.*;
@@ -200,15 +199,11 @@ public final class RAPLaunchConfigValidator {
   private IStatus validateURL() throws CoreException {
     IStatus result = Status.OK_STATUS;
     try {
-      URL url = URLBuilder.fromLaunchConfig( config, 80, false );
-      // URL constructor only validates for valid protocol, URI validates syntax
-      new URI( url.toExternalForm() );
-    } catch( MalformedURLException e ) {
+      String url = URLBuilder.fromLaunchConfig( config, 80, false );
+      new URI( url );
+    } catch( URISyntaxException exception ) {
       String text = LaunchMessages.RAPLaunchConfigValidator_MalformedUrl;
-      result = createError( text, ERR_URL, e );
-    } catch( URISyntaxException e ) {
-      String text = LaunchMessages.RAPLaunchConfigValidator_MalformedUrl;
-      result = createError( text, ERR_URL, e );
+      result = createError( text, ERR_URL, exception );
     }
     return result;
   }

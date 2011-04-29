@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
@@ -266,7 +266,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   
   private URL getUrl() throws CoreException {
     try {
-      return URLBuilder.fromLaunchConfig( config, port, testMode );
+      String url = URLBuilder.fromLaunchConfig( config, port, testMode );
+      return new URL( url );
     } catch( MalformedURLException e ) {
       String msg = "Invalid URL."; //$NON-NLS-1$
       String pluginId = Activator.getPluginId();

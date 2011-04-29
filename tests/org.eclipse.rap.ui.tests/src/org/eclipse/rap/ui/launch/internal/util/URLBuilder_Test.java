@@ -29,45 +29,44 @@ public class URLBuilder_Test extends TestCase {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     // servlet name starting with a slash, default entry point
     rapConfig.setServletName( "/startsWithSlash" );
-    URL url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
-    assertEquals( "http://127.0.0.1:80/startsWithSlash", url.toString() );
+    String url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
+    assertEquals( "http://127.0.0.1:80/startsWithSlash", url );
     // servlet name starting without a slash, default entry point
     rapConfig.setServletName( "startsWithoutSlash" );
-    url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
-    assertEquals( "http://127.0.0.1:80/startsWithoutSlash", url.toString() );
+    String url2 = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
+    assertEquals( "http://127.0.0.1:80/startsWithoutSlash", url2 );
     // servlet name starting without a slash, distinct entry point
     rapConfig.setServletName( "servletName" );
     rapConfig.setEntryPoint( "entryPoint" );
-    url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
-    assertEquals( "http://127.0.0.1:80/servletName?startup=entryPoint", 
-                  url.toString() );
+    String url3 = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
+    assertEquals( "http://127.0.0.1:80/servletName?startup=entryPoint", url3 );
   }
   
-  public void testValidContextPath() throws CoreException, MalformedURLException {
+  public void testValidContextPath() throws CoreException {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     rapConfig.setUseManualContextPath( true );
     rapConfig.setContextPath( "/contextPath" );
-    URL url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
-    assertEquals( "http://127.0.0.1:80/contextPath/rap", url.toString() );
+    String url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
+    assertEquals( "http://127.0.0.1:80/contextPath/rap", url );
   }
   
-  public void testContextPathWithMissingStartSlash() throws CoreException, MalformedURLException {
+  public void testContextPathWithMissingStartSlash() throws CoreException {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     rapConfig.setUseManualContextPath( true );
     rapConfig.setContextPath( "contextPath" );
-    URL url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
-    assertEquals( "http://127.0.0.1:80/contextPath/rap", url.toString() );
+    String url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
+    assertEquals( "http://127.0.0.1:80/contextPath/rap", url );
   }
   
-  public void testContextPathWithTrailingSlash() throws CoreException, MalformedURLException {
+  public void testContextPathWithTrailingSlash() throws CoreException {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     rapConfig.setUseManualContextPath( true );
     rapConfig.setContextPath( "/contextPath/" );
-    URL url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
-    assertEquals( "http://127.0.0.1:80/contextPath/rap", url.toString() );
+    String url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
+    assertEquals( "http://127.0.0.1:80/contextPath/rap", url );
   }
   
 }

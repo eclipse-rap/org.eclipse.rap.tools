@@ -6,15 +6,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.eclipse.core.runtime.CoreException;
+
 
 public final class URLBuilder {
 
@@ -31,12 +29,18 @@ public final class URLBuilder {
     return HOST;
   }
 
-  public static URL fromLaunchConfig( RAPLaunchConfig config, int port, boolean testMode )
-    throws CoreException, MalformedURLException
+  public static String fromLaunchConfig( RAPLaunchConfig config, int port, boolean testMode )
+    throws CoreException
+  {
+    return fromLaunchConfig( config, Integer.toString( port ), testMode );
+  }
+
+  public static String fromLaunchConfig( RAPLaunchConfig config, String port, boolean testMode )
+    throws CoreException
   {
     String path = getUrlPath( config );
     String query = getUrlQuery( config, testMode );
-    return new URL( PROTOCOL, HOST, port, path + query );
+    return PROTOCOL + "://" + HOST + ":" + port + path + query;
   }
 
   private static String getUrlPath( RAPLaunchConfig config ) throws CoreException {
