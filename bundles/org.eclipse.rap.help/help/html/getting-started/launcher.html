@@ -85,15 +85,18 @@ The default value is <code>warn</code>.
   
   <img src="../../images/launcher.png" />
   
-    <h3>Servlet and Entry Point to Run</h3>
+    <h3>Servlet and Entry Point/Application to Run</h3>
     <p>Within this group you need to choose the combination of servlet name and 
-    entry point you would like to run.
+    entry point/application you would like to run.
 
-    <p>Please note that the selection dialogs opened when pressing the 
-    <strong>Browse...</strong>  buttons list all servlet names/entry points 
-    available in the workspace. Thus you have to ensure that the bundle that 
-    provides the servlet name/entry point you selected is contained in the 
-    selection on page <strong>Bundles</strong>.</p>
+    <p>Please note that the selection dialog opens when the 
+    <strong>Browse...</strong> button was pressed. The dialog lists all servlet names and 
+    entry points/applications available in the workspace. 
+    Open the drop down menu item in the top right corner and select <code>Include target</code> 
+    if you want to see the servlet names and entry points/applications available 
+    in your workspace and target. The RAP Launcher will display an error in case the selected servlet 
+    name, entry point or application is not contained in the selection on the 
+    <strong>Bundles</strong> page.</p>
 
     <p>When the <strong>Terminate possible running previous launch</strong>
     option is selected, an eventually running launch with the same name 
@@ -112,6 +115,17 @@ The default value is <code>warn</code>.
     client-server communication. However if you would like to have full control 
     over the communication channel, you can explicitly specify a port number.
     </p>
+
+    <h3>Session Timeout</h3>
+    <p>Specifies the servlet session timeout in seconds. If the checkbox is 
+    unselected, the session will never expire.
+    </p>
+
+    <h3>Context Path</h3>
+    <p>A web application can be deployed with a context path. After deployment the web application 
+    will be accessible using this path e.g. http://server:port/contextPath/webapp. To simulate this during
+    development time you can use the option to specify a context path within the <strong>Main</strong> tab.  
+    </p>
     
     <h3>Client-side Log Level</h3>
     <p><strong>No longer supported since RAP 1.4. It can be used with prior versions 
@@ -125,11 +139,6 @@ The default value is <code>warn</code>.
     library. The <strong>Standard</strong> version is optimized for speed
     and size, whereas the <strong>Debug</strong> version should be used
     when developing with RAP, especially custom widgets.</p>
-    
-    <h3>Session Timeout</h3>
-    <p>Specifies the servlet session timeout in seconds. If the checkbox is 
-    unselected, the session will never expire.
-    </p>
     
     <h3>Instance Area</h3>
     <p>The instance area location sets the Program Arguments to define the
