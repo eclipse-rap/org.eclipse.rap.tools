@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
 public final class InstallTargetDialog extends TitleAreaDialog {
@@ -37,7 +38,7 @@ public final class InstallTargetDialog extends TitleAreaDialog {
   private boolean shouldSwitchTarget = true;
   private Image titleImage;
 
-  public InstallTargetDialog( final Shell parentShell ) {
+  public InstallTargetDialog( Shell parentShell ) {
     super( parentShell );
     setShellStyle( SWT.TITLE | SWT.CLOSE | SWT.RESIZE );
     setHelpAvailable( false );
@@ -63,12 +64,13 @@ public final class InstallTargetDialog extends TitleAreaDialog {
 
   protected Point getInitialSize() {
     Point initialSize = super.getInitialSize();
-    return new Point( initialSize.x, initialSize.y - 160 );
+    return new Point( initialSize.x, initialSize.y - 150 );
   }
   
-  protected Control createDialogArea( final Composite parent ) {
+  protected Control createDialogArea( Composite parent ) {
     Composite result = ( Composite )super.createDialogArea( parent );
     configureDialog();
+    createTargetDescription( result );
     createTargetLocationArea( result );
     createSwitchTargetArea( result );
     Dialog.applyDialogFont( result );
@@ -96,31 +98,34 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     setMessage( IntroMessages.InstallDialog_Message_selectLocation );
   }
 
-  private void createTargetLocationArea( final Composite parent ) {
+  private void createTargetDescription( Composite parent ) {
+    Composite container = new Composite( parent, SWT.NONE );
+    container.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+    container.setLayout( new GridLayout() );
+    Label targetDescriptionLabel = new Label( container, SWT.WRAP );
+    targetDescriptionLabel.setLayoutData( getLayoutDataForDescriptions() );
+    targetDescriptionLabel.setText( IntroMessages.InstallTargetDialog_TargetDescriptionMsg );
+  }
+  
+  private void createTargetLocationArea( Composite parent ) {
     Composite container = new Composite( parent, SWT.NONE );
     container.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     container.setLayout( new GridLayout() );
     Group targetSelectionGroup = new Group( container, SWT.NONE );
     targetSelectionGroup.setLayout( new GridLayout( 1, true ) );
-    targetSelectionGroup.setLayoutData( new GridData( SWT.FILL,
-                                                      SWT.TOP,
-                                                      true,
-                                                      false ) );
-    String targetVersionGroupTitle 
-      = IntroMessages.InstallTargetDialog_TargetVersionGroupTitle;
+    targetSelectionGroup.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+    String targetVersionGroupTitle = IntroMessages.InstallTargetDialog_TargetVersionGroupTitle;
     targetSelectionGroup.setText( targetVersionGroupTitle );
     createButtons( targetSelectionGroup );
-    Label warningLabel = new Label( targetSelectionGroup, SWT.NONE );
-    warningLabel.setText( IntroMessages.InstallTargetDialog_DownloadWarningMsg );
   }
 
-  private void createButtons( final Group targetSelectionGroup ) {
+  private void createButtons( Group targetSelectionGroup ) {
     Button latestStableBuildBtn = new Button( targetSelectionGroup, SWT.RADIO );
     String latestBuildText = IntroMessages.InstallTargetDialog_LatestBuildText;
     latestStableBuildBtn.setText( latestBuildText );
     latestStableBuildBtn.setSelection( true );
     latestStableBuildBtn.addSelectionListener( new SelectionAdapter() {
-      public void widgetSelected( final SelectionEvent e ) {
+      public void widgetSelected( SelectionEvent e ) {
         isLatestBuild = true;
       }
     } );
@@ -129,34 +134,37 @@ public final class InstallTargetDialog extends TitleAreaDialog {
       = IntroMessages.InstallTargetDialog_LatestReleaseText;
     latestReleaseBtn.setText( latestReleaseText );
     latestReleaseBtn.addSelectionListener( new SelectionAdapter() {
-      public void widgetSelected( final SelectionEvent e ) {
+      public void widgetSelected( SelectionEvent e ) {
         isLatestBuild = false;
       }
     } );
   }
 
-  private void createSwitchTargetArea( final Composite parent ) {
+  private void createSwitchTargetArea( Composite parent ) {
     Composite container = new Composite( parent, SWT.NONE );
+    container.setLayout( new GridLayout() );
     container.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
-    FillLayout layout = new FillLayout();
-    layout.marginWidth = 5;
-    layout.marginHeight = 5;
-    container.setLayout( layout );
     Group grgTarget = new Group( container, SWT.NONE );
     grgTarget.setLayout( new GridLayout() );
+    grgTarget.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     grgTarget.setText( IntroMessages.InstallDialog_TargetGroup );
     final Button switchTarget = new Button( grgTarget, SWT.CHECK );
     switchTarget.setText( IntroMessages.InstallDialog_switchTarget );
     switchTarget.setSelection( true );
     switchTarget.addSelectionListener( new SelectionAdapter() {
-      public void widgetSelected( final SelectionEvent e ) {
+      public void widgetSelected( SelectionEvent e ) {
         shouldSwitchTarget = switchTarget.getSelection();
       }
     } );
     Label lblDescription = new Label( grgTarget, SWT.WRAP );
-    GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
-    gridData.widthHint = 120;
-    lblDescription.setLayoutData( gridData );
+    lblDescription.setLayoutData( getLayoutDataForDescriptions() );
     lblDescription.setText( IntroMessages.InstallDialog_TargetDescription );
   }
+  
+  private GridData getLayoutDataForDescriptions() {
+    GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+    gridData.widthHint = 120;
+    return gridData;
+  }
+  
 }

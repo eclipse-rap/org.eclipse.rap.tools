@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ public class IntroMessages extends NLS {
   public static String InstallRAPTargetHandler_SwitchTargetFailed;
   public static String InstallRAPTargetHandler_SwitchTargetInterrupted;
 
-  public static String InstallTargetDialog_DownloadWarningMsg;
+  public static String InstallTargetDialog_TargetDescriptionMsg;
 
   public static String InstallTargetDialog_LatestBuildText;
 
