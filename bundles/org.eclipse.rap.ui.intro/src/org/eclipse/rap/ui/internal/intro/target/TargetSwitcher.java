@@ -28,7 +28,7 @@ import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 
 public final class TargetSwitcher {
 
-  private static final String TARGET_NAME_PATTERN = "Rich Ajax Platform {0}"; //$NON-NLS-1$
+  private static final String TARGET_NAME_PATTERN = "RAP Runtime - {0}"; //$NON-NLS-1$
   private static final String VM_ARGS = "-Dosgi.noShutdown=true -Declipse.ignoreApp=true"; //$NON-NLS-1$
   private static final String PROGRAM_ARGS = "-console -consolelog"; //$NON-NLS-1$
   // FIXME with the official WS_RAP 
@@ -69,14 +69,14 @@ public final class TargetSwitcher {
    * 
    * @param targetRepositoryURI a target repository URI
    * @param rootIUs an array with all root installable units
-   * @param targetVersion target version
+   * @param targetQualifier target qualifier for latest build or release
    * @param monitor for user feedback
    * @return the installed target definition
    * @throws CoreException if installation fails
    */
   public static ITargetDefinition install( final String targetRepositoryURI,
                                            final String[] rootIUs,
-                                           final String targetVersion,
+                                           final String targetQualifier,
                                            final boolean switchTarget, 
                                            final IProgressMonitor monitor )
     throws CoreException
@@ -91,7 +91,7 @@ public final class TargetSwitcher {
       ITargetPlatformService service = getTargetPlatformService();
       target = createTargetDefinition( targetRepositoryURI,
                                        rootIUs,
-                                       targetVersion,
+                                       targetQualifier,
                                        service, 
                                        targetMonitor);
       IStatus downloadStatus = downloadTarget( target, downloadMonitor );
@@ -110,11 +110,11 @@ public final class TargetSwitcher {
   private static ITargetDefinition createTargetDefinition( 
     final String targetRepositoryURI,
     final String[] rootIUs,
-    final String targetVersion,
+    final String targetQualifier,
     final ITargetPlatformService service, 
     final IProgressMonitor monitor) throws CoreException
   {
-    String targetName = getTargetName( targetVersion );
+    String targetName = getTargetName( targetQualifier );
     ITargetDefinition target = getExistingTarget( service, targetName );
     if( target == null ) {
       target = service.newTarget();
@@ -299,9 +299,9 @@ public final class TargetSwitcher {
     return ( ITargetPlatformService )pdeCore.acquireService( className );
   }
 
-  private static String getTargetName( final String targetVersion ) {
+  private static String getTargetName( final String targetQualifier ) {
     String[] args = new String[]{
-      targetVersion
+      targetQualifier
     };
     return MessageFormat.format( TARGET_NAME_PATTERN, args );
   }
