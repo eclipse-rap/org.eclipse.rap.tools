@@ -12,6 +12,7 @@ package org.eclipse.rap.ui.internal.intro.target;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +28,8 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.equinox.p2.core.IProvisioningAgent;
+import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.internal.core.target.provisional.IResolvedBundle;
 import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
@@ -35,7 +38,9 @@ import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
 import org.osgi.framework.Bundle;
 
 public class TargetSwitcher_Test extends TestCase {
-
+  
+  private final static String TARGET_LOCATION = "/target";
+  private final static String LATEST_TARGET_LOCATION = "/latest_target";
   private final static String[] ROOT_IU = new String[]{
     "org.eclipse.rap.target.test.feature.feature.group"
   };
@@ -91,7 +96,7 @@ public class TargetSwitcher_Test extends TestCase {
   }
 
   public void testInstallTargetAvailable() throws Exception {
-    String p2RepoURI = createFakeRepository();
+    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
     ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
                                                                  ROOT_IU,
                                                                  targetVersion,
@@ -108,7 +113,7 @@ public class TargetSwitcher_Test extends TestCase {
   }
 
   public void testInstall() throws Exception {
-    String p2RepoURI = createFakeRepository();
+    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
     ITargetDefinition targetDefinition 
       = TargetSwitcher.install( p2RepoURI,
                                 ROOT_IU,
@@ -124,8 +129,49 @@ public class TargetSwitcher_Test extends TestCase {
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
   }
 
+  public void testInstallOldTargetAndLatestTargetRepositoryLoaded() throws Exception {
+    String p2RepoLatestURI = null;
+    try {
+      String p2RepoURI = createFakeRepository( TARGET_LOCATION );
+      p2RepoLatestURI = createFakeRepository( LATEST_TARGET_LOCATION );
+      loadRepository( p2RepoLatestURI );
+      ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
+                                                                   ROOT_IU,
+                                                                   targetVersion,
+                                                                   false,
+                                                                   new NullProgressMonitor() );
+      assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
+      boolean resolved = targetDefinition.getBundleContainers()[ 0 ].isResolved();
+      assertTrue( "Target should be in resolved state", resolved );
+      IResolvedBundle[] bundles = targetDefinition.getBundleContainers()[ 0 ].getBundles();
+      assertEquals( "Not all bundles are resolved", 1, bundles.length );
+    } finally {
+      remoRepository( p2RepoLatestURI );
+    }
+  }
+
+  private void loadRepository( String p2Repository ) throws  Exception {
+    IMetadataRepositoryManager metadataRepositoryManager = getMetadataRepositoryManager();
+    URI p2RepositoryURI = new URI( p2Repository );
+    metadataRepositoryManager.loadRepository( p2RepositoryURI, new NullProgressMonitor() );
+  }
+
+  
+  private IMetadataRepositoryManager getMetadataRepositoryManager() throws CoreException {
+    IProvisioningAgent agent = TargetSwitcher.getAgent();
+    Object metadataRepositoryManager = agent.getService( IMetadataRepositoryManager.SERVICE_NAME );
+    return ( IMetadataRepositoryManager )metadataRepositoryManager;
+  }
+
+  private void remoRepository( String p2Repository ) throws Exception {
+    IMetadataRepositoryManager metadataRepositoryManager = getMetadataRepositoryManager();
+    URI p2RepositoryURI = new URI( p2Repository );
+    metadataRepositoryManager.removeRepository( p2RepositoryURI );
+  }
+
+  
   public void testWsRapSet() throws Exception {
-    String p2RepoURI = createFakeRepository();
+    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
     ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
                                                                  ROOT_IU,
                                                                  targetVersion,
@@ -138,7 +184,7 @@ public class TargetSwitcher_Test extends TestCase {
   }
 
   public void testInstallTwice() throws Exception {
-    String p2RepoURI = createFakeRepository();
+    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
     ITargetDefinition targetDefinition 
       = TargetSwitcher.install( p2RepoURI,
@@ -178,7 +224,7 @@ public class TargetSwitcher_Test extends TestCase {
   {
     String VM_ARGS = "-Dosgi.noShutdown=true -Declipse.ignoreApp=true"; //$NON-NLS-1$
     String PROGRAM_ARGS = "-console -consolelog"; //$NON-NLS-1$
-    String p2RepoURI = createFakeRepository();
+    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
     ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
                                                                  ROOT_IU,
                                                                  targetVersion,
@@ -212,13 +258,13 @@ public class TargetSwitcher_Test extends TestCase {
     return FileLocator.resolve( resourceURL );
   }
   
-  private String createFakeRepository() throws Exception{
+  private String createFakeRepository( String targetLocation ) throws Exception{
     URL repositoryDest = createRepositoryDest();
     Path repositoryDestPath = new Path( repositoryDest.getPath() );
     filesToDelete.add( repositoryDestPath.toFile() );
     AntRunner runner = new AntRunner();
     URL copyRepositoryScriptURL = getResourceURL( "copy_repository.ant.xml" );
-    URL repositoryContentURL = getResourceURL( "/target" );
+    URL repositoryContentURL = getResourceURL( targetLocation );
     Path repositoryContentPath = new Path( repositoryContentURL.getPath() );
     Map scriptProperties = getProperties( repositoryContentPath.toString(), 
                                           repositoryDestPath.toString() );

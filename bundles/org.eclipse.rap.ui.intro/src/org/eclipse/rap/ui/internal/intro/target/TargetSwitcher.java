@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.p2.core.*;
 import org.eclipse.equinox.p2.metadata.IInstallableUnit;
 import org.eclipse.equinox.p2.query.*;
+import org.eclipse.equinox.p2.repository.metadata.IMetadataRepository;
 import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.internal.core.target.IUBundleContainer;
@@ -211,73 +212,71 @@ public final class TargetSwitcher {
     URI[] p2Repos = new URI[]{
       new URI( p2RepositoryURI )
     };
-    String[] versions = getLatestVersions( rootIUs, p2Repos, monitor );
+    String[] versions = getLatestVersions( rootIUs, p2Repos[ 0 ], monitor );
     ContainerCreator creator = ContainerCreator.getInstance();
     IUBundleContainer container = creator.createContainer( rootIUs, versions, p2Repos, service );
     return container;
   }
 
   private static String[] getLatestVersions( final String[] rootIUs,
-                                             final URI[] p2Repos, 
+                                             final URI p2RepositoryURI, 
                                              final IProgressMonitor monitor )
     throws CoreException
   {
     IProvisioningAgent agent = getAgent();
     IMetadataRepositoryManager repoManager = ( IMetadataRepositoryManager )
       agent.getService( IMetadataRepositoryManager.SERVICE_NAME );
-    loadRepositories( p2Repos, repoManager, monitor );
-    String[] result = selectLatestVersions( rootIUs, repoManager );
+    IMetadataRepository metadataRepository = 
+      loadRepository( p2RepositoryURI, repoManager, monitor );
+    String[] result = selectLatestVersions( rootIUs, metadataRepository );
     return result;
   }
   
-  private static IProvisioningAgent getAgent() throws CoreException {
+  public static IProvisioningAgent getAgent() throws CoreException {
     IntroPlugin introPlugin = IntroPlugin.getDefault();
     IPath stateLocation = introPlugin.getStateLocation();
     URI stateLocationURI = stateLocation.toFile().toURI();
     IProvisioningAgentProvider agentProvider = ( IProvisioningAgentProvider )
     introPlugin.acquireService( IProvisioningAgentProvider.SERVICE_NAME );
     if(agentProvider == null){
-      String message = "Agent provider service not available";
+      String message = "Agent provider service not available"; //$NON-NLS-1$
       IStatus status = ErrorUtil.createErrorStatus( message, null );
       throw new CoreException( status );
     }
     return agentProvider.createAgent( stateLocationURI );
   }
 
-  private static void loadRepositories( 
-    final URI[] p2Repos,
+  private static IMetadataRepository loadRepository( 
+    final URI p2RepositoryURI,
     final IMetadataRepositoryManager repoManager, 
     final IProgressMonitor monitor ) throws CoreException 
   {
+    IMetadataRepository result;
     SubMonitor subMonitor = SubMonitor.convert( monitor );
-    // Load available repositories
-    for( int i = 0; i < p2Repos.length; i++ ) {
-      try{
-        SubMonitor repositoryMonitor = subMonitor.newChild( 1 );
-        repoManager.loadRepository( p2Repos[i], repositoryMonitor );
-      } catch (ProvisionException e) {
-        String message = "Failed to load repository <{0}>";
-        Object[] arguments = new Object[]{p2Repos[i]};
-        String fmtMessage = MessageFormat.format( message, arguments );
-        IStatus status = ErrorUtil.createErrorStatus( fmtMessage, e );
-        throw new CoreException( status );
-      }
+    try{
+      SubMonitor repositoryMonitor = subMonitor.newChild( 1 );
+      result = repoManager.loadRepository( p2RepositoryURI, repositoryMonitor );
+    } catch (ProvisionException e) {
+      String message = "Failed to load repository <{0}>"; //$NON-NLS-1$
+      Object[] arguments = new Object[]{ p2RepositoryURI };
+      String fmtMessage = MessageFormat.format( message, arguments );
+      IStatus status = ErrorUtil.createErrorStatus( fmtMessage, e );
+      throw new CoreException( status );
     }
+    return result;
   }
   
   private static String[] selectLatestVersions( 
     final String[] rootIUs,
-    final IMetadataRepositoryManager repoManager ) throws CoreException
+    final IMetadataRepository metadataRepository ) throws CoreException
   {
     String[] result = new String[rootIUs.length];
     for( int i = 0; i < rootIUs.length; i++ ) {
       String rootIuId = rootIUs[ i ];
-      IQuery latestQuery = 
-        QueryUtil.createLatestQuery( QueryUtil.createIUQuery( rootIuId ) );
-      IQueryResult queryResult = 
-        repoManager.query( latestQuery, new NullProgressMonitor() );
+      IQuery latestQuery = QueryUtil.createLatestQuery( QueryUtil.createIUQuery( rootIuId ) );
+      IQueryResult queryResult = metadataRepository.query( latestQuery, new NullProgressMonitor() );
       if( queryResult.isEmpty() ) {
-        String messag = "Feature <{0}> not found";
+        String messag = "Feature <{0}> not found"; //$NON-NLS-1$
         Object[] arguments = new Object[]{
           rootIuId
         };
