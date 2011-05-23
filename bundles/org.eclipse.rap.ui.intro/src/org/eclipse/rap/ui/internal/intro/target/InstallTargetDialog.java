@@ -29,11 +29,11 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     "org.eclipse.rap.runtime.sdk.feature.group" //$NON-NLS-1$
   };
   private final static String TARGET_REPOSITORY_LATEST_BUILD 
-    = "http://download.eclipse.org/rt/rap/1.4/runtime"; //$NON-NLS-1$
+    = "http://download.eclipse.org/rt/rap/latest-stable/runtime"; //$NON-NLS-1$
   private final static String TARGET_REPOSITORY_LATEST_RELEASE 
-    = "http://download.eclipse.org/rt/rap/1.3/runtime"; //$NON-NLS-1$
-  private final static String TARGET_VERSION_LATEST_BUILD = "1.4"; //$NON-NLS-1$
-  private final static String TARGET_VERSION_LATEST_RELEASE = "1.3"; //$NON-NLS-1$
+    = "http://download.eclipse.org/rt/rap/latest-release/runtime"; //$NON-NLS-1$
+  private final static String TARGET_QUALIFIER_LATEST_BUILD = "latest stable build"; //$NON-NLS-1$
+  private final static String TARGET_QUALIFIER_LATEST_RELEASE = "latest release"; //$NON-NLS-1$
   private boolean isLatestBuild = true;
   private boolean shouldSwitchTarget = true;
   private Image titleImage;
@@ -53,9 +53,9 @@ public final class InstallTargetDialog extends TitleAreaDialog {
                          : TARGET_REPOSITORY_LATEST_RELEASE;
   }
 
-  public String getTargetVersion() {
-    return isLatestBuild ? TARGET_VERSION_LATEST_BUILD
-                         : TARGET_VERSION_LATEST_RELEASE;
+  public String getTargetQualifier() {
+    return isLatestBuild ? TARGET_QUALIFIER_LATEST_BUILD
+                         : TARGET_QUALIFIER_LATEST_RELEASE;
   }
 
   public String[] getRootIUs() {

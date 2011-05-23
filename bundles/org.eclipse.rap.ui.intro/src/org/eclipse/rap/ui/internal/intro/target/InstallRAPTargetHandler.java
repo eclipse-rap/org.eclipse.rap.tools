@@ -45,7 +45,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     if( result == Window.OK ) {
       execute( dialog.shouldSwitchTarget(),
                dialog.getTargetRepository(),
-               dialog.getTargetVersion(),
+               dialog.getTargetQualifier(),
                dialog.getRootIUs() );
     }
     return null;
@@ -53,7 +53,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
 
   public static void execute( final boolean switchTarget,
                               final String targetRepository,
-                              final String targetVersion,
+                              final String targetQualifier,
                               final String[] rootIUs )
   {
     Job installTargetJob = new Job( IntroMessages.TargetProvider_Installing ) {
@@ -63,7 +63,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
         try {
           TargetSwitcher.install( targetRepository, 
                                   rootIUs, 
-                                  targetVersion,
+                                  targetQualifier,
                                   switchTarget, 
                                   monitor );
           result = Status.OK_STATUS;
