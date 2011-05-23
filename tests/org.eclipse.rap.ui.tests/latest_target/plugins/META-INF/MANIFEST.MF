@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-Version: 1.0.0.201101271445
+Bundle-Name: Test
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.eclipse.rap.target.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+
+
