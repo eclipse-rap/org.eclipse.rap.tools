@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.rap.ui.launch;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-Activator: org.eclipse.rap.ui.internal.launch.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.ui,
@@ -16,7 +16,7 @@ Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.rap.ui.internal.launch;x-friends:="org.eclipse.rap.ui.tests",
  org.eclipse.rap.ui.internal.launch.junit;x-friends:="org.eclipse.rap.ui.tests",
  org.eclipse.rap.ui.internal.launch.tab;x-friends:="org.eclipse.rap.ui.tests",
