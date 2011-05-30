@@ -10,6 +10,12 @@
     <topic
       label="Hello World"
       href="help/html/getting-started/hello-world.html"/>
+    <topic
+      label="Launching RWT Applications"
+      href="help/html/getting-started/rwt-launcher.html"/>
+    <topic 
+      label="Creating an RWT Application launch configuration"
+      href="help/html/getting-started/create-rwt-launch-config.html"/>
   </topic>
   <topic label="Advanced Topics">
     <topic
