@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="copyright" content="Copyright (c) 2011 Rüdiger Herrmann. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>Launching RAP Applications</title>
+  <link rel="stylesheet" href="../book.css" charset="utf-8" type="text/css">
+</head>
+<body>
+
+<h1>Creating an RWT Application launch configuration</h1>
+
+<p>When you choose <strong>Run > Run As > RWT Application</strong> to launch your entry point, 
+  you are running your application using a generic RWT Application launch configuration that 
+  derives most of the launch parameters from your Java project and your workbench preferences.
+  In some cases, you will want to override the derived parameters or specify additional arguments. 
+</p>
+
+<p>
+  To create an RWT Application launch configuration from scratch or alter an existing one, select
+  <strong>Run > Run Configurations...</strong> or <strong>Run > Debug Configurations...</strong>
+  from the workbench menu bar. This opens a dialog that lets you create, modify, and delete launch 
+  configurations of different types. To create a new RWT Application launch configuration, select 
+  <strong>RWT Application</strong> in the left hand list of launch configuration types, and press 
+  the <strong>New</strong> button in the toolbar. The tabs on the right hand side allow you control 
+  specific aspects of the launch.
+</p>
+
+<p>On the <strong>Main</strong> tab you can control the following aspects of the launch:</p>
+<ul>
+  <li>The <strong>project</strong> field denotes the project that contains the entry point to 
+    launch. You do not have to specify a project, but doing so allows a default classpath, source 
+    lookup path, and JRE to be chosen.</li>
+  <li>
+  </li>The <strong>Application entry point</strong> lets you specify what should be launched.
+    For simple use cases it is recommended to choose <strong>Run entry point class</strong> and
+    specify the class that implements the <code>org.eclipse.rwt.lifecycle.IEntryPoint</code> 
+    interface in the class name field.
+    <br />
+    If you whish to have more control or even would like to run an arbitrary web aplicatiom, 
+    select <strong>Run from web.xml</strong> and enter the path to the web.xml in the location 
+    field. The servlet path should point to one of the servlets defined in the web.xml and is 
+    used to construct the URL to be opened with the browser.    
+  <li>The <strong>browser</strong> group lets you control whether the application should be 
+    opened with the internal browser in the editor area or with an external browser or if no 
+    browser should be opened at all.
+    The outcome depends on the browser preference settings that can be reached with the 
+    <strong>Configure browsers...</strong> link.
+  </li>  
+  <li>It is recommended to let the launcher dynamically choose a free port for 
+    client-server communication. However if you would like to have full control 
+    over the communication channel, you can enable <strong>Manual Port Configuration</strong>
+    and explicitly specify a port number.</li>
+</ul>
+
+<p>For an explanation of the other tabs see the topic
+  <a href="/help/topic/org.eclipse.jdt.doc.user/tasks/tasks-java-local-configuration.htm">
+  Creating a Java application launch configuration</a>
+</p>
+
+<p>When an RWT Application launch configuration is launched, it first terminates any possibly 
+  running launch that shares the same launch configuration.</p>
+
+</body>
+</html>

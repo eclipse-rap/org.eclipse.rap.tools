@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="copyright" content="Copyright (c) 2011 Rüdiger Herrmann. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>Launching RAP Applications</title>
+  <link rel="stylesheet" href="../book.css" charset="utf-8" type="text/css">
+</head>
+<body>
+
+<h1>Launching RWT Applications</h1>
+
+<p>The simplest way to launch an RWT application is to run it using an RWT Application launch 
+  configuration. This launch configuration type uses information derived from the workbench 
+  preferences and your applications's Java project to launch the program. 
+</p>
+<ol>
+  <li>In the <strong>Package Explorer</strong>, select the Java compilation unit or class file 
+    with the entry point you want to launch.</li> 
+  <li>Press the <strong>Run</strong> [<img src="../../images/run.png" />] button in the workbench 
+    toolbar or select <strong>Run > Run</strong> from the workbench menu bar. Alternatively, select 
+    <strong>Run As > RWT Application</strong> in the Package Explorer pop-up menu, or select 
+    <strong>Run > Run As > RWT Application</strong> in the workbench menu bar, or select 
+    <strong>Run As > RWT Application</strong> in the drop-down menu on the Run tool bar button.</li>
+  <li>The application is now launched. A browser will be opened for you to interact with the 
+    application.</li>
+</ol>
+<p>You can also launch an RWT application by selecting a project instead of the compilation unit 
+  or class file. You will be prompted to select a class from those classes that define an entry
+  point. If only one class with a main method is found in the project, that class is launched as 
+  if you selected it.
+</p>
+<p>How the generated launch configuration can be altered, you can read in the topic 
+  <a href="create-rwt-launch-config.html">Creating an RWT Application launch configuration</a>.</p>
+
+
+
+
+</body>
+</html>
