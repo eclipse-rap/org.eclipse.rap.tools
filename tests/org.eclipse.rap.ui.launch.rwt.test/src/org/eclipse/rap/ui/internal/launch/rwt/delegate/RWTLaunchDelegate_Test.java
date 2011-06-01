@@ -13,7 +13,6 @@ package org.eclipse.rap.ui.internal.launch.rwt.delegate;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import junit.framework.TestCase;
 
