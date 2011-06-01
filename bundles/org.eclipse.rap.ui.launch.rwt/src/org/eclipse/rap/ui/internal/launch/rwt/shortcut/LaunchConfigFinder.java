@@ -26,7 +26,7 @@ class LaunchConfigFinder {
   }
   
   private final LaunchConfigSelector launchConfigSelector;
-  private List /*ILaunchConfiguration*/ candidateConfigs;
+  private List<ILaunchConfiguration> candidateConfigs;
   private IType type;
 
   LaunchConfigFinder( LaunchConfigSelector launchConfigSelector ) {
@@ -40,7 +40,7 @@ class LaunchConfigFinder {
   }
 
   private void initialize( IType type ) {
-    this.candidateConfigs = new LinkedList();
+    this.candidateConfigs = new LinkedList<ILaunchConfiguration>();
     this.type = type;
   }
 
@@ -58,7 +58,7 @@ class LaunchConfigFinder {
     ILaunchConfiguration result = null;
     int candidateCount = candidateConfigs.size();
     if( candidateCount == 1 ) {
-      result = ( ILaunchConfiguration )candidateConfigs.get( 0 );
+      result = candidateConfigs.get( 0 );
     } else if( candidateCount > 1 ) {
       result = launchConfigSelector.select( candidateConfigsAsArray() );
     }

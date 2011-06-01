@@ -16,7 +16,7 @@ import java.util.List;
 
 public final class ListUtil {
 
-  public static void add( List list, Object[] array ) {
+  public static void add( List<Object> list, Object[] array ) {
     list.addAll( Arrays.asList( array ) );
   }
   

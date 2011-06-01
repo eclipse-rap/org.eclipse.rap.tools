@@ -16,12 +16,12 @@ import java.util.*;
 
 public class TemplateParser {
   private final String template;
-  private final Map variables;
+  private final Map<String,String> variables;
 
   public TemplateParser( String template ) {
     checkNotNull( template, "template" ); //$NON-NLS-1$
     this.template = template;
-    this.variables = new HashMap();
+    this.variables = new HashMap<String,String>();
   }
 
   public void registerVariable( String variableName, String variableValue ) {
@@ -53,7 +53,7 @@ public class TemplateParser {
   private String getVariableValue( String variableName ) {
     String result = ""; //$NON-NLS-1$
     if( variables.containsKey( variableName ) ) {
-      result = ( String )variables.get( variableName );
+      result = variables.get( variableName );
     }
     return result;
   }

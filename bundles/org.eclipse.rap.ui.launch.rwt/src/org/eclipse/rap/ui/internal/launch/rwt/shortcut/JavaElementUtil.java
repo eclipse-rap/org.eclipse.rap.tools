@@ -20,16 +20,14 @@ import org.eclipse.jdt.core.IJavaElement;
 class JavaElementUtil {
 
   static IJavaElement[] adapt( Object[] elements ) {
-    List javaElements = new LinkedList();
+    List<IJavaElement> javaElements = new LinkedList<IJavaElement>();
     for( int i = 0; i < elements.length; i++ ) {
       IJavaElement javaElement = adapt( elements[ i ] );
       if( javaElement != null ) {
         javaElements.add( javaElement );
       }
     }    
-    IJavaElement[] result = new IJavaElement[ javaElements.size() ];
-    javaElements.toArray( result );
-    return result;
+    return javaElements.toArray( new IJavaElement[ javaElements.size() ] );
   }
 
   static IJavaElement adapt( Object object ) {

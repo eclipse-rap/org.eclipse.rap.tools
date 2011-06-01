@@ -18,10 +18,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.rap.ui.internal.launch.rwt.RWTLaunchActivator;
 
 public class ValidationResult {
-  private final List /*<IStatus>*/ results;
+  private final List<IStatus> results;
   
   public ValidationResult() {
-    results = new LinkedList();
+    results = new LinkedList<IStatus>();
   }
   
   public void addError( String message, int code ) {

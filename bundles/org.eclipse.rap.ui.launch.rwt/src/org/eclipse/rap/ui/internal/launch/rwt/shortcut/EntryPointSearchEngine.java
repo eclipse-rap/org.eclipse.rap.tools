@@ -73,11 +73,10 @@ class EntryPointSearchEngine {
   }
 
   private static class EntryPointCollector extends SearchRequestor {
-
-    private final List collectedTypes;
+    private final List<IType> collectedTypes;
 
     public EntryPointCollector() {
-      collectedTypes = new LinkedList();
+      collectedTypes = new LinkedList<IType>();
     }
     
     void clear() {
@@ -85,7 +84,7 @@ class EntryPointSearchEngine {
     }
 
     IType[] getResult() {
-      return ( IType[] )collectedTypes.toArray( new IType[ collectedTypes.size() ] );
+      return collectedTypes.toArray( new IType[ collectedTypes.size() ] );
     }
 
     public void acceptSearchMatch( SearchMatch match ) throws CoreException {
