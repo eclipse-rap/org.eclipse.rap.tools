@@ -1,213 +1,138 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta name="copyright" content="Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<title>Hello World</title>
-<link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+  <meta name="copyright" content="Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>Hello World</title>
+  <link rel="stylesheet" href="../book.css" charset="UTF-8" type="text/css">
 </head>
 <body>
-<h1>Hello World</h1>
-<h2>How do I write a Hello World with RAP?</h2>
-<ol>
+
+  <h1>Writing a Hello World with RAP</h1>
+
+  <h2>Preconditions</h2>
+  <p>
+    It is recommended to install the RAP Tooling into your IDE.
+    You can either download the Eclipse package named “Eclipse for RAP and RCP Developers” or
+    install the RAP Tooling into your Eclipse from the Eclipse repositories.
+    If you read this article inside Eclipse, then you obviously have the RAP Tooling installed
+    already.
+  </p>
+  <p>
+    To develop RAP applications, you have to install a RAP target platform.
+    The target platform contains the bundles that all your workspace projects are compiled against.
+    You can check your current target in the Eclipse Preferences under <em>Plug-in Development &gt;
+    Target Platform</em>.
+    The RAP Tooling can assist you to install a RAP target platform.
+    On the Welcome page (<em>Help &gt; Welcome</em>) navigate to the RAP page (<em>Overview &gt;
+    Rich Ajax Platform</em>) and select <em>Install RAP Target Platform</em>.
+  </p>
+
+  <h2>Create the application</h2>
+  <h3>A new project</h3>
+  <p>
+    First we need a project for our application.
+    From the menu, select <em>File &gt; New &gt; Project</em>.
+    When the <em>New Project</em> wizard appears select <em>Plug-in Project</em> from the section
+    <em>Plug-in Development</em>.
+    Let's call the plug-in <code>org.example.rap.helloworld</code>.
+  </p>
+  <img src="../../images/hello-world/NewProject-1.png"/>
+  <p>
+    On the second page of the wizard, disable the options
+    <em>Generate an activator, …</em> and
+    <em>This plug-in will make contributions to the UI</em>.
+    The first one creates a bundle activator, but we don't need that now.
+    The latter adds dependencies for RCP apps, but they don't fit for RAP.
+  </p>
+  <img src="../../images/hello-world/NewProject-2.png"/>
+  <p>
+    Even if you are not going to create an Eclipse plug-in (an OSGi bundle), it's a good practice
+    to use Plug-in projects and declare your dependencies in an OSGi manifest.
+  </p>
+
+  <h3>Add dependencies</h3>
+  <p>
+    Now we add a dependency to the <code>org.eclipse.rap.ui</code> plug-in.
+    This bundle is the RAP equivalent of <code>org.eclipse.ui</code>.
+    It re-exports all bundles you need for developing Eclipse applications, including SWT and JFace.
+    Later, you can–and you should–be more specific on your dependencies, but for now, this is the
+    easiest way.
+  </p>
+  <p>
+    To add this dependency, open the project's bundle manifest file
+    <code>META-INF/MANIFEST.MF</code>.
+    In the <em>Plug-in Manifest Editor</em>, go to the <em>Dependencies</em> page.
+    Add <code>org.eclipse.rap.ui</code> to the list of <em>Required Plug-ins</em> and save.
+  </p>
+
+  <h3>Create a package</h3>
+  <p>
+    Before creating any Java code you should create a package.
+    The main package of the bundle should always match with the bundle id, to avoid split packages.
+    Therefore, name the package <code>org.example.rap.helloworld</code>.
+  </p>
+
+  <h3>Create an entrypoint</h3>
+  <p>
+    Your application needs an entrypoint, a method that is called by the framework when a user
+    starts the application.
+    To do so, we need a class that implements the interface <code>IEntryPoint</code>.
+    Alternatively, it is also possible to implement the Eclipse-specific interface
+    <code>IApplication</code>.
+  </p>
+  <p>
+    Let's start with the more general <code>IEntryPoint</code>.
+    We create a class named <code>EntryPoint</code> that implements <code>IEntryPoint</code>.
+    In the method createUI, we create some SWT code.
+    You can generate the skeleton of this code using an SWT template (type <em>main</em> and hit
+    Ctrl+Space, then select the template named <em>mainloop</em>).
+    In the example below, we added a Button with the text “Hello world!”:
+  </p>
+  <pre><code>
+  public class EntryPoint implements IEntryPoint {
   
-<li><p><strong>Create a new project</strong></p>
-<p>Create a new Project by right-clicking in the package explorer and select 
-  <strong>New &gt; Project</strong>. In the upcoming "New Project"-wizard, 
-  select <strong>Plug-in Project</strong> from the section 
-  <strong>Plug-in Development</strong>.</p>
-  
-  <p>Your newly created plug-in project depends on a number of plug-ins that You 
-    need to enter as required plug-ins. To do so, open the project's MANIFEST.MF 
-    with the <strong>Plug-in Manifest Editor</strong> and go to the 
-    <strong>Dependencies</strong> page.</p>
-  <p>Add the following plug-in to the list of <strong>Required Plug-ins</strong>.
-  <ul>
-    <li><code>org.eclipse.rap.ui</code></li>
-  </ul></p>
-  
-  <p>Add the following servlet packages to the list of <strong>Imported Packages</strong>.
-  <ul>
-    <li><code>javax.servlet</code></li>
-    <li><code>javax.servlet.http</code></li>
-  </ul></p>
-  <p>so that the <strong>Dependencies</strong> page looks like this:</p>
-  <img src="../../images/hello-world-dependencies.png"/>
-</li>
-  
-<li><p><strong>Create your package</strong></p>
-<p>Before creating any files or classes you should create a package <code>org.eclipse.rap.helloworld</code> 
-  (or another package name you like) to contain your source files.</p>
-</li>
+    public int createUI() {
+      Display display = new Display();
+      Shell shell = new Shell( display );
+      shell.setLayout( new GridLayout( 1, false ) );
 
-<li><p><strong>Create a workbench advisor <code>HelloWorldWorkbenchAdvisor</code> 
-  extending the <code>WorkbenchAdvisor</code> class</strong></p>
+      Button button = new Button( shell, SWT.PUSH );
+      button.setText( "Hello world!" );
 
-<p>The WorkbenchAdvisor is necessary to provide the id of the perspective 
-  to the workbench. Therefore you need to implement the only method 
-  <code>getInitialWindowPerspectiveId()</code> to return the id of your 
-  perspective.</p>
-<p>Example code:
-<pre><code>
-package org.eclipse.rap.helloworld;
-
-import org.eclipse.ui.application.WorkbenchAdvisor;
-
-public class HelloWorldWorkbenchAdvisor extends WorkbenchAdvisor {
-
-  public String getInitialWindowPerspectiveId() {
-    return "org.eclipse.rap.helloworld.perspective";
+      shell.pack();
+      shell.open();
+      while( !shell.isDisposed() ) {
+        if( !display.readAndDispatch() ) {
+          display.sleep();
+        }
+      }
+      display.dispose();
+      return 0;
+    }
   }
-}
-</code></pre>
-</p>
-<p>For now we ignore the fact that the perspective id does not yet exist but
-  keep in mind to label the perspective extension with the same id that we
-  used here.</p></li>
-<li>  <p><strong>Create the <code>HelloWorldWorkbench</code> class implementing 
-  <code>IEntryPoint</code>.</strong></p>
-<p>The HelloWorldWorkbench is the entry point of the application and responsible 
-  for creating the UI. Therefore it must implement the interface 
-  <code>IEntryPoint</code> with <code>createUI()</code> as the only method.
-</p>
-  
-<p>Example code: 
-<pre></code>
-package org.eclipse.rap.helloworld;
-  
-import org.eclipse.rwt.lifecycle.IEntryPoint;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
+  </code></pre>
 
-public class HelloWorldWorkbench implements IEntryPoint {
-  
-  public int createUI() {
-    Display display = PlatformUI.createDisplay();
-    WorkbenchAdvisor advisor = new HelloWorldWorkbenchAdvisor();
-    int result = PlatformUI.createAndRunWorkbench( display, advisor );
-    return result;
-  }
-}
-</code></pre>
-</p>
-</li>
+  <h3>Register the entrypoint</h3>
+  <p>
+    To make RAP aware of this entrypoint, it has to be registered with an extension point.
+    In the <em>Plug-in Manifest Editor</em>, go to the <em>Extensions</em> tab and create a new
+    extension for the extension point <code>org.eclipse.rap.ui.entrypoint</code>.
+    Select the created entrypoint class as value for the <em>class</em> attribute.
+    Also specify a concise value for the <em>parameter</em> attribute such as <em>myapp</em>.
+    We'll need this parameter later to access the appliation.
+  </p>
 
-<li><p><strong>Create an entry point</strong></p>
-<p>In the <strong>Plug-in Manifest Editor</strong>, switch to the 
-  <strong>Extensions</strong> page.</p>  
-
-<img src="../../images/hello-world-workbench.png"/>
-  
-<p>Add an <code>entrypoint</code> extension for the 
-<code>org.eclipse.rap.ui.entrypoint</code> and enter these details: 
-<ul><li><strong>id:</strong> <code>org.eclipse.rap.helloworld.helloWorldWorkbench</code></li>
-<li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldWorkbench</code></li>
-<li><strong>parameter:</strong> <code>default</code></li>
-</ul></p>
-</li>
-
-<li><p><strong>Create the <code>HelloWorldView</code> view extending class 
-  <code>ViewPart</code></strong></p>
-  
-<p>The HelloWorldView is responsible for creating the view to display the output
-  of your application. The class needs to extend <code>ViewPart</code> and 
-  provide an implementation for the method <code>createPartControl()</code>.</p>
-
-<p>Then <strong>implement the method <code>createPartControl</code> in that 
-  HelloWorldView</strong></p>
-<p>You then need to implement the method <code>createPartControl</code> to 
-  create and add the components you want in your view.</p>
-<p>Example code:
-<pre></code>
-package org.eclipse.rap.helloworld;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.part.ViewPart;
-
-public class HelloWorldView extends ViewPart {
-
-  public void createPartControl( Composite parent ) {
-    Label label = new Label ( parent, SWT.NONE );
-    label.setText( "Hello RAP World" );
-    label.setSize( 80, 20 );
-  }
-
-  public void setFocus() {
-    // do nothing
-  }
-}
-</code></pre>
-</p></li>
-
-<li>  
-<p><strong>Now you need to declare this <code>HelloWorldView</code> as an extension to 
-  <code>org.eclipse.ui.views</code> with these parameters:</strong></p>
-      <p><img src="../../images/hello-world-view.png"/></p>
-  <ul>
-  <li><strong>id:</strong> <code>org.eclipse.rap.helloworld.helloWorldView</code></li>
-  <li><strong>name:</strong> <code>Hello World</code></li>
-  <li><strong>class:</strong> <code>org.eclipse.rap.helloworld.HelloWorldView</code></li>
-  <li><strong>icon:</strong> <em>some_icon.gif</em>
-    <p><strong>Important note:</strong> If the icon path does not exist,
-    an exception is thrown.</p>
-
-
-    </li>
-  </ul>
-  
-  
-<li><p><strong>Create a <code>Perspective</code> implementing 
-  <code>IPerspectiveFactory</code></strong></p>
-
-<p>The Perspective is responsible for defining the layout of your UI. Therefore 
-  you need to implement <code>createInitialLayout()</code> to set up the layout 
-  of your UI and add the views (only one view in the HelloWorld application). 
-  Please note that you need to specify the <strong>id</strong> of your view, 
-  which needs to be distinguished from the <strong>class name</strong>.</p>
-<p>Example code:
-<pre><code>
-package org.eclipse.rap.helloworld;
-
-import org.eclipse.ui.IFolderLayout;
-import org.eclipse.ui.IPageLayout;
-import org.eclipse.ui.IPerspectiveFactory;
-
-public class Perspective implements IPerspectiveFactory {
-  
-  public void createInitialLayout( IPageLayout layout ) {
-    String editorArea = layout.getEditorArea();
-    layout.setEditorAreaVisible( false );
-    IFolderLayout left = layout.createFolder( "left",
-                                              IPageLayout.LEFT,
-                                              0.25f,
-                                              editorArea );
-    left.addView( "org.eclipse.rap.helloworld.helloWorldView" );
-  }
-}
-
-</code></pre></p></li>
-
-<li>  
-<p><strong>Then the <code>Perspective</code> needs to be declared as an extension to <code>org.eclipse.ui.perspectives</code>.</strong></p>
-<img src="../../images/hello-world-perspective.png"/>
-<p>  
-<ul>
-  <li><strong>id:</strong> <code>org.eclipse.rap.helloworld.perspective</code></li>
-  <li><strong>name:</strong> <code>Hello World Perspevtive</code></li>
-  <li><strong>class:</strong> <code>org.eclipse.rap.helloworld.Perspective</code></li>
-</ul>  
-  All other Attributes may remain empty.</p>
-</li>
-<li><strong>
-  Now the hello world application is complete.</strong> For information on how to 
-  launch a RAP application please see the chapter
-  <a href="launcher.html">Launching RAP Applications</a>.
-</li>
-</ol>
-</p>
+  <h2>Launch the application</h2>
+  <p>
+    That's it, we are now ready to run the application.
+    Here's the short version:
+    <em>Run &gt; Run configurations…</em>, create a new <em>RWT</em> launch configuration, select
+    your project and entrypoint class and press <em>Run</em>.
+    A browser view should open up soon afterwards and show your running application.
+    More on launching RAP applications in the next article.
+  </p>
     
 </body>
 </html>

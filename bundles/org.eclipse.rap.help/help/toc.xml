@@ -2,14 +2,14 @@
   <topic label="Introduction" href="help/html/intro.html" />
   <topic label="Getting Started">
     <topic
-      label="RAP Examples"
-      href="help/html/getting-started/examples.html"/>
+      label="Hello World"
+      href="help/html/getting-started/hello-world.html"/>
     <topic
       label="Launching RAP Applications"
       href="help/html/getting-started/launcher.html"/>
     <topic
-      label="Hello World"
-      href="help/html/getting-started/hello-world.html"/>
+      label="RAP Examples"
+      href="help/html/getting-started/examples.html"/>
     <topic
       label="Launching RWT Applications"
       href="help/html/getting-started/rwt-launcher.html"/>
@@ -39,6 +39,8 @@
     <topic
       label="WAR Deployment"
       href="help/html/advanced/deployment.html"/>
+    <topic href="help/html/advanced/rwt-standalone.html" label="RWT Standalone">
+    </topic>
   </topic>
   <topic label="Reference">
   	<topic label="API Reference"
