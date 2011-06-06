@@ -1,16 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007-2009 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Launching RAP Applications</title>
-  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" charset="UTF-8" type="text/css">
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
   
   <h1>Launching RAP Applications</h1>
-  
+
   <p>
     To start your RAP application from the IDE, you have two choices.
     For simple applications that are not based on OSGi, you can use the
@@ -24,7 +25,7 @@
     menu and create a <em class="UILabel">New launch configuration</em> of the desired type.
   </p>
 
-  <a name="rwt"><h2>Using the RWT Launcher</h2></a>
+  <h2><a name="rwt">Using the RWT Launcher</a></h2>
 
   <p>
     The simplest way to launch an RWT application is to run it using an RWT Application launch 
@@ -32,15 +33,23 @@
     preferences and your applications's Java project to launch the program. 
   </p>
   <ol>
-    <li>In the <strong>Package Explorer</strong>, select the Java compilation unit or class file 
-      with the entry point you want to launch.</li> 
-    <li>Press the <em class="UILabel">Run</em> [<img src="../../images/run.png" />] button in the workbench 
-      toolbar or select <em class="UILabel">Run > Run</em> from the workbench menu bar. Alternatively, select 
-      <em class="UILabel">Run As > RWT Application</em> in the Package Explorer pop-up menu, or select 
-      <em class="UILabel">Run > Run As > RWT Application</em> in the workbench menu bar, or select 
-      <em class="UILabel">Run As > RWT Application</em> in the drop-down menu on the Run tool bar button.</li>
-    <li>The application is now launched. A browser will be opened for you to interact with the 
-      application.</li>
+    <li>
+      In the <strong>Package Explorer</strong>, select the Java compilation unit or class file 
+      with the entry point you want to launch.
+    </li> 
+    <li>
+      Press the <em class="UILabel">Run</em> [<img src="../../images/run.png" alt="Run button"/>]
+      button in the workbench toolbar or select <em class="UILabel">Run &gt; Run</em> from the
+      workbench menu bar.
+      Alternatively, select <em class="UILabel">Run As &gt; RWT Application</em> in the Package
+      Explorer pop-up menu, or select <em class="UILabel">Run &gt; Run As &gt; RWT Application</em>
+      in the workbench menu bar, or select <em class="UILabel">Run As &gt; RWT Application</em> in
+      the drop-down menu on the Run tool bar button.
+    </li>
+    <li>
+      The application is now launched. A browser will be opened for you to interact with the 
+      application.
+    </li>
   </ol>
   <p>
     You can also launch an RWT application by selecting a project instead of the compilation unit 
@@ -55,7 +64,6 @@
     After a correct startup, a message like the one below should be displayed in the Console view:<br/>
     <code style="color:red">INFO: Started SocketListener on 0.0.0.0:&lt;port&gt;</code>.
   </p>
-
 
   <h3>Further configuration options</h3>
   
@@ -77,7 +85,7 @@
       specify the class that implements the <code>org.eclipse.rwt.lifecycle.IEntryPoint</code> 
       interface in the class name field.
       <br />
-      If you whish to have more control or even would like to run an arbitrary web aplicatiom, 
+      If you wish to have more control or even would like to run an arbitrary web application, 
       select <strong>Run from web.xml</strong> and enter the path to the web.xml in the location 
       field. The servlet path should point to one of the servlets defined in the web.xml and is 
       used to construct the URL to be opened with the browser.
@@ -95,12 +103,13 @@
     </li>
   </ul>
   
-  <p>For an explanation of the other tabs see the topic
+  <p>
+    For an explanation of the other tabs see the topic
     <a href="/help/topic/org.eclipse.jdt.doc.user/tasks/tasks-java-local-configuration.htm">
     Creating a Java application launch configuration</a>
   </p>
 
-  <a name="rap"><h2>Using the RAP Launcher</h2></a>
+  <h2><a name="rap">Using the RAP Launcher</a></h2>
 
   <p>
     The RAP Launcher is based on the 
@@ -109,9 +118,9 @@
     Please note, that the RAP Launcher only works when the Equinox OSGi Framework is selected,
     which is the default setting on page <em class="UILabel">Bundles</em>.
   </p>
-    
-  <img src="../../images/launcher.png" />
-    
+
+  <img src="../../images/launcher.png" alt="RAP launcher screenshot" />
+
   <h3>Servlet and Entry Point/Application to Run</h3>
   <p>
     Within this group you need to choose the combination of servlet name and 
@@ -128,29 +137,32 @@
     application is not contained in the selection on the <em class="UILabel">Bundles</em> page.
   </p>
   
-  <p>When the <em class="UILabel">Terminate possible running previous launch</em>
-  option is selected, an eventually running launch with the same name 
-  will be terminated before lauching. This might come in handy when frequently
-  changing code and restarting the application.</p>
+  <p>
+    When the <em class="UILabel">Terminate possible running previous launch</em> option is selected,
+    an eventually running launch with the same name will be terminated before launching.
+    This might come in handy when frequently changing code and restarting the application.
+  </p>
   
   <h3>Browser</h3>
   <p>
-  Controls whether the application should be opened with the internal browser
-  in the editor area or with an external browser or if no browser should be 
-  opened.
-  The outcome depends on the browser preference settings that can be reached
-  with the <em class="UILabel">Configure Browsers...</em> link.
+    Controls whether the application should be opened with the internal browser in the editor area
+    or with an external browser or if no browser should be opened.
+    The outcome depends on the browser preference settings that can be reached with the
+    <em class="UILabel">Configure Browsers...</em> link.
   </p>
   
   <h3>Manual Port Configuration</h3>
-  <p>It is recommended to let the launcher dynamically choose a free port for 
-  client-server communication. However if you would like to have full control 
-  over the communication channel, you can explicitly specify a port number.
+  <p>
+    It is recommended to let the launcher dynamically choose a free port for client-server
+    communication.
+    However if you would like to have full control over the communication channel, you can
+    explicitly specify a port number.
   </p>
   
   <h3>Session Timeout</h3>
-  <p>Specifies the servlet session timeout in seconds. If the checkbox is 
-  unselected, the session will never expire.
+  <p>
+    Specifies the servlet session timeout in seconds.
+    If the checkbox is unselected, the session will never expire.
   </p>
   
   <h3>Context Path</h3>
@@ -172,7 +184,7 @@
   <h3>Client-side Library Variant</h3>
   <p>
     The JavaScript client of RAP can be delivered in two variants.
-    The <em>Standard</em> version is optimized for speed and size by commpressing the JavaScript
+    The <em>Standard</em> version is optimized for speed and size by compressing the JavaScript
     code.
     The <em>Debug</em> version maintains the JavaScript code in its original form.
     We recommend to use the Debug variant when developing custom widgets for RAP.
@@ -187,7 +199,7 @@
 
   <h3>Required plug-ins</h3>  
   <p>
-    In the Bundles tab, the following bundles nee to be activated:
+    In the Bundles tab, the following bundles need to be activated:
   </p>
   <ul>
     <li>com.ibm.icu.base</li>  
@@ -240,7 +252,7 @@
     <code>Alt+Shift+X+R</code> (run) and <code>Alt+Shift+D+R</code> (debug).
   </p>
     
-  <a name="equinox"><h2>Using the Equinox Launcher</h2></a>
+  <h2><a name="equinox">Using the Equinox Launcher</a></h2>
   
   <p>
     Alternatively, you can also use the plain OSGi Launcher to start RAP applications.

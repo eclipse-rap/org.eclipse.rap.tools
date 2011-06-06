@@ -1,13 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Branding</title>
-  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" charset="UTF-8" type="text/css">
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
+
   <h1>Branding</h1>
 
   <h3>Introduction</h3>
@@ -16,7 +18,7 @@
     RAP application. This includes for example the page title which is shown in the
     browser or the theme to be used for the application.
   </p>
-  <img src="../../images/branding/example.png" />
+  <img src="../../images/branding/example.png" alt="Example branding"/>
 
   <h3>Capabilities of the Branding</h3>
   <p>
@@ -24,7 +26,7 @@
     <code>org.eclipse.rap.ui.branding</code>
     extension point.
   </p>
-  <img src="../../images/branding/extension.png" />
+  <img src="../../images/branding/extension.png" alt="Extension point editor"/>
   <p>
     And here the same as it appears in the <code>plugin.xml</code>:
   </p>
@@ -48,7 +50,7 @@
   <p>
     The <code>servletName</code> attribute defines the URL path to the application.
     The application will be available at<br/>
-    <div style="margin:5px;"><code>http://host[:port]/[contextName/]<b>servletName</b></code>.</div>
+    <code>http://host[:port]/[contextName/]<b>servletName</b></code>.
     The <code>contextName</code> is optional.
     In a deployment, this will be the webapp path.
     You can also specify a context path in the RAP launcher.
@@ -57,9 +59,9 @@
   <h4>defaultEntrypointId</h4>
   <p>
     The id of the entrypoint that should be started by default for this branding.
-    For example, with the example configuration shown above, the following URLs are equivalent:
-    <div style="margin:5px;"><code>http://host[:port]/myapp</code></div>
-    <div style="margin:5px;"><code>http://host[:port]/myapp?startup=foo</code></div>
+    For example, with the example configuration shown above, the following URLs are equivalent:<br/>
+    <code>http://host[:port]/myapp</code><br/>
+    <code>http://host[:port]/myapp?startup=foo</code><br/>
     given that the <code>parameter</code> of the entrypoint <code>my.project.entrypoint1</code>
     is <code>foo</code>.
   </p>
@@ -99,7 +101,7 @@
     the user tries to close the browser window or tab or navigates to another URL.
   </p>
 
-  <img src="../../images/branding/exitConfirmation.png" />
+  <img src="../../images/branding/exitConfirmation.png" alt="Exit confirmation dialog"/>
 
   <p>
     <strong>NOTE:</strong>
@@ -134,12 +136,14 @@
   </p>
   <p>
     Here's an example: imagine you have the following entrypoints defined:
-    <ul>
-      <li>customerA</li>
-      <li>customerB</li>
-      <li>administrationA</li>
-      <li>administrationB</li>
-    </ul>
+  </p>
+  <ul>
+    <li>customerA</li>
+    <li>customerB</li>
+    <li>administrationA</li>
+    <li>administrationB</li>
+  </ul>
+  <p>
     Using different brandings, you can now group them so that customer A and
     administration A have the same branding (page title, servletName, theme, etc.)
     and are not allowed to access the applications for customer B.
@@ -157,7 +161,7 @@
     &lt;/associatedEntrypoints&gt;
   </code></pre>
   <p>
-    The same whould be done for Customer B (with different entrypoint ids).
+    The same would be done for Customer B (with different entrypoint ids).
   </p>
 
 </body>

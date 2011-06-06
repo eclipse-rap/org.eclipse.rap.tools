@@ -1,11 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007-2008 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Hello World</title>
-  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" charset="UTF-8" type="text/css">
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
 
@@ -38,7 +39,7 @@
     <em>Plug-in Development</em>.
     Let's call the plug-in <code>org.example.rap.helloworld</code>.
   </p>
-  <img src="../../images/hello-world/NewProject-1.png"/>
+  <img src="../../images/hello-world/NewProject-1.png" alt="New Project Wizard"/>
   <p>
     On the second page of the wizard, disable the options
     <em>Generate an activator, …</em> and
@@ -46,7 +47,7 @@
     The first one would create a bundle activator, but we don't need that now.
     The latter would add dependencies for RCP apps, but they don't fit for RAP.
   </p>
-  <img src="../../images/hello-world/NewProject-2.png"/>
+  <img src="../../images/hello-world/NewProject-2.png" alt="New Project Wizard"/>
 
   <h3>Add dependencies</h3>
   <p>
@@ -118,7 +119,7 @@
     extension for the extension point <code>org.eclipse.rap.ui.entrypoint</code>.
     Select the created entrypoint class as value for the <em>class</em> attribute.
     Also specify a concise value for the <em>parameter</em> attribute such as <em>myapp</em>.
-    We'll need this parameter later to access the appliation.
+    We'll need this parameter later to access the application.
   </p>
 
   <h2>Launch the application</h2>

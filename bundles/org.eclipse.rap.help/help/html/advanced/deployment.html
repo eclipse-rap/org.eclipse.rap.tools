@@ -1,120 +1,156 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Deployment</title>
-  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" charset="UTF-8" type="text/css">
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
+
   <h1>How to Deploy a RAP Application to a Servlet Container?</h1> 
   
-  <p> The following tutorial shows how to create a <code>WAR</code> file that
-  contains the <code>org.eclipse.rap.demo</code> project as RAP application.</p>
+  <p>
+    The following tutorial shows how to create a <code>WAR</code> file that contains the
+    <code>org.eclipse.rap.demo</code> project as RAP application.
+  </p>
   
-  <p>Note: As with RCP applications there are a wide variety of possible
-  configurations. What's given in this tutorial is just one possibility.</p>
+  <p>
+    Note: As with RCP applications there are a wide variety of possible configurations.
+    What's given in this tutorial is just one possibility.
+  </p>
   
-  <p>As prerequisites we assume that you:
+  <p>
+    As prerequisites we assume that you:
+  </p>
   <ul>
-  <li> are familiar with the bundles- and build information section of the 
-  <a href="http://www.eclipse.org/equinox/server/http_in_container.php">
-  Equinox in a Servlet Container</a> document.</li>
-  <li> have installed the WAR Products tooling from this p2 repository 
-  <a href="http://download.eclipse.org/releases/indigo">http://download.eclipse.org/releases/indigo</a> 
-  into your IDE. This tooling is part of <a href="http://eclipse.org/libra">Libra</a> and not 
-  part of RAP. Anyway it can be used to deploy RAP applications in a very comfortable way.</li>
-  <li> set RAP as you target platform. If you are using RAP 1.4 or a newer version you
-  don't need to check out the <a href="servletbridge-anon.psf">servlet bridge</a>
-  bundles in your workspace because they are part of the RAP target. Otherwise 
-  you need to check out the servlet bridge bundles. The link points to a 
-  'team project set' file. In case you haven't done that so far, use <b>File</b> 
-  &gt; <b>Import</b> &gt; <b>Team Project Set</b> and enter the location of
-  the downloaded file. Press <b>Finish</b> and the necessary 
-  projects will be imported from CVS.</li>
-  </ul></p>
+    <li>
+      are familiar with the bundles- and build information section of the 
+      <a href="http://www.eclipse.org/equinox/server/http_in_container.php">
+      Equinox in a Servlet Container</a> document.
+    </li>
+    <li>
+      have installed the WAR Products tooling from this p2 repository 
+      <a href="http://download.eclipse.org/releases/indigo">http://download.eclipse.org/releases/indigo</a> 
+      into your IDE. This tooling is part of <a href="http://eclipse.org/libra">Libra</a> and not 
+      part of RAP. Anyway it can be used to deploy RAP applications in a very comfortable way.
+    </li>
+    <li>
+      set RAP as you target platform. If you are using RAP 1.4 or a newer version you
+      don't need to check out the <a href="servletbridge-anon.psf">servlet bridge</a>
+      bundles in your workspace because they are part of the RAP target. Otherwise 
+      you need to check out the servlet bridge bundles. The link points to a 
+      'team project set' file. In case you haven't done that so far, use <b>File</b> 
+      &gt; <b>Import</b> &gt; <b>Team Project Set</b> and enter the location of
+      the downloaded file. Press <b>Finish</b> and the necessary 
+      projects will be imported from CVS.
+    </li>
+  </ul>
   
   <h3>Import <code>org.eclipse.rap.demo</code> into your workspace</h3>
   <ul>
-  <li>Open the <code>plug-ins</code> view.
-  <li>Select the <code>org.eclipse.rap.demo</code> plug-in and use the command
-  <b>Import As</b> > <b>Source Project</b> from the context menu to import 
-  <code>org.eclipse.rap.demo</code> as project in your workspace.</li>
-  <img src="../../images/import_rap_demo.png">
+    <li>
+      Open the <code>plug-ins</code> view.
+    </li>
+    <li>
+      Select the <code>org.eclipse.rap.demo</code> plug-in and use the command
+      <b>Import As</b> > <b>Source Project</b> from the context menu to import 
+      <code>org.eclipse.rap.demo</code> as project in your workspace.
+    </li>
   </ul>
+  <img src="../../images/import_rap_demo.png" alt="Import RAP demo project"/>
   
   <h3>Cerate a <code>.warproduct</code> configuration</h3>
-  <p>Building a <code>WAR</code> file using the WAR Products tooling is centered around 
-  a <code>.warproduct</code> configuration. The <code>.warproduct</code> configuration is 
-  entirely managed by the WAR Products tooling to simplify war deployment. It's format 
-  is internal and is not intended to be read by tools other than the WAR Products tooling.
-  To create a <code>.warproduct</code> configuration you can use a working launch 
-  configuration. Follow these steps to create a <code>rapdemo.warproduct</code>
-  configuration for the RAP demo application:
+  <p>
+    Building a <code>WAR</code> file using the WAR Products tooling is centered around 
+    a <code>.warproduct</code> configuration. The <code>.warproduct</code> configuration is 
+    entirely managed by the WAR Products tooling to simplify war deployment. It's format 
+    is internal and is not intended to be read by tools other than the WAR Products tooling.
+    To create a <code>.warproduct</code> configuration you can use a working launch 
+    configuration. Follow these steps to create a <code>rapdemo.warproduct</code>
+    configuration for the RAP demo application:
+  </p>
   <ul>
-  <li> Open the <code>New WAR Product Configuration</code> wizard. </br></li>
-  <img src="../../images/war_product_wizard.png">
-  <li> Enter a name for the  war configuration file and select the 
-  <code>RAP Workbench Demo</code> from the available launch configurations. </br></li>
-  <img src="../../images/war_product_configuration.png">
+    <li>
+      Open the <code>New WAR Product Configuration</code> wizard.<br/>
+      <img src="../../images/war_product_wizard.png" alt="WAR product wizard"/>
+    </li>
+    <li>
+      Enter a name for the  war configuration file and select the 
+      <code>RAP Workbench Demo</code> from the available launch configurations.<br/>
+      <img src="../../images/war_product_configuration.png" alt="WAR pruct configuration"/>
+    </li>
   </ul>
-  </p>
 
-  <h3>The <code>rapdemo.warproduct</code> configuration</code> </h3>
-  <p> WAR Products tooling provides a form-based multi-page editor to manage a 
+  <h3>The <code>rapdemo.warproduct</code> configuration</h3>
+  <p>
+    WAR Products tooling provides a form-based multi-page editor to manage a 
     <code>.warproduct</code> configuration. The editor has the following pages:
-    <ul>
-    <li> <code>Overview</code>: on this page you can enter additional information
-    like <code>ID</code>, <code>Name</code>, <code>Version</code> but they are not
-    needed to export a war archive. Also the <code>WAR Product export</code> wizard 
-    can be started from the <code>Overview page</code>. </br></li>
-    <img src="../../images/war_product_editor.png">
-    <li> <code>Configuration</code>: Here you can manage which plug-ins and libraries
-    to be included into the war archive.  </br></li>
-    <img src="../../images/war_product_editor_configuration.png">
-    <li> <code>Web.xml</code>: On this page the web.xml of the war archive can be edited.  
-    </br></li>
-     <img src="../../images/war_product_editor_webxml.png">
-    </ul>
-   
   </p>
-  <h3>Create the <code>war</code> archive</code> </h3>
-  <p>From the <code>Overview</code> page of the <code>.warproduct</code> configuration
-  editor start the <code>WAR Product export</code> wizard (this can also be reached by launching 
-  the general Export Wizard), enter the location for the war 
-  archive and press <b>Finish</b> if no validation errors exist. After that you can deploy 
-  the <code>WAR</code> file to a servlet container. See the uncommented sections in the web.xml 
-  for more information on how to activate the OSGi-console. This is useful if you run into troubles 
-  while deploying the generated WAR file.</p>
+  <ul>
+    <li>
+      <code>Overview</code>: on this page you can enter additional information
+      like <code>ID</code>, <code>Name</code>, <code>Version</code> but they are not
+      needed to export a war archive. Also the <code>WAR Product export</code> wizard 
+      can be started from the <code>Overview page</code>.<br/>
+      <img src="../../images/war_product_editor.png" alt="WAR Product editor"/>
+    </li>
+    <li>
+      <code>Configuration</code>: Here you can manage which plug-ins and libraries
+      to be included into the war archive.<br/>
+      <img src="../../images/war_product_editor_configuration.png" alt="WAR Product editor configuration"/>
+    </li>
+    <li>
+      <code>Web.xml</code>: On this page the web.xml of the war archive can be edited.<br/>
+      <img src="../../images/war_product_editor_webxml.png" alt="WAR Product editor web.xml"/>
+    </li>
+  </ul>
+   
+  <h3>Create the <code>war</code> archive</h3>
+  <p>
+    From the <code>Overview</code> page of the <code>.warproduct</code> configuration
+    editor start the <code>WAR Product export</code> wizard (this can also be reached by launching 
+    the general Export Wizard), enter the location for the war 
+    archive and press <b>Finish</b> if no validation errors exist. After that you can deploy 
+    the <code>WAR</code> file to a servlet container. See the uncommented sections in the web.xml 
+    for more information on how to activate the OSGi-console. This is useful if you run into troubles 
+    while deploying the generated WAR file.
+  </p>
   
   <h2>How to deploy my own application?</h2>
   
-  <p>To deploy your own application like described above you will have
-  to create your own <code>.warproduct</code> configuration. The configuration
-  should contain the same plug-in references as the <code>rapdemo.configuration</code> 
-  (except the demo-plug-in of course!) plus the plug-ins that make up your application. 
-  It is important that your plug-ins reference the Servlet API by using the 
-  <code>Import-Package</code> directive instead of the <code>Require-Bundle</code> 
-  directive. See the <code>MANIFEST.MF</code> of the demo project for an example.</p>
+  <p>
+    To deploy your own application like described above you will have
+    to create your own <code>.warproduct</code> configuration. The configuration
+    should contain the same plug-in references as the <code>rapdemo.configuration</code> 
+    (except the demo-plug-in of course!) plus the plug-ins that make up your application. 
+    It is important that your plug-ins reference the Servlet API by using the 
+    <code>Import-Package</code> directive instead of the <code>Require-Bundle</code> 
+    directive. See the <code>MANIFEST.MF</code> of the demo project for an example.
+  </p>
   
-  <p><strong>Note</strong>: Besides the application server log files
-  there also exists an Equinox framework log that can be found under the webapp's
-  work directory, e.g. on Tomcat:
-  <pre>
-  <code>&lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/workspace/.metadata/.log</code>
-  </pre>
+  <p>
+    <strong>Note</strong>: Besides the application server log files
+    there also exists an Equinox framework log that can be found under the webapp's
+    work directory, e.g. on Tomcat:
+  </p>
+  <pre><code>  &lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/workspace/.metadata/.log
+  </code></pre>
+  
+  <p>
   In case Equinox isn't able to start at all, you may also look for log files 
   at:
-  <pre>
-  <code>&lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/configuration</code>
-  </pre>
-
   </p>
+  <pre><code>  &lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/configuration
+  </code></pre>
 
   <h2>Troubleshooting</h2>
-  You can use the following checklist to find errors when your exported application
-  does not work:
+
+  <p>
+    You can use the following checklist to find errors when your exported application does not work:
+  </p>
 
   <ul>
     <li>Check your <code>build.properties</code> file
@@ -128,7 +164,8 @@
           error messages.</li>
       </ul>
     </li>
-    <li>Enable the OSGi console by adding this init-param to the <code>web.xml</code>:
+    <li>
+      Enable the OSGi console by adding this init-param to the <code>web.xml</code>:
       <pre>&lt;init-param&gt;
   &lt;param-name&gt;commandline&lt;/param-name&gt;
   &lt;param-value&gt;-console&lt;/param-value&gt; 
@@ -145,43 +182,55 @@
         the <code>ss</code>-listing who's state is <code>RESOVLED</code>.</li>
       </ul>
     </li>
-    <li>Make sure that the WAR does <b>not</b> contain the
+    <li>
+      Make sure that the WAR does <b>not</b> contain the
       <code>javax.servlet</code> bundle.
-      In the plug-in maniferst the <code>javax.servlet</code> <b>must</b> be
+      In the plug-in manifest the <code>javax.servlet</code> <b>must</b> be
       listed in the <code>Import-Package</code> section, not in
       <code>Require-Bundle</code>.</li>
-    <li>Make sure that the WAR does <b>not</b> contain the
+    <li>
+      Make sure that the WAR does <b>not</b> contain the
       <code>org.eclipse.update.configurator</code> bundle.</li>
-    <li>Does the WAR contain compile errors?
+    <li>
+      Does the WAR contain compile errors?
       If so, you will probably find a zip archive somewhere in your output
       folder. It contains log files with the compiler output.</li>
-    <li>Start with a working example:
+    <li>
+      Start with a working example:
       Download
       <a href="http://rap.eclipsesource.com/download/rapdemo.war">rapdemo.war</a>
       and integrate your plug-ins.</li>
-    <li>Use the product export to validate your feature:
+    <li>
+      Use the product export to validate your feature:
       <ul>
-        <li>Create a product configuration with an arbitrary
-        name (<em>File &gt; New &gt; Other &gt; Product Configuration</em>).</li>
-        <li>Select <q>The product configuration is based on <em>features</em></q>
-        on the <em>Overview</em> page.</li>
-        <li>Add your feature to the list of features on the <em>Dependencies</em>
-          page.
+        <li>
+          Create a product configuration with an arbitrary
+          name (<em>File &gt; New &gt; Other &gt; Product Configuration</em>).
         </li>
-        <li>Press the <em>Validate</em> button in the top-left corner of the editor.
+        <li>
+          Select <q>The product configuration is based on <em>features</em></q>
+          on the <em>Overview</em> page.</li>
+        <li>
+          Add your feature to the list of features on the <em>Dependencies</em> page.
+        </li>
+        <li>
+          Press the <em>Validate</em> button in the top-left corner of the editor.
           Ignore complaints about missing <code>javax.servlet</code> packages.
           Be aware that unresolved optional dependencies aren't reported as errors.
         </li>
       </ul>
     </li>
-    <li>If you are re-deploying, make sure to delete the work directory of your 
+    <li>
+      If you are re-deploying, make sure to delete the work directory of your 
       servlet engine (e.g.
       <code>&lt;tomcat_install&gt;/work/Catalina/localhost/&lt;webapp_name&gt;</code>
-      in Tomcat).</li>
+      in Tomcat).
+    </li>
   </ul>
 
-  <p>Further hints can be found in the
-  <a href="http://wiki.eclipse.org/RAP/FAQ">RAP FAQ</a></p>
+  <p>
+    Further hints can be found in the <a href="http://wiki.eclipse.org/RAP/FAQ">RAP FAQ</a>
+  </p>
 
 </body>
 </html>

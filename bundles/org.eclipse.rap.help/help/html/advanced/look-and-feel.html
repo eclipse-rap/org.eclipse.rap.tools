@@ -1,10 +1,12 @@
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2009 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." />
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="copyright" content="Copyright (c) 2009, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>RAP look and feel</title>
-  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" charset="UTF-8" type="text/css" />
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css" />
 </head>
 <body>
 
@@ -21,7 +23,7 @@
     Let's have a look at a RAP application with a customized look and feel:
   </p>
   <p>
-    <img src="../../images/interactiondesign/newLook.png"/>
+    <img src="../../images/interactiondesign/newLook.png" alt="RAP Application with Business theming"/>
   </p>
   
   <h2>Getting started</h2>
@@ -33,47 +35,48 @@
       WorkbenchWindow components such as the ToolBar, MenuBar and the ViewToolbar.
     </li>
     <li>
-    Presentations for Stacks or, in other words, the look and feel of views and 
-    editors. You'll see later how the interaction design API allows you to make 
-    stack independent changes on-the-fly.  
+      Presentations for Stacks or, in other words, the look and feel of views and 
+      editors. You'll see later how the interaction design API allows you to make 
+      stack independent changes on-the-fly.  
     </li>
     <li>
-    The graphical layout. When you change the look and feel of an application, you 
-    generally also need to change elements in the graphical layout, such as moving 
-    a menubar or the perspective switcher, or selecting a different font.
+      The graphical layout. When you change the look and feel of an application, you 
+      generally also need to change elements in the graphical layout, such as moving 
+      a menubar or the perspective switcher, or selecting a different font.
     </li>
     <li>
-    Activation by servlet name. You can leverage the servlets in RAP and use the 
-    servlet name to access the whole layout from a single point.
+      Activation by servlet name. You can leverage the servlets in RAP and use the 
+      servlet name to access the whole layout from a single point.
     </li>
     <li>
-    Reusable web components. Elements such as the header for an application are 
-    very likely to be reused in their web versions. Layout information can also be 
-    reused for web components. So a developer has not to develop many different 
-    web components, he can use the technique described bellow to create a component
-    which can be reused in many applications.  
+      Reusable web components. Elements such as the header for an application are 
+      very likely to be reused in their web versions. Layout information can also be 
+      reused for web components. So a developer has not to develop many different 
+      web components, he can use the technique described bellow to create a component
+      which can be reused in many applications.  
     </li>
   </ul>
 
   <p>
-  Finally, one additional but important requirement for a good look and feel is 
-  to change interaction concepts to match the new UI. To assist in this, the API 
-  provides an automatic service called personalization. For instance it hides all 
-  ViewActions by default and makes it's visibility customizable.
+    Finally, one additional but important requirement for a good look and feel is 
+    to change interaction concepts to match the new UI. To assist in this, the API 
+    provides an automatic service called personalization. For instance it hides all 
+    ViewActions by default and makes it's visibility customizable.
   </p>
   
   <h2>WorkbenchWindow components</h2>
   <p>
-  The best place to start is to create a PresentationFactory. You will need to 
-  create an extension for the <code>org.eclipse.ui.presentationFactories</code> 
-  extension point.
+    The best place to start is to create a PresentationFactory. You will need to 
+    create an extension for the <code>org.eclipse.ui.presentationFactories</code> 
+    extension point.
   </p>
   <p>
-    <img src="../../images/interactiondesign/presentationFactoryExt.png"/>
+    <img src="../../images/interactiondesign/presentationFactoryExt.png" alt="PresentationFactory Extensions"/>
   </p>
   <p>
-  Here is the same as it appears in the plugin.xml.
-  <pre>
+    Here is the same as it appears in the plugin.xml.
+  </p>
+  <pre><code>
   &lt;extension point="org.eclipse.ui.presentationFactories"&gt;
     &lt;factory
       class="org.eclipse.rap.presentation.example.PresentationFactoryImpl"
@@ -81,9 +84,11 @@
       name="RAP Presentation"&gt;
     &lt;/factory&gt;
   &lt;/extension&gt;
-  </pre>
+  </code></pre>
   
-  The presentationFactory contains the following attributes:
+  <p>
+    The presentationFactory contains the following attributes:
+  </p>
   <ul>
     <li>
       <b>class</b><br/>
@@ -98,13 +103,14 @@
       A human readable name for the PresentationFacotry implementation.
     </li>
   </ul>
-  The <code>org.eclipse.rap.ui.interactiondesign.PresentationFactory</code> is 
-  abstract, so you will need to implement its abstract methods. Most are create 
-  methods for different Managers, for example, the MenuBar MenuManager or the 
-  Manager for the ToolBar. A ToolBar or MenuBar manager is a contribution manager
-  which  realizes itself and its items in a control. In these implementations you can 
-  change the look of the components such as styling a toolbar with icons and text 
-  or making it transparent.
+  <p>
+    The <code>org.eclipse.rap.ui.interactiondesign.PresentationFactory</code> is 
+    abstract, so you will need to implement its abstract methods. Most are create 
+    methods for different Managers, for example, the MenuBar MenuManager or the 
+    Manager for the ToolBar. A ToolBar or MenuBar manager is a contribution manager
+    which  realizes itself and its items in a control. In these implementations you can 
+    change the look of the components such as styling a toolbar with icons and text 
+    or making it transparent.
   </p>
   
   <h2>Presentations for Stacks</h2>
@@ -120,7 +126,7 @@
     programmatically. The interaction design API allows you to declare 
     StackPresentations as an extension for the extension point 
     <code>org.eclipse.rap.ui.stackPresentations</code>.<br/>
-    <img src="../../images/interactiondesign/stackPresentationExt.png"/>
+    <img src="../../images/interactiondesign/stackPresentationExt.png" alt="StackPresentation Extension"/>
   </p> 
   <p>
     Here is the same as it appears in the plugin.xml.
@@ -214,7 +220,7 @@
     and <code>org.eclipse.rap.ui.interactiondesign.model.LayoutSet</code>. 
     A Layout can be declared by creating an extension for the extension point 
     <code>org.eclipse.rap.ui.layouts</code>.<br/> 
-    <img src="../../images/interactiondesign/layoutExt.png"/>
+    <img src="../../images/interactiondesign/layoutExt.png" alt="Layout extension"/>
   </p>
   <p>
     And here is the same as it appears in the plugin.xml.
@@ -270,9 +276,9 @@
     <li>
       <b>overridesId</b><br/>
       This optional attribute should be an existing LayoutSet id. It's value will be
-      used to override a LayoutSet. This is usefull i.e. if a bundle defines a LayoutSet
+      used to override a LayoutSet. This is useful i.e. if a bundle defines a LayoutSet
       which contributes a Logo. Than another bundle can override this LayoutSet and
-      contrbute it's own logo.
+      contribute it's own logo.
     </li>
   </ul>
   <p>
@@ -321,7 +327,7 @@
     <a href="branding.html"><code>org.eclipse.rap.ui.branding</code> extension point</a>.
   </p>
   <p>
-    <img src="../../images/interactiondesign/brandingExt.png"/>
+    <img src="../../images/interactiondesign/brandingExt.png" alt="Branding extension"/>
   </p>
   <p>
     And here is the same as it appears in the plugin.xml.
