@@ -39,8 +39,6 @@
     <topic
       label="WAR Deployment"
       href="help/html/advanced/deployment.html"/>
-    <topic href="help/html/advanced/rwt-standalone.html" label="RWT Standalone">
-    </topic>
   </topic>
   <topic label="Reference">
   	<topic label="API Reference"
