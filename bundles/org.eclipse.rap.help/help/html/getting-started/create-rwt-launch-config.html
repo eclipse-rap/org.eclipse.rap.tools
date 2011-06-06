@@ -31,9 +31,10 @@
 <ul>
   <li>The <strong>project</strong> field denotes the project that contains the entry point to 
     launch. You do not have to specify a project, but doing so allows a default classpath, source 
-    lookup path, and JRE to be chosen.</li>
+    lookup path, and JRE to be chosen.
+  </li>
   <li>
-  </li>The <strong>Application entry point</strong> lets you specify what should be launched.
+    The <strong>Application entry point</strong> lets you specify what should be launched.
     For simple use cases it is recommended to choose <strong>Run entry point class</strong> and
     specify the class that implements the <code>org.eclipse.rwt.lifecycle.IEntryPoint</code> 
     interface in the class name field.
@@ -41,7 +42,8 @@
     If you whish to have more control or even would like to run an arbitrary web aplicatiom, 
     select <strong>Run from web.xml</strong> and enter the path to the web.xml in the location 
     field. The servlet path should point to one of the servlets defined in the web.xml and is 
-    used to construct the URL to be opened with the browser.    
+    used to construct the URL to be opened with the browser.
+  </li>    
   <li>The <strong>browser</strong> group lets you control whether the application should be 
     opened with the internal browser in the editor area or with an external browser or if no 
     browser should be opened at all.
@@ -51,7 +53,8 @@
   <li>It is recommended to let the launcher dynamically choose a free port for 
     client-server communication. However if you would like to have full control 
     over the communication channel, you can enable <strong>Manual Port Configuration</strong>
-    and explicitly specify a port number.</li>
+    and explicitly specify a port number.
+  </li>
 </ul>
 
 <p>For an explanation of the other tabs see the topic
