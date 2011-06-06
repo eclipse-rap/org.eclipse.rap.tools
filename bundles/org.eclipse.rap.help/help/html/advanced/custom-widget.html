@@ -377,11 +377,15 @@
     Ok, we're almost done with our client-side implementation. But the key part of the whole widget
     is still missing: the piece between the server and the client.
   </p>
-  <p style="border:1px dotted grey;"><strong>Note:</strong> The qooxdoo build
-    which gets delivered with RAP is <strong>not</strong> the same qooxdoo you'll
-    find on their <a href="http://qooxdoo.org">webpage</a>. We stripped it down to
-    have the best mix between needed functionality and size. So there may be
-    classes which are available in plain qooxdoo but not in the version of RAP.
+  <p style="border:1px dotted grey;">
+    <strong>Note:</strong>
+    Although the RAP client is derived from qooxdoo 0.7, it does not contain the same classes
+    as the original qooxdoo 0.7 library.
+    It was heavily stripped down and adapted.
+    Therefore you should not rely on the qooxdoo documentation and should avoid using other classes
+    from qooxdoo than Terminator, CanvasLayout, the event system and the RWT classes required for
+    communicating with the server.
+    Future versions of RAP will provide a stable API for custom widget development.
   </p>
 
   <h3>Filling the gap between client and server</h3>
