@@ -5,7 +5,7 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Hello World</title>
+  <title>Writing a Hello World with RAP</title>
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
@@ -23,27 +23,29 @@
   <p>
     To develop RAP applications, you have to install a RAP target platform.
     The target platform contains the bundles that all your workspace projects are compiled against.
-    You can check your current target in the Eclipse Preferences under <em>Plug-in Development &gt;
-    Target Platform</em>.
+    You can check your current target in the Eclipse Preferences under
+    <em class="UILabel">Plug-in Development &gt; Target Platform</em>.
     The RAP Tooling can assist you to install a RAP target platform.
-    On the Welcome page (<em>Help &gt; Welcome</em>) navigate to the RAP page (<em>Overview &gt;
-    Rich Ajax Platform</em>) and select <em>Install RAP Target Platform</em>.
+    On the Welcome page (<em>Help &gt; Welcome</em>) navigate to the RAP page
+    (<em class="UILabel">Overview &gt; Rich Ajax Platform</em>) and select
+    <em class="UILabel">Install RAP Target Platform</em>.
   </p>
 
   <h2>Create the application</h2>
   <h3>A new project</h3>
   <p>
     First we need a project for our application.
-    From the menu, select <em>File &gt; New &gt; Project</em>.
-    When the <em>New Project</em> wizard appears select <em>Plug-in Project</em> from the section
-    <em>Plug-in Development</em>.
+    From the menu, select <em class="UILabel">File &gt; New &gt; Project</em>.
+    When the <em class="UILabel">New Project</em> wizard appears select
+    <em class="UILabel">Plug-in Project</em> from the section
+    <em class="UILabel">Plug-in Development</em>.
     Let's call the plug-in <code>org.example.rap.helloworld</code>.
   </p>
   <img src="../../images/hello-world/NewProject-1.png" alt="New Project Wizard"/>
   <p>
     On the second page of the wizard, disable the options
-    <em>Generate an activator, …</em> and
-    <em>This plug-in will make contributions to the UI</em>.
+    <em class="UILabel">Generate an activator, …</em> and
+    <em class="UILabel">This plug-in will make contributions to the UI</em>.
     The first one would create a bundle activator, but we don't need that now.
     The latter would add dependencies for RCP apps, but they don't fit for RAP.
   </p>
@@ -61,8 +63,9 @@
   <p>
     To add this dependency, open the project's bundle manifest file
     <code>META-INF/MANIFEST.MF</code>.
-    In the <em>Plug-in Manifest Editor</em>, go to the <em>Dependencies</em> page.
-    Add <code>org.eclipse.rap.ui</code> to the list of <em>Required Plug-ins</em> and save.
+    In the <em>Plug-in Manifest Editor</em>, go to the <em class="UILabel">Dependencies</em> page.
+    Add <code>org.eclipse.rap.ui</code> to the list of <em class="UILabel">Required Plug-ins</em>
+    and save.
   </p>
 
   <h3>Create a package</h3>
@@ -115,8 +118,8 @@
   <h3>Register the entrypoint</h3>
   <p>
     To make RAP aware of this entrypoint, it has to be registered with an extension point.
-    In the <em>Plug-in Manifest Editor</em>, go to the <em>Extensions</em> tab and create a new
-    extension for the extension point <code>org.eclipse.rap.ui.entrypoint</code>.
+    In the <em>Plug-in Manifest Editor</em>, go to the <em class="UILabel">Extensions</em> tab 
+    and create a new extension for the extension point <code>org.eclipse.rap.ui.entrypoint</code>.
     Select the created entrypoint class as value for the <em>class</em> attribute.
     Also specify a concise value for the <em>parameter</em> attribute such as <em>myapp</em>.
     We'll need this parameter later to access the application.
@@ -126,10 +129,11 @@
   <p>
     That's it, we are now ready to run the application.
     Here's the short version:
-    <em>Run &gt; Run configurations…</em>, create a new <em>RWT</em> launch configuration, select
-    your project and entrypoint class and press <em>Run</em>.
+    <em class="UILabel">Run &gt; Run configurations…</em>, create a new <em>RWT</em> launch
+    configuration, select your project and entrypoint class and press <em class="UILabel">Run</em>.
     A browser view should open up soon afterwards and show your running application.
-    More on launching RAP applications in the next article.
+    More on launching RAP applications in the chapter
+    <a href="./launcher.html">Launching RAP Applications</a>.
   </p>
 
 </body>
