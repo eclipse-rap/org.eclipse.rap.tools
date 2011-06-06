@@ -126,7 +126,7 @@ Currently existing effects:
 Defines the color used as the background of the element:
 </p>
 <p>
-Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | transparent
+Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | transparent</code>
 </p>
 
 <a name="background-image"><h3>background-image</h3></a>
@@ -150,7 +150,7 @@ Examples:
     color-stop( 48%, #f0f0f0 ),
     color-stop( 52%, #e0e0e0 ),
     to( #ffffff )
-  );</code></pre></li> 
+  );</code></pre></li>
 </ul>
 
 <a name="image-url"><h4>&lt;image-url&gt;</h4></a>
@@ -166,8 +166,8 @@ The path is relative to the root of the bundle.
 </p>
 <p>
   The first three arguments define the type and direction of the gradient.
-  RAP currently only supports linear vertical gradients from the top to the bottom and 
-  linear vertical gradients from left to right. 
+  RAP currently only supports linear vertical gradients from the top to the bottom and
+  linear vertical gradients from left to right.
   Therefore these arguments have to be either exactly "<code>linear, left top, left bottom</code>"
   or exactly "<code>linear, left top, right top</code>".
   Any other arguments will produce an error.
@@ -177,7 +177,7 @@ The path is relative to the root of the bundle.
 </p><p>
   <code>POSITION</code> is a ascending percentage value.
   <br/>
-  <code>COLOR</code> is <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a>.
+  <code>COLOR</code> is <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a></code>.
 </p>
 
 For the same widget, <code>background-image</code> should not be combined with any <code>background-color</code> other than <code>transparent</code>, as the behavior of RAP for this case is not defined and may differ from case to case.
@@ -246,7 +246,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Defines only the color of the border.
 </p>
 <p>
-  Format: <code><a href="#border-color">&lt;border-color&gt;</a> 
+  Format: <code><a href="#border-color">&lt;border-color&gt;</a></code>
 </p>
 
 <a name="border-radius"><h3>border-radius</h3></a>
@@ -264,7 +264,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   This property is currently ignored.
 </p>
 <p>
-  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a>
+  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a></code>
 </p>
 
 <a name="border-top-color"><h3>border-top-color</h3></a>
@@ -272,7 +272,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Defines only the color of the upper border.
 </p>
 <p>
-  Format: <code><a href="#border-color">&lt;border-color&gt;</a> 
+  Format: <code><a href="#border-color">&lt;border-color&gt;</a></code>
 </p>
 
 <a name="border-bottom-color"><h3>border-bottom-color</h3></a>
@@ -280,7 +280,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Defines only the color of the lower border.
 </p>
 <p>
-  Format: <code><a href="#border-color">&lt;border-color&gt;</a> 
+  Format: <code><a href="#border-color">&lt;border-color&gt;</a></code>
 </p>
 
 <a name="border"><h3>box-shadow</h3></a>
@@ -288,7 +288,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Used to define the shadow that is drawn behind the widget.
 </p>
 <p>
-  Format: <code> &lt;shadow&gt; | none </code>
+  Format: <code> &lt;shadow&gt; | none</code>
 </p>
 
 <a name="shadow"><h4>&lt;shadow&gt;</h4></a>
@@ -304,7 +304,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   <li> The final value defines the color of the shadow. </li>
 </ul>
 </p>
-<p> 
+<p>
   Examples:
 <ul>
   <li> box-shadow: 5px 5px black; </li>
@@ -315,7 +315,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
 
 <a name="shadow-color"><h4>&lt;shadow-color&gt;</h4></a>
 <p>
-  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | <a href="#rgba-color">&lt;rgba-color&gt;</a>  
+  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | <a href="#rgba-color">&lt;rgba-color&gt;</a></code>
 </p>
 
 <a name="rgba-color"><h4>&lt;rgba-color&gt;</h4></a>
@@ -326,14 +326,14 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
 </p>
 <ul>
   <li><code>color: rgba( 255, 128, 0, 0.33 );</code></li>
-  <li><code>color: rgba( 100%, 50%, 0%, 1 ); </code></li>
+  <li><code>color: rgba( 100%, 50%, 0%, 1 );</code></li>
 </ul>
 <a name="color"><h3>color</h3></a>
 <p>
   The color used for foreground-elements, e.g. Text.
 </p>
 <p>
-  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | inherit
+  Format: <code><a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#rgb-color">&lt;rgb-color&gt;</a> | inherit</code>
 </p>
 
 <a name="named-color"><h4>&lt;named-color&gt;</h4></a>
@@ -388,7 +388,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Defines a the form of the mouse pointer over a certain widget.
 </p>
 <p>
-  Format: <code><a href="#cursor-type">&lt;cursor-type&gt;</a> | <a href="#image-url">&lt;image-url&gt;</a> </code>
+  Format: <code><a href="#cursor-type">&lt;cursor-type&gt;</a> | <a href="#image-url">&lt;image-url&gt;</a></code>
 </p>
 
 <a name="cursor-type"><h4>&lt;cursor-type&gt;</h4></a>
@@ -426,7 +426,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Is ignored if the font is not available on the client-system.<br/>
   Several comma-seperated values can be given.
   The order is relevant, as the first available font will be used.<br/>
-  Font names containing any white spaces must be quoted. 
+  Font names containing any white spaces must be quoted.
 </p>
 
 <p>
@@ -483,12 +483,12 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
 
 <a name="box-dimension"><h4>&lt;box-dimension&gt;</h4></a>
 <p>
-  Defines four dimensions, in the order of <code>top right bottom left</code>. 
+  Defines four dimensions, in the order of <code>top right bottom left</code>.
 </p>
 
 <ul>
   <li>When only one value is given, it is used for all four dimension.</li>
-  <li>When two values are given, the first is used for <code>top</code> and <code>bottom</code>, the second for <code>left</code> and <code>right</code>.
+  <li>When two values are given, the first is used for <code>top</code> and <code>bottom</code>, the second for <code>left</code> and <code>right</code>.</li>
   <li>When three values are given, the first value is used for <code>top</code>, the second for <code>left</code> and <code>right</code>, and the third for <code>bottom</code>.</li>
 </ul>
 
@@ -498,7 +498,7 @@ Examples:
 <ul>
   <li><code>padding: 0px;</code></li>
   <li><code>margin: 3px 5px 3px 5px;</code></li>
-  <li><code>margin: 3px 5px; /* same as above */ </code></li>
+  <li><code>margin: 3px 5px; /* same as above */</code></li>
   <li><code>border-radius: 5px;</code></li>
 </ul>
 
@@ -575,7 +575,7 @@ Examples:
   Defines an RWT system color.
 </p>
 <p>
-  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a>
 </p>
 
 <a name="rwt-highlight-color"><h3>rwt-highlight-color</h3></a>
@@ -590,7 +590,7 @@ Examples:
   Defines an RWT system color.
 </p>
 <p>
-  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a>
 </p>
 
 <a name="rwt-darkshadow-color"><h3>rwt-darkshadow-color</h3></a>
@@ -605,7 +605,7 @@ Examples:
   Defines an RWT system color.
 </p>
 <p>
-  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a>
 </p>
 
 <a name="rwt-lightshadow-color"><h3>rwt-lightshadow-color</h3></a>
@@ -620,7 +620,7 @@ Examples:
   Defines an RWT system color.
 </p>
 <p>
-  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a>
 </p>
 
 <a name="rwt-thinborder-color"><h3>rwt-thinborder-color</h3></a>
@@ -635,7 +635,7 @@ Examples:
   Defines an RWT system color.
 </p>
 <p>
-  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a>
 </p>
 
 <a name="rwt-selectionmarker-color"><h3>rwt-selectionmarker-color</h3></a>
@@ -650,7 +650,7 @@ Examples:
   Defines an RWT system color.
 </p>
 <p>
-  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a>
 </p>
 
 <a name="rwt-infobackground-color"><h3>rwt-infobackground-color</h3></a>
@@ -665,7 +665,7 @@ Examples:
   Defines an RWT system color.
 </p>
 <p>
-  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a> 
+  Format: <a href="#named-color">&lt;named-color&gt;</a> | <a href="#hex-color">&lt;hex-color&gt;</a> | <a href="#named-color">&lt;rgb-color&gt;</a>
 </p>
 
 <a name="spacing"><h3>spacing</h3></a>
