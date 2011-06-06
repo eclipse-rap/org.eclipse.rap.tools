@@ -43,21 +43,18 @@
     On the second page of the wizard, disable the options
     <em>Generate an activator, …</em> and
     <em>This plug-in will make contributions to the UI</em>.
-    The first one creates a bundle activator, but we don't need that now.
-    The latter adds dependencies for RCP apps, but they don't fit for RAP.
+    The first one would create a bundle activator, but we don't need that now.
+    The latter would add dependencies for RCP apps, but they don't fit for RAP.
   </p>
   <img src="../../images/hello-world/NewProject-2.png"/>
-  <p>
-    Even if you are not going to create an Eclipse plug-in (an OSGi bundle), it's a good practice
-    to use Plug-in projects and declare your dependencies in an OSGi manifest.
-  </p>
 
   <h3>Add dependencies</h3>
   <p>
     Now we add a dependency to the <code>org.eclipse.rap.ui</code> plug-in.
     This bundle is the RAP equivalent of <code>org.eclipse.ui</code>.
-    It re-exports all bundles you need for developing Eclipse applications, including SWT and JFace.
-    Later, you can–and you should–be more specific on your dependencies, but for now, this is the
+    It “re-exports” all bundles you need for developing Eclipse applications, including SWT and
+    JFace.
+    Later, you can (and you should) be more specific on your dependencies, but for now, this is the
     easiest way.
   </p>
   <p>
@@ -92,7 +89,7 @@
   </p>
   <pre><code>
   public class EntryPoint implements IEntryPoint {
-  
+
     public int createUI() {
       Display display = new Display();
       Shell shell = new Shell( display );
@@ -133,6 +130,6 @@
     A browser view should open up soon afterwards and show your running application.
     More on launching RAP applications in the next article.
   </p>
-    
+
 </body>
 </html>
