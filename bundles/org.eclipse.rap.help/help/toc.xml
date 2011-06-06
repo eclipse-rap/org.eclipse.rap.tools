@@ -5,17 +5,11 @@
       label="Hello World"
       href="help/html/getting-started/hello-world.html"/>
     <topic
-      label="Launching RWT Applications"
-      href="help/html/getting-started/rwt-launcher.html"/>
-    <topic
       label="RAP Examples"
       href="help/html/getting-started/examples.html"/>
     <topic
       label="Launching RAP Applications"
       href="help/html/getting-started/launcher.html"/>
-    <topic 
-      label="Creating an RWT Application launch configuration"
-      href="help/html/getting-started/create-rwt-launch-config.html"/>
   </topic>
   <topic label="Advanced Topics">
     <topic
