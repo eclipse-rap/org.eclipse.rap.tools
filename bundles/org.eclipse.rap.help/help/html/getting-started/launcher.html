@@ -1,183 +1,265 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007-2009 Innoopract Informationssysteme GmbH. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Launching RAP Applications</title>
-  <link rel="stylesheet" href="../style.css" charset="ISO-8859-1" type="text/css">
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
-
-<h1>Launching RAP Applications</h1>
-
-<p>To start your RAP application, select <strong>Open Run Dialog...</strong> 
-  from the <strong>Run</strong> menu. You need to create a <strong>New Launch 
-  configuration</strong>. You can either use the <a href="#rap">RAP Launcher</a>
-  or the <a href="#equinox">Equinox Launcher</a>. 
-</p>
-
-<h3>Required plug-ins</h3>  
-<p>
-  Regardless which way to launch you choose ensure that the following 
-  plug-ins are activated:
-<ul>
-  <li>com.ibm.icu.base</li>  
-  <li>javax.servlet</li>
-  <li>org.apache.commons.logging</li>  
-  <li>org.eclipse.core.commands</li>
-  <li>org.eclipse.core.contenttype</li>
-  <li>org.eclipse.core.databinding</li>
-  <li>org.eclipse.core.databinding.beans</li>
-  <li>org.eclipse.core.databinding.observable</li>
-  <li>org.eclipse.core.databinding.property</li>
-  <li>org.eclipse.core.expressions</li>
-  <li>org.eclipse.core.jobs</li>
-  <li>org.eclipse.core.runtime</li>
-  <li>org.eclipse.equinox.app</li>
-  <li>org.eclipse.equinox.common</li>
-  <li>org.eclipse.equinox.http.jetty</li>
-  <li>org.eclipse.equinox.http.registry</li>
-  <li>org.eclipse.equinox.http.servlet</li>
-  <li>org.eclipse.equinox.preferences</li>
-  <li>org.eclipse.equinox.registry</li>
-  <li>org.eclipse.help</li>
-  <li>org.eclipse.osgi</li>
-  <li>org.eclipse.osgi.services</li>
-  <li>org.eclipse.rap.demo</li>
-  <li>org.eclipse.rap.jface</li>
-  <li>org.eclipse.rap.jface.databinding</li>
-  <li>org.eclipse.rap.rwt</li>
-  <li>org.eclipse.rap.rwt.q07</li>
-  <li>org.eclipse.rap.ui</li>
-  <li>org.eclipse.rap.ui.forms</li>
-  <li>org.eclipse.rap.ui.views</li>
-  <li>org.eclipse.rap.ui.workbench</li>
-  <li>org.mortbay.jetty.util</li>
-  <li>org.mortbay.jetty.server</li>
-</ul>
-</p>
-
-<h3>web.xml</h3>
-<p>
-  Currently it is not possible to specify a <code>web.xml</code> to be used
-  by the servlet engine. Some of the settings that usually would be specified 
-  in the <code>web.xml</code>, can be passed to the Equinox HTTP Service via 
-  system properties.
-</p>
-
-<h3>Servlet engine log</h3>
-By default the servlet engine (namely Jetty) is configured to suppress most logging 
-information. This can be changed by adding the VM argument
-<code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</code> 
-to the launch configuration. Valid log levels are <code>debug</code>, 
-<code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
-The default value is <code>warn</code>.
-
-<a name="rap"><h2>Using the RAP Launcher</h2></a>
   
-  <p>The RAP Launcher is based on the 
-  <a href="/help/topic/org.eclipse.pde.doc.user/guide/tools/launchers/equinox_launcher.htm">
-  OSGi Launcher</a> and adds a 
-  <strong>Main</strong> tab page to it. Please note, that the RAP Launcher only
-  works when the Equinox OSGi Framework is selected, which is the default
-  setting on page <strong>Bundles</strong>.</p>
+  <h1>Launching RAP Applications</h1>
+
+  <p>
+    To start your RAP application from the IDE, you have two choices.
+    For simple applications that are not based on OSGi, you can use the
+    <a href="#rwt">RWT Launcher</a>.
+    If your application needs OSGi to run (e.g. a workbench application) then you have to use the
+    <a href="#rap">RAP Launcher</a>.
+  </p>
   
-  <img src="../../images/launcher.png" />
+  <p>
+    To create a launch configuration, select <em class="UILabel">Run Configurations…</em> from the <em class="UILabel">Run</em>
+    menu and create a <em class="UILabel">New launch configuration</em> of the desired type.
+  </p>
+
+  <h2><a name="rwt">Using the RWT Launcher</a></h2>
+
+  <p>
+    The simplest way to launch an RWT application is to run it using an RWT Application launch 
+    configuration. This launch configuration type uses information derived from the workbench 
+    preferences and your applications's Java project to launch the program. 
+  </p>
+  <ol>
+    <li>
+      In the <strong>Package Explorer</strong>, select the Java compilation unit or class file 
+      with the entry point you want to launch.
+    </li> 
+    <li>
+      Press the <em class="UILabel">Run</em> [<img src="../../images/run.png" alt="Run button"/>]
+      button in the workbench toolbar or select <em class="UILabel">Run &gt; Run</em> from the
+      workbench menu bar.
+      Alternatively, select <em class="UILabel">Run As &gt; RWT Application</em> in the Package
+      Explorer pop-up menu, or select <em class="UILabel">Run &gt; Run As &gt; RWT Application</em>
+      in the workbench menu bar, or select <em class="UILabel">Run As &gt; RWT Application</em> in
+      the drop-down menu on the Run tool bar button.
+    </li>
+    <li>
+      The application is now launched. A browser will be opened for you to interact with the 
+      application.
+    </li>
+  </ol>
+  <p>
+    You can also launch an RWT application by selecting a project instead of the compilation unit 
+    or class file. You will be prompted to select a class from those classes that define an entry
+    point. If only one class with a main method is found in the project, that class is launched as 
+    if you selected it.
+  </p>
+
+  <p>
+    When an RWT Application launch configuration is launched, it first terminates any possibly 
+    running launch that shares the same launch configuration.
+    After a correct startup, a message like the one below should be displayed in the Console view:<br/>
+    <code style="color:red">INFO: Started SocketListener on 0.0.0.0:&lt;port&gt;</code>.
+  </p>
+
+  <h3>Further configuration options</h3>
   
-    <h3>Servlet and Entry Point/Application to Run</h3>
-    <p>Within this group you need to choose the combination of servlet name and 
+  <p>
+    Normally, most of the launch parameters are derived from your Java project and your workbench
+    preferences.
+    In some cases, you will want to override the derived parameters or specify additional arguments. 
+  </p>
+  
+  <p>On the <em class="UILabel">Main</em> tab you can control the following aspects of the launch:</p>
+  <ul>
+    <li>The <strong>project</strong> field denotes the project that contains the entry point to 
+      launch. You do not have to specify a project, but doing so allows a default classpath, source 
+      lookup path, and JRE to be chosen.
+    </li>
+    <li>
+      The <strong>Application entry point</strong> lets you specify what should be launched.
+      For simple use cases it is recommended to choose <em class="UILabel">Run entry point class</em> and
+      specify the class that implements the <code>org.eclipse.rwt.lifecycle.IEntryPoint</code> 
+      interface in the class name field.
+      <br />
+      If you wish to have more control or even would like to run an arbitrary web application, 
+      select <strong>Run from web.xml</strong> and enter the path to the web.xml in the location 
+      field. The servlet path should point to one of the servlets defined in the web.xml and is 
+      used to construct the URL to be opened with the browser.
+    </li>    
+    <li>The <strong>browser</strong> group lets you control whether the application should be 
+      opened with the internal browser in the editor area or with an external browser or if no 
+      browser should be opened at all.
+      The outcome depends on the browser preference settings that can be reached with the 
+      <strong>Configure browsers...</strong> link.
+    </li>  
+    <li>It is recommended to let the launcher dynamically choose a free port for 
+      client-server communication. However if you would like to have full control 
+      over the communication channel, you can enable <em class="UILabel">Manual Port Configuration</em>
+      and explicitly specify a port number.
+    </li>
+  </ul>
+  
+  <p>
+    For an explanation of the other tabs see the topic
+    <a href="/help/topic/org.eclipse.jdt.doc.user/tasks/tasks-java-local-configuration.htm">
+    Creating a Java application launch configuration</a>
+  </p>
+
+  <h2><a name="rap">Using the RAP Launcher</a></h2>
+
+  <p>
+    The RAP Launcher is based on the 
+    <a href="/help/topic/org.eclipse.pde.doc.user/guide/tools/launchers/equinox_launcher.htm">OSGi Launcher</a>
+    and adds a <em class="UILabel">Main</em> tab page to it.
+    Please note, that the RAP Launcher only works when the Equinox OSGi Framework is selected,
+    which is the default setting on page <em class="UILabel">Bundles</em>.
+  </p>
+
+  <img src="../../images/launcher.png" alt="RAP launcher screenshot" />
+
+  <h3>Servlet and Entry Point/Application to Run</h3>
+  <p>
+    Within this group you need to choose the combination of servlet name and 
     entry point/application you would like to run.
+  </p>
 
-    <p>Please note that the selection dialog opens when the 
-    <strong>Browse...</strong> button was pressed. The dialog lists all servlet names and 
-    entry points/applications available in the workspace. 
-    Open the drop down menu item in the top right corner and select <code>Include Target 
-    Platform</code> if you want to see the servlet names and entry points/applications available 
-    in your workspace and target. The RAP Launcher will display an error in case the selected servlet 
-    name, entry point or application is not contained in the selection on the 
-    <strong>Bundles</strong> page.</p>
-
-    <p>When the <strong>Terminate possible running previous launch</strong>
-    option is selected, an eventually running launch with the same name 
-    will be terminated before lauching. This might come in handy when frequently
-    changing code and restarting the application.</p>
+  <p>
+    When the <em class="UILabel">Browse…</em> button is pressed, a selection dialog opens.
+    This dialog lists all servlet names and entry points/applications available in the workspace.
+    Open the drop down menu item in the top right corner and select <em class="UILabel">Include Target 
+    Platform</em> if you also want to see the servlet names and entry points/applications available 
+    in your target platform.
+    The RAP Launcher will display an error in case the selected servlet name, entry point or
+    application is not contained in the selection on the <em class="UILabel">Bundles</em> page.
+  </p>
+  
+  <p>
+    When the <em class="UILabel">Terminate possible running previous launch</em> option is selected,
+    an eventually running launch with the same name will be terminated before launching.
+    This might come in handy when frequently changing code and restarting the application.
+  </p>
+  
+  <h3>Browser</h3>
+  <p>
+    Controls whether the application should be opened with the internal browser in the editor area
+    or with an external browser or if no browser should be opened.
+    The outcome depends on the browser preference settings that can be reached with the
+    <em class="UILabel">Configure Browsers...</em> link.
+  </p>
+  
+  <h3>Manual Port Configuration</h3>
+  <p>
+    It is recommended to let the launcher dynamically choose a free port for client-server
+    communication.
+    However if you would like to have full control over the communication channel, you can
+    explicitly specify a port number.
+  </p>
+  
+  <h3>Session Timeout</h3>
+  <p>
+    Specifies the servlet session timeout in seconds.
+    If the checkbox is unselected, the session will never expire.
+  </p>
+  
+  <h3>Context Path</h3>
+  <p>
+    A web application can be deployed with a context path. After deployment the web application 
+    will be accessible using this path e.g. http://server:port/contextPath/webapp.
+    To simulate this during development time you can use the option to specify a context path
+    within the <em class="UILabel">Main</em> tab.
+  </p>
+  
+  <h3>Client-side Log Level</h3>
+  <p>
+    <em class="UILabel">This option is outdated as of RAP 1.4.</em>
+    It is only there to support earlier runtime versions of RAP.
+    Since 1.4, the RAP client will fast-fail in case of an error but not write any log messages
+    during normal operation anymore.
+  </p>
+  
+  <h3>Client-side Library Variant</h3>
+  <p>
+    The JavaScript client of RAP can be delivered in two variants.
+    The <em>Standard</em> version is optimized for speed and size by compressing the JavaScript
+    code.
+    The <em>Debug</em> version maintains the JavaScript code in its original form.
+    We recommend to use the Debug variant when developing custom widgets for RAP.
+  </p>
     
-    <h3>Browser</h3>
-    Controls whether the application should be opened with the internal browser
-    in the editor area or with an external browser or if no browser should be 
-    opened.
-    The outcome depends on the browser preference settings that can be reached
-    with the <strong>Configure Browsers...</strong> link.</p>
-    
-    <h3>Manual Port Configuration</h3>
-    <p>It is recommended to let the launcher dynamically choose a free port for 
-    client-server communication. However if you would like to have full control 
-    over the communication channel, you can explicitly specify a port number.
-    </p>
-
-    <h3>Session Timeout</h3>
-    <p>Specifies the servlet session timeout in seconds. If the checkbox is 
-    unselected, the session will never expire.
-    </p>
-
-    <h3>Context Path</h3>
-    <p>A web application can be deployed with a context path. After deployment the web application 
-    will be accessible using this path e.g. http://server:port/contextPath/webapp. To simulate this during
-    development time you can use the option to specify a context path within the <strong>Main</strong> tab.  
-    </p>
-    
-    <h3>Client-side Log Level</h3>
-    <p><strong>No longer supported since RAP 1.4. It can be used with prior versions 
-    of RAP.</strong> </br>
-    This setting controls to which extent log messages 
-    from the client-side JavaScript library are written. All settings other than
-    <strong>Off</strong> may open a browser pop-up window. </p>
-    
-    <h3>Client-side Library Variant</h3>
-    <p>RAP comes with two flavors of qooxdoo, the client-side JavaScript
-    library. The <strong>Standard</strong> version is optimized for speed
-    and size, whereas the <strong>Debug</strong> version should be used
-    when developing with RAP, especially custom widgets.</p>
-    
-    <h3>Instance Area</h3>
-    <p>The instance area location sets the Program Arguments to define the
+  <h3>Instance Area</h3>
+  <p>
+    The instance area location sets the Program Arguments to define the
     <code><a href="/help/topic/org.eclipse.platform.doc.isv/reference/misc/runtime-options.html">
     osgi.instance.area</a></code>. Bundles use this location to store their state location 
     data.</p>
-  
-    <p>To launch a once created launch configuration you may use the
-    launch shortcut keys <code>Alt+Shift+X+R</code> (run) and
-    <code>Alt+Shift+D+R</code> (debug). 
-    </p>
-    
-<a name="equinox"><h2>Using the Equinox Launcher</h2></a>
 
-<p>To run the demo, select <strong>Run &gt; Run...</strong> from the main menu.
-  In the upcoming Launch Configuration Dialog, select <strong>Rich Ajax Platform 
-  Demo</strong> from the section <strong>Equinox OSGi Framework</strong>.</p>
-
-<p>You may want to configure the TCP-port your demo application will listen to. 
-  This is done opening the <strong>Arguments</strong> page and changing the 
-  <strong>-Dorg.osgi.service.http.port=9090</strong> VM argument, to a 
-  (arbitrarily chosen) port your application will listen to. This is 
-  particularly important if the default port 9090 is already taken by some 
-  other application.</p>
-  
-<img src="../../images/demo-app-params.png"/>
-  
-<p>To actually start your application, click the <strong>Run</strong> button. 
-  The correct startup should display in the Eclipse Console through a message 
-  saying <code style="color:red">INFO: Started SocketListener on 
-  0.0.0.0:&lt;port&gt;.</code> If an error shows up, please make sure all other 
-  instances are stopped and then retry with another port.</p>
-
-  <p>Now that the RAP application is running, you can access it using any 
-  browser. Please enter the URL
-  <strong>http://localhost:&lt;port&gt;/rap?startup=&lt;entrypoint&gt;</strong>.
-  Where &lt;entrypoint&gt; specifies the name of the IEntryPoint implementation
-  that you would like to start.
+  <h3>Required plug-ins</h3>  
   <p>
+    In the Bundles tab, the following bundles need to be activated:
+  </p>
+  <ul>
+    <li>com.ibm.icu.base</li>  
+    <li>javax.servlet</li>
+    <li>org.apache.commons.logging</li>  
+    <li>org.eclipse.core.commands</li>
+    <li>org.eclipse.core.contenttype</li>
+    <li>org.eclipse.core.databinding</li>
+    <li>org.eclipse.core.databinding.beans</li>
+    <li>org.eclipse.core.databinding.observable</li>
+    <li>org.eclipse.core.databinding.property</li>
+    <li>org.eclipse.core.expressions</li>
+    <li>org.eclipse.core.jobs</li>
+    <li>org.eclipse.core.runtime</li>
+    <li>org.eclipse.equinox.app</li>
+    <li>org.eclipse.equinox.common</li>
+    <li>org.eclipse.equinox.http.jetty</li>
+    <li>org.eclipse.equinox.http.registry</li>
+    <li>org.eclipse.equinox.http.servlet</li>
+    <li>org.eclipse.equinox.preferences</li>
+    <li>org.eclipse.equinox.registry</li>
+    <li>org.eclipse.help</li>
+    <li>org.eclipse.osgi</li>
+    <li>org.eclipse.osgi.services</li>
+    <li>org.eclipse.rap.demo</li>
+    <li>org.eclipse.rap.jface</li>
+    <li>org.eclipse.rap.jface.databinding</li>
+    <li>org.eclipse.rap.rwt</li>
+    <li>org.eclipse.rap.rwt.q07</li>
+    <li>org.eclipse.rap.ui</li>
+    <li>org.eclipse.rap.ui.forms</li>
+    <li>org.eclipse.rap.ui.views</li>
+    <li>org.eclipse.rap.ui.workbench</li>
+    <li>org.mortbay.jetty.util</li>
+    <li>org.mortbay.jetty.server</li>
+  </ul>
+  
+  <h3>Servlet engine log</h3>
+  <p>
+    By default the servlet engine (namely Jetty) is configured to suppress most logging 
+    information. This can be changed by adding the VM argument
+    <code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</code> 
+    to the launch configuration. Valid log levels are <code>debug</code>, 
+    <code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
+    The default value is <code>warn</code>.
+  </p>
+    
+  <p>
+    To launch a once created launch configuration you may use the launch shortcut keys
+    <code>Alt+Shift+X+R</code> (run) and <code>Alt+Shift+D+R</code> (debug).
+  </p>
+    
+  <h2><a name="equinox">Using the Equinox Launcher</a></h2>
+  
+  <p>
+    Alternatively, you can also use the plain OSGi Launcher to start RAP applications.
+    In this case, you have to set the necessary system properties and program arguments on your own.
+    This includes setting the HTTP port for the server with the 
+    <code>-Dorg.osgi.service.http.port=&lt;PORT&gt;</code> VM argument.
+  </p>
 
 </body>
 </html>

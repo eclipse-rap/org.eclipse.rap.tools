@@ -2,31 +2,19 @@
   <topic label="Introduction" href="help/html/intro.html" />
   <topic label="Getting Started">
     <topic
-      label="RAP Examples"
-      href="help/html/getting-started/examples.html"/>
+      label="Writing a Hello World with RAP"
+      href="help/html/getting-started/hello-world.html"/>
     <topic
       label="Launching RAP Applications"
       href="help/html/getting-started/launcher.html"/>
     <topic
-      label="Hello World"
-      href="help/html/getting-started/hello-world.html"/>
-    <topic
-      label="Launching RWT Applications"
-      href="help/html/getting-started/rwt-launcher.html"/>
-    <topic 
-      label="Creating an RWT Application launch configuration"
-      href="help/html/getting-started/create-rwt-launch-config.html"/>
+      label="RAP Examples"
+      href="help/html/getting-started/examples.html"/>
   </topic>
   <topic label="Advanced Topics">
     <topic
-      label="Custom Widgets"
-      href="help/html/advanced/custom-widget.html"/>
-    <topic
       label="RWT Theming"
       href="help/html/advanced/theming.html"/>
-    <topic
-      label="Prepare Custom Widgets for Theming"
-      href="help/html/advanced/theming-custom.html"/>
     <topic
       label="Branding"
       href="help/html/advanced/branding.html"/>
@@ -36,6 +24,12 @@
     <topic 
       label="Internationalization"
       href="help/html/advanced/internationalization.html"/>
+    <topic
+      label="Custom Widgets"
+      href="help/html/advanced/custom-widget.html"/>
+    <topic
+      label="Prepare Custom Widgets for Theming"
+      href="help/html/advanced/theming-custom.html"/>
     <topic
       label="WAR Deployment"
       href="help/html/advanced/deployment.html"/>
