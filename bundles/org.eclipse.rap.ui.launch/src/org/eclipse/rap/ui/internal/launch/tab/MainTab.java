@@ -11,15 +11,10 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.tab;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.*;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.fieldassist.*;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -62,7 +57,6 @@ public final class MainTab extends AbstractLauncherTab {
   private Spinner portSpinner;
   private Button useSessionTimeoutCheckBox;
   private Spinner sessionTimeoutSpinner;  
-  private ComboViewer logLevelCombo;
   private ComboViewer libraryVariantCombo;
   private ILaunchConfigurationListener launchConfigListener;
   private DataLocationBlock dataLocationBlock;
@@ -148,9 +142,6 @@ public final class MainTab extends AbstractLauncherTab {
       }
       useSessionTimeoutCheckBox.setSelection( rapConfig.getUseSessionTimeout() );
       sessionTimeoutSpinner.setSelection( rapConfig.getSessionTimeout() );
-      Level logLevel = rapConfig.getLogLevel();
-      StructuredSelection logSelection = new StructuredSelection( logLevel );
-      logLevelCombo.setSelection( logSelection );
       LibraryVariant libVariant = rapConfig.getLibraryVariant();
       StructuredSelection libSelection = new StructuredSelection( libVariant );
       libraryVariantCombo.setSelection( libSelection );
@@ -176,7 +167,6 @@ public final class MainTab extends AbstractLauncherTab {
     sessionTimeoutSpinner.setEnabled( useSessionTimeoutCheckBox.getSelection() );
     rapConfig.setUseSessionTimeout( useSessionTimeoutCheckBox.getSelection() );
     rapConfig.setSessionTimeout( sessionTimeoutSpinner.getSelection() );
-    rapConfig.setLogLevel( getLogLevel() );
     rapConfig.setLibraryVariant( getLibraryVariant() );
     rapConfig.setDataLocation( dataLocationBlock.getLocation() );
     boolean useDefaultDataLocation = dataLocationBlock.getUseDefaultDataLocation();
@@ -386,16 +376,6 @@ public final class MainTab extends AbstractLauncherTab {
   }
 
   private void createRuntimeSettingsRightPart( Composite righttPartComposite ) {
-    Label logLevelLabel = new Label( righttPartComposite, SWT.NONE );
-    logLevelLabel.setText( LaunchMessages.MainTab_ClientLogLevel );
-    logLevelCombo = new ComboViewer( righttPartComposite, SWT.DROP_DOWN | SWT.READ_ONLY );
-    logLevelCombo.getCombo().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
-    int itemCount = RAPLaunchConfig.LOG_LEVELS.length;
-    logLevelCombo.getCombo().setVisibleItemCount( itemCount );
-    logLevelCombo.setLabelProvider( new LogLevelLabelProvider() );
-    logLevelCombo.setContentProvider( new ArrayContentProvider() );
-    logLevelCombo.setInput( RAPLaunchConfig.LOG_LEVELS );
-    createLogControlDecorator();
     Label libraryVariantLabel = new Label( righttPartComposite, SWT.NONE );
     libraryVariantLabel.setText( LaunchMessages.MainTab_ClientLibraryVariant );
     libraryVariantCombo = new ComboViewer( righttPartComposite, SWT.DROP_DOWN | SWT.READ_ONLY );
@@ -410,34 +390,6 @@ public final class MainTab extends AbstractLauncherTab {
     } );
   }
   
-  private void createLogControlDecorator() {
-    final ControlDecoration logDecorator
-      = new ControlDecoration( logLevelCombo.getControl(), SWT.LEFT );
-    FieldDecorationRegistry registry = FieldDecorationRegistry.getDefault();
-    FieldDecoration warningDecoration
-      = registry.getFieldDecoration( FieldDecorationRegistry.DEC_WARNING );
-    logDecorator.setImage( warningDecoration.getImage() );
-    logDecorator.setShowHover( true );
-    logDecorator.setDescriptionText( LaunchMessages.MainTab_LogWarningMsg );
-    logDecorator.setMarginWidth( 5 );
-    updateLogDecorator( logDecorator );
-    logLevelCombo.addSelectionChangedListener( new ISelectionChangedListener() {
-      public void selectionChanged( SelectionChangedEvent event ) {
-        updateLaunchConfigurationDialog();
-        updateLogDecorator( logDecorator );
-      }
-    } );
-  }
-
-  private void updateLogDecorator( ControlDecoration decorator ) {
-    Level logLevel = getLogLevel();
-    if( logLevel == Level.OFF ) {
-      decorator.hide();
-    } else {
-      decorator.show();
-    }
-  }
-
   ////////////////
   // Layout helper
   
@@ -567,15 +519,6 @@ public final class MainTab extends AbstractLauncherTab {
     boolean selection = externalBrowserRadioButton.getSelection();
     return selection ? BrowserMode.EXTERNAL : BrowserMode.INTERNAL;
   }
-
-  private Level getLogLevel() {
-    Level result = Level.OFF;
-    ISelection selection = logLevelCombo.getSelection();
-    if( !selection.isEmpty() ) {
-      result = ( Level )( ( IStructuredSelection )selection ).getFirstElement();
-    }
-    return result;
-  }
   
   private LibraryVariant getLibraryVariant() {
     LibraryVariant result = LibraryVariant.STANDARD;
@@ -589,28 +532,6 @@ public final class MainTab extends AbstractLauncherTab {
   
   ////////////////
   // Inner classes
-  
-  private static final class LogLevelLabelProvider extends LabelProvider {
-    private static final Map lables = new HashMap();
-    static {
-      lables.put( Level.ALL, LaunchMessages.MainTab_LogLevelAll );
-      lables.put( Level.OFF, LaunchMessages.MainTab_LogLevelOff );
-      lables.put( Level.CONFIG, LaunchMessages.MainTab_LogLevelConfig );
-      lables.put( Level.WARNING, LaunchMessages.MainTab_LogLevelWarning );
-      lables.put( Level.SEVERE, LaunchMessages.MainTab_LogLevelSevere );
-      lables.put( Level.FINE, LaunchMessages.MainTab_LogLevelFine );
-      lables.put( Level.FINER, LaunchMessages.MainTab_LogLevelFiner );
-      lables.put( Level.FINEST, LaunchMessages.MainTab_LogLevelFinest );
-      lables.put( Level.INFO, LaunchMessages.MainTab_LogLevelInfo );
-    }
-    public String getText( Object element ) {
-      String result = ( String )lables.get( element );
-      if( result == null ) {
-        result = super.getText( element );
-      }
-      return result;
-    }
-  }
   
   private static final class LibraryVariantLabelProvider extends LabelProvider {
     public String getText( Object element ) {

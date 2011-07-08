@@ -11,11 +11,11 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
-import java.net.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.*;
@@ -37,7 +37,6 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_SERVLET_NAME = 6001;
   public static final int ERR_PORT = 6004;
   public static final int ERR_URL = 6005;
-  public static final int ERR_LOG_LEVEL = 6006;
   public static final int ERR_TIMEOUT = 6007;
   public static final int ERR_ENTRY_POINT = 6008;
   public static final int ERR_SERVLET_BUNDLE = 6009;
@@ -65,7 +64,6 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateUniquePort() );
       addNonOKState( states, validateContextPath() );
       addNonOKState( states, validateURL() );
-      addNonOKState( states, validateLogLevel() );
       addNonOKState( states, validateSessionTimeout() );
       addNonOKState( states, validateEntryPoint() );
       addNonOKState( states, validateDataLocation() );
@@ -208,24 +206,6 @@ public final class RAPLaunchConfigValidator {
     return result;
   }
 
-  private IStatus validateLogLevel() throws CoreException {
-    IStatus result = Status.OK_STATUS;
-    boolean isValid = false;
-    Level logLevel = config.getLogLevel();
-    for( int i = 0; !isValid && i < RAPLaunchConfig.LOG_LEVELS.length; i++ ) {
-      if( RAPLaunchConfig.LOG_LEVELS[ i ].equals( logLevel ) ) {
-        isValid = true;
-      }
-    }
-    if( !isValid ) {
-      Object[] args = new Object[] { logLevel.getName() };
-      String msg = LaunchMessages.RAPLaunchConfigValidator_LogLevelInvalid;
-      String msgFmt = MessageFormat.format( msg, args );
-      result = createError( msgFmt, ERR_LOG_LEVEL, null );
-    }
-    return result;
-  }
-  
   private IStatus validateSessionTimeout() throws CoreException {
     IStatus result = Status.OK_STATUS;
     boolean isValid

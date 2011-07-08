@@ -429,14 +429,6 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
   
-  public void testLogLevel() {
-    rapConfig.setLogLevel( new MyLevel( "custom", 1234 ) );
-    
-    IStatus[] states = rapConfig.getValidator().validate();
-    
-    assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_LOG_LEVEL ) );
-  }
-  
   //////////////////
   // helping methods
   private void deleteOnTearDown( TestPluginProject project ) {

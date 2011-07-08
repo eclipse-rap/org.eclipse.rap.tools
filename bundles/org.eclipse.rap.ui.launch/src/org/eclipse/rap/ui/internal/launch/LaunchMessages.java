@@ -23,7 +23,6 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchConfigValidator_EntryPointMissing;
   public static String RAPLaunchConfigValidator_EquinoxOnly;
   public static String RAPLaunchConfigValidator_ErrorWhileValidating;
-  public static String RAPLaunchConfigValidator_LogLevelInvalid;
   public static String RAPLaunchConfigValidator_MalformedUrl;
   public static String RAPLaunchConfigValidator_PortInUse;
   public static String RAPLaunchConfigValidator_PortNumberInvalid;
@@ -50,7 +49,6 @@ public class LaunchMessages extends NLS {
   public static String MainTab_Browser;
   public static String MainTab_BrowseServletName;
   public static String MainTab_ClientLibraryVariant;
-  public static String MainTab_ClientLogLevel;
   public static String MainTab_ConfigureBrowsers;
   public static String MainTab_EntryPoint;
   public static String MainTab_ExternalBrowser;
@@ -58,16 +56,6 @@ public class LaunchMessages extends NLS {
   public static String MainTab_ApplicationUrl;
   public static String MainTab_LibraryVariantDebug;
   public static String MainTab_LibraryVariantStandard;
-  public static String MainTab_LogLevelAll;
-  public static String MainTab_LogLevelConfig;
-  public static String MainTab_LogLevelFine;
-  public static String MainTab_LogLevelFiner;
-  public static String MainTab_LogLevelFinest;
-  public static String MainTab_LogLevelInfo;
-  public static String MainTab_LogLevelOff;
-  public static String MainTab_LogLevelSevere;
-  public static String MainTab_LogLevelWarning;
-  public static String MainTab_LogWarningMsg;
   public static String MainTab_ManualPortConfig;
   public static String MainTab_ManualContextPath;
   public static String MainTab_ManualTimeoutConfig;

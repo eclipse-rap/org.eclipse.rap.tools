@@ -13,7 +13,6 @@
 package org.eclipse.rap.ui.internal.launch;
 
 import java.text.MessageFormat;
-import java.util.logging.Level;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -107,17 +106,6 @@ public final class RAPLaunchConfig {
     }
   }
 
-  public static final Level[] LOG_LEVELS = {
-    Level.OFF,
-    Level.ALL,
-    Level.WARNING,
-    Level.INFO,
-    Level.SEVERE,
-    Level.FINE,
-    Level.FINER,
-    Level.FINEST
-  };
-
   public static final int MIN_PORT_NUMBER = 0;
   public static final int MAX_PORT_NUMBER = 65535;
   public static final int MIN_SESSION_TIMEOUT = 0;
@@ -147,8 +135,6 @@ public final class RAPLaunchConfig {
     = PREFIX + "sessionTimeout"; //$NON-NLS-1$  
   public static final String USE_SESSION_TIMEOUT
     = PREFIX + "useSessionTimeout"; //$NON-NLS-1$
-  public static final String LOG_LEVEL
-    = PREFIX + "logLevel"; //$NON-NLS-1$
   public static final String LIBRARY_VARIANT
     = PREFIX + "libraryVariant"; //$NON-NLS-1$
   public static final String USE_DEFAULT_DATA_LOCATION 
@@ -167,7 +153,6 @@ public final class RAPLaunchConfig {
   private static final boolean DEFAULT_USE_MANUAL_CONTEXTPATH = false;
   private static final int DEFAULT_SESSION_TIMEOUT = MIN_SESSION_TIMEOUT;
   private static final boolean DEFAULT_USE_SESSION_TIMEOUT = false;
-  private static final String DEFAULT_LOG_LEVEL = Level.OFF.getName();
   private static final String DEFAULT_LIBRARY_VARIANT
     = LibraryVariant.STANDARD.getName();
   private static final String DEFAULT_DATA_LOCATION
@@ -184,7 +169,6 @@ public final class RAPLaunchConfig {
     config.setAttribute( USE_MANUAL_CONTEXTPATH, DEFAULT_USE_MANUAL_CONTEXTPATH );
     config.setAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
     config.setAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
-    config.setAttribute( LOG_LEVEL, DEFAULT_LOG_LEVEL );
     config.setAttribute( LIBRARY_VARIANT, DEFAULT_LIBRARY_VARIANT );
     config.setAttribute( USE_DEFAULT_DATA_LOCATION, true );
     config.setAttribute( IPDELauncherConstants.DOCLEAR, false );
@@ -374,16 +358,6 @@ public final class RAPLaunchConfig {
   public void setSessionTimeout( final int timeout ) {
     checkWorkingCopy();
     workingCopy.setAttribute( SESSION_TIMEOUT, timeout );
-  }
-
-  public Level getLogLevel() throws CoreException {
-    String value = config.getAttribute( LOG_LEVEL, DEFAULT_LOG_LEVEL );
-    return Level.parse( value );
-  }
-
-  public void setLogLevel( final Level logLevel ) {
-    checkWorkingCopy();
-    workingCopy.setAttribute( LOG_LEVEL, logLevel.getName() );
   }
 
   public LibraryVariant getLibraryVariant() throws CoreException {

@@ -38,8 +38,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   // VM argument contants
   private static final String VMARG_PORT 
     = "-Dorg.osgi.service.http.port="; //$NON-NLS-1$
-  private static final String VMARG_LOG_LEVEL 
-    = "-Dorg.eclipse.rwt.clientLogLevel="; //$NON-NLS-1$
   private static final String VMARG_LIBRARY_VARIANT
     = "-Dorg.eclipse.rwt.clientLibraryVariant="; //$NON-NLS-1$
   private static final String VMARG_SESSION_TIMEOUT 
@@ -151,7 +149,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private String[] getRAPVMArguments() throws CoreException {
     List list = new ArrayList();
     list.add( VMARG_PORT + port );
-    list.add( VMARG_LOG_LEVEL + config.getLogLevel().getName() );
     LibraryVariant libraryVariant = config.getLibraryVariant();
     if( libraryVariant != LibraryVariant.STANDARD ) {
       list.add( VMARG_LIBRARY_VARIANT + libraryVariant.getName() );

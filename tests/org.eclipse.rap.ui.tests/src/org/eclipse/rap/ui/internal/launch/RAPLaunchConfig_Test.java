@@ -11,8 +11,6 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
-import java.util.logging.Level;
-
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
@@ -40,7 +38,6 @@ public class RAPLaunchConfig_Test extends TestCase {
     assertTrue( rapConfig.getTerminatePrevious() );
     assertFalse( "".equals( rapConfig.getServletName() ) );
     assertTrue( "".equals( rapConfig.getEntryPoint() ) );
-    assertEquals( Level.OFF, rapConfig.getLogLevel() );
     assertEquals( LibraryVariant.STANDARD, rapConfig.getLibraryVariant() );
     assertEquals( 0, rapConfig.getSessionTimeout() );
     assertFalse( rapConfig.getUseSessionTimeout() );
