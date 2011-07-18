@@ -287,7 +287,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Format: <code><a href="#border-color">&lt;border-color&gt;</a></code>
 </p>
 
-<a name="border"><h3>box-shadow</h3></a>
+<a name="box-shadow"><h3>box-shadow</h3></a>
 <p>
   Used to define the shadow that is drawn behind the widget.
 </p>
@@ -295,7 +295,7 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   Format: <code> &lt;shadow&gt; | none</code>
 </p>
 
-<a name="shadow"><h4>&lt;shadow&gt;</h4></a>
+<a name="b-shadow"><h4>&lt;shadow&gt;</h4></a>
 <p>
   Format: <code> <a href="#dimension">&lt;dimension&gt;</a> <a href="#dimension">&lt;dimension&gt;</a> (<a href="#dimension">&lt;dimension&gt;</a> (<a href="#dimension">&lt;dimension&gt;</a>)?)? <a href="#shadow-color">&lt;shadow-color&gt;</a></code>
 </p>
@@ -332,6 +332,37 @@ Format: <code><a href="#dimension">&lt;dimension&gt;</a></code>
   <li><code>color: rgba( 255, 128, 0, 0.33 );</code></li>
   <li><code>color: rgba( 100%, 50%, 0%, 1 );</code></li>
 </ul>
+
+<a name="text-shadow"><h3>text-shadow</h3></a>
+<p>
+  Used to define the shadow that is drawn behind the widget text.
+  Note: Internet Explorer does not support text shadow.
+</p>
+<p>
+  Format: <code> &lt;text-shadow&gt; | none</code>
+</p>
+
+<a name="t-shadow"><h4>&lt;text-shadow&gt;</h4></a>
+<p>
+  Format: <code> <a href="#dimension">&lt;dimension&gt;</a> <a href="#dimension">&lt;dimension&gt;</a> (<a href="#dimension">&lt;dimension&gt;</a>)? <a href="#shadow-color">&lt;shadow-color&gt;</a></code>
+</p>
+<p>
+<ul>
+  <li> The first value defines the horizontal offset of the shadow. May be negative.</li>
+  <li> The second value defines the vertical offset of the shadow. May be negative.</li>
+  <li> The optional third value defines the radius of the blur effect. Negative values are not allowed. The default value is 0px.</li>
+  <li> The final value defines the color of the shadow. </li>
+</ul>
+</p>
+<p>
+  Examples:
+<ul>
+  <li> text-shadow: 2px 2px black; </li>
+  <li> text-shadow: 2px 3px 3px rgba( 0, 0, 0, 0.5 ); </li>
+  <li> text-shadow: 1px 1px 0 #FF00FF; </li>
+</ul>
+</p>
+
 <a name="color"><h3>color</h3></a>
 <p>
   The color used for foreground-elements, e.g. Text.
