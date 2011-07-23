@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Server Push</title>
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+
+  <h1>Server Push</h1>
+
+  <p>
+    Sometimes it's necessary to “push” UI updates from the web server to the browser client.
+    As an example, imagine a chat application that notifies the user of a chat request from a peer.
+  </p>
+  <p>
+    Usually, the UI is updated in the UI thread as a result of a user interaction, e.g. in a
+    listener.
+    These updates are processed during request processing, so that the ui changes are immediately
+    rendered in the response.
+    But when the UI is updated from a background thread using Display.asyncExec() while the user
+    is idle, there's no request that could fetch the ui updates from the server.
+  </p>
+  <p>
+    But HTTP is not designed to push data to the client.
+    An HTTP server can only answer reqests from a client, but it cannot actively send any message
+    to the client.
+    There are basically two different approaches to tackle this problem, polling and Comet.
+  </p>
+
+  <h2>Polling</h2>
+
+  <p>
+    The simple approach is to make the client issue requests at a steady interval.
+    If any changes have occured to the UI on the server, the server will send the UI updates in
+    response.
+  </p>
+  <p>
+    The implementation is simple in RAP.
+    The client needs to schedule a timer that sends an empty request to the server.
+    The server will send any pending UI changes in response.
+    The JavaScript code to enable polling looks like this:
+  </p>
+  <pre><code>
+  String code =   &quot;window.setInterval( function() {\n&quot;
+                + &quot;  org.eclipse.swt.Request.getInstance().send();\n&quot;
+                + &quot;}, 20000 );&quot;; // polling interval in ms
+  JSExecutor.executeJS( code );
+  </code></pre>
+  <p>
+    Please note that this code makes use of internal API which may change without notice.
+  </p>
+  <p>
+    The polling approach may be an option when updates doesn't have to come timely.
+    The shorter the interval, the more network load is added by sending unneccessary requests
+    frequently.
+  </p>
+
+  <h2>Comet (UI Callback)</h2>
+
+  <p>
+    With the so-called Comet approach, the server is able to notify the client <em>immediately</em>
+    without the need for frequent requests.
+    The basic idea is that the client sends a special “callback” request to the server.
+    This request is not answered by the server, so the client keeps waiting for a response.
+    When the server needs to notify the client of a change, it sends a response to the standing
+    request and asks the client to call back.
+  </p>
+  <p>
+    RAP provides an implementation of this mechanism which is called UI callback.
+    Before starting a background task, the UI callback can be activated by calling:
+  </p>
+  <pre><code>
+  UICallBack.activate( "my unique id" );
+  </code></pre>
+  <p>
+    This has to be done from the UI thread, since otherwise the activation cannot be transferred to
+    the client anymore.
+    The id passed to the activate method is only needed to identify the caller.
+    After the background task has completed and the UI callback is no longer needed, it should be
+    deactivated using the same id:
+  </p>
+  <pre><code>
+  UICallBack.deactivate( "my unique id" );
+  </code></pre>
+  <p>
+    When different instances require the UI callback at the same time, only one standing request
+    will be opened by the client.
+    The UI callback system is deactivated when the last instance has called deactivate.
+  </p>
+  <p>
+    More technical details of the UI callback implementation can be found on the
+    <a href="http://wiki.eclipse.org/RAP/UI_Callback" target="blank">UI Callback wiki page</a>.
+  </p>
+
+</body>
+</html>

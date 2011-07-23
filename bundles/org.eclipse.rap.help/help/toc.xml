@@ -21,7 +21,10 @@
     <topic
       label="Look and feel"
       href="help/html/advanced/look-and-feel.html"/>
-    <topic 
+    <topic
+      label="Server push"
+      href="help/html/advanced/server-push.html"/>
+    <topic
       label="Internationalization"
       href="help/html/advanced/internationalization.html"/>
     <topic
