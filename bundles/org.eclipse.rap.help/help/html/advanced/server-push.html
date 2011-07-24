@@ -19,10 +19,10 @@
   <p>
     Usually, the UI is updated in the UI thread as a result of a user interaction, e.g. in a
     listener.
-    These updates are processed during request processing, so that the ui changes are immediately
+    These updates are processed during request processing, so that the UI changes are immediately
     rendered in the response.
     But when the UI is updated from a background thread using Display.asyncExec() while the user
-    is idle, there's no request that could fetch the ui updates from the server.
+    is idle, there's no request that could fetch the UI updates from the server.
   </p>
   <p>
     But HTTP is not designed to push data to the client.
@@ -42,7 +42,7 @@
     The implementation is simple in RAP.
     The client needs to schedule a timer that sends an empty request to the server.
     The server will send any pending UI changes in response.
-    The JavaScript code to enable polling looks like this:
+    The Javascript code to enable polling looks like this:
   </p>
   <pre><code>
   String code =   &quot;window.setInterval( function() {\n&quot;
