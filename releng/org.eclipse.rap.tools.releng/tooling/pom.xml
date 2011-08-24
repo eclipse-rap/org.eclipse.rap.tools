@@ -33,11 +33,11 @@
   <modules>
     <module>tooling-feature</module>
     <module>tooling-repository</module>
-    <module>../org.eclipse.rap.help</module>
-    <module>../org.eclipse.rap.ui.launch</module>
-    <module>../org.eclipse.rap.ui.templates</module>
-    <module>../org.eclipse.rap.ui.intro</module>
-    <module>../org.eclipse.rap.ui.launch.rwt</module>
+    <module>../../../tooling/org.eclipse.rap.help</module>
+    <module>../../../tooling/org.eclipse.rap.ui.launch</module>
+    <module>../../../tooling/org.eclipse.rap.ui.templates</module>
+    <module>../../../tooling/org.eclipse.rap.ui.intro</module>
+    <module>../../../tooling/org.eclipse.rap.ui.launch.rwt</module>
   </modules>
 
   <!-- repositories to get pre-built pieces from -->
