@@ -34,9 +34,9 @@
     <module>tooling-feature</module>
     <module>tooling-repository</module>
     <module>../../../tooling/org.eclipse.rap.help</module>
-    <module>../../../tooling/org.eclipse.rap.ui.launch</module>
-    <module>../../../tooling/org.eclipse.rap.ui.templates</module>
     <module>../../../tooling/org.eclipse.rap.ui.intro</module>
+    <module>../../../tooling/org.eclipse.rap.ui.templates</module>
+    <module>../../../tooling/org.eclipse.rap.ui.launch</module>
     <module>../../../tooling/org.eclipse.rap.ui.launch.rwt</module>
   </modules>
 
@@ -53,7 +53,6 @@
     <plugins>
 
       <plugin>
-        <!-- Enable tycho -->
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
         <version>${tycho-version}</version>

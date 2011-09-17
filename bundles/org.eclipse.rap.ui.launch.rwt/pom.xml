@@ -23,7 +23,7 @@
     <groupId>org.eclipse.rap</groupId>
     <artifactId>org.eclipse.rap.tooling-parent</artifactId>
     <version>${rap-version}-SNAPSHOT</version>
-    <relativePath>../org.eclipse.rap.releng/tooling/pom.xml</relativePath>
+    <relativePath>../../releng/org.eclipse.rap.releng/tooling/pom.xml</relativePath>
   </parent>
 
 </project>
