@@ -13,7 +13,9 @@
   <target name="buildApiReference">
     <javadoc
         destdir="${sourceDir}/org.eclipse.rap/tooling/org.eclipse.rap.help/help/html/reference/api"
-        author="false"
+        encoding="UTF-8"
+        charset="UTF-8"
+    	author="false"
         version="true"
         use="true"
         windowtitle="Eclipse Rich Ajax Platform API Reference"
@@ -34,8 +36,12 @@
       <header>
         <![CDATA[<b>Eclipse Rich Ajax Platform</b>]]>
       </header>
-      <link href="http://download.oracle.com/javase/1.5.0/docs/api/" />
-      <link href="http://www.osgi.org/javadoc/r4v43/" />
+      <link href="http://download.oracle.com/javase/1.5.0/docs/api/"
+        offline="true"
+      	packagelistLoc="${sourceDir}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/reference/javase-1.5.0-packages" />
+      <link href="http://www.osgi.org/javadoc/r4v43/"
+        offline="true"
+      	packagelistLoc="${sourceDir}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/reference/osgi-r4v43-packages" />
     </javadoc>
   </target>
 
