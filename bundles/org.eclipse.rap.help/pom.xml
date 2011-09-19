@@ -26,4 +26,20 @@
     <relativePath>../../releng/org.eclipse.rap.releng/tooling/pom.xml</relativePath>
   </parent>
 
+  <!-- disable source build, not needed with tycho 0.13 anymore, see bug 354221 -->
+  <build>
+    <plugins>
+       <plugin>
+          <artifactId>tycho-source-plugin</artifactId>
+          <groupId>org.eclipse.tycho</groupId>
+          <executions>
+             <execution>
+                <id>plugin-source</id>
+                <phase>none</phase>
+             </execution>
+          </executions>
+       </plugin>
+    </plugins>
+  </build>
+
 </project>
