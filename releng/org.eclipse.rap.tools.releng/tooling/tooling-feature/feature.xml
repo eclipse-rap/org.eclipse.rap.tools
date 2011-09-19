@@ -44,7 +44,21 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.rap.help.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.rap.ui.intro"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.rap.ui.intro.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -58,6 +72,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.rap.ui.templates.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.rap.ui.launch"
          download-size="0"
          install-size="0"
@@ -65,7 +86,21 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.rap.ui.launch.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.rap.ui.launch.rwt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.rap.ui.launch.rwt.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
