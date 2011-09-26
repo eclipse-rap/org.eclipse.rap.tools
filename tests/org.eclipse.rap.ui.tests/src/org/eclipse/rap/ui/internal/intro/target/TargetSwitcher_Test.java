@@ -1,18 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2011 EclipseSource.
+ * Copyright (c) 2011 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     EclipseSource - initial API and implementation
+ *    EclipseSource - initial API and implementation
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,55 +24,48 @@ import junit.framework.TestCase;
 import org.eclipse.ant.core.AntRunner;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.equinox.p2.core.IProvisioningAgent;
-import org.eclipse.equinox.p2.repository.metadata.IMetadataRepositoryManager;
 import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.internal.core.target.provisional.IResolvedBundle;
 import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
 import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
 import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
+import org.eclipse.rap.ui.tests.Fixture;
 import org.osgi.framework.Bundle;
 
+
+@SuppressWarnings( "restriction" )
 public class TargetSwitcher_Test extends TestCase {
-  
+
   private final static String TARGET_LOCATION = "/target";
   private final static String LATEST_TARGET_LOCATION = "/latest_target";
-  private final static String[] ROOT_IU = new String[]{
-    "org.eclipse.rap.target.test.feature.feature.group"
-  };
-  private final static String targetVersion = "1.4";
   private ITargetHandle[] initialTargets;
-  private List filesToDelete;
-  
+  private List< File > filesToDelete;
+
   protected void setUp() throws Exception {
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
     initialTargets = targetPlatformService.getTargets( new NullProgressMonitor() );
-    filesToDelete = new ArrayList();
+    filesToDelete = new ArrayList< File >();
   }
 
   protected void tearDown() throws Exception {
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
-    ITargetHandle[] currentTargets 
-      = targetPlatformService.getTargets( new NullProgressMonitor() );
+    ITargetHandle[] currentTargets = targetPlatformService.getTargets( new NullProgressMonitor() );
     // Delete all available targets
     for( int i = 0; i < currentTargets.length; i++ ) {
       targetPlatformService.deleteTarget( currentTargets[ i ] );
     }
     // Add initial targets
     for( int i = 0; i < initialTargets.length; i++ ) {
-      ITargetDefinition targetDefinition 
-        = initialTargets[ i ].getTargetDefinition();
+      ITargetDefinition targetDefinition = initialTargets[ i ].getTargetDefinition();
       targetPlatformService.saveTargetDefinition( targetDefinition );
     }
-    
-    //Deletes all files
-    for(int i = 0; i < filesToDelete.size(); i++){
-      File fileToDelete = ( File )filesToDelete.get( i );
-      boolean deleted = deleteFileOrDirectory( fileToDelete );
-      assertTrue( "Failed to delete file", deleted );
+    // Deletes all files
+    for( int i = 0; i < filesToDelete.size(); i++ ) {
+      Fixture.deleteDirectory( filesToDelete.get( i ) );
     }
   }
 
@@ -96,138 +88,83 @@ public class TargetSwitcher_Test extends TestCase {
   }
 
   public void testInstallTargetAvailable() throws Exception {
-    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
-    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
-                                                                 ROOT_IU,
-                                                                 targetVersion,
+    String targetFileUri = createTargetDefinitionFile( TARGET_LOCATION );
+    ITargetDefinition targetDefinition = TargetSwitcher.install( targetFileUri,
                                                                  false,
                                                                  new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened",
-                   targetDefinition );
+    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
-    ITargetHandle[] availableTargets 
-      = targetPlatformService.getTargets( new NullProgressMonitor() );
-    List availableTargetsAsList = Arrays.asList( availableTargets );
+    ITargetHandle[] availableTargets = targetPlatformService.getTargets( new NullProgressMonitor() );
+    List< ITargetHandle > availableTargetsAsList = Arrays.asList( availableTargets );
     ITargetHandle handle = targetDefinition.getHandle();
     assertTrue( "Target wasn't install properly", availableTargetsAsList.contains( handle ) );
   }
 
   public void testInstall() throws Exception {
-    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
-    ITargetDefinition targetDefinition 
-      = TargetSwitcher.install( p2RepoURI,
-                                ROOT_IU,
-                                targetVersion,
-                                false,
-                                new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened",
-                   targetDefinition );
+    String targetFileUri = createTargetDefinitionFile( TARGET_LOCATION );
+    ITargetDefinition targetDefinition = TargetSwitcher.install( targetFileUri,
+                                                                 false,
+                                                                 new NullProgressMonitor() );
+    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
     boolean resolved = targetDefinition.getBundleContainers()[ 0 ].isResolved();
     assertTrue( "Target should be in resolved state", resolved );
-    IResolvedBundle[] bundles 
-      = targetDefinition.getBundleContainers()[ 0 ].getBundles();
+    IResolvedBundle[] bundles = targetDefinition.getBundleContainers()[ 0 ].getBundles();
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
   }
 
-  public void testInstallOldTargetAndLatestTargetRepositoryLoaded() throws Exception {
-    String p2RepoLatestURI = null;
-    try {
-      String p2RepoURI = createFakeRepository( TARGET_LOCATION );
-      p2RepoLatestURI = createFakeRepository( LATEST_TARGET_LOCATION );
-      loadRepository( p2RepoLatestURI );
-      ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
-                                                                   ROOT_IU,
-                                                                   targetVersion,
-                                                                   false,
-                                                                   new NullProgressMonitor() );
-      assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-      boolean resolved = targetDefinition.getBundleContainers()[ 0 ].isResolved();
-      assertTrue( "Target should be in resolved state", resolved );
-      IResolvedBundle[] bundles = targetDefinition.getBundleContainers()[ 0 ].getBundles();
-      assertEquals( "Not all bundles are resolved", 1, bundles.length );
-    } finally {
-      remoRepository( p2RepoLatestURI );
-    }
+  public void testInstallOldTargetAndLatestTargetFileLoaded() throws Exception {
+    String targetFileUri = createTargetDefinitionFile( TARGET_LOCATION );
+    createTargetDefinitionFile( LATEST_TARGET_LOCATION );
+    ITargetDefinition targetDefinition = TargetSwitcher.install( targetFileUri,
+                                                                 false,
+                                                                 new NullProgressMonitor() );
+    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
+    boolean resolved = targetDefinition.getBundleContainers()[ 0 ].isResolved();
+    assertTrue( "Target should be in resolved state", resolved );
+    IResolvedBundle[] bundles = targetDefinition.getBundleContainers()[ 0 ].getBundles();
+    assertEquals( "Not all bundles are resolved", 1, bundles.length );
   }
 
-  private void loadRepository( String p2Repository ) throws  Exception {
-    IMetadataRepositoryManager metadataRepositoryManager = getMetadataRepositoryManager();
-    URI p2RepositoryURI = new URI( p2Repository );
-    metadataRepositoryManager.loadRepository( p2RepositoryURI, new NullProgressMonitor() );
-  }
-
-  
-  private IMetadataRepositoryManager getMetadataRepositoryManager() throws CoreException {
-    IProvisioningAgent agent = TargetSwitcher.getAgent();
-    Object metadataRepositoryManager = agent.getService( IMetadataRepositoryManager.SERVICE_NAME );
-    return ( IMetadataRepositoryManager )metadataRepositoryManager;
-  }
-
-  private void remoRepository( String p2Repository ) throws Exception {
-    IMetadataRepositoryManager metadataRepositoryManager = getMetadataRepositoryManager();
-    URI p2RepositoryURI = new URI( p2Repository );
-    metadataRepositoryManager.removeRepository( p2RepositoryURI );
-  }
-
-  
   public void testWsRapSet() throws Exception {
-    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
+    String p2RepoURI = createTargetDefinitionFile( TARGET_LOCATION );
     ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
-                                                                 ROOT_IU,
-                                                                 targetVersion,
                                                                  false,
                                                                  new NullProgressMonitor() );
     assertNotNull( "Target shouldn't be null if no exception happened", targetDefinition );
     assertFalse( "rap".equals( targetDefinition.getWS() ) );
 // TODO [rst] Re-enable when bug 338544 is fixed
-//    assertEquals( "rap", targetDefinition.getWS() );
+// assertEquals( "rap", targetDefinition.getWS() );
   }
 
   public void testInstallTwice() throws Exception {
-    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
+    String p2RepoURI = createTargetDefinitionFile( TARGET_LOCATION );
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
-    ITargetDefinition targetDefinition 
-      = TargetSwitcher.install( p2RepoURI,
-                                ROOT_IU,
-                                targetVersion,
-                                false,
-                                new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened",
-                   targetDefinition );
+    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
+                                                                 false,
+                                                                 new NullProgressMonitor() );
+    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
     boolean resolved = targetDefinition.getBundleContainers()[ 0 ].isResolved();
     assertTrue( "Target should be in resolved state", resolved );
-    IResolvedBundle[] bundles 
-      = targetDefinition.getBundleContainers()[ 0 ].getBundles();
+    IResolvedBundle[] bundles = targetDefinition.getBundleContainers()[ 0 ].getBundles();
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
-    ITargetHandle[] targets 
-      = targetPlatformService.getTargets( new NullProgressMonitor() );
+    ITargetHandle[] targets = targetPlatformService.getTargets( new NullProgressMonitor() );
     // Second installation
-    ITargetDefinition targetDefinition2 
-      = TargetSwitcher.install( p2RepoURI,
-                                ROOT_IU,
-                                targetVersion,
-                                false,
-                                new NullProgressMonitor() );
-    boolean resolved2 
-      = targetDefinition2.getBundleContainers()[ 0 ].isResolved();
+    ITargetDefinition targetDefinition2 = TargetSwitcher.install( p2RepoURI,
+                                                                  false,
+                                                                  new NullProgressMonitor() );
+    boolean resolved2 = targetDefinition2.getBundleContainers()[ 0 ].isResolved();
     assertTrue( "Target should be in resolved state", resolved2 );
-    IResolvedBundle[] bundles2 
-      = targetDefinition2.getBundleContainers()[ 0 ].getBundles();
+    IResolvedBundle[] bundles2 = targetDefinition2.getBundleContainers()[ 0 ].getBundles();
     assertEquals( "Not all bundles are resolved", 1, bundles2.length );
-    ITargetHandle[] targets2 
-      = targetPlatformService.getTargets( new NullProgressMonitor() );
+    ITargetHandle[] targets2 = targetPlatformService.getTargets( new NullProgressMonitor() );
     assertEquals( "Targets should be equal", targets.length, targets2.length );
   }
 
-  public void testInstallTargetConfiguration()
-    throws Exception
-  {
+  public void testInstallTargetConfiguration() throws Exception {
     String VM_ARGS = "-Dosgi.noShutdown=true -Declipse.ignoreApp=true"; //$NON-NLS-1$
     String PROGRAM_ARGS = "-console -consolelog"; //$NON-NLS-1$
-    String p2RepoURI = createFakeRepository( TARGET_LOCATION );
+    String p2RepoURI = createTargetDefinitionFile( TARGET_LOCATION );
     ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
-                                                                 ROOT_IU,
-                                                                 targetVersion,
                                                                  false,
                                                                  new NullProgressMonitor() );
     assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
@@ -237,28 +174,35 @@ public class TargetSwitcher_Test extends TestCase {
     assertEquals( PROGRAM_ARGS, targetProgramArguments );
   }
 
-  private static ITargetDefinition getCurrentTarget() throws CoreException {
-    ITargetPlatformService service = getTargetPlatformService();
-    ITargetHandle targetHandle = service.getWorkspaceTargetHandle();
-    ITargetDefinition target = targetHandle.getTargetDefinition();
-    target.resolve( new NullProgressMonitor() );
-    return target;
-  }
-
   private static ITargetPlatformService getTargetPlatformService() {
     String className = ITargetPlatformService.class.getName();
     PDECore pdeCore = PDECore.getDefault();
     return ( ITargetPlatformService )pdeCore.acquireService( className );
   }
-  
-  private URL getResourceURL(final String resource) throws IOException {
+
+  private URL getResourceURL( String resource ) throws IOException {
     Bundle testsBundle = Platform.getBundle( "org.eclipse.rap.ui.tests" );
     Path resourcePath = new Path( resource );
     URL resourceURL = FileLocator.find( testsBundle, resourcePath, null );
     return FileLocator.resolve( resourceURL );
   }
-  
-  private String createFakeRepository( String targetLocation ) throws Exception{
+
+  private String createTargetDefinitionFile( String targetLocation ) throws Exception {
+    String fakeRepositoryUri = createFakeRepository( targetLocation );
+    Bundle bundle = Platform.getBundle( "org.eclipse.rap.ui.tests" );
+    IPath targetTemplateFiletPath = new Path( targetLocation ).append( "target_template.target" );
+    URL unresolvedFileUrl = FileLocator.find( bundle, targetTemplateFiletPath, null );
+    URL targetTemplateFileUrl = FileLocator.resolve( unresolvedFileUrl );
+    final File targetTemplateFile = new Path( targetTemplateFileUrl.getPath() ).toFile();
+    String targetTemplateFileContent = Fixture.readContent( targetTemplateFile );
+    String targetContent = targetTemplateFileContent.replace( "<template_uri>", fakeRepositoryUri );
+    File targetFile = File.createTempFile( "target", "" );
+    filesToDelete.add( targetFile );
+    Fixture.writeContentToFile( targetFile, targetContent );
+    return targetFile.toURI().toString();
+  }
+
+  private String createFakeRepository( String targetLocation ) throws Exception {
     URL repositoryDest = createRepositoryDest();
     Path repositoryDestPath = new Path( repositoryDest.getPath() );
     filesToDelete.add( repositoryDestPath.toFile() );
@@ -266,15 +210,15 @@ public class TargetSwitcher_Test extends TestCase {
     URL copyRepositoryScriptURL = getResourceURL( "copy_repository.ant.xml" );
     URL repositoryContentURL = getResourceURL( targetLocation );
     Path repositoryContentPath = new Path( repositoryContentURL.getPath() );
-    Map scriptProperties = getProperties( repositoryContentPath.toString(), 
+    Map< String, String > scriptProperties = getProperties( repositoryContentPath.toString(),
                                           repositoryDestPath.toString() );
     runAntTask( copyRepositoryScriptURL, runner, scriptProperties );
     return repositoryDest.toString();
   }
 
-  private void runAntTask( final URL copyRepositoryScriptURL,
-                           final AntRunner runner,
-                           final Map scriptProperties ) throws CoreException
+  private void runAntTask( URL copyRepositoryScriptURL,
+                           AntRunner runner,
+                           Map< String, String > scriptProperties ) throws CoreException
   {
     Path copyRepositoryPath = new Path( copyRepositoryScriptURL.getPath() );
     runner.setBuildFileLocation( copyRepositoryPath.toString() );
@@ -282,8 +226,8 @@ public class TargetSwitcher_Test extends TestCase {
     runner.run( new NullProgressMonitor() );
   }
 
-  private Map getProperties( final String srcProp, final String destProp ) {
-    Map result = new HashMap();
+  private Map< String, String > getProperties( String srcProp, String destProp ) {
+    Map< String, String > result = new HashMap< String, String >();
     result.put( "src", srcProp ); //$NON-NLS-1$
     result.put( "dest", destProp ); //$NON-NLS-1$
     return result;
@@ -294,20 +238,5 @@ public class TargetSwitcher_Test extends TestCase {
     fakeRepositoryDest.delete();
     fakeRepositoryDest.mkdirs();
     return fakeRepositoryDest.toURI().toURL();
-  }
-  
-  private boolean deleteFileOrDirectory(final File fileToDelete) {
-    if( fileToDelete.exists() && fileToDelete.isDirectory()) {
-      File[] files = fileToDelete.listFiles();
-      for(int i=0; i<files.length; i++) {
-         if(files[i].isDirectory()) {
-           deleteFileOrDirectory( files[i] );
-         }
-         else {
-           files[i].delete();
-         }
-      }
-    }
-    return( fileToDelete.delete() );
   }
 }

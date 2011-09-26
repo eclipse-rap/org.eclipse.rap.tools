@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
@@ -25,16 +25,13 @@ import org.eclipse.swt.widgets.*;
 
 public final class InstallTargetDialog extends TitleAreaDialog {
 
-  private final static String[] ROOT_IUs = new String[]{
-    "org.eclipse.rap.runtime.sdk.feature.group" //$NON-NLS-1$
-  };
   private final static String TARGET_REPOSITORY_LATEST_BUILD 
-    = "http://download.eclipse.org/rt/rap/latest-stable/runtime"; //$NON-NLS-1$
+    = "http://download.eclipse.org/rt/rap/targets/runtime-latest-stable.target"; //$NON-NLS-1$
   private final static String TARGET_REPOSITORY_LATEST_RELEASE 
-    = "http://download.eclipse.org/rt/rap/latest-release/runtime"; //$NON-NLS-1$
-  private final static String TARGET_QUALIFIER_LATEST_BUILD = "latest stable build"; //$NON-NLS-1$
-  private final static String TARGET_QUALIFIER_LATEST_RELEASE = "latest release"; //$NON-NLS-1$
-  private boolean isLatestBuild = true;
+    = "http://download.eclipse.org/rt/rap/targets/runtime-latest-release.target"; //$NON-NLS-1$
+  private final static String TARGET_QUALIFIER_LATEST_BUILD = "latest-stable-build.target"; //$NON-NLS-1$
+  private final static String TARGET_QUALIFIER_LATEST_RELEASE = "latest-release.target"; //$NON-NLS-1$
+  private static boolean isLatestBuild = true;
   private boolean shouldSwitchTarget = true;
   private Image titleImage;
 
@@ -42,6 +39,7 @@ public final class InstallTargetDialog extends TitleAreaDialog {
     super( parentShell );
     setShellStyle( SWT.TITLE | SWT.CLOSE | SWT.RESIZE );
     setHelpAvailable( false );
+    isLatestBuild = true;
   }
 
   public boolean shouldSwitchTarget() {
@@ -49,17 +47,11 @@ public final class InstallTargetDialog extends TitleAreaDialog {
   }
 
   public String getTargetRepository() {
-    return isLatestBuild ? TARGET_REPOSITORY_LATEST_BUILD 
-                         : TARGET_REPOSITORY_LATEST_RELEASE;
+    return isLatestBuild ? TARGET_REPOSITORY_LATEST_BUILD : TARGET_REPOSITORY_LATEST_RELEASE;
   }
 
-  public String getTargetQualifier() {
-    return isLatestBuild ? TARGET_QUALIFIER_LATEST_BUILD
-                         : TARGET_QUALIFIER_LATEST_RELEASE;
-  }
-
-  public String[] getRootIUs() {
-    return ROOT_IUs;
+  public static String getTargetFileName() {
+    return isLatestBuild ? TARGET_QUALIFIER_LATEST_BUILD : TARGET_QUALIFIER_LATEST_RELEASE;
   }
 
   protected Point getInitialSize() {

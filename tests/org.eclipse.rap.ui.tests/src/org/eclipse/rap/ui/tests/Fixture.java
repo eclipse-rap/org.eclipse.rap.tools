@@ -10,7 +10,11 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.tests;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
@@ -22,6 +26,7 @@ import org.eclipse.debug.core.ILaunchManager;
 
 public final class Fixture {
   
+  private static final int BUFFER = 2048;
   public static final String PLUGIN_ID = "org.eclipse.rap.ui.tests"; //$NON-NLS-1$
 
   private static final String RAP_LAUNCHER 
@@ -63,6 +68,35 @@ public final class Fixture {
     directory.delete();
   }
 
+  public static void writeContentToFile( File fileToWrite, String content ) throws IOException {
+    FileWriter fileWriter = null;
+    try {
+      fileWriter = new FileWriter( fileToWrite );
+      BufferedWriter out = new BufferedWriter( fileWriter );
+      out.write( content );
+      out.flush();
+    } finally {
+      if( fileWriter != null ) {
+        fileWriter.close();
+      }
+    }
+  }
+
+  public static String readContent( File file ) throws IOException {
+    FileInputStream is = new FileInputStream( file );
+    StringBuilder input = new StringBuilder();
+    byte[] bytes = new byte[ BUFFER ];
+    try {
+      int read;
+      while( ( read = is.read( bytes ) ) != -1 ) {
+        input.append( new String( bytes, 0, read ) );
+      }
+    } finally {
+      is.close();
+    }
+    return input.toString();
+  }
+  
   private Fixture() {
     // prevent instantiation
   }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.6"?>
+
+<target name="latest_target" sequenceNumber="1">
+<locations>
+<location includeAllPlatforms="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.rap.target.test.feature.feature.group" version="1.0.0.201101271445"/>
+<repository location="<template_uri>"/>
+</location>
+</locations>
+<launcherArgs>
+<vmArgs>-Dosgi.noShutdown=true -Declipse.ignoreApp=true</vmArgs>
+<programArgs>-console -consolelog</programArgs>
+</launcherArgs>
+</target>

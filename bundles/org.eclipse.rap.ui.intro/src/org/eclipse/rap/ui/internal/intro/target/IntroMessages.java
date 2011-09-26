@@ -6,8 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
@@ -17,6 +17,7 @@ public class IntroMessages extends NLS {
 
   private static final String BUNDLE_NAME 
     = "org.eclipse.rap.ui.internal.intro.target.messages"; //$NON-NLS-1$
+
   
   public static String InstallDialog_Browse;
   public static String InstallDialog_DialogTitle;
@@ -48,13 +49,15 @@ public class IntroMessages extends NLS {
   public static String TargetProvider_ArchiveNotFound;
   public static String TargetProvider_FailureCreateScript;
   public static String TargetProvider_Installing;
-
+  public static String TargetProvider_Creating_Definition;
   public static String TargetProvider_InvalidTargetDest;
   public static String TargetProvider_SourceNotFound;
 
   public static String TargetSwitcher_InvalidTargetRepository;
 
   public static String TargetSwitcher_NoInternetConnectionAvailableErrorMsg;
+
+  public static String TargetSwitcher_TargedDefinitionErrorMessage;
 
   public static String TargetSwitcher_TargetDefinitionErrorMsg;
 
