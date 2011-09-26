@@ -190,7 +190,7 @@ public class TargetSwitcher_Test extends TestCase {
   private String createTargetDefinitionFile( String targetLocation ) throws Exception {
     String fakeRepositoryUri = createFakeRepository( targetLocation );
     Bundle bundle = Platform.getBundle( "org.eclipse.rap.ui.tests" );
-    IPath targetTemplateFiletPath = new Path( targetLocation ).append( "target_template.target" );
+    IPath targetTemplateFiletPath = new Path( targetLocation ).append( "target_template" );
     URL unresolvedFileUrl = FileLocator.find( bundle, targetTemplateFiletPath, null );
     URL targetTemplateFileUrl = FileLocator.resolve( unresolvedFileUrl );
     final File targetTemplateFile = new Path( targetTemplateFileUrl.getPath() ).toFile();
