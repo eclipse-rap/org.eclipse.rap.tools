@@ -50,7 +50,7 @@
 
   <profiles>
     <profile>
-      <id>sign</id>
+      <id>pack-and-sign</id>
       <activation>
         <property>
           <name>sign</name>
@@ -96,7 +96,7 @@
                 </goals>
               </execution>
               <execution>
-                <id>fixCheckSums</id>
+                <id>fix-checksums-for-signed-content</id>
                 <configuration>
                   <inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
                   <unzipDir>${project.build.directory}/fixedSigned</unzipDir>
@@ -107,7 +107,7 @@
                 </goals>
               </execution>
               <execution>
-                <id>fixCheckSums</id>
+                <id>fix-checksums-for-packed-content</id>
                 <configuration>
                   <inputFile>${project.build.directory}/packed/site_assembly.zip</inputFile>
                   <unzipDir>${project.build.directory}/fixedPacked</unzipDir>
