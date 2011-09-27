@@ -41,4 +41,75 @@
     </plugins>
   </build>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven.eclipse.org</id>
+      <url>http://maven.eclipse.org/nexus/content/repositories/milestone-indigo</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <profiles>
+    <profile>
+      <id>sign</id>
+      <activation>
+        <property>
+          <name>sign</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.dash.maven</groupId>
+            <artifactId>eclipse-signing-maven-plugin</artifactId>
+            <version>1.0.4</version>
+            <executions>
+              <execution>
+                <id>pack</id>
+                <configuration>
+                  <inputFile>${project.build.directory}/org.eclipse.rap.tooling-repository.zip</inputFile>
+                </configuration>
+                <phase>package</phase>
+                <goals>
+                  <goal>pack</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>sign</id>
+                <configuration>
+                  <inputFile>${project.build.directory}/packed/org.eclipse.rap.tooling-repository.zip</inputFile>
+                  <signerInputDirectory>/home/data/httpd/download-staging.priv/rt/rap</signerInputDirectory>
+                </configuration>
+                <phase>package</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>repack</id>
+                <configuration>
+                  <inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
+                </configuration>
+                <phase>package</phase>
+                <goals>
+                  <goal>pack</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>fixCheckSums</id>
+                <configuration>
+                  <inputFile>${project.build.directory}/packed/site_assembly.zip</inputFile>
+                </configuration>
+                <phase>package</phase>
+                <goals>
+                  <goal>fixCheckSums</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
