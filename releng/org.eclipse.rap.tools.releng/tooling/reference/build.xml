@@ -38,16 +38,16 @@
       </header>
       <link href="http://download.oracle.com/javase/1.5.0/docs/api/"
         offline="true"
-      	packagelistLoc="${sourceDir}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/reference/javase-1.5.0-packages" />
+      	packagelistLoc="${sourceDir}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/reference/javadoc-packages/javase-1.5.0" />
       <link href="http://www.osgi.org/javadoc/r4v43/"
         offline="true"
-      	packagelistLoc="${sourceDir}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/reference/osgi-r4v43-packages" />
+      	packagelistLoc="${sourceDir}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/reference/javadoc-packages/osgi-r4v43" />
     </javadoc>
   </target>
 
   <target name="buildThemingReference"
       description="creates the RWT theming reference">
-    <ant dir="${sourceDir}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/theming">
+    <ant dir="${sourceDir}/org.eclipse.rap/releng/org.eclipse.rap.releng/tooling/reference/theming">
       <property name="src.dir"
           value="${sourceDir}/org.eclipse.rap/runtime.rwt/org.eclipse.rap.rwt/src" />
       <property name="dest.dir"
