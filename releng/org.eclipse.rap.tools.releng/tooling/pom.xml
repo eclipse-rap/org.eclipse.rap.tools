@@ -43,9 +43,9 @@
   <!-- repositories to get pre-built pieces from -->
   <repositories>
     <repository>
-      <id>base-platform</id>
+      <id>platform-base-repository</id>
       <layout>p2</layout>
-      <url>file://${baseRepo}</url>
+      <url>${platformBaseRepo}</url>
     </repository>
   </repositories>
 
