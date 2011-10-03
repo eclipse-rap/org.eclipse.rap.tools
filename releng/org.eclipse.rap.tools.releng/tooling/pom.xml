@@ -14,6 +14,13 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <name>RAP Tooling build</name>
+
+  <groupId>org.eclipse.rap</groupId>
+  <artifactId>org.eclipse.rap.tooling-parent</artifactId>
+  <version>1.5.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
   <properties>
     <tycho-version>0.13.0</tycho-version>
     <base-platform>3.8milestones/S-3.8M2-201109151308</base-platform>
@@ -23,13 +30,6 @@
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
-
-  <name>RAP Tooling repository build</name>
-
-  <groupId>org.eclipse.rap</groupId>
-  <artifactId>org.eclipse.rap.tooling-parent</artifactId>
-  <version>1.5.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
 
   <modules>
     <module>tooling-feature</module>
@@ -41,7 +41,6 @@
     <module>../../../tooling/org.eclipse.rap.ui.launch.rwt</module>
   </modules>
 
-  <!-- repositories to get pre-built pieces from -->
   <repositories>
     <repository>
       <id>base-platform-repository</id>
@@ -49,6 +48,13 @@
       <url>http://download.eclipse.org/eclipse/updates/${base-platform}</url>
     </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven.eclipse.org</id>
+      <url>http://maven.eclipse.org/nexus/content/repositories/milestone-indigo</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <build>
     <plugins>
