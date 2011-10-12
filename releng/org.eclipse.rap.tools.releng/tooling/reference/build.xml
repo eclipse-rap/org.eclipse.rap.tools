@@ -15,14 +15,14 @@
         destdir="${sourceDir}/tooling/org.eclipse.rap.help/help/html/reference/api"
         encoding="UTF-8"
         charset="UTF-8"
-    	author="false"
+        author="false"
         version="true"
         use="true"
         windowtitle="Eclipse Rich Ajax Platform API Reference"
         packagenames="org.eclipse.rwt.*"
         excludePackageNames="org.eclipse.rwt.internal.*,org.eclipse.swt.internal.*">
       <fileset
-          dir="${sourceDir}/runtime.rwt/org.eclipse.rap.rwt/src"
+          dir="${sourceDir}/runtime.rwt/org.eclipse.rap.rwt/widgetkits"
           defaultexcludes="yes">
         <include name="org/eclipse/**/*.java" />
         <exclude name="org/eclipse/**/internal/**/*.java" />
@@ -38,10 +38,10 @@
       </header>
       <link href="http://download.oracle.com/javase/1.5.0/docs/api/"
         offline="true"
-      	packagelistLoc="${sourceDir}/releng/org.eclipse.rap.releng/tooling/reference/javadoc-packages/javase-1.5.0" />
+        packagelistLoc="${sourceDir}/releng/org.eclipse.rap.releng/tooling/reference/javadoc-packages/javase-1.5.0" />
       <link href="http://www.osgi.org/javadoc/r4v43/"
         offline="true"
-      	packagelistLoc="${sourceDir}/releng/org.eclipse.rap.releng/tooling/reference/javadoc-packages/osgi-r4v43" />
+        packagelistLoc="${sourceDir}/releng/org.eclipse.rap.releng/tooling/reference/javadoc-packages/osgi-r4v43" />
     </javadoc>
   </target>
 
@@ -49,7 +49,7 @@
       description="creates the RWT theming reference">
     <ant dir="${sourceDir}/releng/org.eclipse.rap.releng/tooling/reference/theming">
       <property name="src.dir"
-          value="${sourceDir}/runtime.rwt/org.eclipse.rap.rwt/src" />
+          value="${sourceDir}/runtime.rwt/org.eclipse.rap.rwt/" />
       <property name="dest.dir"
           value="${sourceDir}/tooling/org.eclipse.rap.help/help/html/reference/theming" />
     </ant>
