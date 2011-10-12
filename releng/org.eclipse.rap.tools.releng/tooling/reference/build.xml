@@ -22,7 +22,7 @@
         packagenames="org.eclipse.rwt.*"
         excludePackageNames="org.eclipse.rwt.internal.*,org.eclipse.swt.internal.*">
       <fileset
-          dir="${sourceDir}/runtime.rwt/org.eclipse.rap.rwt/widgetkits"
+          dir="${sourceDir}/runtime.rwt/org.eclipse.rap.rwt/src"
           defaultexcludes="yes">
         <include name="org/eclipse/**/*.java" />
         <exclude name="org/eclipse/**/internal/**/*.java" />
