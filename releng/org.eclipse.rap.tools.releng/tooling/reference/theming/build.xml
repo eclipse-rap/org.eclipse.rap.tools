@@ -16,13 +16,12 @@
     Create reference documentation for CSS theming
   </description>
 
-  <property name="tmp.dir"
-      location="${dest.dir}/tmp" />
+  <property name="tmp.dir" location="${dest.dir}/tmp" />
 
   <target name="default">
     <!-- Create temp directory and copy theme.xml files into it -->
     <delete dir="${tmp.dir}" quiet="true" />
-    <copy todir="${tmp.dir}" flatten="true">
+    <copy todir="${tmp.dir}" flatten="true" verbose="true">
       <fileset dir="${src.dir}">
         <include name="**/*.theme.xml"/>
       </fileset>
