@@ -16,26 +16,29 @@
     Create reference documentation for CSS theming
   </description>
 
-  <property name="tmp.dir" location="${dest.dir}/tmp" />
+  <property name="tmp.dir" location="${dest.dir}/tmp"/>
 
   <target name="default">
     <!-- Create temp directory and copy theme.xml files into it -->
-    <delete dir="${tmp.dir}" quiet="true" />
+    <delete dir="${tmp.dir}" quiet="true"/>
+    <mkdir dir="${tmp.dir}"/>
     <copy todir="${tmp.dir}" flatten="true" verbose="true">
       <fileset dir="${src.dir}">
         <include name="**/*.theme.xml"/>
       </fileset>
     </copy>
+    <echo message="Src dir: ${src.dir}"/>
+    <echo message="Tmp dir: ${tmp.dir}"/>
     <!-- Create HTML files -->
     <xslt basedir="${tmp.dir}" includes="*.theme.xml" destdir="${tmp.dir}"
         style="theme.xsl">
-      <globmapper from="*.theme.xml" to="*.html" />
+      <globmapper from="*.theme.xml" to="*.html"/>
     </xslt>
     <!-- Create index HTML file -->
     <xslt basedir="${tmp.dir}" includes="*.theme.xml" destdir="${tmp.dir}"
         style="index-part.xsl"
         filenameparameter="filename">
-      <globmapper from="*.theme.xml" to="*.index.xml" />
+      <globmapper from="*.theme.xml" to="*.index.xml"/>
     </xslt>
     <concat destfile="${tmp.dir}/index.xml">&lt;index&gt;</concat>
     <concat destfile="${tmp.dir}/index.xml" append="true">
@@ -44,9 +47,9 @@
       </fileset>
     </concat>
     <concat destfile="${tmp.dir}/index.xml" append="true">&lt;/index&gt;</concat>
-    <xslt in="${tmp.dir}/index.xml" out="${tmp.dir}/index.html" style="index.xsl" />
+    <xslt in="${tmp.dir}/index.xml" out="${tmp.dir}/index.html" style="index.xsl"/>
     <!-- Create theming reference toc file -->
-    <xslt in="${tmp.dir}/index.xml" out="${tmp.dir}/toc.xml" style="theming-ref-toc.xsl" />
+    <xslt in="${tmp.dir}/index.xml" out="${tmp.dir}/toc.xml" style="theming-ref-toc.xsl"/>
     <!-- Copy results to target -->
     <copy todir="${dest.dir}">
       <fileset dir="${tmp.dir}">
@@ -55,7 +58,7 @@
       </fileset>
     </copy>
     <!-- Clean up -->
-    <delete dir="${tmp.dir}" quiet="true" />
+    <delete dir="${tmp.dir}" quiet="true"/>
   </target>
 
 </project>
