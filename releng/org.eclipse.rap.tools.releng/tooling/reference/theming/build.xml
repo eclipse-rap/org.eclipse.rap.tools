@@ -22,13 +22,11 @@
     <!-- Create temp directory and copy theme.xml files into it -->
     <delete dir="${tmp.dir}" quiet="true"/>
     <mkdir dir="${tmp.dir}"/>
-    <copy todir="${tmp.dir}" flatten="true" verbose="true">
+    <copy todir="${tmp.dir}" flatten="true">
       <fileset dir="${src.dir}">
         <include name="**/*.theme.xml"/>
       </fileset>
     </copy>
-    <echo message="Src dir: ${src.dir}"/>
-    <echo message="Tmp dir: ${tmp.dir}"/>
     <!-- Create HTML files -->
     <xslt basedir="${tmp.dir}" includes="*.theme.xml" destdir="${tmp.dir}"
         style="theme.xsl">
