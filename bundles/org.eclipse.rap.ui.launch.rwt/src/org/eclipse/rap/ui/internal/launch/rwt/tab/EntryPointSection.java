@@ -38,7 +38,7 @@ public class EntryPointSection extends RWTLaunchTab {
   private Button btnSelectEntryPointClass;
   
   public String getName() {
-    return "Application entry eoint";
+    return "Application Entry Point";
   }
   
   public void createControl( Composite parent ) {
