@@ -58,7 +58,7 @@ public class RWTMainTab extends RWTLaunchTab {
 
   public void setLaunchConfigurationDialog( ILaunchConfigurationDialog dialog ) {
     super.setLaunchConfigurationDialog( dialog );
-    
+    projectSection.setLaunchConfigurationDialog( dialog );
     entryPointSection.setLaunchConfigurationDialog( dialog );
     runtimeSettingsSection.setLaunchConfigurationDialog( dialog );
     browserSection.setLaunchConfigurationDialog( dialog );

@@ -43,6 +43,8 @@ public class ProjectSection extends RWTLaunchTab {
     GridData gridData = new GridData( SWT.LEFT, SWT.TOP, false, false );
     btnSelectProject.setLayoutData( gridData );
     btnSelectProject.addSelectionListener( new JavaProjectSelectionListener() );
+    setControl( group );
+    HelpContextIds.assign( getControl(), HelpContextIds.MAIN_TAB );
   }
 
   public void initializeFrom( RWTLaunchConfig launchConfig ) {
