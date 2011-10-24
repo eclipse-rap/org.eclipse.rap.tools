@@ -21,8 +21,9 @@
   </p>
   
   <p>
-    To create a launch configuration, select <em class="UILabel">Run Configurations…</em> from the <em class="UILabel">Run</em>
-    menu and create a <em class="UILabel">New launch configuration</em> of the desired type.
+    To create a launch configuration, select <em class="UILabel">Run Configurations…</em> from the 
+    <em class="UILabel">Run</em> menu and create a <em class="UILabel">New launch configuration</em> 
+    of the desired type.
   </p>
 
   <h2><a name="rwt">Using the RWT Launcher</a></h2>
@@ -34,8 +35,8 @@
   </p>
   <ol>
     <li>
-      In the <strong>Package Explorer</strong>, select the Java compilation unit or class file 
-      with the entry point you want to launch.
+      In the <em class="UILabel">Package Explorer</em>, select the Java compilation unit or class 
+      file with the entry point you want to launch.
     </li> 
     <li>
       Press the <em class="UILabel">Run</em> [<img src="../../images/run.png" alt="Run button"/>]
@@ -61,7 +62,8 @@
   <p>
     When an RWT Application launch configuration is launched, it first terminates any possibly 
     running launch that shares the same launch configuration.
-    After a correct startup, a message like the one below should be displayed in the Console view:<br/>
+    After a correct startup, a message like the one below should be displayed in the Console view:
+    <br/>
     <code style="color:red">INFO: Started SocketListener on 0.0.0.0:&lt;port&gt;</code>.
   </p>
 
@@ -75,26 +77,30 @@
   
   <p>On the <em class="UILabel">Main</em> tab you can control the following aspects of the launch:</p>
   <ul>
-    <li>The <strong>project</strong> field denotes the project that contains the entry point to 
-      launch. You do not have to specify a project, but doing so allows a default classpath, source 
-      lookup path, and JRE to be chosen.
+    <li>The <em class="UILabel">Project</em> field denotes the project that contains the entry point 
+      to launch. You do not have to specify a project, but doing so allows a default classpath, 
+      source lookup path, and JRE to be chosen.
     </li>
     <li>
-      The <strong>Application entry point</strong> lets you specify what should be launched.
-      For simple use cases it is recommended to choose <em class="UILabel">Run entry point class</em> and
-      specify the class that implements the <code>org.eclipse.rwt.lifecycle.IEntryPoint</code> 
+      The <em class="UILabel">Application entry point</em> lets you specify what should be launched.
+      For simple use cases it is recommended to choose <em class="UILabel">Run entry point class</em> 
+      and specify the class that implements the <code>org.eclipse.rwt.lifecycle.IEntryPoint</code>
       interface in the class name field.
       <br />
-      If you wish to have more control or even would like to run an arbitrary web application, 
-      select <strong>Run from web.xml</strong> and enter the path to the web.xml in the location 
-      field. The servlet path should point to one of the servlets defined in the web.xml and is 
-      used to construct the URL to be opened with the browser.
+      If you whish to have more control or even would like to run an arbitrary web aplicatiom, 
+      select <em class="UILabel">Run from web.xml</em> and enter the path to the web.xml in the 
+      location field.
     </li>    
-    <li>The <strong>browser</strong> group lets you control whether the application should be 
-      opened with the internal browser in the editor area or with an external browser or if no 
+    <li>The <em class="UILabel">Browser</em> group lets you control whether the application should 
+      be opened with the internal browser in the editor area or with an external browser or if no
       browser should be opened at all.
       The outcome depends on the browser preference settings that can be reached with the 
-      <strong>Configure browsers...</strong> link.
+      <em class="UILabel">Configure browsers...</em> link.
+      <br />
+      The servlet path should point to one of the servlets defined in the web.xml and is 
+      used to construct the URL to be opened with the browser. If you are launching an 
+      <em class="UILabel">Application entry point</em>, you are free to choose an arbitrary path. The 
+      generated web.xml will adapt to the chosen servlet path. 
     </li>  
     <li>It is recommended to let the launcher dynamically choose a free port for 
       client-server communication. However if you would like to have full control 
