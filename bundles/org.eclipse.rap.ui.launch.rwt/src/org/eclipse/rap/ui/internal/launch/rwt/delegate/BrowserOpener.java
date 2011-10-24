@@ -11,6 +11,7 @@
 package org.eclipse.rap.ui.internal.launch.rwt.delegate;
 
 import java.net.*;
+import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.jobs.Job;
@@ -31,10 +32,10 @@ class BrowserOpener {
   private final RWTLaunchConfig launchConfig;
   private final URL url;
 
-  BrowserOpener( ILaunch launch, String url ) {
+  BrowserOpener( ILaunch launch ) {
     this.launch = launch;
     this.launchConfig = new RWTLaunchConfig( launch.getLaunchConfiguration() );
-    this.url = toURL( url );
+    this.url = toURL( computeBrowserUrl() );
   }
   
   void scheduleOpen() {
@@ -52,6 +53,20 @@ class BrowserOpener {
     } );
   }
 
+  String computeBrowserUrl() {
+    int port = new RWTLaunch( launch ).getPort();
+    String servletName = launchConfig.getServletPath();
+    String result;
+    if( port == -1 ) {
+      String pattern = "http://127.0.0.1/{1}"; //$NON-NLS-1$
+      result = MessageFormat.format( pattern, servletName ); 
+    } else {
+      String pattern = "http://127.0.0.1:{0}/{1}"; //$NON-NLS-1$
+      result = MessageFormat.format( pattern, String.valueOf( port ), servletName );
+    }
+    return result;
+  }
+  
   private void scheduleOpenJob() {
     final String taskName = "Starting client application";
     Job job = new Job( taskName ) {
@@ -149,7 +164,7 @@ class BrowserOpener {
       Socket socket = new Socket( url.getHost(), url.getPort() );
       socket.close();
       result = true;
-    } catch( Exception e ) {
+    } catch( Exception ignore ) {
     }
     return result;
   }

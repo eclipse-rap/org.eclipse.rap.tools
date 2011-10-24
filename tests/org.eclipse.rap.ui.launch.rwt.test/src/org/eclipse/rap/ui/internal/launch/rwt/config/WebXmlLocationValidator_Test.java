@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
 
@@ -23,7 +24,7 @@ public class WebXmlLocationValidator_Test extends TestCase {
   private ValidationResult validationResult;
 
   public void testValidateWebXmlLocationWhenEmpty() {
-    launchConfig.setUseWebXml( true );
+    launchConfig.setLaunchTarget( LaunchTarget.WEB_XML );
     launchConfig.setWebXmlLocation( "" );
     
     validator.validate();
@@ -32,7 +33,7 @@ public class WebXmlLocationValidator_Test extends TestCase {
   }
   
   public void testValidateWebXmlLocationWhenNotFound() {
-    launchConfig.setUseWebXml( true );
+    launchConfig.setLaunchTarget( LaunchTarget.WEB_XML );
     launchConfig.setWebXmlLocation( "does/not/exist/web.xml" );
     
     validator.validate();
@@ -42,7 +43,7 @@ public class WebXmlLocationValidator_Test extends TestCase {
   }
   
   public void testValidateWebXmlLocationWhenUnused() {
-    launchConfig.setUseWebXml( false );
+    launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
     launchConfig.setWebXmlLocation( "does.not.exist" );
     
     validator.validate();

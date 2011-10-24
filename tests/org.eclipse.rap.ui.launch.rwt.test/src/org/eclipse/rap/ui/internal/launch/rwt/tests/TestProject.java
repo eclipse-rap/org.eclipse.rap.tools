@@ -47,13 +47,12 @@ public final class TestProject {
 
   
   private static int uniqueId = 0;
-  private static List projects = new LinkedList();
+  private static List<TestProject> projects = new LinkedList<TestProject>();
   
   public static void deleteAll() throws CoreException {
     while( projects.size() > 0 ) {
-      TestProject project = ( TestProject )projects.get( 0 );
+      TestProject project = projects.get( 0 );
       project.delete();
-      projects.remove( 0 );
     }
   }
   
@@ -86,6 +85,7 @@ public final class TestProject {
   }
   
   public IFolder createFolder( String name ) throws CoreException {
+    initializeProject();
     IFolder result = project.getFolder( name );
     if( !result.exists() ) {
       result.create( true, true, newProgressMonitor() );
@@ -125,6 +125,7 @@ public final class TestProject {
   
   public void delete() throws CoreException {
     if( isProjectCreated() ) {
+      projects.remove( this );
       project.delete( true, true, newProgressMonitor() );
     }
   }

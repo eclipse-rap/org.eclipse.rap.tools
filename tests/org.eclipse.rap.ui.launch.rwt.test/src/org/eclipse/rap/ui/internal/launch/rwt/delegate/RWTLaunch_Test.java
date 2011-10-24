@@ -17,8 +17,10 @@ import junit.framework.TestCase;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestLaunch;
+import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
 
 
 public class RWTLaunch_Test extends TestCase {
@@ -32,21 +34,8 @@ public class RWTLaunch_Test extends TestCase {
     assertEquals( port, rwtLaunch.getPort() );
   }
   
-  public void testComputeBrowserUrlWithWebXml() {
-    launchConfig.setUseWebXml( true );
-    launchConfig.setServletPath( "servletpath" );
-    rwtLaunch.setPort( 1234 );
-    
-    String url = rwtLaunch.computeBrowserUrl();
-    assertEquals( "http://127.0.0.1:1234/servletpath", url );
-  }
-  
-  public void testComputeBrowserUrlWithEntryPoint() {
-    launchConfig.setUseWebXml( false );
-    rwtLaunch.setPort( 1234 );
-    
-    String url = rwtLaunch.computeBrowserUrl();
-    assertEquals( "http://127.0.0.1:1234/rap", url );
+  public void testGetPortWhenUndefined() {
+    assertEquals( -1, rwtLaunch.getPort() );
   }
   
   public void testGetLaunchConfig() {
@@ -75,6 +64,16 @@ public class RWTLaunch_Test extends TestCase {
     
     assertEquals( webApp, webXml.substring( 0, webApp.length() ) );
   }
+  
+  public void testGetWebAppPathForWebAppLaunchTarget() throws Exception {
+    TestProject project = new TestProject();
+    launchConfig.setLaunchTarget( LaunchTarget.WEB_APP_FOLDER );
+    launchConfig.setWebAppLocation( project.getProject().getFullPath().toPortableString() );
+    
+    File webAppPath = rwtLaunch.getWebAppPath();
+    
+    assertEquals( webAppPath, project.getProject().getLocation().toFile().getCanonicalFile() );
+  }
 
   protected void setUp() throws Exception {
     launchConfig = new RWTLaunchConfig( Fixture.createRWTLaunchConfig() );
@@ -84,5 +83,6 @@ public class RWTLaunch_Test extends TestCase {
   
   protected void tearDown() throws Exception {
     Fixture.deleteAllRWTLaunchConfigs();
+    TestProject.deleteAll();
   }
 }

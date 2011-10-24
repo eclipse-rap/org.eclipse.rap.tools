@@ -14,16 +14,40 @@ package org.eclipse.rap.ui.internal.launch.rwt.config;
 class ServletPathValidator extends Validator {
 
   static final int ERR_SERVLET_PATH_EMPTY = 8030;
+  static final int ERR_SERVLET_PATH_INVALID = 8031;
 
   ServletPathValidator( RWTLaunchConfig config, ValidationResult validationResult ) {
     super( config, validationResult );
   }
 
   void validate() {
-    if( config.getUseWebXml() && config.getOpenBrowser() ) {
-      if( config.getServletPath().length() == 0 ) {
-        addError( "The servlet path must not be empty.", ERR_SERVLET_PATH_EMPTY );
+    if( config.getOpenBrowser() ) {
+      validateNotEmpty();
+      vaidateCharacters();
+    }
+  }
+
+  private void validateNotEmpty() {
+    if( config.getServletPath().length() == 0 ) {
+      addError( "The servlet path must not be empty.", ERR_SERVLET_PATH_EMPTY );
+    }
+  }
+
+  private void vaidateCharacters() {
+    String servletPath = config.getServletPath();
+    if( containsChars( servletPath, new char[] { '*', '?', '/', '\\' } ) ) {
+      addError( "The servlet path contains invalid characters.", ERR_SERVLET_PATH_INVALID );
+    }
+  }
+
+  private static boolean containsChars( String string, char[] chars ) {
+    boolean hasInvalidChar = false;
+    String pattern = new String( chars );
+    for( int i = 0; !hasInvalidChar && i < string.length(); i++ ) {
+      if( pattern.indexOf( string.charAt( i ) ) != -1 ) {
+        hasInvalidChar = true;
       }
     }
+    return hasInvalidChar;
   }
 }

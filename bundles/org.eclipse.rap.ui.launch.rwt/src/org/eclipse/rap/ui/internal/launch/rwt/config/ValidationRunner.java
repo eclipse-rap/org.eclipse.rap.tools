@@ -44,6 +44,7 @@ public class ValidationRunner {
       new ProjectValidator( config, validationResult ),
       new EntryPointValidator( config, validationResult ),
       new WebXmlLocationValidator( config, validationResult ),
+      new WebAppLocationValidator( config, validationResult ),
       new ServletPathValidator( config, validationResult ),
     };
   }

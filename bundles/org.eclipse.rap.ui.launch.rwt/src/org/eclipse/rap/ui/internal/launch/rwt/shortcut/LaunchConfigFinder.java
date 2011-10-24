@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.*;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 
 
 class LaunchConfigFinder {
@@ -75,7 +76,7 @@ class LaunchConfigFinder {
     String projectName = type.getJavaProject().getElementName();
     boolean entryPointEquals = config.getEntryPoint().equals( type.getFullyQualifiedName() );
     boolean projectEquals = config.getProjectName().equals( projectName );
-    boolean useEntryPoint = !config.getUseWebXml();
+    boolean useEntryPoint = LaunchTarget.ENTRY_POINT.equals( config.getLaunchTarget() );
     return projectEquals && entryPointEquals && useEntryPoint;
   }
 

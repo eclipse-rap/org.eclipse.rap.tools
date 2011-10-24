@@ -10,23 +10,29 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
-import org.eclipse.rap.ui.internal.launch.rwt.RWTLaunchActivator;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
+import junit.framework.TestCase;
+
+import org.eclipse.swt.widgets.Shell;
 
 
-class HelpContextIds {
-  private static final String PREFIX = RWTLaunchActivator.getPluginId() + ".";
+public class SearchText_Test extends TestCase {
   
-  static final String MAIN_TAB = PREFIX + "launch_configuration_dialog_main_tab";
+  private Shell shell;
 
-  static void assign( Control control, String contextId ) {
-    IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-    helpSystem.setHelp( control, contextId );
+  public void testGetTextIsTrimmed() {
+    SearchText searchText = new SearchText( shell, "", "", 0 );
+    
+    String text = "text";
+    searchText.setText( text + "  " );
+    
+    assertEquals( text, searchText.getText() );
   }
-
-  private HelpContextIds() {
-    // prevent instantiation
+  
+  protected void setUp() throws Exception {
+    shell = new Shell();
+  }
+  
+  protected void tearDown() throws Exception {
+    shell.dispose();
   }
 }

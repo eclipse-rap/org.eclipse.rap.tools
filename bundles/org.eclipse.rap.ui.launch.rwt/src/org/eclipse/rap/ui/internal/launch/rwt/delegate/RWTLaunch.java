@@ -11,13 +11,17 @@
 package org.eclipse.rap.ui.internal.launch.rwt.delegate;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.rap.ui.internal.launch.rwt.RWTLaunchActivator;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
-import org.eclipse.rap.ui.internal.launch.rwt.util.FileUtil;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
+import org.eclipse.rap.ui.internal.launch.rwt.util.IOUtil;
 
 
 class RWTLaunch {
@@ -42,22 +46,22 @@ class RWTLaunch {
   }
 
   int getPort() {
-    return Integer.valueOf( launch.getAttribute( PORT ) ).intValue();
+    int result = -1;
+    String attribute = launch.getAttribute( PORT );
+    if( attribute != null ) {
+      result = Integer.valueOf( attribute ).intValue();
+    }
+    return result;
   }
   
   String computeBrowserUrl() {
-    String servletName;
     String port = String.valueOf( getPort() );
-    if( config.getUseWebXml() ) {
-      servletName = config.getServletPath();
-    } else {
-      servletName = "rap";
-    }
-    return MessageFormat.format( "http://127.0.0.1:{0}/{1}", new Object[] { port, servletName } );
+    String servletName = config.getServletPath();
+    return MessageFormat.format( "http://127.0.0.1:{0}/{1}", port, servletName ); //$NON-NLS-1$
   }
   
   void cleanUp() {
-    FileUtil.delete( getBasePath() );
+    IOUtil.delete( getBasePath() );
   }
 
   File getJettyHomePath() {
@@ -65,11 +69,22 @@ class RWTLaunch {
   }
 
   File getWebAppPath() {
-    return getPath( "web-app" ); //$NON-NLS-1$
+    File result;
+    if( LaunchTarget.WEB_APP_FOLDER.equals( config.getLaunchTarget() ) ) {
+      IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+      try {
+        result = workspaceRoot.findMember( config.getWebAppLocation() ).getLocation().toFile().getCanonicalFile();
+      } catch( IOException ioe ) {
+        throw new RuntimeException( ioe );
+      }
+    } else {
+      result = getPath( "web-app" ); //$NON-NLS-1$
+    }
+    return result;
   }
 
   File getWebXmlPath() {
-    return getPath( "web-app/WEB-INF/web.xml" ); //$NON-NLS-1$
+    return new File( getWebAppPath(), "WEB-INF/web.xml" ); //$NON-NLS-1$
   }
   
   private File getPath( String suffix ) {

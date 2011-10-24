@@ -31,6 +31,8 @@ public class BrowserSection extends RWTLaunchTab {
   private Button cbOpenBrowser;
   private Button rbInternalBrowser;
   private Button rbExternalBrowser;
+  private Label lblServletName;
+  private Text txtServletName;
 
   public String getName() {
     return "Browser";
@@ -54,6 +56,14 @@ public class BrowserSection extends RWTLaunchTab {
     rbExternalBrowser = createRadioButton( group, "External browser" );
     rbExternalBrowser.setLayoutData( newGridData( MARGIN, SWT.BEGINNING, false, 2 ) );
     rbExternalBrowser.addSelectionListener( new BrowserSelectionListener() );
+    Composite cmpServletName = new Composite( group, SWT.NONE );
+    cmpServletName.setLayout( new GridLayout( 2, false ) );
+    cmpServletName.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
+    lblServletName = createLabel( cmpServletName, "Servlet path" );
+    lblServletName.setLayoutData( newGridData( SWT.BEGINNING, false ) );
+    txtServletName = new Text( cmpServletName, SWT.BORDER );
+    txtServletName.setLayoutData( newGridData( SWT.FILL, true ) );
+    txtServletName.addModifyListener( new TextModifyListener() );
     setControl( group );
     HelpContextIds.assign( getControl(), HelpContextIds.MAIN_TAB );
     updateEnablement();
@@ -64,6 +74,7 @@ public class BrowserSection extends RWTLaunchTab {
     cbOpenBrowser.setSelection( config.getOpenBrowser() );
     rbInternalBrowser.setSelection( browserMode == BrowserMode.INTERNAL );
     rbExternalBrowser.setSelection( browserMode == BrowserMode.EXTERNAL );
+    txtServletName.setText( config.getServletPath() );
     updateEnablement();
   }
 
@@ -74,12 +85,15 @@ public class BrowserSection extends RWTLaunchTab {
     } else {
       config.setBrowserMode( BrowserMode.INTERNAL );
     }
+    config.setServletPath( txtServletName.getText().trim() );
   }
   
   private void updateEnablement() {
     boolean openBrowser = cbOpenBrowser.getSelection();
     rbInternalBrowser.setEnabled( openBrowser );
     rbExternalBrowser.setEnabled( openBrowser );
+    lblServletName.setEnabled( openBrowser );
+    txtServletName.setEnabled( openBrowser );
   }
 
   private void handleBrowserPrefsLink() {
@@ -120,6 +134,12 @@ public class BrowserSection extends RWTLaunchTab {
   private class BrowserPrefsSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
       handleBrowserPrefsLink();
+    }
+  }
+
+  private class TextModifyListener implements ModifyListener {
+    public void modifyText( ModifyEvent event ) {
+      updateLaunchConfigurationDialog();
     }
   }
 }

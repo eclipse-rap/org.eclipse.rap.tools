@@ -79,10 +79,10 @@ public class RWTLaunchTab_Test extends TestCase {
     static final String METHOD_PERFORM_APPLY = "performApply";
     static final String METHOD_INITIALIZE_FROM = "initializeFrom";
 
-    private final List/*<String>*/ invokedMethods; 
+    private final List<MethodInvocation> invokedMethods; 
     
     TestableRWTLaunchTab() {
-      invokedMethods = new ArrayList();
+      invokedMethods = new ArrayList<MethodInvocation>();
     }
     
     boolean wasInvoked( String methodName, ILaunchConfiguration launchConfig ) {

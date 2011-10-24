@@ -17,6 +17,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.rap.ui.internal.launch.rwt.config.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
 
 
@@ -39,7 +40,7 @@ public class LaunchConfigCreator_Test extends TestCase {
     
     RWTLaunchConfig rwtLaunchConfig = new RWTLaunchConfig( launchConfig );
     assertEquals( "Foo", launchConfig.getName() );
-    assertFalse( rwtLaunchConfig.getUseWebXml() );
+    assertEquals( LaunchTarget.ENTRY_POINT, rwtLaunchConfig.getLaunchTarget() );
     assertEquals( project.getName(), rwtLaunchConfig.getProjectName() );
     assertEquals( "foo.Foo", rwtLaunchConfig.getEntryPoint() );
     assertTrue( rwtLaunchConfig.getOpenBrowser() );

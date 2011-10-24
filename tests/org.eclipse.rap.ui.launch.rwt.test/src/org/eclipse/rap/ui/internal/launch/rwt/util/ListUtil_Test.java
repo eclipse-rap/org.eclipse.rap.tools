@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 
 public class ListUtil_Test extends TestCase {
   
-  private List list;
+  private List<Object> list;
 
   public void testAddWithEmptyArray() {
     ListUtil.add( list, new Object[ 0 ] );
@@ -44,6 +44,6 @@ public class ListUtil_Test extends TestCase {
   }
   
   protected void setUp() throws Exception {
-    list = new LinkedList();
+    list = new LinkedList<Object>();
   }
 }

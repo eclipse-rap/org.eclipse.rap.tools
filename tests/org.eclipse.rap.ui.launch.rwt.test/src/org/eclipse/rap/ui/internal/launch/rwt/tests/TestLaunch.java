@@ -24,11 +24,11 @@ import org.eclipse.debug.core.model.ISourceLocator;
 public class TestLaunch implements ILaunch {
 
   private final ILaunchConfiguration launchConfig;
-  private final Map attributes;
+  private final Map<String,String> attributes;
   
   public TestLaunch( ILaunchConfiguration launchConfig ) {
     this.launchConfig = launchConfig;
-    attributes = new HashMap();
+    attributes = new HashMap<String,String>();
   }
 
   public boolean canTerminate() {
@@ -94,7 +94,7 @@ public class TestLaunch implements ILaunch {
   }
 
   public String getAttribute( String key ) {
-    return ( String )attributes.get( key );
+    return attributes.get( key );
   }
 
   public boolean hasChildren() {

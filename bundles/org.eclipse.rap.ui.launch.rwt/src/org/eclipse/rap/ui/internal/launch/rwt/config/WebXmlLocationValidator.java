@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 
 
 class WebXmlLocationValidator extends Validator {
@@ -27,17 +28,14 @@ class WebXmlLocationValidator extends Validator {
   }
 
   void validate() {
-    if( config.getUseWebXml() ) {
+    if( LaunchTarget.WEB_XML.equals( config.getLaunchTarget() ) ) {
       String webXmlLocation = config.getWebXmlLocation();
-      if( "".equals( webXmlLocation ) ) {
-        String msg = "The location for the web.xml is empty.";
-        addError( msg, ERR_WEB_XML_LOCATION_EMPTY );
+      if( webXmlLocation.length() == 0 ) { 
+        addError( "The location for the web.xml is empty.", ERR_WEB_XML_LOCATION_EMPTY );
       } else {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         if( !root.exists( Path.fromPortableString( webXmlLocation ) ) ) {
-          String text = "File {0} does not exist.";
-          Object[] args = new Object[] { webXmlLocation };
-          String msg = MessageFormat.format(  text, args );
+          String msg = MessageFormat.format( "File {0} does not exist.", webXmlLocation );
           addError( msg, ERR_WEB_XML_LOCATION_NOT_FOUND );
         }
       }

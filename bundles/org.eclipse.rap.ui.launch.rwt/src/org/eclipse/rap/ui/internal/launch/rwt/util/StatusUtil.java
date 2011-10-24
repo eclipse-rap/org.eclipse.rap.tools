@@ -13,24 +13,19 @@ package org.eclipse.rap.ui.internal.launch.rwt.util;
 import org.eclipse.core.runtime.*;
 import org.eclipse.rap.ui.internal.launch.rwt.RWTLaunchActivator;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.osgi.framework.Bundle;
 
 
 public class StatusUtil {
   
   public static void log( Throwable throwable ) {
-    String symbolicName
-      = RWTLaunchActivator.getDefault().getBundle().getSymbolicName();
+    String pluginId = RWTLaunchActivator.getPluginId();
     String message = throwable.getMessage();
-    IStatus status
-      = new Status( IStatus.ERROR, symbolicName, message, throwable );
+    IStatus status = new Status( IStatus.ERROR, pluginId, message, throwable );
     StatusManager.getManager().handle( status, StatusManager.LOG );
   }
-  
+
   public static void showCoreException( CoreException exception ) {
-    Bundle bundle = RWTLaunchActivator.getDefault().getBundle();
-    String pluginId = bundle.getSymbolicName();
-    StatusManager.getManager().handle( exception, pluginId );
+    StatusManager.getManager().handle( exception, RWTLaunchActivator.getPluginId() );
     IStatus status = exception.getStatus();
     StatusManager.getManager().handle( status, StatusManager.SHOW );
   }

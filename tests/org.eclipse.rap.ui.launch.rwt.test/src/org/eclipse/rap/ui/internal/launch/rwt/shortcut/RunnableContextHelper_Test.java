@@ -61,7 +61,7 @@ public class RunnableContextHelper_Test extends TestCase {
   }
   
   public void testRunInContextWithCoreException() throws Exception {
-    final IStatus status = new Status( IStatus.ERROR, RWTLaunchActivator.PLUGIN_ID, "" );
+    final IStatus status = new Status( IStatus.ERROR, RWTLaunchActivator.getPluginId(), "" );
     IContextRunnable contextRunnable = new IContextRunnable() {
       public void run( IProgressMonitor monitor ) throws Exception {
         throw new CoreException( status );

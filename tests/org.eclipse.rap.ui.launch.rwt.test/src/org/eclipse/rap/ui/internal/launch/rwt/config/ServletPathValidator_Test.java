@@ -21,44 +21,54 @@ public class ServletPathValidator_Test extends TestCase {
   private Validator validator;
   private ValidationResult validationResult;
 
-  public void testValidateServletPathWithNonWebXmlConfiuration() {
+  public void testValidateServletPathWhenEmptyAndOpenBrowserRequested() {
     launchConfig.setOpenBrowser( true );
-    launchConfig.setUseWebXml( false );
-    launchConfig.setServletPath( "" );
-    
-    validator.validate();
-    
-    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_EMPTY ) );
-  }
-  
-  public void testValidateServletPathWhenNoBrowserRequested() {
-    launchConfig.setOpenBrowser( false );
-    launchConfig.setUseWebXml( true );
-    launchConfig.setServletPath( "" );
-    
-    validator.validate();
-    
-    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_EMPTY ) );
-  }
-  
-  public void testValidateServletPathWhenUnnecessarilySpecified() {
-    launchConfig.setOpenBrowser( true );
-    launchConfig.setUseWebXml( true );
-    launchConfig.setServletPath( "foo" );
-    
-    validator.validate();
-    
-    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_EMPTY ) );
-  }
-  
-  public void testValidateServletPathWhenEmptyAndBrowserAndWebXmlSpecified() {
-    launchConfig.setOpenBrowser( true );
-    launchConfig.setUseWebXml( true );
     launchConfig.setServletPath( "" );
     
     validator.validate();
     
     assertTrue( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_EMPTY ) );
+    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
+  }
+  
+  public void testValidateServletPathWhenEmptyAndNoBrowserRequested() {
+    launchConfig.setOpenBrowser( false );
+    launchConfig.setServletPath( "" );
+    
+    validator.validate();
+    
+    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_EMPTY ) );
+    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
+  }
+  
+  public void testValidateServletPathWhenSpecifiedAndOpenBrowserRequested() {
+    launchConfig.setOpenBrowser( true );
+    launchConfig.setServletPath( "foo" );
+    
+    validator.validate();
+    
+    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_EMPTY ) );
+    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
+  }
+  
+  public void testValidateServletPathWithAsterisk() {
+    launchConfig.setOpenBrowser( true );
+    launchConfig.setServletPath( "foo*" );
+    
+    validator.validate();
+    
+    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_EMPTY ) );
+    assertTrue( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
+  }
+  
+  public void testValidateServletPathWithSlash() {
+    launchConfig.setOpenBrowser( true );
+    launchConfig.setServletPath( "foo/bar" );
+    
+    validator.validate();
+    
+    assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_EMPTY ) );
+    assertTrue( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
   }
   
   protected void setUp() throws Exception {

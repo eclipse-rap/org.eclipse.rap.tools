@@ -15,6 +15,7 @@ import java.io.*;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.util.IOUtil;
 import org.eclipse.rap.ui.internal.launch.rwt.util.TemplateParser;
 
@@ -42,9 +43,9 @@ class WebXmlProvider {
   }
 
   private void internalProvide() {
-    if( config.getUseWebXml() ) {
+    if( LaunchTarget.WEB_XML.equals( config.getLaunchTarget() ) ) {
       provideCustomWebXml();
-    } else {
+    } else if( LaunchTarget.ENTRY_POINT.equals( config.getLaunchTarget() ) ) {
       provideGeneratedWebXml();
     }
   }
@@ -67,6 +68,7 @@ class WebXmlProvider {
     TemplateParser templateParser = new TemplateParser( getWebXmlTemplate() );
     templateParser.registerVariable( "webAppName", config.getName() ); //$NON-NLS-1$
     templateParser.registerVariable( "entryPoint", config.getEntryPoint() ); //$NON-NLS-1$
+    templateParser.registerVariable( "servletPath", config.getServletPath() ); //$NON-NLS-1$
     return templateParser.parse();
   }
   

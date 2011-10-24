@@ -5,10 +5,12 @@ import org.osgi.framework.BundleContext;
 
 public class RWTLaunchActivator extends AbstractUIPlugin {
 
-  public static final String PLUGIN_ID = "org.eclipse.ra.ui.launch.rwt"; //$NON-NLS-1$
-
   public static RWTLaunchActivator getDefault() {
     return plugin;
+  }
+  
+  public static String getPluginId() {
+    return RWTLaunchActivator.getDefault().getBundle().getSymbolicName();
   }
   
   private static RWTLaunchActivator plugin;

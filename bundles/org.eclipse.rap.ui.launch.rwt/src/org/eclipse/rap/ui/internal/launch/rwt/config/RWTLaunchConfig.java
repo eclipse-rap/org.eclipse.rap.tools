@@ -22,6 +22,12 @@ public final class RWTLaunchConfig {
 
   public static final int MIN_PORT_NUMBER = 0;
   public static final int MAX_PORT_NUMBER = 65535;
+  
+  public static enum LaunchTarget {
+    ENTRY_POINT,
+    WEB_XML,
+    WEB_APP_FOLDER
+  }
 
   // Attribute names from JDT's Java Launcher
   private static final String PROJECT_NAME
@@ -31,11 +37,12 @@ public final class RWTLaunchConfig {
   private static final String VM_ARGUMENTS 
     = IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS;
 
-  // Attribute names specifiec to the RWT launcher
+  // Attribute names specific to the RWT launcher
   private static final String PREFIX = "org.eclipse.rap.launch.rwt."; //$NON-NLS-1$
+  private static final String LAUNCH_TARGET = PREFIX + "launchMode"; //$NON-NLS-1$
   private static final String ENTRY_POINT = PREFIX + "entryPoint"; //$NON-NLS-1$
-  private static final String USE_WEB_XML = PREFIX + "useWebXml"; //$NON-NLS-1$
   private static final String WEB_XML_LOCATION = PREFIX + "webXmlLocation"; //$NON-NLS-1$
+  private static final String WEB_APP_LOCATION = PREFIX + "webAppLocation"; //$NON-NLS-1$
   private static final String SERVLET_PATH = PREFIX + "servletPath"; //$NON-NLS-1$
   private static final String USE_MANUAL_PORT = PREFIX + "useManualPort"; //$NON-NLS-1$
   private static final String PORT = PREFIX + "port"; //$NON-NLS-1$
@@ -43,18 +50,18 @@ public final class RWTLaunchConfig {
   private static final String BROWSER_MODE = PREFIX + "browserMode"; //$NON-NLS-1$
 
   // Default values for attributes
+  private static final LaunchTarget DEFAULT_LAUNCH_TARGET = LaunchTarget.ENTRY_POINT;
   private static final String DEFAULT_ENTRY_POINT = ""; //$NON-NLS-1$
   private static final String DEFAULT_PROJECT_NAME = ""; //$NON-NLS-1$
   private static final String DEFAULT_VM_ARGUMENTS = ""; //$NON-NLS-1$
   private static final String DEFAULT_WEB_XML_LOCATION = ""; //$NON-NLS-1$
-  private static final String DEFAULT_SERVLET_PATH = ""; //$NON-NLS-1$
-  private static final boolean DEFAULT_USE_WEB_XML = false;
+  private static final String DEFAULT_WEB_APP_LOCATION = ""; //$NON-NLS-1$
+  private static final String DEFAULT_SERVLET_PATH = "/rap"; //$NON-NLS-1$
   private static final String DEFAULT_WORKING_DIRECTORY = null;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
   private static final int DEFAULT_PORT = 8080;
   private static final boolean DEFAULT_OPEN_BROWSER = true;
   private static final String DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL.toString();
-
 
   
   public static ILaunchConfigurationType getType() {
@@ -63,8 +70,9 @@ public final class RWTLaunchConfig {
   }
 
   public static void setDefaults( final ILaunchConfigurationWorkingCopy config ) {
-    config.setAttribute( USE_WEB_XML, DEFAULT_USE_WEB_XML );
+    config.setAttribute( LAUNCH_TARGET, DEFAULT_LAUNCH_TARGET.toString() );
     config.setAttribute( WEB_XML_LOCATION, DEFAULT_WEB_XML_LOCATION );
+    config.setAttribute( WEB_APP_LOCATION, DEFAULT_WEB_APP_LOCATION );
     config.setAttribute( SERVLET_PATH, DEFAULT_SERVLET_PATH );
     config.setAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
     config.setAttribute( PROJECT_NAME, DEFAULT_PROJECT_NAME );
@@ -79,7 +87,7 @@ public final class RWTLaunchConfig {
   private final ILaunchConfiguration config;
   private final ILaunchConfigurationWorkingCopy workingCopy;
 
-  public RWTLaunchConfig( final ILaunchConfiguration config ) {
+  public RWTLaunchConfig( ILaunchConfiguration config ) {
     checkNotNull( config, "config" ); //$NON-NLS-1$
     this.config = config;
     if( config instanceof ILaunchConfigurationWorkingCopy ) {
@@ -120,13 +128,15 @@ public final class RWTLaunchConfig {
     workingCopy.setAttribute( VM_ARGUMENTS, vmArguments );
   }
   
-  public boolean getUseWebXml() {
-    return getAttribute( USE_WEB_XML, DEFAULT_USE_WEB_XML );
+  public LaunchTarget getLaunchTarget() {
+    String attribute = getAttribute( LAUNCH_TARGET, DEFAULT_LAUNCH_TARGET.name() );
+    return Enum.valueOf( LaunchTarget.class, attribute );
   }
   
-  public void setUseWebXml( boolean useWebXml ) {
+  public void setLaunchTarget( LaunchTarget launchTarget ) {
+    checkNotNull( launchTarget, "launchTarget" ); //$NON-NLS-1$
     checkWorkingCopy();
-    workingCopy.setAttribute( USE_WEB_XML, useWebXml );
+    workingCopy.setAttribute( LAUNCH_TARGET, launchTarget.name() );
   }
   
   public String getWebXmlLocation() {
@@ -137,6 +147,16 @@ public final class RWTLaunchConfig {
     checkNotNull( webXmlLocation, "webXmlLocation" ); //$NON-NLS-1$
     checkWorkingCopy();
     workingCopy.setAttribute( WEB_XML_LOCATION, webXmlLocation );
+  }
+
+  public void setWebAppLocation( String webAppLocation ) {
+    checkNotNull( webAppLocation, "webAppLocation" ); //$NON-NLS-1$
+    checkWorkingCopy();
+    workingCopy.setAttribute( WEB_APP_LOCATION, webAppLocation );
+  }
+  
+  public String getWebAppLocation() {
+    return getAttribute( WEB_APP_LOCATION, DEFAULT_WEB_APP_LOCATION );
   }
 
   public String getServletPath() {
@@ -208,8 +228,7 @@ public final class RWTLaunchConfig {
 
   private void checkWorkingCopy() {
     if( workingCopy == null ) {
-      String msg
-        = "Launch configuration cannot be modified, no working copy available"; //$NON-NLS-1$
+      String msg = "Launch configuration cannot be modified, no working copy available"; //$NON-NLS-1$
       throw new IllegalStateException( msg );
     }
   }

@@ -64,7 +64,7 @@ final class RunnableContextHelper {
     return new ContextRunnableWrapper( contextRunnable );
   }
 
-  private static final class ContextRunnableWrapper implements IRunnableWithProgress {
+  private static class ContextRunnableWrapper implements IRunnableWithProgress {
   
     private final IContextRunnable contextRunnable;
   

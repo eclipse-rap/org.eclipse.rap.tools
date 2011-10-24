@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 
 
@@ -29,10 +30,11 @@ public class RWTLaunchConfig_Test extends TestCase {
   public void testSetDefaults() {
     RWTLaunchConfig.setDefaults( config );
     assertEquals( "", rwtConfig.getProjectName() );
-    assertFalse( rwtConfig.getUseWebXml() );
-    assertEquals( "", rwtConfig.getServletPath() );
+    assertEquals( LaunchTarget.ENTRY_POINT, rwtConfig.getLaunchTarget() );
+    assertEquals( "/rap", rwtConfig.getServletPath() );
     assertEquals( "", rwtConfig.getEntryPoint() );
     assertEquals( "", rwtConfig.getWebXmlLocation() );
+    assertEquals( "", rwtConfig.getWebAppLocation() );
     assertEquals( "", rwtConfig.getVMArguments() );
     assertFalse( rwtConfig.getUseManualPort() );
     assertEquals( 8080, rwtConfig.getPort() );
@@ -70,9 +72,17 @@ public class RWTLaunchConfig_Test extends TestCase {
     }
   }
   
-  public void testUseWebXml() {
-    rwtConfig.setUseWebXml( true );
-    assertTrue( rwtConfig.getUseWebXml() );
+  public void testLaunchTarget() {
+    rwtConfig.setLaunchTarget( LaunchTarget.WEB_APP_FOLDER );
+    assertEquals( LaunchTarget.WEB_APP_FOLDER, rwtConfig.getLaunchTarget() );
+  }
+  
+  public void testLaunchTargetWithNullArgument() {
+    try {
+      rwtConfig.setLaunchTarget( null );
+    } catch( NullPointerException expected ) {
+      
+    }
   }
   
   public void testWebXmlLocation() {
@@ -84,6 +94,20 @@ public class RWTLaunchConfig_Test extends TestCase {
   public void testWebXmlLocationWithNullArgument() {
     try {
       rwtConfig.setWebXmlLocation( null );
+      fail();
+    } catch( NullPointerException expected ) {
+    }
+  }
+  
+  public void testWebAppFolderLocation() {
+    String webAppLocation = "foo";
+    rwtConfig.setWebAppLocation( webAppLocation );
+    assertEquals( webAppLocation, rwtConfig.getWebAppLocation() );
+  }
+  
+  public void testWebAppLocationWithNullArgument() {
+    try {
+      rwtConfig.setWebAppLocation( null );
       fail();
     } catch( NullPointerException expected ) {
     }

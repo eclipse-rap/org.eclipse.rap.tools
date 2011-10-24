@@ -17,6 +17,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.shortcut.LaunchConfigFinder.LaunchConfigSelector;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
@@ -61,7 +62,7 @@ public class LaunchConfigFinder_Test extends TestCase {
     IType entryPointType = createEntryPointType();
     ILaunchConfigurationWorkingCopy launchConfig = Fixture.createRWTLaunchConfig();
     RWTLaunchConfig rwtLaunchConfig = new RWTLaunchConfig( launchConfig );
-    rwtLaunchConfig.setUseWebXml( false );
+    rwtLaunchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
     rwtLaunchConfig.setEntryPoint( entryPointType.getFullyQualifiedName() );
     launchConfig.doSave();
     
@@ -84,7 +85,7 @@ public class LaunchConfigFinder_Test extends TestCase {
     RWTLaunchConfig rwtLaunchConfig = new RWTLaunchConfig( launchConfig );
     rwtLaunchConfig.setProjectName( project.getName() );
     rwtLaunchConfig.setEntryPoint( entryPointType.getFullyQualifiedName() );
-    rwtLaunchConfig.setUseWebXml( true );
+    rwtLaunchConfig.setLaunchTarget( LaunchTarget.WEB_XML );
 
     ILaunchConfiguration foundConfig = launchConfigFinder.forType( entryPointType );
     
@@ -119,7 +120,7 @@ public class LaunchConfigFinder_Test extends TestCase {
   {
     ILaunchConfigurationWorkingCopy launchConfig = Fixture.createRWTLaunchConfig();
     RWTLaunchConfig result = new RWTLaunchConfig( launchConfig );
-    result.setUseWebXml( false );
+    result.setLaunchTarget( LaunchTarget.ENTRY_POINT );
     result.setProjectName( entryPointType.getJavaProject().getElementName() );
     result.setEntryPoint( entryPointType.getFullyQualifiedName() );
     launchConfig.doSave();

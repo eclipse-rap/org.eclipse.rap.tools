@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
+
 
 class EntryPointValidator extends Validator {
 
@@ -20,8 +22,8 @@ class EntryPointValidator extends Validator {
   }
 
   void validate() {
-    if( !config.getUseWebXml() ) {
-      if( "".equals( config.getEntryPoint() ) ) {
+    if( LaunchTarget.ENTRY_POINT.equals( config.getLaunchTarget() ) ) {
+      if( config.getEntryPoint().length() == 0 ) {
         addError( "The entry point is empty.", ERR_ENTRY_POINT_EMPTY );
       }
     }

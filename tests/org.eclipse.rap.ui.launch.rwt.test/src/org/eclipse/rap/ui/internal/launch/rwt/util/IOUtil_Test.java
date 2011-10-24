@@ -27,6 +27,61 @@ public class IOUtil_Test extends TestCase {
   private File tempDestination;
   private File tempSource;
 
+  private File directory;
+  
+  public void testDeleteWithExistingDirectory() {
+    directory.mkdirs();
+    
+    IOUtil.delete( directory );
+    
+    assertFalse( directory.exists() );
+  }
+  
+  public void testDeleteWithSubDirectories() {
+    File subDirectory = new File( directory, "subdir" );
+    subDirectory.mkdirs();
+    
+    IOUtil.delete( directory );
+    
+    assertFalse( directory.exists() );
+  }
+  
+  public void testDeleteWithSubDirectoriesAndFiles() throws IOException {
+    File subDirectory = new File( directory, "subdir" );
+    subDirectory.mkdirs();
+    File fileInDirectory = createTempFile( directory );
+    File fileInSubDirectory = createTempFile( subDirectory );
+    
+    boolean deleted = IOUtil.delete( directory );
+    
+    assertTrue( deleted );
+    assertFalse( directory.exists() );
+    assertFalse( subDirectory.exists() );
+    assertFalse( fileInDirectory.exists() );
+    assertFalse( fileInSubDirectory.exists() );
+  }
+  
+  public void testDeleteWithFile() throws IOException {
+    directory.mkdirs();
+    File file = createTempFile( directory );
+    
+    boolean deleted = IOUtil.delete( file );
+    
+    assertTrue( deleted );
+    assertTrue( directory.exists() );
+    assertFalse( file.exists() );
+  }
+
+  public void testDeleteWithNonExistingDirectory() {
+    directory.mkdirs();
+    File subDirectory = new File( directory, "non-existing" );
+    
+    boolean deleted = IOUtil.delete( subDirectory );
+    
+    assertFalse( deleted );
+    assertFalse( subDirectory.exists() );
+  }
+
   public void testCopyFromFileToFile() throws IOException {
     byte[] content = new byte[] { 0, 1, 2, 3, 4 };
     writeFile( tempSource, content );
@@ -129,6 +184,8 @@ public class IOUtil_Test extends TestCase {
   }
   
   protected void setUp() throws Exception {
+    directory = new File( getTempDir(), "testdir" );
+    directory.deleteOnExit();
     tempDestination = createTempFile();
     tempDestination.deleteOnExit();
     tempSource = createTempFile();
@@ -138,6 +195,7 @@ public class IOUtil_Test extends TestCase {
   protected void tearDown() throws Exception {
     tempDestination.delete();
     tempSource.delete();
+    IOUtil.delete( directory );
   }
   
   private String getTempDir() {
@@ -146,6 +204,10 @@ public class IOUtil_Test extends TestCase {
 
   private static File createTempFile() throws IOException {
     return File.createTempFile( "rwt-", "temp" );
+  }
+
+  private static File createTempFile( File directory ) throws IOException {
+    return File.createTempFile( "test", "tmp", directory );
   }
 
   private static void writeFile( File file, byte[] content )

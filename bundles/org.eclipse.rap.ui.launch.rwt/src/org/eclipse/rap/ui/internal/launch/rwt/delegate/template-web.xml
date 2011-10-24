@@ -14,16 +14,16 @@
   </context-param>
  
   <listener>
-    <listener-class>org.eclipse.rwt.internal.engine.RWTServletContextListener</listener-class>
+    <listener-class>org.eclipse.rwt.engine.RWTServletContextListener</listener-class>
   </listener>
  
   <servlet>
     <servlet-name>rwtServlet</servlet-name>
-    <servlet-class>org.eclipse.rwt.internal.engine.RWTDelegate</servlet-class>
+    <servlet-class>org.eclipse.rwt.engine.RWTServlet</servlet-class>
   </servlet>
  
   <servlet-mapping>
     <servlet-name>rwtServlet</servlet-name>
-    <url-pattern>/rap</url-pattern>
+    <url-pattern>/${servletPath}</url-pattern>
   </servlet-mapping>
 </web-app>

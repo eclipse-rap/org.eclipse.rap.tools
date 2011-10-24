@@ -12,6 +12,7 @@ package org.eclipse.rap.ui.internal.launch.rwt.config;
 
 import junit.framework.TestCase;
 
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
 
@@ -23,7 +24,7 @@ public class EntryPointValidator_Test extends TestCase {
   private ValidationResult validationResult;
 
   public void testValidateWhenEmpty() {
-    launchConfig.setUseWebXml( false );
+    launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
     launchConfig.setEntryPoint( "" );
     
     validator.validate();
@@ -32,7 +33,7 @@ public class EntryPointValidator_Test extends TestCase {
   }
   
   public void testValidateWhenUnused() {
-    launchConfig.setUseWebXml( true );
+    launchConfig.setLaunchTarget( LaunchTarget.WEB_XML );
     launchConfig.setEntryPoint( "" );
     
     validator.validate();

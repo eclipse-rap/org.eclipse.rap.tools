@@ -58,14 +58,19 @@ public final class BundleFileLocator {
   
   private static Bundle findBundle( String symbolicName ) {
     Bundle result = null;
-    Bundle bundle = RWTLaunchActivator.getDefault().getBundle();
-    BundleContext bundleContext = bundle.getBundleContext();
-    Bundle[] bundles = bundleContext.getBundles();
+    Bundle[] bundles = getAllBundles();
     for( int i = 0; result == null && i < bundles.length; i++ ) {
       if( bundles[ i ].getSymbolicName().equals( symbolicName ) ) {
         result = bundles[ i ];
       }
     }
     return result;
+  }
+
+  private static Bundle[] getAllBundles() {
+    Bundle bundle = RWTLaunchActivator.getDefault().getBundle();
+    BundleContext bundleContext = bundle.getBundleContext();
+    Bundle[] bundles = bundleContext.getBundles();
+    return bundles;
   }
 }

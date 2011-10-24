@@ -14,28 +14,26 @@ import org.eclipse.core.resources.*;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
+import org.eclipse.ui.dialogs.SelectionDialog;
 
 
 public class EntryPointSection extends RWTLaunchTab {
   
   private static final int MARGIN = 20;
   
-  private Button rbWebXml;
   private Button rbEntryPoint;
-  private Label lblWebXmlLocation;
-  private Text txtWebXmlLocation;
-  private Label lblServletName;
-  private Text txtServletName;
-  private Button btnSelectWebXml;
-  private Label lblEntryPointClass;
-  private Text txtEntryPointClass;
-  private Button btnSelectEntryPointClass;
+  private SearchText stEntryPoint;
+  private Button rbWebXml;
+  private SearchText stWebXmlLocation;
+  private Button rbWebAppFolder;
+  private SearchText stWebAppLocation;
   
   public String getName() {
     return "Application Entry Point";
@@ -46,89 +44,89 @@ public class EntryPointSection extends RWTLaunchTab {
     group.setText( "Application entry point" );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     group.setLayout( new GridLayout( 3, false ) );
-    rbEntryPoint = createRadioButton( group, "Run entry point class" );
-    rbEntryPoint.setLayoutData( newGridData( 3, 0 ) );
-    rbEntryPoint.addSelectionListener( new EntryPointSelectionListener() );
-    lblEntryPointClass = createLabel( group, "Class name" );
-    lblEntryPointClass.setLayoutData( newGridData( 0, MARGIN ) );
-    txtEntryPointClass = new Text( group, SWT.BORDER );
-    txtEntryPointClass.setLayoutData( newFillHorizontalGridData() );
-    txtEntryPointClass.addModifyListener( new TextModifyListener() );
-    btnSelectEntryPointClass = createPushButton( group, "Search...", null );
-    SelectionListener listener = new EntryPointClassSelectionListener();
-    btnSelectEntryPointClass.addSelectionListener( listener );
-    rbWebXml = createRadioButton( group, "Run from web.xml" );
-    rbWebXml.setLayoutData( newGridData( 3, 0 ) );
-    rbWebXml.addSelectionListener( new EntryPointSelectionListener() );
-    rbWebXml.setSelection( true );
-    lblWebXmlLocation = createLabel( group, "Location" );
-    lblWebXmlLocation.setLayoutData( newGridData( 0, MARGIN ) );
-    txtWebXmlLocation = new Text( group, SWT.BORDER );
-    txtWebXmlLocation.setLayoutData( newFillHorizontalGridData() );
-    txtWebXmlLocation.addModifyListener( new TextModifyListener() );
-    btnSelectWebXml = createPushButton( group, "Search...", null );
-    btnSelectWebXml.addSelectionListener( new WebXmlSelectionListener() );
-    lblServletName = createLabel( group, "Servlet path" );
-    lblServletName.setLayoutData( newGridData( 0, MARGIN ) );
-    txtServletName = new Text( group, SWT.BORDER );
-    txtServletName.setLayoutData( newFillHorizontalGridData() );
-    txtServletName.addModifyListener( new ComboModifyListener() );
+    rbEntryPoint = createLaunchTargetRadioButton( group, "Run entry point class" );
+    stEntryPoint = new SearchText( group, "Class name", "Search...", MARGIN );
+    stEntryPoint.addModifyListener( new TextModifyListener() );
+    stEntryPoint.addSelectionListener( new EntryPointClassSelectionListener() );
+    rbWebXml = createLaunchTargetRadioButton( group, "Run from web.xml" );
+    stWebXmlLocation = new SearchText( group, "Location", "Search...", MARGIN );
+    stWebXmlLocation.addModifyListener( new TextModifyListener() );
+    stWebXmlLocation.addSelectionListener( new WebXmlSelectionListener() );
+    rbWebAppFolder = createLaunchTargetRadioButton( group, "Run from web-application folder" );
+    stWebAppLocation = new SearchText( group, "Location", "Search...", MARGIN );
+    stWebAppLocation.addModifyListener( new TextModifyListener() );
+    stWebAppLocation.addSelectionListener( new WebAppFolderSelectionListener() );
     Dialog.applyDialogFont( group );
     setControl( group );
     HelpContextIds.assign( getControl(), HelpContextIds.MAIN_TAB );
     updateEnablement();
   }
-  
+
   public void initializeFrom( RWTLaunchConfig launchConfig ) {
-    rbWebXml.setSelection( launchConfig.getUseWebXml() );
-    rbEntryPoint.setSelection( !launchConfig.getUseWebXml() );
-    txtWebXmlLocation.setText( launchConfig.getWebXmlLocation() );
-    txtServletName.setText( launchConfig.getServletPath() );
-    txtEntryPointClass.setText( launchConfig.getEntryPoint() );
+    rbEntryPoint.setSelection( LaunchTarget.ENTRY_POINT.equals( launchConfig.getLaunchTarget() ) );
+    rbWebXml.setSelection( LaunchTarget.WEB_XML.equals( launchConfig.getLaunchTarget() ) );
+    rbWebAppFolder.setSelection( LaunchTarget.WEB_APP_FOLDER.equals( launchConfig.getLaunchTarget() ) );
+    stWebXmlLocation.setText( launchConfig.getWebXmlLocation() );
+    stWebAppLocation.setText( launchConfig.getWebAppLocation() );
+    stEntryPoint.setText( launchConfig.getEntryPoint() );
     updateEnablement();
   }
   
   public void performApply( RWTLaunchConfig launchConfig ) {
-    launchConfig.setUseWebXml( rbWebXml.getSelection() );
-    launchConfig.setWebXmlLocation( txtWebXmlLocation.getText().trim() );
-    launchConfig.setServletPath( txtServletName.getText().trim() );
-    launchConfig.setEntryPoint( txtEntryPointClass.getText().trim() );
+    if( rbEntryPoint.getSelection() ) {
+      launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
+    } else if( rbWebXml.getSelection() ) {
+      launchConfig.setLaunchTarget( LaunchTarget.WEB_XML );
+    } else if( rbWebAppFolder.getSelection() ) {
+      launchConfig.setLaunchTarget( LaunchTarget.WEB_APP_FOLDER );
+    }
+    launchConfig.setEntryPoint( stEntryPoint.getText() );
+    launchConfig.setWebXmlLocation( stWebXmlLocation.getText() );
+    launchConfig.setWebAppLocation( stWebAppLocation.getText() );
   }
 
   private void updateEnablement() {
-    boolean enabled = rbWebXml.getSelection();
-    lblWebXmlLocation.setEnabled( enabled );
-    txtWebXmlLocation.setEnabled( enabled );
-    btnSelectWebXml.setEnabled( enabled );
-    lblServletName.setEnabled( enabled );
-    txtServletName.setEnabled( enabled );
-    enabled = rbEntryPoint.getSelection();
-    lblEntryPointClass.setEnabled( enabled );
-    txtEntryPointClass.setEnabled( enabled );
-    btnSelectEntryPointClass.setEnabled( enabled );
+    boolean enabled = rbEntryPoint.getSelection();
+    stEntryPoint.setEnabled( enabled );
+    enabled = rbWebXml.getSelection();
+    stWebXmlLocation.setEnabled( enabled );
+    enabled = rbWebAppFolder.getSelection();
+    stWebAppLocation.setEnabled( enabled );
   }
   
   private void selectWebXml() {
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
     int file = IResource.FILE;
-    FilteredResourcesSelectionDialog dialog 
-      = new FilteredResourcesSelectionDialog( getShell(), false, root, file );
+    SelectionDialog dialog = new FilteredResourcesSelectionDialog( getShell(), false, root, file );
     dialog.setTitle( "Web.xml Selection" );
     if( dialog.open() == Window.OK && dialog.getResult().length > 0 ) {
       IResource selection = ( IResource )dialog.getResult()[ 0 ];
-      txtWebXmlLocation.setText( selection.getFullPath().toPortableString() );
+      stWebXmlLocation.setText( selection.getFullPath().toPortableString() );
     }
+  }
+
+  private void selectWebAppFolder() {
+    FolderSelectionDialog dialog = new FolderSelectionDialog( getShell() );
+    dialog.setInitialSelection( stWebAppLocation.getText() );
+    IContainer selection = dialog.open();
+    if( selection != null ) {
+      stWebAppLocation.setText( selection.getFullPath().toPortableString() );
+    }
+    
   }
 
   private void selectEntryPointClass() {
     EntryPointTypeSelectionDialog dialog = new EntryPointTypeSelectionDialog( getShell() );
     if( dialog.open() ) {
-      txtEntryPointClass.setText( dialog.getSelection().getFullyQualifiedName() );
+      stEntryPoint.setText( dialog.getSelection().getFullyQualifiedName() );
     }
   }
 
-  private static GridData newFillHorizontalGridData() {
-    return new GridData( SWT.FILL, SWT.TOP, true, false );
+  private Button createLaunchTargetRadioButton( Composite parent, String label ) {
+    Button result = createRadioButton( parent, label );
+    result.setLayoutData( newGridData( 3, 0 ) );
+    result.addSelectionListener( new LaunchTargetSelectionListener() );
+    return result;
   }
 
   private static GridData newGridData( int horizontalSpan, int horizontalIndent ) {
@@ -138,36 +136,36 @@ public class EntryPointSection extends RWTLaunchTab {
     return result;
   }
 
-  private final class EntryPointSelectionListener extends SelectionAdapter {
+  private class LaunchTargetSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
       updateEnablement();
       updateLaunchConfigurationDialog();
     }
   }
   
-  private final class WebXmlSelectionListener extends SelectionAdapter {
+  private class EntryPointClassSelectionListener extends SelectionAdapter {
+    public void widgetSelected( SelectionEvent event ) {
+      selectEntryPointClass();
+      updateLaunchConfigurationDialog();
+    }
+  }
+  
+  private class WebXmlSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
       selectWebXml();
       updateLaunchConfigurationDialog();
     }
   }
 
-  private final class EntryPointClassSelectionListener extends SelectionAdapter 
-  {
+  private class WebAppFolderSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
-      selectEntryPointClass();
+      selectWebAppFolder();
       updateLaunchConfigurationDialog();
     }
   }
 
-  private final class TextModifyListener implements ModifyListener {
+  private class TextModifyListener implements ModifyListener {
     public void modifyText( ModifyEvent event ) {
-      updateLaunchConfigurationDialog();
-    }
-  }
-
-  private class ComboModifyListener implements ModifyListener {
-    public void modifyText( ModifyEvent e ) {
       updateLaunchConfigurationDialog();
     }
   }

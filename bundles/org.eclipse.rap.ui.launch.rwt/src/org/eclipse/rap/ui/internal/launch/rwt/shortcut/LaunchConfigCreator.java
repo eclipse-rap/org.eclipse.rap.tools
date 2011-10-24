@@ -43,7 +43,7 @@ public class LaunchConfigCreator {
   }
 
   private String launchConfigNameFromType() {
-    String qualifiedName = type.getTypeQualifiedName( '.' );
+    String qualifiedName = type.getTypeQualifiedName( '.' ); //$NON-NLS-1$
     return getLaunchManager().generateLaunchConfigurationName( qualifiedName );
   }
 

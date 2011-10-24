@@ -30,7 +30,7 @@ import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProcess;
 
 public class DebugUtil_Test extends TestCase {
 
-  private List runtimeProcesses;
+  private List<RuntimeProcess> runtimeProcesses;
   
   public void testGetLaunchName() throws CoreException {
     ILaunchConfigurationWorkingCopy launchConfig = Fixture.createRWTLaunchConfig();
@@ -142,7 +142,7 @@ public class DebugUtil_Test extends TestCase {
   }
   
   protected void setUp() throws Exception {
-    runtimeProcesses = new LinkedList();
+    runtimeProcesses = new LinkedList<RuntimeProcess>();
   }
   
   protected void tearDown() throws Exception {

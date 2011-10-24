@@ -19,6 +19,18 @@ public final class IOUtil {
   private static final int BUFFER_SIZE = 8192;
   private static final Charset UTF_8 = Charset.forName( "utf-8" ); //$NON-NLS-1$
 
+  public static boolean delete( File file ) {
+    boolean result = true;
+    if( file.isDirectory() ) {
+      File[] files = file.listFiles();
+      for( int i = 0; i < files.length; i++ ) {
+        result = result & delete( files[ i ] );
+      }
+    }
+    result = result & file.delete();
+    return result;
+  }
+
   public static void copy( File source, File destination ) {
     try {
       InputStream inputStream = new FileInputStream( source );

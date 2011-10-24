@@ -61,8 +61,7 @@ public class ValidationResult {
     if( message == null ) {
       throw new NullPointerException( "message" ); //$NON-NLS-1$
     }
-    String pluginId = getPluginId();
-    IStatus status = new Status( severity, pluginId, code, message, null );
+    IStatus status = new Status( severity, RWTLaunchActivator.getPluginId(), code, message, null );
     results.add( status );
   }
 
@@ -89,9 +88,5 @@ public class ValidationResult {
       }
     }
     return result;
-  }
-
-  private String getPluginId() {
-    return RWTLaunchActivator.getDefault().getBundle().getSymbolicName();
   }
 }

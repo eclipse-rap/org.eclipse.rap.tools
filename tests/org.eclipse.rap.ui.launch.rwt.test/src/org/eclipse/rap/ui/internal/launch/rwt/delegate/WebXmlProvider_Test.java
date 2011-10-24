@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.AssertUtil;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestLaunch;
@@ -36,7 +37,7 @@ public class WebXmlProvider_Test extends TestCase {
   private WebXmlProvider provider;
 
   public void testProvideWithGeneratedWebXml() throws Exception {
-    launchConfig.setUseWebXml( false );
+    launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
     launchConfig.setEntryPoint( "EntryPoint" );
     
     File providedWebXml = provider.provide( monitor );
@@ -50,7 +51,7 @@ public class WebXmlProvider_Test extends TestCase {
     TestProject testProject = new TestProject();
     IContainer project = testProject.getProject();
     IFile webXml = createFile( project, "web.xml", webXmlContent );
-    launchConfig.setUseWebXml( true );
+    launchConfig.setLaunchTarget( LaunchTarget.WEB_XML );
     launchConfig.setWebXmlLocation( webXml.getFullPath().toPortableString() );
 
     File providedWebXml = provider.provide( monitor );
@@ -72,9 +73,7 @@ public class WebXmlProvider_Test extends TestCase {
     launchConfig.getUnderlyingLaunchConfig().delete();
   }
 
-  private static IFile createFile( IContainer container, 
-                                   String fileName, 
-                                   String content ) 
+  private static IFile createFile( IContainer container, String fileName, String content )
     throws CoreException 
   {
     IFile result = container.getFile( new Path( fileName ) );

@@ -40,7 +40,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     // If requested, schedule opening of browser. Must occur before actual launch
     RWTLaunchConfig launchConfig = this.launch.getLaunchConfig();
     if( launchConfig.getOpenBrowser() ) {
-      BrowserOpener browserOpener = new BrowserOpener( launch, this.launch.computeBrowserUrl() );
+      BrowserOpener browserOpener = new BrowserOpener( launch );
       browserOpener.scheduleOpen();
     }
     // Terminate previous
@@ -54,7 +54,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
   }
 
   public String getMainTypeName( ILaunchConfiguration configuration ) {
-    return "org.mortbay.jetty.Main";
+    return "org.mortbay.jetty.Main"; //$NON-NLS-1$
   }
   
   public String[] getClasspath( ILaunchConfiguration configuration ) throws CoreException {
