@@ -72,11 +72,6 @@ public class RWTLaunchConfig_Test extends TestCase {
     }
   }
   
-  public void testLaunchTarget() {
-    rwtConfig.setLaunchTarget( LaunchTarget.WEB_APP_FOLDER );
-    assertEquals( LaunchTarget.WEB_APP_FOLDER, rwtConfig.getLaunchTarget() );
-  }
-  
   public void testLaunchTargetWithNullArgument() {
     try {
       rwtConfig.setLaunchTarget( null );

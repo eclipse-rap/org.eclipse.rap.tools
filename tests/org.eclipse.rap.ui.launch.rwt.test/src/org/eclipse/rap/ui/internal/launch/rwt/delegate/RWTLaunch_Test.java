@@ -17,7 +17,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
-import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestLaunch;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
@@ -65,16 +64,6 @@ public class RWTLaunch_Test extends TestCase {
     assertEquals( webApp, webXml.substring( 0, webApp.length() ) );
   }
   
-  public void testGetWebAppPathForWebAppLaunchTarget() throws Exception {
-    TestProject project = new TestProject();
-    launchConfig.setLaunchTarget( LaunchTarget.WEB_APP_FOLDER );
-    launchConfig.setWebAppLocation( project.getProject().getFullPath().toPortableString() );
-    
-    File webAppPath = rwtLaunch.getWebAppPath();
-    
-    assertEquals( webAppPath, project.getProject().getLocation().toFile().getCanonicalFile() );
-  }
-
   protected void setUp() throws Exception {
     launchConfig = new RWTLaunchConfig( Fixture.createRWTLaunchConfig() );
     ILaunch launch = new TestLaunch( launchConfig.getUnderlyingLaunchConfig() );

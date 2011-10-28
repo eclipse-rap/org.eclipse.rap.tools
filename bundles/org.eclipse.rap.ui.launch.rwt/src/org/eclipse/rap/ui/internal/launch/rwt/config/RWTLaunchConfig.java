@@ -26,7 +26,6 @@ public final class RWTLaunchConfig {
   public static enum LaunchTarget {
     ENTRY_POINT,
     WEB_XML,
-    WEB_APP_FOLDER
   }
 
   // Attribute names from JDT's Java Launcher
