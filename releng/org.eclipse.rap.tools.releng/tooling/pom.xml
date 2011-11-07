@@ -23,7 +23,7 @@
 
   <properties>
     <tycho-version>0.13.0</tycho-version>
-    <base-platform>3.8milestones/S-3.8M2-201109151308</base-platform>
+    <base-platform>3.8milestones/S-3.8M3-201110271800</base-platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
