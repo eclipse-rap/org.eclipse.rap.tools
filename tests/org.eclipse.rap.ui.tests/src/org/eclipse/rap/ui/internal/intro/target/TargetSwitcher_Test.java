@@ -29,10 +29,10 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.pde.internal.core.PDECore;
-import org.eclipse.pde.internal.core.target.provisional.IResolvedBundle;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
-import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
-import org.eclipse.pde.internal.core.target.provisional.ITargetPlatformService;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetHandle;
+import org.eclipse.pde.core.target.ITargetPlatformService;
+import org.eclipse.pde.core.target.TargetBundle;
 import org.eclipse.rap.ui.tests.Fixture;
 import org.osgi.framework.Bundle;
 
@@ -106,9 +106,9 @@ public class TargetSwitcher_Test extends TestCase {
                                                                  false,
                                                                  new NullProgressMonitor() );
     assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-    boolean resolved = targetDefinition.getBundleContainers()[ 0 ].isResolved();
+    boolean resolved = targetDefinition.isResolved();
     assertTrue( "Target should be in resolved state", resolved );
-    IResolvedBundle[] bundles = targetDefinition.getBundleContainers()[ 0 ].getBundles();
+    TargetBundle[] bundles = targetDefinition.getBundles();
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
   }
 
@@ -119,9 +119,9 @@ public class TargetSwitcher_Test extends TestCase {
                                                                  false,
                                                                  new NullProgressMonitor() );
     assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-    boolean resolved = targetDefinition.getBundleContainers()[ 0 ].isResolved();
+    boolean resolved = targetDefinition.isResolved();
     assertTrue( "Target should be in resolved state", resolved );
-    IResolvedBundle[] bundles = targetDefinition.getBundleContainers()[ 0 ].getBundles();
+    TargetBundle[] bundles = targetDefinition.getBundles();
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
   }
 
@@ -143,18 +143,18 @@ public class TargetSwitcher_Test extends TestCase {
                                                                  false,
                                                                  new NullProgressMonitor() );
     assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-    boolean resolved = targetDefinition.getBundleContainers()[ 0 ].isResolved();
+    boolean resolved = targetDefinition.isResolved();
     assertTrue( "Target should be in resolved state", resolved );
-    IResolvedBundle[] bundles = targetDefinition.getBundleContainers()[ 0 ].getBundles();
+    TargetBundle[] bundles = targetDefinition.getBundles();
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
     ITargetHandle[] targets = targetPlatformService.getTargets( new NullProgressMonitor() );
     // Second installation
     ITargetDefinition targetDefinition2 = TargetSwitcher.install( p2RepoURI,
                                                                   false,
                                                                   new NullProgressMonitor() );
-    boolean resolved2 = targetDefinition2.getBundleContainers()[ 0 ].isResolved();
+    boolean resolved2 = targetDefinition2.isResolved();
     assertTrue( "Target should be in resolved state", resolved2 );
-    IResolvedBundle[] bundles2 = targetDefinition2.getBundleContainers()[ 0 ].getBundles();
+    TargetBundle[] bundles2 = targetDefinition2.getBundles();
     assertEquals( "Not all bundles are resolved", 1, bundles2.length );
     ITargetHandle[] targets2 = targetPlatformService.getTargets( new NullProgressMonitor() );
     assertEquals( "Targets should be equal", targets.length, targets2.length );
