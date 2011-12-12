@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+
 public class InstallRAPTargetHandler extends AbstractHandler {
 
   // forces target installations to be queued

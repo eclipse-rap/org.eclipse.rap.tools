@@ -14,8 +14,8 @@ import java.net.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.pde.core.target.*;
 import org.eclipse.pde.internal.core.PDECore;
-import org.eclipse.pde.internal.core.target.provisional.*;
 import org.eclipse.rap.ui.internal.intro.ErrorUtil;
 
 
