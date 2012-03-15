@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource and others.
+ * Copyright (c) 2007, 2012 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,19 +19,11 @@ import java.util.List;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.*;
-import org.eclipse.osgi.service.resolver.BundleDescription;
-import org.eclipse.pde.core.plugin.IPluginModelBase;
-import org.eclipse.pde.core.plugin.PluginRegistry;
-import org.eclipse.pde.internal.launching.launcher.BundleLauncherHelper;
 import org.eclipse.pde.internal.launching.launcher.LaunchArgumentsHelper;
-import org.eclipse.pde.launching.IPDELauncherConstants;
-import org.eclipse.rap.ui.internal.launch.tab.*;
-import org.eclipse.rap.ui.internal.launch.util.LauncherSerializationUtil;
 
 
 public final class RAPLaunchConfigValidator {
 
-  private static final String DEFAULT_BRANDING = "rap"; //$NON-NLS-1$
   // FIXME remove this when Platfrom.WS_RAP defined
   public static final String WS_RAP = "rap"; //$NON-NLS-1$
   public static final int ERR_SERVLET_NAME = 6001;
@@ -46,8 +38,6 @@ public final class RAPLaunchConfigValidator {
   public static final int WARN_WS_WRONG = 7003;
   private static final String RAP_LAUNCH_CONFIG_TYPE = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
   private static final String EMPTY = ""; //$NON-NLS-1$
-  private static final String WORKSPACE_BUNDLES_KEY = "workspace_bundles"; //$NON-NLS-1$
-  private static final String TARGET_BUNDLES_KEY = "target_bundles"; //$NON-NLS-1$
   private static final String PARAM_WS = "-ws";//$NON-NLS-1$
 
   private final RAPLaunchConfig config;
@@ -59,13 +49,12 @@ public final class RAPLaunchConfigValidator {
   public IStatus[] validate() {
     List states = new ArrayList();
     try {
-      addNonOKState( states, validateServletName() );
+      addNonOKState( states, validateServletPath() );
       addNonOKState( states, validatePort() );
       addNonOKState( states, validateUniquePort() );
       addNonOKState( states, validateContextPath() );
       addNonOKState( states, validateURL() );
       addNonOKState( states, validateSessionTimeout() );
-      addNonOKState( states, validateEntryPoint() );
       addNonOKState( states, validateDataLocation() );
 // TODO [rst] Re-enable when bug 338544 is fixed
 //      addNonOKState( states, validateWS() );
@@ -94,27 +83,12 @@ public final class RAPLaunchConfigValidator {
     return result;
   }
 
-  private IStatus validateServletName() throws CoreException {
+  private IStatus validateServletPath() throws CoreException {
     IStatus result = Status.OK_STATUS;
     String servletName = config.getServletName();
     if( servletName == null || EMPTY.equals( servletName ) ) {
-      String msg = LaunchMessages.RAPLaunchConfigValidator_ServletNameEmpty;
+      String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathEmpty;
       result = createError( msg, ERR_SERVLET_NAME, null );
-    } else if( !servletName.equals( DEFAULT_BRANDING ) ) { //$NON-NLS-1$
-      ILaunchConfiguration launchConfig 
-        = config.getUnderlyingLaunchConfig();
-      String[] selectedBundleIds = getSelectedBundleIds( launchConfig );
-      BrandingExtension[] selBrandingExtensions 
-        = BrandingExtension.findInActivePlugins( selectedBundleIds, 
-                                                 new NullProgressMonitor() );
-      boolean isValid = isValidBranding( servletName, selBrandingExtensions );
-      if( !isValid ) {
-        String unformatedMsg 
-          = LaunchMessages.RAPLaunchConfigValidator_BrandingMissing;
-        String msg = MessageFormat.format( unformatedMsg, 
-                                           new Object[] { servletName } );
-        result = createError( msg, ERR_SERVLET_BUNDLE, null );
-      }
     }
     return result;
   }
@@ -217,35 +191,6 @@ public final class RAPLaunchConfigValidator {
     return result;
   }
 
-  private IStatus validateEntryPoint() throws CoreException {
-    IStatus result = Status.OK_STATUS;
-    String entryPoint = config.getEntryPoint();
-    if( entryPoint != null && !EMPTY.equals( entryPoint ) ) {
-      ILaunchConfiguration underlyingLaunchConfig 
-        = config.getUnderlyingLaunchConfig();
-      String[] selectedBundleIds 
-        = getSelectedBundleIds( underlyingLaunchConfig );
-      EntryPointExtension[] selEntryPointExtensions 
-        = EntryPointExtension.findInActivePlugins( selectedBundleIds, 
-                                                   new NullProgressMonitor() );
-      ApplicationExtension[] selApplicationExtensions 
-        = ApplicationExtension.findInActivePlugins( selectedBundleIds, 
-                                                    new NullProgressMonitor() );
-      boolean validEntryPoint 
-        = isValidEntryPoint( entryPoint, selEntryPointExtensions );
-      boolean validApplication 
-        = isValidApplication( entryPoint, selApplicationExtensions );
-      if( !validApplication && !validEntryPoint ) {
-        String unformatedMsg 
-          = LaunchMessages.RAPLaunchConfigValidator_EntryPointMissing;
-        String msg = MessageFormat.format( unformatedMsg, 
-                                           new Object[] { entryPoint } );
-        result = createError( msg, ERR_ENTRY_POINT, null );
-      }
-    }
-    return result;
-  }
-  
   private IStatus validateWS() throws CoreException {
     IStatus result = Status.OK_STATUS;
     final ILaunchConfiguration launchConfig = config.getUnderlyingLaunchConfig();
@@ -275,7 +220,7 @@ public final class RAPLaunchConfigValidator {
     }
     return result;
   }
-  
+
   /////////////////////////
   // Status creation helper
 
@@ -317,122 +262,6 @@ public final class RAPLaunchConfigValidator {
     return    otherConfig.getUseManualPort()
            && !config.getName().equals( otherConfig.getName() )
            && config.getPort() == otherConfig.getPort();
-  }
-  
-  /////////////////////////////////////////
-  // Helping methods for validateEntryPoint
-  
-  private static String[] getSelectedBundleIds( ILaunchConfiguration launchConfiguration) 
-    throws CoreException
-  {
-    String[] result;
-    if( launchConfiguration.getAttribute( IPDELauncherConstants.USE_CUSTOM_FEATURES, false ) ) {
-      result = getBundleIdsFromFeatures( launchConfiguration );
-    } else {
-      result = getBundleIdsFromBundles( launchConfiguration );
-    }
-    return result;
-  }
-
-  private static String[] getBundleIdsFromFeatures( ILaunchConfiguration launchConfiguration )
-    throws CoreException
-  {
-    String[] result;
-    IPluginModelBase[] mergedBundles 
-      = BundleLauncherHelper.getMergedBundles( launchConfiguration, true );
-    result = new String[ mergedBundles.length ];
-    for( int i = 0; i < mergedBundles.length; i++ ) {
-      result[ i ] = mergedBundles[ i ].getBundleDescription().getSymbolicName();
-    }
-    return result;
-  }
-  
-  private static String[] getBundleIdsFromBundles( ILaunchConfiguration launchConfiguration )
-    throws CoreException
-  {
-    String[] result;
-    String selectedWorkspaceBundles 
-      = launchConfiguration.getAttribute( WORKSPACE_BUNDLES_KEY, EMPTY );
-    String selectedTargetBundles 
-      = launchConfiguration.getAttribute( TARGET_BUNDLES_KEY, EMPTY );
-    List selectedBundleIds = new ArrayList();
-    addBundleIds( selectedBundleIds, selectedWorkspaceBundles );
-    addBundleIds( selectedBundleIds, selectedTargetBundles );
-    List resultAsList = filterNotActiveSelectedBundleIds( selectedBundleIds );
-    result = new String[ resultAsList.size() ];
-    for( int i = 0; i < result.length; i++ ) {
-      result[ i ] = ( String )resultAsList.get( i );
-    }
-    return result;
-  }
-
-  private static void addBundleIds( final List selectedBundles,
-                                    final String bundlesInCsvFormat )
-  {
-    if( bundlesInCsvFormat != null && !EMPTY.equals( bundlesInCsvFormat ) ) {
-      String[] bundles = bundlesInCsvFormat.split( "," ); //$NON-NLS-1$
-      for( int i = 0; i < bundles.length; i++ ) {
-        int indexOf = bundles[ i ].indexOf( "@" ); //$NON-NLS-1$
-        if( indexOf != -1 ) {
-         String bundleId = bundles[ i ].substring( 0, indexOf );
-         selectedBundles.add( bundleId );
-        }
-      }
-    }
-  }
-  
-  private static List filterNotActiveSelectedBundleIds( 
-    final List selectedBundleIds ) 
-  {
-    IPluginModelBase[] activeModels = PluginRegistry.getActiveModels();
-    List resultAsList = new ArrayList();
-    for( int i = 0; i < activeModels.length; i++ ) {
-      BundleDescription description = activeModels[ i ].getBundleDescription();
-      String bundleId = description.getSymbolicName();
-      if( selectedBundleIds.contains( bundleId ) ) {
-        resultAsList.add( bundleId );
-      }
-    }
-    return resultAsList;
-  }
-  
-  private boolean isValidEntryPoint( final String entryPoint, 
-                                     final EntryPointExtension[] extensions )
-  {
-    boolean result = false;
-    for( int i = 0; i < extensions.length && result == false; i++ ) {
-      EntryPointExtension extension = extensions[ i ];
-      String availableEntryPoint
-        = LauncherSerializationUtil.serializeEntryPointExntesion( extension );
-      result = entryPoint.equals( availableEntryPoint );
-    }
-    return result;
-  }
-
-  private boolean isValidApplication( final String application, 
-                                      final ApplicationExtension[] extensions )
-  {
-    boolean result = false;
-    for( int i = 0; i < extensions.length && !result; i++ ) {
-      ApplicationExtension extension = extensions[ i ];
-      String availableApplication
-        = LauncherSerializationUtil.serializeApplicationExtension( extension );
-      result = application.equals( availableApplication );
-    }
-    return result;
-  }
-  
-  private boolean isValidBranding( final String brandingt, 
-                                   final BrandingExtension[] extensions )
-  {
-    boolean result = false;
-    for( int i = 0; i < extensions.length && !result; i++ ) {
-      BrandingExtension extension = extensions[ i ];
-      String availableBranding
-        = LauncherSerializationUtil.serializeBrandingExtension( extension );
-      result = brandingt.equals( availableBranding );
-    }
-    return result;
   }
 
 }

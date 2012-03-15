@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 EclipseSource and others.
+ * Copyright (c) 2009, 2012 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.*;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.fieldassist.*;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.*;
-import org.eclipse.jface.window.Window;
 import org.eclipse.pde.ui.launcher.AbstractLauncherTab;
 import org.eclipse.rap.ui.internal.launch.*;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
@@ -36,16 +36,16 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public final class MainTab extends AbstractLauncherTab {
 
-  private static final String BROWSER_PREFERENCE_PAGE 
+  private static final String BROWSER_PREFERENCE_PAGE
     = "org.eclipse.ui.browser.preferencePage"; //$NON-NLS-1$
 
-  private final GridDataFactory fillHorizontal; 
+  private final GridDataFactory fillHorizontal;
   private final ModifyListener modifyListener;
   private final SelectionListener selectionListener;
   private final Image tabImage;
   private final Image warnImage;
-  private Text servletNameTextField;
-  private Text entryPointTextField;
+  private Text servletPathTextField;
+  private Text startupParamTextField;
   private Button terminatePreviousCheckBox;
   private Button openBrowserCheckBox;
   private Button internalBrowserRadioButton;
@@ -56,7 +56,7 @@ public final class MainTab extends AbstractLauncherTab {
   private Text contextPathTextField;
   private Spinner portSpinner;
   private Button useSessionTimeoutCheckBox;
-  private Spinner sessionTimeoutSpinner;  
+  private Spinner sessionTimeoutSpinner;
   private ComboViewer libraryVariantCombo;
   private ILaunchConfigurationListener launchConfigListener;
   private DataLocationBlock dataLocationBlock;
@@ -79,7 +79,7 @@ public final class MainTab extends AbstractLauncherTab {
     };
     return result;
   }
-  
+
   private SelectionAdapter createDialogSelectionListener() {
      SelectionAdapter result = new SelectionAdapter() {
       public void widgetSelected( SelectionEvent e ) {
@@ -91,7 +91,7 @@ public final class MainTab extends AbstractLauncherTab {
 
   ////////////
   // Overrides
-  
+
   public void dispose() {
     tabImage.dispose();
     warnImage.dispose();
@@ -103,7 +103,6 @@ public final class MainTab extends AbstractLauncherTab {
   public void createControl( Composite parent ) {
     Composite container = new Composite( parent, SWT.NONE );
     container.setLayout( new GridLayout() );
-    createServletNameAndEntryPointSection( container );
     createBrowserModeSection( container );
     createRuntimeSettingsSection( container );
     createDataLocationSection( container );
@@ -118,12 +117,12 @@ public final class MainTab extends AbstractLauncherTab {
   public Image getImage() {
     return tabImage;
   }
-  
+
   public void initializeFrom( ILaunchConfiguration config ) {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     try {
-      servletNameTextField.setText( rapConfig.getServletName() );
-      entryPointTextField.setText( rapConfig.getEntryPoint() );
+      servletPathTextField.setText( rapConfig.getServletName() );
+      startupParamTextField.setText( rapConfig.getEntryPoint() );
       terminatePreviousCheckBox.setSelection( rapConfig.getTerminatePrevious() );
       manualPortCheckBox.setSelection( rapConfig.getUseManualPort() );
       portSpinner.setSelection( rapConfig.getPort() );
@@ -153,8 +152,8 @@ public final class MainTab extends AbstractLauncherTab {
 
   public void performApply( ILaunchConfigurationWorkingCopy config ) {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    rapConfig.setServletName( servletNameTextField.getText() );
-    rapConfig.setEntryPoint( entryPointTextField.getText() );
+    rapConfig.setServletName( servletPathTextField.getText() );
+    rapConfig.setEntryPoint( startupParamTextField.getText() );
     rapConfig.setTerminatePrevious( terminatePreviousCheckBox.getSelection() );
     rapConfig.setOpenBrowser( openBrowserCheckBox.getSelection() );
     rapConfig.setBrowserMode( getBrowserMode() );
@@ -180,18 +179,18 @@ public final class MainTab extends AbstractLauncherTab {
   public void setDefaults( ILaunchConfigurationWorkingCopy config ) {
     RAPLaunchConfig.setDefaults( config );
   }
-  
+
   public boolean isValid( ILaunchConfiguration launchConfig ) {
     return getErrorMessage() == null;
   }
-  
+
   public void validateTab() {
     // We validate on performApply and launcher changes. No need to validate here.
   }
-  
+
   ///////////////////////////////////
   // Helping methods to create the UI
-  
+
   private void addLaunchConfigListener() {
     launchConfigListener = getLaunchConfigListener();
     ILaunchManager launchManager = getLaunchManager();
@@ -222,45 +221,22 @@ public final class MainTab extends AbstractLauncherTab {
     Control blockControl = dataLocationBlock.createControl( container );
     blockControl.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
   }
-  
-  private void createServletNameAndEntryPointSection( Composite parent ) {
-    Group group = new Group( parent, SWT.NONE );
-    group.setLayout( new GridLayout( 3, false ) );
-    group.setLayoutData( fillHorizontal.create() );
-    group.setText( LaunchMessages.MainTab_ServletAndEntryPoint );
-    createServletNamePart( group );
-    createEntryPointPart( group );
-    createSessionPart( group );
-  }
 
-  private void createServletNamePart( Composite parent ) {
+  private void createServletPathPart( Composite parent ) {
     Label lblServletName = new Label( parent, SWT.NONE );
-    lblServletName.setText( LaunchMessages.MainTab_ServletName );
-    servletNameTextField = new Text( parent, SWT.BORDER );
-    servletNameTextField.setLayoutData( fillHorizontal.create() );
-    servletNameTextField.addModifyListener( modifyListener );
-    Button btnBrowseServletName = new Button( parent, SWT.PUSH );
-    btnBrowseServletName.setText( LaunchMessages.MainTab_BrowseServletName );
-    btnBrowseServletName.addSelectionListener( new SelectionAdapter() {
-      public void widgetSelected( SelectionEvent event ) {
-        handleBrowseServletName();
-      }
-    } );
+    lblServletName.setText( LaunchMessages.MainTab_ServletPath );
+    servletPathTextField = new Text( parent, SWT.BORDER );
+    servletPathTextField.setLayoutData( spanHorizontal( 2, 0 ) );
+    servletPathTextField.addModifyListener( modifyListener );
   }
 
-  private void createEntryPointPart( Composite parent ) {
+  private void createStartupParamPart( Composite parent ) {
     Label lblEntryPoint = new Label( parent, SWT.NONE );
-    lblEntryPoint.setText( LaunchMessages.MainTab_EntryPoint );
-    entryPointTextField = new Text( parent, SWT.BORDER );
-    entryPointTextField.setLayoutData( fillHorizontal.create() );
-    entryPointTextField.addModifyListener( modifyListener );
-    Button btnBrowseEntryPoint = new Button( parent, SWT.PUSH );
-    btnBrowseEntryPoint.setText( LaunchMessages.MainTab_BrowseEntryPoint );
-    btnBrowseEntryPoint.addSelectionListener( new SelectionAdapter() {
-      public void widgetSelected( SelectionEvent event ) {
-        handleBrowseEntryPointAndApplications();
-      }
-    } );
+    lblEntryPoint.setText( LaunchMessages.MainTab_StartupParam );
+    startupParamTextField = new Text( parent, SWT.BORDER );
+    startupParamTextField.setLayoutData( spanHorizontal( 2, 0 ) );
+    startupParamTextField.addModifyListener( modifyListener );
+    createStartupParameterDecorator();
   }
 
   private void createSessionPart( Composite parent ) {
@@ -270,7 +246,7 @@ public final class MainTab extends AbstractLauncherTab {
     terminatePreviousCheckBox.setText( text );
     terminatePreviousCheckBox.addSelectionListener( selectionListener );
   }
-  
+
   private void createBrowserModeSection( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
@@ -278,6 +254,8 @@ public final class MainTab extends AbstractLauncherTab {
     group.setLayout( new GridLayout( 3, false ) );
     createBrowserActivationPart( group );
     createBrowserModePart( group );
+    createServletPathPart( group );
+    createStartupParamPart( group );
     createApplicationUrlPart( group );
   }
 
@@ -302,7 +280,7 @@ public final class MainTab extends AbstractLauncherTab {
     internalBrowserRadioButton.setText( LaunchMessages.MainTab_InternalBrowser );
     internalBrowserRadioButton.addSelectionListener( selectionListener );
     externalBrowserRadioButton = new Button( parent, SWT.RADIO );
-    externalBrowserRadioButton.setLayoutData( radioBtnData.create() );
+    externalBrowserRadioButton.setLayoutData( spanHorizontal( 2, 17 ) );
     externalBrowserRadioButton.setText( LaunchMessages.MainTab_ExternalBrowser );
     externalBrowserRadioButton.addSelectionListener( selectionListener );
     openBrowserCheckBox.addSelectionListener( new SelectionAdapter() {
@@ -311,6 +289,8 @@ public final class MainTab extends AbstractLauncherTab {
         boolean openBrowser = openBrowserCheckBox.getSelection();
         internalBrowserRadioButton.setEnabled( openBrowser );
         externalBrowserRadioButton.setEnabled( openBrowser );
+        servletPathTextField.setEnabled( openBrowser );
+        startupParamTextField.setEnabled( openBrowser );
       }
     } );
   }
@@ -373,6 +353,7 @@ public final class MainTab extends AbstractLauncherTab {
     contextPathTextField = new Text( leftPartComposite, SWT.BORDER | SWT.SINGLE );
     GridDataFactory.fillDefaults().grab( true, false ).applyTo( contextPathTextField );
     contextPathTextField.addModifyListener( modifyListener );
+    createSessionPart( leftPartComposite );
   }
 
   private void createRuntimeSettingsRightPart( Composite righttPartComposite ) {
@@ -389,10 +370,35 @@ public final class MainTab extends AbstractLauncherTab {
       }
     } );
   }
-  
+
+  private void createStartupParameterDecorator() {
+    final ControlDecoration decorator = new ControlDecoration( startupParamTextField, SWT.LEFT );
+    FieldDecorationRegistry registry = FieldDecorationRegistry.getDefault();
+    FieldDecoration warningDecoration
+      = registry.getFieldDecoration( FieldDecorationRegistry.DEC_WARNING );
+    decorator.setImage( warningDecoration.getImage() );
+    decorator.setShowHover( true );
+    decorator.setDescriptionText( LaunchMessages.MainTab_StartupParamWarningMsg );
+    decorator.setMarginWidth( 5 );
+    updateStartupDecorator( decorator );
+    startupParamTextField.addModifyListener( new ModifyListener() {
+      public void modifyText( ModifyEvent e ) {
+        updateStartupDecorator( decorator );
+      }
+    } );
+  }
+
+  private void updateStartupDecorator( ControlDecoration decorator ) {
+    if( startupParamTextField.getText().length() == 0 ) {
+      decorator.hide();
+    } else {
+      decorator.show();
+    }
+  }
+
   ////////////////
   // Layout helper
-  
+
   private static GridData spanHorizontal( int span, int indent ) {
     GridData result = new GridData( SWT.FILL, SWT.CENTER, true, false, span, SWT.DEFAULT );
     result.horizontalIndent = indent;
@@ -401,7 +407,7 @@ public final class MainTab extends AbstractLauncherTab {
 
   /////////////
   // Validation
-  
+
   private void validate( RAPLaunchConfig config ) {
     RAPLaunchConfigValidator validator = new RAPLaunchConfigValidator( config );
     IStatus[] states = validator.validate();
@@ -415,7 +421,7 @@ public final class MainTab extends AbstractLauncherTab {
     }
     setErrorMessage( errorMessage );
   }
-  
+
   private void updateApplicationUrl( RAPLaunchConfig config ) {
     String applicationUrl;
     try {
@@ -460,66 +466,25 @@ public final class MainTab extends AbstractLauncherTab {
     }
     return result;
   }
-  
+
   ////////////////
   // Handle events
 
-  private void handleBrowseEntryPointAndApplications() {
-    EntryPointApplicationSelectionDialog dialog 
-      = new EntryPointApplicationSelectionDialog( getShell() );
-    if( dialog.open() == Window.OK ) {
-      Object[] selection = dialog.getResult();
-      AbstractExtension selectedExtension = ( AbstractExtension )selection[ 0 ];
-      handleSelectedExtension( selectedExtension );
-    }
-  }
-
-  private void handleSelectedExtension( AbstractExtension selectedExtension ) {
-    if( selectedExtension instanceof EntryPointExtension ) {
-      EntryPointExtension entry = ( EntryPointExtension )selectedExtension;
-      String serializedEntryPoint = LauncherSerializationUtil.serializeEntryPointExntesion( entry );
-      entryPointTextField.setText( serializedEntryPoint );
-    } else if( selectedExtension instanceof ApplicationExtension ) {
-      ApplicationExtension ext = ( ApplicationExtension )selectedExtension;
-      String serializedAppExt = LauncherSerializationUtil.serializeApplicationExtension( ext );
-      entryPointTextField.setText( serializedAppExt ); //$NON-NLS-1$
-    }
-  }
-
-  private void handleBrowseServletName() {
-    ServletNameSelectionDialog dialog = new ServletNameSelectionDialog( getShell() );
-    if( dialog.open() == Window.OK ) {
-      Object[] selection = dialog.getResult();
-      BrandingExtension branding = ( BrandingExtension )selection[ 0 ];
-      String serializedBranding = LauncherSerializationUtil.serializeBrandingExtension( branding );
-      servletNameTextField.setText( serializedBranding );
-      String defaultEntryPointId = branding.getDefaultEntryPointId();
-      String parameter = null;
-      EntryPointExtension etryPoint = EntryPointExtension.findById( defaultEntryPointId );
-      if( etryPoint != null ) {
-        parameter = LauncherSerializationUtil.serializeEntryPointExntesion( etryPoint );
-      }
-      if( entryPointTextField.getText().length() == 0 && parameter != null ) {
-        entryPointTextField.setText( parameter );
-      }
-    }
-  }
-  
   private void handleBrowserPrefsLink() {
-    PreferenceDialog dialog 
+    PreferenceDialog dialog
       = PreferencesUtil.createPreferenceDialogOn( getShell(), BROWSER_PREFERENCE_PAGE, null, null );
     dialog.open();
     dialog.close();
   }
 
   /////////////////////////////////////////////////////////
-  // Helpers to get entered/selected values from UI widgets  
+  // Helpers to get entered/selected values from UI widgets
 
   private BrowserMode getBrowserMode() {
     boolean selection = externalBrowserRadioButton.getSelection();
     return selection ? BrowserMode.EXTERNAL : BrowserMode.INTERNAL;
   }
-  
+
   private LibraryVariant getLibraryVariant() {
     LibraryVariant result = LibraryVariant.STANDARD;
     ISelection selection = libraryVariantCombo.getSelection();
@@ -529,10 +494,10 @@ public final class MainTab extends AbstractLauncherTab {
     }
     return result;
   }
-  
+
   ////////////////
   // Inner classes
-  
+
   private static final class LibraryVariantLabelProvider extends LabelProvider {
     public String getText( Object element ) {
       String result;

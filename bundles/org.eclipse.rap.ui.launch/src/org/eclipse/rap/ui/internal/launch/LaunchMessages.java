@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 EclipseSource and others.
+ * Copyright (c) 2009, 2012 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     EclipseSource - initial API and implementation
+ *    EclipseSource - initial API and implementation
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
@@ -26,7 +26,7 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchConfigValidator_MalformedUrl;
   public static String RAPLaunchConfigValidator_PortInUse;
   public static String RAPLaunchConfigValidator_PortNumberInvalid;
-  public static String RAPLaunchConfigValidator_ServletNameEmpty;
+  public static String RAPLaunchConfigValidator_ServletPathEmpty;
   public static String RAPLaunchConfigValidator_InvalidContextPath;
   public static String RAPLaunchConfigValidator_TimeoutInvalid;
   public static String RAPLaunchConfigValidator_WsEmpty;
@@ -42,15 +42,11 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchDelegate_Error_NotAPlugin;
   public static String SelectionDialogUtil_Unknown;
   public static String SelectionDialogUtil_UnknownProject;
-  public static String EntryPointSelectionDialog_Message;
-  public static String EntryPointSelectionDialog_Searching;
-  public static String EntryPointSelectionDialog_Title;
-  public static String MainTab_BrowseEntryPoint;
   public static String MainTab_Browser;
-  public static String MainTab_BrowseServletName;
   public static String MainTab_ClientLibraryVariant;
   public static String MainTab_ConfigureBrowsers;
-  public static String MainTab_EntryPoint;
+  public static String MainTab_StartupParam;
+  public static String MainTab_StartupParamWarningMsg;
   public static String MainTab_ExternalBrowser;
   public static String MainTab_InternalBrowser;
   public static String MainTab_ApplicationUrl;
@@ -63,13 +59,8 @@ public class LaunchMessages extends NLS {
   public static String MainTab_ObtainDefaultEntryPointForBrandingFailed;
   public static String MainTab_OpenApplicationIn;
   public static String MainTab_RuntimeSettings;
-  public static String MainTab_ServletAndEntryPoint;
-  public static String MainTab_ServletName;
+  public static String MainTab_ServletPath;
   public static String MainTab_TerminatePrevious;
-  public static String ServletNameSelectionDialog_Message;
-  public static String ServletNameSelectionDialog_Searching;
-  public static String ServletNameSelectionDialog_Title;
-  public static String ServletNameSelectionDialog_WorkspaceFilterMsg;
 
   static {
     // initialize resource bundle
