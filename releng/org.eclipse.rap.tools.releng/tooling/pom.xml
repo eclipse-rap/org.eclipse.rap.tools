@@ -47,8 +47,12 @@
       <layout>p2</layout>
       <url>http://download.eclipse.org/eclipse/updates/${base-platform}</url>
     </repository>
+    <repository>
+      <id>jetty-repository</id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x/8.1.0.RC5/</url>
+    </repository>
   </repositories>
-
   <pluginRepositories>
     <pluginRepository>
       <id>maven.eclipse.org</id>
