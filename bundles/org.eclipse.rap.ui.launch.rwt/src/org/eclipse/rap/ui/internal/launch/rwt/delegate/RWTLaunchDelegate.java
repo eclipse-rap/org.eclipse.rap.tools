@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.delegate;
 
@@ -23,7 +24,7 @@ import org.eclipse.rap.ui.internal.launch.rwt.util.StringArrays;
 
 
 public class RWTLaunchDelegate extends JavaLaunchDelegate {
-  
+
   private RWTLaunch launch;
 
   public void launch( ILaunchConfiguration configuration,
@@ -54,24 +55,32 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
   }
 
   public String getMainTypeName( ILaunchConfiguration configuration ) {
-    return "org.mortbay.jetty.Main"; //$NON-NLS-1$
+    return "org.eclipse.rap.ui.internal.launch.rwt.jetty.JettyLauncher"; //$NON-NLS-1$
   }
-  
+
   public String[] getClasspath( ILaunchConfiguration configuration ) throws CoreException {
     String[] result = super.getClasspath( configuration );
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.mortbay.jetty.server" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.mortbay.jetty.util" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.rap.ui.launch.rwt" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.continuation" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.http" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.io" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.security" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.servlet" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.util" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.webapp" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.xml" ) ); //$NON-NLS-1$
     result = StringArrays.append( result, BundleFileLocator.locate( "javax.servlet" ) ); //$NON-NLS-1$
     return result;
   }
-  
+
   public String getProgramArguments( ILaunchConfiguration configuration ) {
     // don't call super, program arguments are not configurable via the UI
     String port = String.valueOf( launch.getPort() );
     String webAppDirectory = launch.getWebAppPath().getAbsolutePath();
-    return MessageFormat.format( "{0} -webapp \"{1}\"", new Object[] { port, webAppDirectory } ); //$NON-NLS-1$
+    return MessageFormat.format( "{0} \"{1}\"", new Object[] { port, webAppDirectory } ); //$NON-NLS-1$
   }
-  
+
   public String getVMArguments( ILaunchConfiguration configuration ) throws CoreException {
     String result = super.getVMArguments( configuration );
     result += " -Djetty.home="; //$NON-NLS-1$
@@ -80,7 +89,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     result += "\""; //$NON-NLS-1$
     return result;
   }
-  
+
   void initializeLaunch( ILaunch genericLaunch ) {
     launch = new RWTLaunch( genericLaunch );
     launch.setPort( determinePort() );
