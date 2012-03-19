@@ -22,8 +22,8 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho-version>0.13.0</tycho-version>
-    <base-platform>4.2milestones/S-4.2M5-201201271145</base-platform>
+    <tycho-version>0.14.1</tycho-version>
+    <base-platform>4.2milestones/S-4.2M6-201203151300</base-platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -53,6 +53,7 @@
       <url>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x/8.1.1.v20120215/</url>
     </repository>
   </repositories>
+
   <pluginRepositories>
     <pluginRepository>
       <id>maven.eclipse.org</id>
