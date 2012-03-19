@@ -70,7 +70,7 @@
       <group style-id="content-group" id="rap-target-cvs-group">
         <link 
           label="Get RAP from CVS" 
-          url="http://www.eclipse.org/rap/cvs.php" 
+          url="http://www.eclipse.org/rap/source/" 
           id="rap-target-cvs" 
           style-id="content-link">
           <text>
