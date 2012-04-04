@@ -77,6 +77,14 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_NAME ) );
   }
 
+  public void testValidateServletPathLeadingSlash() {
+    rapConfig.setServletName( "rap" );
+
+    IStatus[] states = validator.validate();
+
+    assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.WARN_SERVLET_PATH ) );
+  }
+
   public void testValidateWsRAP() throws Exception {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "-ws rap" );

@@ -36,6 +36,7 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_CONTEXT_PATH = 6011;
   public static final int WARN_OSGI_FRAMEWORK = 7002;
   public static final int WARN_WS_WRONG = 7003;
+  public static final int WARN_SERVLET_PATH = 7004;
   private static final String RAP_LAUNCH_CONFIG_TYPE = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
   private static final String EMPTY = ""; //$NON-NLS-1$
   private static final String PARAM_WS = "-ws";//$NON-NLS-1$
@@ -89,6 +90,9 @@ public final class RAPLaunchConfigValidator {
     if( servletName == null || EMPTY.equals( servletName ) ) {
       String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathEmpty;
       result = createError( msg, ERR_SERVLET_NAME, null );
+    } else if( !servletName.startsWith( "/" ) ) {
+      String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathLeadingSlash;
+      result = createWarning( msg, WARN_SERVLET_PATH, null );
     }
     return result;
   }
