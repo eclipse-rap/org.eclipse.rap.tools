@@ -71,6 +71,7 @@ Examples:
   <li><code>animation: none;</code></li>
   <li><code>animation: hoverOut 500ms ease-out;</code></li>
   <li><code>animation: fadeIn 200ms linear, fadeOut 400ms ease-out;</code></li>
+  <li><code>animation: flyInTop 500ms ease-out, flyOutBottom 500ms ease-in;</code></li>
 </ul>
 
 <a name="animation-name"><h4>&lt;animation-name&gt;</h4></a>
@@ -101,6 +102,11 @@ Currently existing effects:
   <li><code>slideIn</code>, <code>slideOut</code>
     <p>
     Animates the emergence (<code>slideIn</code>) or disappearance (<code>slideOut</code>) of a widget by gradually changing its height.
+    </p>
+  </li>
+  <li><code>flyInTop</code>, <code>flyInRight</code>, <code>flyInBottom</code>, <code>flyInLeft</code>, <code>flyOutTop</code>, <code>flyOutRight</code>, <code>flyOutBottom</code>, <code>flyOutLeft</code>
+    <p>
+    Animates the emergence (<code>flyIn</code>) or disappearance (<code>flyOut</code>) of a widget by gradually changing its origin point until it reaches the target coordinates.
     </p>
   </li>
 </ul>
