@@ -32,13 +32,13 @@
   </prerequisites>
 
   <modules>
-    <module>tooling-feature</module>
-    <module>tooling-repository</module>
-    <module>../../../tooling/org.eclipse.rap.help</module>
-    <module>../../../tooling/org.eclipse.rap.ui.intro</module>
-    <module>../../../tooling/org.eclipse.rap.ui.templates</module>
-    <module>../../../tooling/org.eclipse.rap.ui.launch</module>
-    <module>../../../tooling/org.eclipse.rap.ui.launch.rwt</module>
+    <module>../../features/org.eclipse.rap.tooling</module>
+    <module>repository</module>
+    <module>../../bundles/org.eclipse.rap.help</module>
+    <module>../../bundles/org.eclipse.rap.ui.intro</module>
+    <module>../../bundles/org.eclipse.rap.ui.templates</module>
+    <module>../../bundles/org.eclipse.rap.ui.launch</module>
+    <module>../../bundles/org.eclipse.rap.ui.launch.rwt</module>
   </modules>
 
   <repositories>
