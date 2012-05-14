@@ -13,6 +13,10 @@
   </topic>
   <topic label="Advanced Topics">
     <topic
+      label="Underlying Technologies"
+      href="help/html/advanced/underlying-technologies.html"
+    />
+    <topic
       label="RWT Theming"
       href="help/html/advanced/theming.html"/>
     <topic
