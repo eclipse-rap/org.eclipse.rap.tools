@@ -58,7 +58,7 @@ fi
 ######################################################################
 # Include legal files in zip
 
-cd "$WORKSPACE/org.eclipse.rap.tools"
-cp -f releng/org.eclipse.rap.tools.releng/legal/notice.html .
-cp -f releng/org.eclipse.rap.tools.releng/legal/epl-v10.html .
+cd "$WORKSPACE"
+cp -f org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng/legal/notice.html .
+cp -f org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng/legal/epl-v10.html .
 zip "$zipFileName" notice.html epl-v10.html
