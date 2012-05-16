@@ -2,6 +2,9 @@
   <topic label="Introduction" href="help/html/intro.html" />
   <topic label="Getting Started">
     <topic
+      label="Set up Eclipse"
+      href="help/html/getting-started/setup-ide.html"/>
+    <topic
       label="Writing a Hello World with RAP"
       href="help/html/getting-started/hello-world.html"/>
     <topic
