@@ -1,53 +1,34 @@
-Building RAP
-============
+Building RAP Tools
+==================
 
-We use tycho [1] to build RAP.
+We use Tycho [1] to build RAP.
 
 Prerequisites
 -------------
 
-You'll need:
-
-* A CVS client
+* A Git client
 * Maven 3.0
-* network access
+* A working Internet connection
 
 Preparation
 -----------
 
-Checkout the RAP repository.  You cannot build directly from your Eclipse workspace, because
-projects from CVS are stored in a directory structure that differs from the repository.
-Once RAP has switched to git, you will be able to build directly from your local repository.
+Clone the RAP Tools repository from the remote Git source code repository:
 
-  cvs -d :pserver:anonymous@dev.eclipse.org:/cvsroot/rt co -P -r HEAD org.eclipse.rap
+  git clone git://git.eclipse.org/gitroot/rap/org.eclipse.rap.tools.git
 
-This command creates a new directory "org.eclipse.rap" and checks out the latest version of the
-RAP repository into this directory.
-
-RAP Runtime
------------
-
-Run maven on the runtime directory in the releng project
-
-  cd org.eclipse.rap/releng/org.eclipse.rap.releng/runtime
-  mvn clean package
-
-The runtime repository will be created in runtime-repository/target
-
-Note: this command creates the rap.runtime feature which contains only the RAP artifacts.
-      The basic target requirements have to be copied from the platform repositories.
-      We use the pom-aggregate.xml to aggregate this feature on the build server, but this won't
-      run locally.
+This will create a complete clone of the RAP Tools Git repository on your disk in a
+new directory 'org.eclipse.rap.tools' with the latest HEAD version of the RAP Tools.
 
 RAP Tooling
 -----------
 
-Run maven on the tooling directory in the releng project
+Run Maven in the RAP Tools build project:
 
-  cd org.eclipse.rap/releng/org.eclipse.rap.releng/tooling
+  cd cd org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng/
   mvn clean package
 
-The tooling repository will be created in tooling-repository/target
+A p2 repository with the RAP Tools will be created in repository/target
 
 References
 ----------
