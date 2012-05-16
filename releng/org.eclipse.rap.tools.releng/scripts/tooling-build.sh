@@ -19,8 +19,9 @@ cd ${WORKSPACE}/org.eclipse.rap.tools
 # Generate reference documentation
 
 echo "Generating reference documentation"
-#$SCRIPTS_DIR/ant-runner.sh releng/org.eclipse.rap.tools.releng/reference/build.xml \
-#  -DsourceDir="${WORKSPACE}/org.eclipse.rap.tools" || exit 1
+$SCRIPTS_DIR/ant-runner.sh releng/org.eclipse.rap.tools.releng/reference/build.xml \
+  -DruntimeSourceDir="${WORKSPACE}/org.eclipse.rap" \
+  -DtoolsSourceDir="${WORKSPACE}/org.eclipse.rap.tools" || exit 1
 
 ######################################################################
 # Build RAP Tooling
