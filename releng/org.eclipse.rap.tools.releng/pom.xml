@@ -33,7 +33,7 @@
 
   <modules>
     <!-- The feature -->
-    <module>../../features/org.eclipse.rap.tooling</module>
+    <module>../../features/org.eclipse.rap.tools</module>
     <!-- The p2 repository -->
     <module>repository</module>
     <!-- The bundles -->

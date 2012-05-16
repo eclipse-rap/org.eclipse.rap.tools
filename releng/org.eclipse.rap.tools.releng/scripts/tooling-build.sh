@@ -30,8 +30,8 @@ cd "$WORKSPACE/org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng" || exi
 echo "Running maven on $PWD, sign=$sign"
 $MVN clean package -Dsign=$sign || exit 1
 
-VERSION=$(ls repository/target/repository/features/org.eclipse.rap.tooling_*.jar | sed 's/.*_\([0-9.-]\+\)\..*\.jar/\1/')
-TIMESTAMP=$(ls repository/target/repository/features/org.eclipse.rap.tooling_*.jar | sed 's/.*\.\([0-9-]\+\)\.jar/\1/')
+VERSION=$(ls repository/target/repository/features/org.eclipse.rap.tools_*.jar | sed 's/.*_\([0-9.-]\+\)\..*\.jar/\1/')
+TIMESTAMP=$(ls repository/target/repository/features/org.eclipse.rap.tools_*.jar | sed 's/.*\.\([0-9-]\+\)\.jar/\1/')
 echo "Version is '$VERSION'"
 echo "Timestamp is '$TIMESTAMP'"
 test -n "$VERSION" || exit 1
