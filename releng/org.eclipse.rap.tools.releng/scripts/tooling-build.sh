@@ -13,11 +13,16 @@ else
   sign=false
 fi
 
-cd ${WORKSPACE}/org.eclipse.rap.tools
+######################################################################
+# Cleanup left-overs from previous run
+
+test -d "$WORKSPACE" || exit 1
+rm -rf "$WORKSPACE/*.zip"
 
 ######################################################################
 # Generate reference documentation
 
+cd "$WORKSPACE/org.eclipse.rap.tools"
 echo "Generating reference documentation"
 $SCRIPTS_DIR/ant-runner.sh releng/org.eclipse.rap.tools.releng/reference/build.xml \
   -DruntimeSourceDir="${WORKSPACE}/org.eclipse.rap" \
