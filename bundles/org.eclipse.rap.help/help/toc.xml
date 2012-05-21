@@ -2,7 +2,7 @@
   <topic label="Introduction" href="help/html/intro.html" />
   <topic label="Getting Started">
     <topic
-      label="Set up Eclipse IDE"
+      label="Setting up the Eclipse IDE"
       href="help/html/getting-started/setup-ide.html"/>
     <topic
       label="Install Target Manually"
