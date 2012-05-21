@@ -1,6 +1,6 @@
 
-a#rap-introLink img { background-image : url(../graphics/rap.gif); }
-a#rap-introLink:hover img { background-image : url(../graphics/rap.gif); }
+a#rap-introLink img { background-image : url(../graphics/rap.png); }
+a#rap-introLink:hover img { background-image : url(../graphics/rap.png); }
 
 a#rap-target-installer img { background-image : url(../graphics/extract_target.gif); }
 a#rap-target-installer:hover img { background-image : url(../graphics/extract_target.gif); }
