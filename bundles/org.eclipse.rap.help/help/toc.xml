@@ -5,6 +5,9 @@
       label="Set up Eclipse"
       href="help/html/getting-started/setup-ide.html"/>
     <topic
+      label="Install Target Manually"
+      href="help/html/getting-started/target-install.html"/>
+    <topic
       label="Writing a Hello World with RAP"
       href="help/html/getting-started/hello-world.html"/>
     <topic
