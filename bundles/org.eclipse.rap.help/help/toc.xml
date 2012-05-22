@@ -41,9 +41,6 @@
       label="Custom Widgets"
       href="help/html/advanced/custom-widget.html"/>
     <topic
-      label="Prepare Custom Widgets for Theming"
-      href="help/html/advanced/theming-custom.html"/>
-    <topic
       label="WAR Deployment"
       href="help/html/advanced/deployment.html"/>
   </topic>
