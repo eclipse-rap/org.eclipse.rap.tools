@@ -74,6 +74,7 @@
     than with older ones like Internet Explorer 7. (Though you also safe some traffic.)
   </p>
   <h3 id="browser" >Browser-based widgets</h3>
+  <h4>Overview</h4>
   <p>
     These can still be rather simple.
     The SWT <code>Browser</code> widget lets you place any HTML into your application.
@@ -96,6 +97,13 @@
     (see below).</li>
   </ul>
   </p>
+  <h4>General Hints</h4>
+  <p>
+    When using the JEE compatibility <a>OperationMode</a>, the Browser <code>evaluate</code> 
+    method works differently. Read about it here. If your custom widget is supposed to implement
+    getter that needs to obtain a value using <code>evaluate</code>, do not use the JEE 
+    compatibility mode.
+  </p>
   <p>
     Remember not to subclass <code>Browser</code> but extend <code>Composite</code> instead and
     wrap the Browser widget. This way, you do not expose the API of the Browser to the user of your
@@ -113,8 +121,9 @@
     <code>BrowserFunctions</code> take any number of arguments and can return several values using
     an array of Object.
   </p>
+  <h4>How to load required resouces</h4>
   <p>
-    It's also important to decide how your resources (HTML JavaScript, CSS and image files) are
+    It's important to decide how your resources (HTML JavaScript, CSS and image files) are
     provided to the browser widget. If you use only a moderate amount of HTML with inlined
     JavaScript and CSS (and no images), or most of your resources can be loaded from a different
     HTTP-server, it will suffice to use the <code>setText</code> method of the browser widget.

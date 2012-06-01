@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Key and Mouse Event Handling in RAP</title>
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+  <h1>Key and Mouse Event Handling in RAP</h1>
+  <p>
+    Most widgets in SWT/RWT provide distinctive events that are well suited for typical usecases of 
+    that widget, like selection-events and modify-events. These events should, if possible, always 
+    be favored over key and mouse events, which are available on all widgets. Not only are the more 
+    specific events fired at the approprite times and provide all relevant informations, but they 
+    can also be more optimized by the RAP framework regarding performance, network-traffic and 
+    compatibility. Still, key and mouse events are sometimes necessary to use, especially when 
+    adding or modifying widget-behavior, or for global event handling. 
+  </p>
+  <p>
+    Due to their diverse nature, differing implementation, and the high frequency in which they 
+    may be fired, key and mouse events are a major challange in a web-environment, especially
+    with a client-server archtecture like RAP. While RWT provides a SWT-like API for key 
+    and mouse events, some specifics should be noted.
+  </p>
+  <h2>Mouse Events</h2>
+   <p>
+    All mouse events types using in the <code>MouseListener</code> interface are almost 
+    fully supported. (They can only detect the first 3 mouse buttons.) They are:
+    <ul>
+      <li><code>MouseDown</code></li>
+      <li><code>MouseUp</code></li>
+      <li><code>MouseDoubleClick</code></li>
+    </ul>
+    However, all other event mouse event types, used in <code>MouseTrackListener</code> 
+    and <code>MouseWheelListener</code>, are unsupported. Namely: 
+    <ul>
+      <li><code>MouseMove</code></li>
+      <li><code>MouseEnter</code></li>
+      <li><code>MouseExit</code></li>
+      <li><code>MouseWheel</code></li>
+    </ul>
+    They can not be reasonably inplemented because the network latency would make them
+    barely useable. They are mostly supported in <a>RAP ClientScripting</a> though.
+    </p>
+    <p>
+      Mouse events are only sent to the server (and only cause traffic) if they are fired on 
+      widgets that have a <code>MouseListener</code> or untyped listener for a mouse event attached.
+      As a side-effect, using a display filter does not work like in SWT.
+      Example:
+<pre><code>
+  display.addFilter( SWT.MouseDown, new Listener() { ... } );
+</code></pre><br/>
+       This would catch all mouse events in SWT, but in RWT it will only receive those which
+       targets already have a mouse listener. 
+    </p>
+  <h2>Traverse Events</h2>
+  <p>
+    Before we discuss key events, it is important to note that there are also "traverse" events, 
+    which are related. Traverse events are fired <em>before</em> a key event, and only for keys
+    that can change the focus. (For example Escape, Tab, Arrows.) The idea is that you can
+    prevent or manipulate the focus change, but that is not supported in RWT. (See
+    <a>"Prevent Default Operation"</a> for a workaround.)
+  </p>
+  <h2>Key Events</h2>
+  <h3>Event Order and Latency</h3>
+  <p>
+    There are two type of key events, <code>KeyDown</code> and <code>KeyUp</code>.
+    In SWT, <code>KeyDown</code> is fired after pressing the key, then after a short delay
+    fired repeatedly until the key is released. Then <code>KeyUp</code> is fired. <br/>
+    In RWT, <code>KeyUp</code> is fired immediately after <code>KeyDown</code>, even if the key
+    is not released. After the short delay, both events are fired repeatedly until the key is 
+    released. An Example for pressing and holding a key in SWT and RWT:
+    <table border = "1" cellpadding = "5" cellspacing = "0">
+      <tr>
+        <th align="left" >SWT</th>
+        <td><code>KeyDown</code></th>
+        <td>delay</th>
+        <td><code>KeyDown</code></th>
+        <td><code>KeyDown</code></th>
+        <td><code>KeyUp</code></th>
+      </tr>
+      <tr>
+        <th align="left" >RWT</th>
+        <td><code>KeyDown</code><br/><code>KeyUp</code></td>
+        <td>delay</td>
+        <td><code>KeyDown</code><br/><code>KeyUp</code></td>
+        <td><code>KeyDown</code><br/><code>KeyUp</code></td>
+        <td>-</td>
+      </tr>
+    </table>
+  </p>
+  <p>
+    A key event are sent to the server immediately when the key is pressed (not on release).
+    This requests triggers both the <code>KeyDown</code> and <code>KeyUp</code> event.
+    If a key is held down, or when typing very fast, the new key events may be put into a queue
+    on the client until the current key event is finished beeing processed. This also increases the 
+    latency a bit.<br/> If no latency is not acceptable at all, the key events would have 
+    to be <a>processed on the client</a> directly, or a <a>custom widget</a> has to be used.
+  </p>
+  <h3 id = "prevent">Prevent Default Operation (CANCEL_KEYS)</h3> 
+  <p>
+    The <code>KeyEvent</code> object has a <code>doit</code> field, which is true by default.
+    In SWT, this field can be set to false to prevent the default operation associated with 
+    pressing or releasing this key, like inserting a character in a <code>Text</code> widget.
+    RAP supported this in a limited capacity until 1.4, but support was discontinued in 1.5. The
+    reason for this was that it worked unreliably and prevented a number of bugs from beeing fixed.
+  </p>
+  <p>
+    As an alternative, the "Cancel Keys" feature was introduced. It is slightly less flexible,
+    but very powerful and still single-sourcing capable. Instead of reacting to a key event,
+    it allows to attach a list of keys or key-combinations to a widget using the <a><code>
+    RWT.CANCEL_KEYS</code></a> constant. When the given key-combination is pressed while
+    the widget is focused, the operation is canceled. It also cancels operations that could only
+    be prevented on traverse events in SWT. Event more importantly, it is possible to 
+    suppress most (not all) browser shortcuts that way, which would otherwise be triggered at
+    the same moment that your key listener is executed. For example "CTRL+F" usually opens
+    and focuses a search-dialog in the browser, but the RAP application might want to use it
+    to focus its own search-field.
+  </p>
+  <p>
+    <em>Additional Notes:</em>
+    <ul>
+      <li>Browser-shortcuts of the pattern ALT+[letter] can often not be suppressed.</li>
+      <li>The Cancel Keys do not influence the key event handling. That means it works whether a 
+    listener is attached or not, and canceled keys are still fired as an SWT key event.</li>
+      <li>This approach is single-sourcing capable. Since the <code>doit</code> field still
+      exists in RWT, and the list is attached using <code>setData</code>, both mechanisms
+      can be used in parallel.</li>
+      <li>An alternative to Cancel Keys is <a>ClientScripting</a>, which can take the state 
+    of the widget into account.</li>
+    </ul>
+  </p>
+  <h3>Reduce Traffic (ACTIVE_KEYS)</h3>
+  <p>
+    As explained above, each keystroke creates at least one http-request. Obviously this can 
+    create a lot of traffic. If this is a concern, the "Active Keys" feature can help you.
+    Like with cancel keys, active keys lets you attach a list of keys or key-combinations to a
+    widget (using <a><code>RWT.ACTIVE_KEYS</code></a>). As result, only key events that match
+    a combination on this list will be issued, drastically reducing traffic.
+  </p>
+  <p>
+    <em>Additional Notes:</em>
+    <ul>
+      <li>Unlike Cancel Keys, Active Keys are only relevant if a key listener is attached.</li>
+      <li>Despite the naming, Active Keys and Cancel Keys can be freely combined. They do not influence each other.</li>
+      <li>This approach is also single-sourcing capable, as long as the key listner does
+      not rely on the preselection of the Active Keys feature.</li>
+    </ul>
+  </p>
+  <h3>Global Key Event Handling (Keybindings)</h3>
+  <p>
+    Both "Active Keys" and "Cancel Keys" can also be used on an instance of <code>Display</code>,
+    which is useful to allow keybindings ("shortcuts"). Active Keys work slightly different in 
+    that case. Like with mouse events (see <a>above</a>), a display filter usually catches
+    only key events when their target has a listener attached. Attaching a list of Active Keys, 
+    however, will result in <em>all</em> key events that match a list entry to be fired, regardless 
+    of the focused widget. Likewise, a list of Cancel Keys attached to the display is always
+    in effect.
+  </p>
+  <p>
+    To implement global shortcuts, one would first attach a list of all shortcuts as Active Keys 
+    to display. The same list can then be used again for Cancel Keys to prevent any undesired
+    operations to be triggered by any of the keys. Then a filter for <code>SWT.KeyDown</code> has to be 
+    added, where the pressed key combination has to be determined and handled.
+   </p><p> 
+     The combinations for global shortcuts should be carefully chosen, so they 
+      do not to interfere any of the core functionality of a widget or the browser. For example,
+      SHIFT+[arrow key] is not a good choice, since this is used by many widgets for selection.
+      Similarly, many users might be acustomed to use F5 to reload. The combinations CTRL+TAB
+      and ALT+TAB <em>can</em> not be used. They will never be fired and can not be canceled.
+    </em>
+  </p>
+  <h3>Summary:</h3>
+   <p>
+     A key event will be issued if any if this is true:
+     <ul>
+       <li>The key combination is in the displays Active Keys list.</li>
+       <li>The focused widget has a key listener attached and no Active Keys list.</li>
+       <li>The focused widget has a key listener attached and the key combination is its Active Keys list.</li>
+     </ul>
+     A key event will cancelled if the browser supports it, and any if this is true:
+     <ul>
+       <li>The key combination is in the displays Cancel Keys list.</li>
+       <li>The focused widget has a Cancel Keys list and the key combination is in it.</li>
+     </ul>
+   </p>
+</body>
+</html>

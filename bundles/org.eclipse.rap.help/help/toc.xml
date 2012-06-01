@@ -19,14 +19,32 @@
         label="RAP Examples"
         href="help/html/getting-started/examples.html"/>
   </topic>
-
+  <topic label="RAP Widget Toolkit">
+    <topic href="help/html/rwt/intro.html" label="Introduction">
+    </topic>
+    <topic href="help/html/rwt/differences.html" label="Differences between SWT and RWT">
+    </topic>
+    <topic href="help/html/rwt/multi-user.html" label="Multi User Environment">
+    </topic>
+    <topic href="help/html/rwt/key-and-mouse-events.html" label="Key and Mouse Event Handling">
+    </topic>
+    <topic
+      label="RWT Theming"
+      href="help/html/rwt/theming.html"/>
+  </topic>
   <topic label="Advanced Topics">
     <topic
         label="Underlying Technologies"
         href="help/html/advanced/underlying-technologies.html"/>
     <topic
-        label="RWT Theming"
-        href="help/html/advanced/theming.html"/>
+      label="Choosing a RAP Application Setup"
+      href="help/html/advanced/application-setup.html"/>
+    <topic
+      label="WAR Deployment"
+      href="help/html/advanced/deployment.html"/>
+    <topic
+      label="RWT Standalone"
+      href="help/html/advanced/rwt-standalone.html"/>
     <topic
         label="Branding"
         href="help/html/advanced/branding.html"/>
@@ -42,9 +60,6 @@
     <topic
         label="Custom Widgets"
         href="help/html/advanced/custom-widget.html"/>
-    <topic
-        label="WAR Deployment"
-        href="help/html/advanced/deployment.html"/>
   </topic>
 
   <topic label="Reference">
