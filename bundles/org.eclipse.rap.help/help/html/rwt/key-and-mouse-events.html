@@ -11,18 +11,18 @@
 <body>
   <h1>Key and Mouse Event Handling in RAP</h1>
   <p>
-    Most widgets in SWT/RWT provide distinctive events that are well suited for typical usecases of 
+    Most widgets in SWT/RWT provide distinctive events that are well suited for typical use cases of 
     that widget, like selection-events and modify-events. These events should, if possible, always 
     be favored over key and mouse events, which are available on all widgets. Not only are the more 
-    specific events fired at the approprite times and provide all relevant informations, but they 
+    specific events fired at the appropriate times and provide all relevant informations, but they 
     can also be more optimized by the RAP framework regarding performance, network-traffic and 
     compatibility. Still, key and mouse events are sometimes necessary to use, especially when 
     adding or modifying widget-behavior, or for global event handling. 
   </p>
   <p>
     Due to their diverse nature, differing implementation, and the high frequency in which they 
-    may be fired, key and mouse events are a major challange in a web-environment, especially
-    with a client-server archtecture like RAP. While RWT provides a SWT-like API for key 
+    may be fired, key and mouse events are a major challenge in a web-environment, especially
+    with a client-server architecture like RAP. While RWT provides a SWT-like API for key 
     and mouse events, some specifics should be noted.
   </p>
   <h2>Mouse Events</h2>
@@ -42,8 +42,8 @@
       <li><code>MouseExit</code></li>
       <li><code>MouseWheel</code></li>
     </ul>
-    They can not be reasonably inplemented because the network latency would make them
-    barely useable. They are mostly supported in <a>RAP ClientScripting</a> though.
+    They can not be reasonably implemented because the network latency would make them
+    barely usable. They are mostly supported in <a>RAP ClientScripting</a> though.
     </p>
     <p>
       Mouse events are only sent to the server (and only cause traffic) if they are fired on 
@@ -96,7 +96,7 @@
     A key event are sent to the server immediately when the key is pressed (not on release).
     This requests triggers both the <code>KeyDown</code> and <code>KeyUp</code> event.
     If a key is held down, or when typing very fast, the new key events may be put into a queue
-    on the client until the current key event is finished beeing processed. This also increases the 
+    on the client until the current key event is finished being processed. This also increases the 
     latency a bit.<br/> If no latency is not acceptable at all, the key events would have 
     to be <a>processed on the client</a> directly, or a <a>custom widget</a> has to be used.
   </p>
@@ -106,7 +106,7 @@
     In SWT, this field can be set to false to prevent the default operation associated with 
     pressing or releasing this key, like inserting a character in a <code>Text</code> widget.
     RAP supported this in a limited capacity until 1.4, but support was discontinued in 1.5. The
-    reason for this was that it worked unreliably and prevented a number of bugs from beeing fixed.
+    reason for this was that it worked unreliably and prevented a number of bugs from being fixed.
   </p>
   <p>
     As an alternative, the "Cancel Keys" feature was introduced. It is slightly less flexible,
@@ -135,7 +135,7 @@
   </p>
   <h3>Reduce Traffic (ACTIVE_KEYS)</h3>
   <p>
-    As explained above, each keystroke creates at least one http-request. Obviously this can 
+    As explained above, each keystroke creates at least one HTTP-request. Obviously this can 
     create a lot of traffic. If this is a concern, the "Active Keys" feature can help you.
     Like with cancel keys, active keys lets you attach a list of keys or key-combinations to a
     widget (using <a><code>RWT.ACTIVE_KEYS</code></a>). As result, only key events that match
@@ -146,7 +146,7 @@
     <ul>
       <li>Unlike Cancel Keys, Active Keys are only relevant if a key listener is attached.</li>
       <li>Despite the naming, Active Keys and Cancel Keys can be freely combined. They do not influence each other.</li>
-      <li>This approach is also single-sourcing capable, as long as the key listner does
+      <li>This approach is also single-sourcing capable, as long as the key listener does
       not rely on the preselection of the Active Keys feature.</li>
     </ul>
   </p>
@@ -169,7 +169,7 @@
      The combinations for global shortcuts should be carefully chosen, so they 
       do not to interfere any of the core functionality of a widget or the browser. For example,
       SHIFT+[arrow key] is not a good choice, since this is used by many widgets for selection.
-      Similarly, many users might be acustomed to use F5 to reload. The combinations CTRL+TAB
+      Similarly, many users might be accustomed to use F5 to reload. The combinations CTRL+TAB
       and ALT+TAB <em>can</em> not be used. They will never be fired and can not be canceled.
     </em>
   </p>

@@ -18,7 +18,7 @@
   <h2>OSGi or stand-alone?</h2>
   <p>
     RAP is designed for modular applications based on OSGi.
-    OSGi is a platform that allows you to organize your application in loosly coupled modules, and 
+    OSGi is a platform that allows you to organize your application in loosely coupled modules, and 
     reuse existing Eclipse plug-ins.
     Besides the reference implementation Equinox, which is used in Eclipse, there exist others 
     like Apache Felix.
@@ -36,7 +36,7 @@
     It is the recommended mode in most cases.
   </p>
   <p>
-    The alternative is the SWT compaibility mode, which emulates the SWT threading model. 
+    The alternative is the SWT compatibility mode, which emulates the SWT threading model. 
     To do so, a separate UI Thread has to be started for every new user session.
     Another drawback is that application code does not run in the server's request thread 
     and thus cannot directly access JEE session contexts.
@@ -49,9 +49,9 @@
     to obtain the value anyway using a callback mechanism. This mechanism does not exist in SWT.
   </p>
   <p>
-    The other API that blocks execution are the <code>Browser</code>-widget's execute and evalute 
+    The other API that blocks execution are the <code>Browser</code>-widget's execute and evaluate 
     methods. Their return value can also be obtained with <a>callback implementation</a>, but it 
-    may be an issue for developting <a>browser-based custom widgets</a>.
+    may be an issue for developing <a>browser-based custom widgets</a>.
   </p>
   
   <h2>Workbench 3.x</h2>
@@ -69,7 +69,7 @@
   <ul>
     <li>
       They can be deployed directly 
-      into an OSGi container together with an OSGi-based servlet engine such as jetty.
+      into an OSGi container together with an OSGi-based servlet engine such as Jetty.
     </li>
     <li>
       Alternatively, the Equinox servlet-bridge allows to embed an OSGi container in a war file.
@@ -81,7 +81,7 @@
   
   <h2>Summary</h2>
   <p>
-  Here is a comparision of 3 typical RAP-setups: 
+  Here is a comparison of 3 typical RAP-setups: 
   </p>
   <table width = "100%" border = "1" cellpadding = "3" cellspacing = "0">
     <tr>
@@ -92,9 +92,9 @@
     </tr>
     <tr>
       <th align="left" >Summary</th>
-      <td>Lighweight and flexible, recommanded for applications not requiring the Workbench (or Eclipse Extensions).</td>
+      <td>Lightweight and flexible, recommended for applications not requiring the Workbench (or Eclipse Extensions).</td>
       <td>Recommended primarily for Workbench 3.x applications.</td>
-      <td>Most lightweight, recommanded when no OSGi architecture is required.</td>
+      <td>Most lightweight, recommended when no OSGi architecture is required.</td>
     </tr>
     <tr>
       <th align="left" >OSGi</th>
