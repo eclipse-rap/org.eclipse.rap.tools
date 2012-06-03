@@ -85,7 +85,7 @@
     </li>
     <li><b>Browser History Support:</b> <code>IBrowserHistory</code>, <code>RWT</code><br/>
       RWT provides a mechanism to support the "back" and "forward" buttons of the browser that
-      has the RAP application loaded. Use <a></a><code>RWT.getBrowserHistory()</code></a> to access
+      has the RAP application loaded. Use <code>RWT.getBrowserHistory()</code> to access
       it. Note that there are known issues when using the browser history and the <code>Browser</code>
       widget in the same application.
       <br/><br/>
@@ -93,7 +93,7 @@
     <li><b>Multi-User Environment:</b> <code>ISettingsStore</code>, <code>IApplicationStore</code>, 
     <code>ISessionStore</code>, <code>IServiceStore</code>, <code>SessionSingletonBase</code>, <code>RWT</code><br/>
       Not directly related to the UI aspects of RWT, but a very important difference to SWT
-      is that RWT operates in a multi-user environment. This topic has its own <a>article</a>.
+      is that RWT operates in a multi-user environment. This topic has its own <a ="multi-user.html">article</a>.
     </li> 
   </ul>
   <h2>Notable Limitations</h2>
@@ -117,23 +117,23 @@
     </li>
     <li><b>Limitations in Dialogs:</b> <code>Dialog</code>, <code>ColorDialog</code>, 
     <code>FontDialog</code>, <code>MessageBox</code><br/>
-      When using the JEE compatibility <a>OperationMode</a>, dialogs do not block program execution.
-      Their return value can still be obtained using the <a><code>DialogUtil</code></a>.<br/><br/>
+      When using the JEE compatibility <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">OperationMode</a>, dialogs do not block program execution.
+      Their return value can still be obtained using the <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"><code>DialogUtil</code></a>.<br/><br/>
     </li>
-    <li><b>Limitations of the Browser widget</b>: <code>Browser</code> <br/>
+    <li id ="browser"><b>Limitations of the Browser widget</b>: <code>Browser</code> <br/>
       Since the <code>Browser</code> widget is based on the HTML <code>"iFrame"</code> element,
       all security restrictions regarding cross-frame-scripting apply. This means for 
       <code>executeScript</code>, <code>evaluate</code> and <code>BrowserFunction</code> to work,
       the document loaded in the <code>Browser</code>/<code>iFrame</code> has to come from the 
       same domain and port that the RAP application is loaded from. This is automatically given
       if the <code>setText</code> method is used.</br></br>
-      Also, when using the JEE compatibility <a>OperationMode</a>, the <code>executeScript</code>
+      Also, when using the JEE compatibility <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">OperationMode</a>, the <code>executeScript</code>
       and <code>evaluate</code> methods will not block program execution. Like with dialogs, a 
-      workaround is possible using the class <code>BrowserUtil</code>.  
+      workaround is possible using the class <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"><code>BrowserUtil</code></a>.  
     <br/><br/>
     </li>
     <li><b>Limitations in Mouse and Key Events:</b> <code>MouseEvent</code> and <code>KeyEvent</code><br/>
-      See "Mouse and Key Event Handling in RAP".<br/><br/>
+      See <q><a href = "key-and-mouse-events.html">Mouse and Key Event Handling in RAP</a></q>.<br/><br/>
     </li>
     <li><b>Limitations in Verify and Modify Events:</b> <code>ModifyEvent</code>, <code>VerifyEvent</code><br/>
         Modify and Verify events are not fired instantaneously, but with a small delay, possibly 
@@ -153,7 +153,7 @@
       When calling <code>Display#syncExec</code> or <code>Display#asyncExec</code> from a 
       background-thread, the UI may not be updated immediately. This is due to the client-server 
       architecture of RAP, in which only the client can send requests to the server. There is a 
-      solution for this provided by the class <a><code>UICallBack</code></a>. Read more about it <a>here</a>. 
+      solution for this provided by the class <a href = "../reference/api/org/eclipse/rwt/lifecycle/UICallBack.html"><code>UICallBack</code></a>. Read more about it <a href = "../advanced/server-push.html">here</a>. 
       Note that <code>timerExec</code> does, as of RAP 1.5, <em>not</em> require UICallBack anymore. 
       (It uses UICallBack internally.)
     </li>
