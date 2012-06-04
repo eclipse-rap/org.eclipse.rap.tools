@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="copyright"
+        content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title> Application Configuration </title>
+    <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+  </head>
+  <body>
+    <h1>Application Configuration</h1>
+      <em>
+        Note: This is about how to configure your RAP application in a 
+        <q>RAP with OSGi</q> or<q>RWT Standalone</q>
+        <a href = "application-setup.html#summary">setup</a>. When using a setup with Workbench,
+        see <q><a href = "branding.html">Branding</a></q>.
+      </em>
+      <h2>
+        Implementing an ApplicationConfiguration
+      </h2>
+      <p>
+        A RAP application consists of various parts, such as entrypoints, URL mappings, 
+        themes, service handlers, etc.
+        All these parts constitute an
+        <a href = "../reference/api/org/eclipse/rwt/application/ApplicationConfiguration.html"><code>
+          ApplicationConfiguration</code></a>
+        . The configuration is like the blueprint for an application. Based on an 
+        ApplicationConfiguration, the
+        framework can create and start an application instance. There can be more than one 
+        application instances at
+        runtime, e.g. running on different network ports or different servlet contexts.
+      </p>
+      <p>
+        An
+        <code>
+          ApplicationConfiguration
+        </code>
+        is used to configure an application before it is started. For this step, RAP follows a callback approach to
+        leave the responsibility for creating and starting the application with the framework. Therefore, the
+        configuration must actively configure the application. To do so, it has one method
+        <code>
+          configure( Application )
+        </code>
+        . The framework provides a reference to the created
+        <code>
+          Application
+        </code>
+        as a parameter to this method. Here’s how a simple implementation looks like:
+      </p><div><pre><code>public class SimpleConfiguration implements ApplicationConfiguration {
+ 
+  public void configure( Application application ) {
+    application.addEntryPoint( "/simple", SimpleEntryPoint.class, null );
+    application.addEntryPoint( "/other", AnotherEntryPoint.class, null );
+  }
+}
+</code></pre></div>
+      <h2>
+        Registering the ApplicationConfiguration
+      </h2>
+      <p>
+        When using OSGi, the
+        <code>
+          ApplicationConfiguration
+        </code>
+        can be registered as a service. We recommend using OSGi declarative services (DS) like this:
+      </p>
+
+</p><div><pre><code>&lt;scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0"&gt;
+   &lt;implementation class="com.example.SimpleConfiguration"/&gt;
+   &lt;service&gt;
+      &lt;provide interface="org.eclipse.rwt.application.ApplicationConfiguration"/&gt;
+   &lt;/service&gt;
+&lt;/scr:component&gt;
+</code></pre></div>
+      <p>
+        The bundle
+        <code>
+          org.eclipse.rap.rwt.osgi
+        </code>
+        will automatically start this application on every available HttpService. When using Equinox, don’t forget to
+        also include the
+        <code>
+          org.eclipse.equinox.ds
+        </code>
+        bundle. 
+      </p>
+      <p>
+        When using RWT as a library in a traditional web application, i.e. without OSGi, you can register your
+        <code>
+          ApplicationConfiguration
+        </code>
+        in the
+        <code>
+          web.xml
+        </code>
+        by adding a
+        <code>
+          context-param
+        </code>
+        with the fully qualified class name of the implementation:
+      </p>
+
+<div><pre><code>&lt;context-param&gt;
+  &lt;param-name&gt;org.eclipse.rap.applicationConfiguration&lt;/param-name&gt;
+  &lt;param-value&gt;com.example.ExampleConfiguration&lt;/param-value&gt;
+&lt;/context-param&gt;
+</code></pre></div>
+
+      <p>
+        You can always look up the param-name in the constant
+        <code>
+          ApplicationConfiguration#CONFIGURATION_PARAM
+        </code>
+        .
+      </p>
+      <h2>
+        Starting an Application
+      </h2>
+      <p>
+        When an ApplicationConfiguration has been registered as described above, the application is automatically
+        started by the framework. Alternatively, it can also be started explicitly using an
+        <code>
+          ApplicationRunner
+        </code>
+        :
+      </p>
+<div><pre><code>ApplicationConfiguration configuration = new SimpleConfiguration();
+ApplicationRunner runner = new ApplicationRunner( configuration, servletContext );
+runner.start();
+</code></pre></div>
+</body>
+</html>

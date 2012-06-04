@@ -34,20 +34,19 @@
   </topic>
   <topic label="Advanced Topics">
     <topic
-        label="Underlying Technologies"
-        href="help/html/advanced/underlying-technologies.html"/>
-    <topic
       label="Choosing a RAP Application Setup"
       href="help/html/advanced/application-setup.html"/>
+    <topic href="help/html/advanced/application-configuration.html" label="Application Configuration">
+    </topic>
     <topic
-      label="WAR Deployment"
-      href="help/html/advanced/deployment.html"/>
+        label="Branding"
+        href="help/html/advanced/branding.html"/>
     <topic
       label="RWT Standalone"
       href="help/html/advanced/rwt-standalone.html"/>
     <topic
-        label="Branding"
-        href="help/html/advanced/branding.html"/>
+      label="WAR Deployment"
+      href="help/html/advanced/deployment.html"/>
     <topic
         label="Look and feel"
         href="help/html/advanced/look-and-feel.html"/>
@@ -60,6 +59,9 @@
     <topic
         label="Custom Widgets"
         href="help/html/advanced/custom-widget.html"/>
+    <topic
+        label="Related Technologies"
+        href="help/html/advanced/underlying-technologies.html"/>
   </topic>
 
   <topic label="Reference">

@@ -55,7 +55,7 @@
     may be an issue for developing <a href = "../advanced/custom-widget.html#browser">browser-based custom widgets</a>.
   </p>
   
-  <h2>Workbench 3.x</h2>
+  <h2 id = "workbench">Workbench 3.x</h2>
   <p>
     If you're building an application based on the Eclipse 3.x workbench, you need a platform that
     includes the Equinox OSGi implementation and the extension registry.
@@ -80,7 +80,7 @@
     For RWT-Standalone application the RWT servlet is <a href = "rwt-standalone.html#deploy">configured directly</a> in the servers web.xml file.
   </p>
   
-  <h2>Summary</h2>
+  <h2 id = "summary">Summary</h2>
   <p>
   Here is a comparison of 3 typical RAP-setups: 
   </p>
@@ -107,19 +107,21 @@
       <th align="left" >Deployment</th>
       <td>OSGi container or embedded in web archive. Direct access to JEE contexts possible.</td>
       <td>OSGi container or embedded in web archive.</td>
-      <td>RWT servlet and application configured in web.xml. Direct access to JEE contexts possible. Clustering supported.</td>
+      <td>
+        <a href = "rwt-standalone.html#deploy">RWT servlet and application configured in web.xml.</a> 
+        Direct access to JEE contexts possible. Clustering supported.</td>
     </tr>
     <tr>
-      <th align="left" >Entry-point interface</th>
+      <th align="left" >Entry-point</th>
       <td><code>IEntryPoint</code></td>
       <td><code>IEntryPoint</code> or <code>IApplication</code></td>
       <td><code>IEntryPoint</code></td>
     </tr>
     <tr>
-      <th align="left" >Application Configuration via</th>
-      <td><a href = "../reference/api/org/eclipse/rwt/application/ApplicationConfiguration.html"><code>ApplicationConfiguration</code></a></td>
+      <th align="left" >Configuration</th>
+      <td><a href = "application-configuration.html">Application Configuration</a></td>
       <td><a href = "branding.html" >Branding</a></td>
-      <td><a href = "../reference/api/org/eclipse/rwt/application/ApplicationConfiguration.html"><code>ApplicationConfiguration</code></a></td>
+      <td><a href = "application-configuration.html">Application Configuration</a></td>
     </tr>
     <tr>
       <th align="left" >Operation Modes</th>
