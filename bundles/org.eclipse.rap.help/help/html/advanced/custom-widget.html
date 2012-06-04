@@ -40,13 +40,11 @@
     use a <a href = "../rwt/theming.html#variants">custom variants</a> to style the 
     <code>Composite</code> and its children.
   </p>
-  <p>
   <ul>
     <li>Writing a compound widget does not require any JavaScript knowledge.</li>
     <li>Cross-browser compatibility is ensured by RAP.</li>
     <li>The widgets are re-usable in desktop applications with SWT.</li>
   </ul>
-  </p>
   <h3 id="selfdrawing" >Self-drawing widgets</h3>
   <p>
     These are also simple in design.
@@ -58,13 +56,11 @@
     Especially in Internet Explorer 7 and 8, the performance degrades with the number of drawing
     operations.
   </p>
-  <p>
   <ul>
     <li>Writing a canvas widget does not require any JavaScript knowledge.</li>
     <li>Cross-browser compatibility is ensured by RAP.</li>
     <li>The widgets are re-usable in desktop applications with SWT.</li>
   </ul>
-  </p>
   <p>
     If performance becomes an issue and your custom widgets has layers or areas that need to be
     redrawn considerably less often than others, you should consider combining this with the
@@ -87,7 +83,6 @@
     efficient that the RAP-internal Ajax architecture. (Requests may be more frequent and
     block the UI because they are synchronous.)
   </p>
-  <p>
   <ul>
     <li>Writing a Browser-based widget requires only minor-to-moderate JavaScript knowledge, unless
     you write the client component from scratch.</li>
@@ -96,7 +91,6 @@
     <li>The widgets are re-usable in desktop applications with SWT when certain conditions apply
     (see below).</li>
   </ul>
-  </p>
   <h4>General Hints</h4>
   <p>
     When using the JEE compatibility <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">OperationMode</a>, the Browser <code>evaluate</code> 
@@ -138,6 +132,7 @@
     When a not all resources can be inlined in the HTML file (like images), and they are to be
     provided by the RAP application itself, there are multiple other options.
     However, the resulting custom widget will not work in an SWT application.
+  </p>
     <ul>
       <li>
         Make an entire folder available via the <code>org.eclipse.equinox.http.registry.resources</code>
@@ -158,7 +153,6 @@
         class. No other bundles than RWT are required. <i>A good example for this is the CKEdtior widget. <a href = "#ext4">[5]</a></i>
       </li>
     </ul>
-  </p>
   <h3 id="clientscripting" >ClientScripting-enhanced widgets</h3>
   <p>
     ClientScripting is a RAP Incubator component that allows adding client-side behavior to
@@ -173,7 +167,6 @@
     partially runs on the client, the difference is that ClientScripting provides an SWT-like API
     and does not require accessing RAP internals.
   </p>
-  <p>
   <ul>
     <li>Writing ClientScripting-enhanced widgets requires minor-to-moderate JavaScript knowledge,
     and no knowledge of any other browser technology.</li>
@@ -182,7 +175,6 @@
     <li>The widgets are currently not innately re-usable in desktop applications with SWT.
     However, some code can be shared between both platforms, and the rest is easily ported.</li>
   </ul>
-  </p>
   <p>
     ClientScripting is as of June 2012 not yet feature-complete.
     However, all existing API is stable and bugs can be reported in the RAP Bugzilla.
@@ -198,7 +190,6 @@
     that a native custom widget developed for one version of RAP will work in any future versions,
     as its partially based on internal API. This might be improved in RAP 2.0 (Kepler).
   </p>
-  <p>
   <ul>
     <li>Writing a native widget may require moderate-to-advanced knowledge of JavaScript, HTML/DOM, CSS
     and any other browser-technology you might want to use, in addition to a good knowledge of
@@ -207,8 +198,7 @@
     <li>Native custom widgets are not re-usable in SWT desktop applications unless an additional
     SWT-specific version is being developed.</li>
   </ul>
-  </p>
-  </p>
+  <p>
     We currently recommend to use any of the alternatives above. A native custom widget should
     only be required if for some reason you need to work directly with HTML/DOM API, and the
     Browser widget is considered too inefficient for your use case Detailed information 
@@ -238,9 +228,6 @@
       [7] <a href="http://wiki.eclipse.org/RAP/Custom_Widgets#RAP-native_Custom_Widget">RAP Wiki - Native Custom Widgets</a>
     </li>  
   </ul>
-  </p>
 
-  </ul>
-  
 </body>
 </html>

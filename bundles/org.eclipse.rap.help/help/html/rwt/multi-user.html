@@ -157,9 +157,8 @@ final Runnable runnable = new Runnable() {
 };
 new Thread( runnable ).start();
   </code></pre></div>
-  
-  
-  <h2>End of a Session</span></h3>
+
+  <h2>End of a Session</h2>
   <p>
     There are several ways to do some clean up before the session is destroyed. The first choice 
     in most cases is to attach an <code>SWT.Close</code> listener to the Display or register a 
@@ -192,10 +191,8 @@ display.disposeExec( new Runnable() {
     timeout value, adjust the setting on the "Main" tab. The timeout value can also be set on a 
     per session basis: 
   </p>
-   <div dir="ltr" style="text-align: left;"><pre><code>RWT.getSessionStore().getHttpSession().setMaxInactiveInterval(<timeout in Seconds>); 
-   
+   <div dir="ltr" style="text-align: left;"><pre><code>RWT.getSessionStore().getHttpSession().setMaxInactiveInterval(&lt;timeout in Seconds&gt;); 
    </code></pre></div>
 
-</source>  
 </body>
 </html>

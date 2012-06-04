@@ -25,11 +25,12 @@
     Instead, many of the additional features are activated using the widgets <code>setData</code> 
     method, using a constant from the <code> RWT</code> class as the key. <br/>
    </p>
+  <p>
     Example: <code>table.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );</code>
   </p>
   <h2>Notable Additional Features</h2>
   <ul>
-    <li>
+    <li style = "margin-bottom:20px">
       <b>HTTP File Upload:</b> <code>FileUpload</code><br/>
       Unlike SWT, RWT can not simply access the file system of the user and read data from it.
       As an alternative, the <code>FileUpload</code> widget can be used. The widget looks like a 
@@ -39,18 +40,17 @@
       not handle <i>receiving</i> it. If you require a complete solution for uploading and 
       opening the file in your application, consider using the 
       <a href = "http://wiki.eclipse.org/RAP/Incubator/File_Upload">FileDialog</a> 
-      implementation based on the FileUpload widget.</br></br>
+      implementation based on the FileUpload widget.
     </li>
-    <li>
+    <li style = "margin-bottom:20px">
       <b>Open new Browser-Window:</b> <code>ExternalBrowser</code><br/>
       This widget allows opening and closing an URL a new browser window or tab. (Depending on the
       browsers configuration, this may be prevented by a popup-blocker). The users RAP session is 
       not affected by this. Unlike the <code>Browser</code> widget, the content of an 
       <code>ExternalBrowser</code> can not communicate
       with the RAP application.
-      </br></br>
     </li>
-    <li>
+    <li style = "margin-bottom:20px">
        <b>Markup:</b> 
          <code>Label</code>,
          <code>CLabel</code>,
@@ -63,9 +63,8 @@
        <code>RWT.CUSTOM_ITEM_HEIGHT</code> constants. To achieve similar effects in SWT, the 
        application would have to draw on the widget using a <code>PaintListener</code>. 
        This is not supported in RWT except on Canvas.
-    <br/><br/>
     </li>
-    <li><b>Fixed Columns:</b> 
+    <li style = "margin-bottom:20px"><b>Fixed Columns:</b> 
       <code>Tree</code> and 
       <code>Table</code>
     <br/>
@@ -74,52 +73,50 @@
       columns, which may contain vital information that should be visible at all times.
       Using <code>RWT.FIXED_COLUMNS</code>, it is possible to exclude any number of leftmost
       columns from scrolling, so that they always "float" on the left border of the tree or table.
-      <br/><br/>
     </li> 
-    <li><b>Theming:</b> All Widgets<br/>
+    <li style = "margin-bottom:20px"><b>Theming:</b> All Widgets<br/>
       In SWT the default visual representation of an widget is determined by the operating
       system. In RAP this is done by its CSS-theming, which developers can 
       <a href = "../advanced/theming.html#variants">enhance or modify</a>.
       Since the RAP theming has more options to change the look of an widget than the SWT API 
       offers, specific widget instances can also be themed with CSS using
-      <a href = "../advanced/theming.html#variants">custom variants</a>.<br/><br/> 
+      <a href = "../advanced/theming.html#variants">custom variants</a>. 
     </li>
-    <li><b>Browser History Support:</b> <code>IBrowserHistory</code>, <code>RWT</code><br/>
+    <li style = "margin-bottom:20px"><b>Browser History Support:</b> <code>IBrowserHistory</code>, <code>RWT</code><br/>
       RWT provides a mechanism to support the "back" and "forward" buttons of the browser that
       has the RAP application loaded. Use <code>RWT.getBrowserHistory()</code> to access
       it. Note that there are known issues when using the browser history and the <code>Browser</code>
       widget in the same application.
-      <br/><br/>
     </li> 
-    <li><b>Multi-User Environment:</b> <code>ISettingsStore</code>, <code>IApplicationStore</code>, 
+    <li style = "margin-bottom:20px"><b>Multi-User Environment:</b> <code>ISettingsStore</code>, <code>IApplicationStore</code>, 
     <code>ISessionStore</code>, <code>IServiceStore</code>, <code>SessionSingletonBase</code>, <code>RWT</code><br/>
       Not directly related to the UI aspects of RWT, but a very important difference to SWT
-      is that RWT operates in a multi-user environment. This topic has its own <a ="multi-user.html">article</a>.
+      is that RWT operates in a multi-user environment. This topic has its own <a href = "multi-user.html">article</a>.
     </li> 
   </ul>
   <h2>Notable Limitations</h2>
   <ul>
-    <li><b>Unimplemtend Features:</b> Touch Events, Accessibility</br>
+    <li style = "margin-bottom:20px"><b>Unimplemtend Features:</b> Touch Events, Accessibility<br/>
       While the API for touch event handling and accessibility configuration is present in RWT,
-      it does not natively support either. This is a valid implementation according to SWT documentation.<br/><br/>
+      it does not natively support either. This is a valid implementation according to SWT documentation.
     </li>
-    <li><b>Unimplemented Widgets:</b>
+    <li style = "margin-bottom:20px"><b>Unimplemented Widgets:</b>
       <code>StyledText</code>, <code>Tracker</code>, <code>TaskBar</code>, <code>Tray</code><br/>
-      These widgets are currently not available in RWT.<br/><br/>
+      These widgets are currently not available in RWT.
     </li>
-    <li><b>Drawing Limitations:</b> <code>GC</code>, <code>Canvas</code> and <code>PaintListener</code>:<br/>
+    <li style = "margin-bottom:20px"><b>Drawing Limitations:</b> <code>GC</code>, <code>Canvas</code> and <code>PaintListener</code>:<br/>
       SWT can paint on any widget or image, while RAP currently only allows it on the <code>Canvas</code> widget.
       In some cases the <code>drawText</code>, <code>drawString</code> and <code>drawImage</code> 
       methods may disregard the drawing order and overlap elements that are drawn later. 
       Some methods are unimplemented, including <code>copyArea</code>, <code>drawPath</code>, 
       <code>setClipping</code>, <code>setTransform</code>, <code>setInterpolation</code> 
       <code>setLineDash</code> and <code>setXORMode</code>. Performance and result of a drawing
-      operation can differ depending on the browser. See also Self-Drawing custom widget.<br/><br/>
+      operation can differ depending on the browser. See also Self-Drawing custom widget.
     </li>
-    <li><b>Limitations in Dialogs:</b> <code>Dialog</code>, <code>ColorDialog</code>, 
+    <li style = "margin-bottom:20px"><b>Limitations in Dialogs:</b> <code>Dialog</code>, <code>ColorDialog</code>, 
     <code>FontDialog</code>, <code>MessageBox</code><br/>
       When using the JEE compatibility <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">OperationMode</a>, dialogs do not block program execution.
-      Their return value can still be obtained using the <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"><code>DialogUtil</code></a>.<br/><br/>
+      Their return value can still be obtained using the <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"><code>DialogUtil</code></a>.
     </li>
     <li id ="browser"><b>Limitations of the Browser widget</b>: <code>Browser</code> <br/>
       Since the <code>Browser</code> widget is based on the HTML <code>"iFrame"</code> element,
@@ -127,30 +124,27 @@
       <code>executeScript</code>, <code>evaluate</code> and <code>BrowserFunction</code> to work,
       the document loaded in the <code>Browser</code>/<code>iFrame</code> has to come from the 
       same domain and port that the RAP application is loaded from. This is automatically given
-      if the <code>setText</code> method is used.</br></br>
+      if the <code>setText</code> method is used.<br/><br/>
       Also, when using the JEE compatibility <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">OperationMode</a>, the <code>executeScript</code>
       and <code>evaluate</code> methods will not block program execution. Like with dialogs, a 
       workaround is possible using the class <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"><code>BrowserUtil</code></a>.  
-    <br/><br/>
     </li>
-    <li><b>Limitations in Mouse and Key Events:</b> <code>MouseEvent</code> and <code>KeyEvent</code><br/>
-      See <q><a href = "key-and-mouse-events.html">Mouse and Key Event Handling in RAP</a></q>.<br/><br/>
+    <li style = "margin-bottom:20px"><b>Limitations in Mouse and Key Events:</b> <code>MouseEvent</code> and <code>KeyEvent</code><br/>
+      See <q><a href = "key-and-mouse-events.html">Mouse and Key Event Handling in RAP</a></q>.
     </li>
-    <li><b>Limitations in Verify and Modify Events:</b> <code>ModifyEvent</code>, <code>VerifyEvent</code><br/>
+    <li style = "margin-bottom:20px"><b>Limitations in Verify and Modify Events:</b> <code>ModifyEvent</code>, <code>VerifyEvent</code><br/>
         Modify and Verify events are not fired instantaneously, but with a small delay, possibly 
         combining a number of changes into one event. Also, the values of the 
         <code>VerifyEvent</code> fields <code>text</code>, <code>start</code> and <code>end</code> 
         currently always report the entire text to have changed. The ClientScripting project was 
         created specifically to work around these limitations.
-     </br></br>
     </li>
-    <li><b>Limitations in Drag and Drop:</b> <code>DragSourceEvent</code>, <code>DropTargetEvent</code><br/>
+    <li style = "margin-bottom:20px"><b>Limitations in Drag and Drop:</b> <code>DragSourceEvent</code>, <code>DropTargetEvent</code><br/>
       In <code>DragSourceEvent</code>, the fields <code>image</code>, <code>offsetX</code> and
       <code>offsetY</code> have no effect. <code>DropTargetEvent</code>s may be omitted while the
       mouse cursor is still in motion.
-      </br></br>
     </li>
-    <li><b>Limitations of syncExec and asyncExec:</b> <code>Display</code><br/>
+    <li style = "margin-bottom:20px"><b>Limitations of syncExec and asyncExec:</b> <code>Display</code><br/>
       When calling <code>Display#syncExec</code> or <code>Display#asyncExec</code> from a 
       background-thread, the UI may not be updated immediately. This is due to the client-server 
       architecture of RAP, in which only the client can send requests to the server. There is a 
