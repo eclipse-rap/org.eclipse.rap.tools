@@ -11,60 +11,98 @@
 <body>
   <h1>Multi User Environment</h1>
   <p>
-    In a desktop environment, an instance of an GUI-application is used by only one user at a time, and the OS usually provides
-    a user-specific storage on the file system. In RAP, an application can have multiple users 
-    on multiple UIs at the same time, which also have nothing to do with the users of the servers OS.
-    A scenario that would call for a traditional singleton pattern in an SWT application,
-    might require a session-specific solution in RAP. That is why RWT provides several 
-    data-stores with specific scopes. <br/><br/>
+    In a desktop environment, an instance of an GUI-application is used by only one user at a time, 
+    runs in its own Java-VM instance, and the OS usually provides a user-specific storage on the 
+    file system. In RAP, a server might run several applications, which can each have multiple 
+    users on multiple UIs at the same time. For that reason, RWT provides new methods
+    to store data and class instances with specific scopes. 
   </p>
+  <h2> Data Stores </h2>
+  <p>
+    These allow storing objects using a string as a key. The data is saved as long as the 
+    specific scope exists. 
+  </p>
+
   <table border = "1" cellpadding = "3" cellspacing = "0">
     <tr>
-      <th align="left" >Interface</th>
-      <th align="left" >Scope</th>
+      <th align="left" >Store</th>
       <th align="left" >Access</th>
-      <th align="left" >Notes</th>
+      <th align="left" >Scope</th>
+      <th align="left" >cleared</th>
     </tr>
     <tr>
       <td><code>ISettingsStore</code></td>
-      <td>user</td>
       <td><code>RWT.getSettingStore();</code></td>
-      <td>Requires cookie-enabled browser.</td>
+      <td>user</td>
+      <td>when workign directory is cleared</td>
     </tr>
     <tr>
       <td><code>IApplicationStore</code></td>
-      <td>application</td>
       <td><code>RWT.getApplicationStore();</code></td>
-      <td>Same instance across all sessions of an application instance.</td>
+      <td>application</td>
+      <td>on application stop/restart</td>
     </tr>
     <tr>
       <td><code>ISessionStore</code></td>
-      <td style = "white-space:nowrap" >user-session</td>
       <td><code>RWT.getSessionStore();</code></td>
-      <td>Lost after session ends.</td>
-    </tr>
-    <tr>
-      <td><code>SessionSingletonBase</code></td>
       <td style = "white-space:nowrap" >user-session</td>
-      <td style = "white-space:nowrap;font-size:smaller"><code>SessionSingletonBase.getInstance( Class type );</code></td>
-      <td>Can be used to obtain a session-unique instance of a given class.</td>
+      <td>when session expires</td>
     </tr>
     <tr>
       <td><code>IServiceStore</code></td>
-      <td style = "white-space:nowrap" >HTTP-request</td>
       <td><code>RWT.getServiceStore();</code></td>
-      <td>Usually not needed for application development.</td>
+      <td style = "white-space:nowrap" >HTTP-request</td>
+      <td>after HTTP request ends</td>
     </tr>
   </table>
+  <p>Notes:</p>
+  <ul>
+    <li>
+      The settings store uses a cookie to identify a returning user. The cookie expires after
+      3 months, but may also be deleted by the user before then.
+    </li>
+    <li>The session store also provides access to the HTTP session.</li>
+    <li>The session store can not be accessed directly from a background thread. See example below.</li>
+    <li>For working with session-unique singletons, see <q><a href = "#singleton">Session Singleton </a></q>.</li>
+    <li>The service store is usually not required for application development.</li>
+  </ul>
+  <p>
+    Example for accessing the HTTP session / session store from a background thread: 
+  </p>
+  <div dir="ltr" style="text-align: left;"><pre><code>final Display display = new Display();
+final Runnable bgRunnable = new Runnable() {
+  public void run() {
+    UICallBack.runNonUIThreadWithFakeContext( display, new Runnable() {
+      public void run() {
+        Object someValue = RWT.getSessionStore().getAttribute( "myAtt" );
+        System.out.println( someValue );
+        // access the HTTP session
+        RWT.getSessionStore().getHttpSession();
+      }
+    } );
+  }
+};
+Shell shell = new Shell( display );
+Button button = new Button( shell, SWT.PUSH );
+button.setText( "Start Background Thread" );
+button.addSelectionListener( new SelectionAdapter() {
+  public void widgetSelected( final SelectionEvent evt ) {
+    RWT.getSessionStore().setAttribute( "myAtt", "someValue" );
+    Thread thread = new Thread( bgRunnable );
+    thread.setDaemon( true );
+    thread.start();
+  }
+} );
+  </code></pre></div>
 
-  <h2> Session Singleton </h2>
+  <h2 id = "singleton"> Session Singleton </h2>
 
   <p>
-    A "session singleton" is an RWT-specific singleton, which provides access to a unique instance 
+    A "session singleton" provides access to a unique class instance 
     with session scope. This means that in the context of one user session 
     <code>getInstance(Class)</code> will always return the same object, but for different user 
-    sessions the returned instances will be different. To archive it's "magic", session singletons 
-    should call SessionSingletonBase#getInstance(), which takes care of the proper scoping of the 
+    sessions the returned instances will be different. To archive this, session singletons 
+    should call <code>SessionSingletonBase#getInstance()</code>, which takes care of the proper scoping of the 
     singleton instances. The following code snippet illustrates this pattern: 
   </p>
   <div dir="ltr" style="text-align: left;"><pre><code>public class MySessionSingleton {
@@ -79,10 +117,9 @@
 }
   </code></pre></div>
   <p>
-    Accessing session singletons is possible only from threads which are associated with a session. 
-    The <code>UIThread</code> always has a such an association, therefore any code running in this 
-    thread can freely access session singletons. Any non-UI (i.e. "background") thread, trying to 
-    access session singletons, will fail and a <code>java.lang.IllegalStateException</code> will be 
+    As with the session store, it is not possible to accessing session singletons from a background thread. Any non-UI 
+    thread trying to access session singletons will fail and a 
+    <code>java.lang.IllegalStateException</code> will be 
     thrown. The solution is to temporarily associate the thread with a session. 
     Use <code>UICallBack#runNonUIThreadWithFakeContext</code>, to fakes a "request context" that 
     allows the runnable code to access those singletons. 
@@ -119,44 +156,6 @@ final Runnable runnable = new Runnable() {
   }
 };
 new Thread( runnable ).start();
-  </code></pre></div>
-  <h2> How to access the HTTP session / session store? </h2>
-  <p>
-    In RAP, the session store is the preferred way to store information in the session context. 
-    However it also provides access to the HTTP session (see the code below). For working with 
-    session singletons, please use the <code>SessionSingletonBase</code> class.
-  </p>
-  <p>
-    Access the HTTP session / session store from the UI thread: 
-    <code>HttpSession session = RWT.getSessionStore().getHttpSession();</code> 
-  </p>
-  <p>
-    Access the HTTP session / session store from a background thread: 
-  </p>
-  <div dir="ltr" style="text-align: left;"><pre><code>final Display display = new Display();
-final Runnable bgRunnable = new Runnable() {
-  public void run() {
-    UICallBack.runNonUIThreadWithFakeContext( display, new Runnable() {
-      public void run() {
-        Object someValue = RWT.getSessionStore().getAttribute( "myAtt" );
-        System.out.println( someValue );
-        // access the HTTP session
-        RWT.getSessionStore().getHttpSession();
-      }
-    } );
-  }
-};
-Shell shell = new Shell( display );
-Button button = new Button( shell, SWT.PUSH );
-button.setText( "Start Background Thread" );
-button.addSelectionListener( new SelectionAdapter() {
-  public void widgetSelected( final SelectionEvent evt ) {
-    RWT.getSessionStore().setAttribute( "myAtt", "someValue" );
-    Thread thread = new Thread( bgRunnable );
-    thread.setDaemon( true );
-    thread.start();
-  }
-} );
   </code></pre></div>
   
   
