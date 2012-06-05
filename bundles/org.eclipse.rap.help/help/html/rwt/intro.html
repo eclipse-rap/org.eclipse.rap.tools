@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Introduction to the RAP Widget Toolkit</title>
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+  <h1>Introduction to the RAP Widget Toolkit</h1>
+  <p>
+    At the core of RAP operates the RAP Widget Toolkit (RWT), which largely implements the same 
+    API as the Standard Widget Toolkit (SWT). That is why many projects that build upon SWT 
+    (including JFace and Workbench) can run on RWT with little or no modifications. It can
+    also be used without the workbench layer.
+   </p>
+  <p>
+    <small>NOTE: "RWT" refers to <em>only</em> this toolkit specifically, while "RAP" refers to the project in its entirety, 
+    including its ports of JFace, Workbench and Forms, the OSGI integration, Branding and 
+    Interaction Design API, tooling, demos and custom themes.</small>
+  </p>
+  <p>
+    Among the features that RWT inherited from SWT are:
+  </p>
+    <ul>
+      <li>40+ Widgets and widget-specific events </li>
+      <li>10 Layout Manager</li>
+      <li>Key and Mouse Event Handling</li>
+      <li>Drag and Drop Support</li>
+      <li>Graphics/Painting Support (Canvas) </li>
+    </ul>
+  <p>
+    New features may be added to RWT if there is a strong demand for it, and it's technically 
+    feasible. If a feature is already present SWT but not in RWT, it may often (but not always) be 
+    because it's hard or impossible to implement in RWT.
+   </p>
+   <p>
+     To learn the SWT basics (which are all valid for RWT), we recommend reading the documentation
+     and snippets provided by the <a href = "http://www.eclipse.org/swt">SWT project homepage</a>.
+     A full reference specific to RWT can be found <a href = "../reference/api/overview-summary.html" >here</a>. 
+   </p>
+   <p>
+    SWT was developed for desktop applications, but RWT is used to build web applications. For this 
+    reason, there are some features that SWT supports that RWT can not, while RWT adds some features 
+    that are tailored to the specific requirements of web application development. 
+  </p>
+  <ul>
+    <li> 
+      For a list of all noteable additions and limitations of RWT,
+      read <q><a href = "differences.html">Differences between the RAP Widget Toolkit and SWT</a></q>.
+    </li>
+    <li>
+      While key and mouse events generally work like in SWT, there are some 
+      specifics you should be aware of. The topic has its own chapter: <q><a href = "key-and-mouse-events.html">Key and Mouse Event Handling</a></q>.
+    </li>
+    <li>
+      Also noteworthy is also the topic of the multi-user-environment related features, which
+      are handled in the <q><a href = "multi-user.html">Multi User Environment</a></q> chapter.
+    </li>
+    <li>
+      To give your application a modern, web-like look and feel, you can use the <q><a href = "theming.html">RWT Theming</a></q> mechanism.
+    </li>
+  </ul>
+</body>
+</html>

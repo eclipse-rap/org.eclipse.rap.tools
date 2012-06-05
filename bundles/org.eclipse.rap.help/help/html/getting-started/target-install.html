@@ -1,46 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <title>Install Target Manually</title>
-  </head>
-  <body>
-    <h1>Install Target Manually</h1>
-    <p>
-      This step is only required, if you haven't already set up your target platform. This 
-      <a href="setup-ide.html#target-install">can be done automatically</a> with RAP Tools. 
-      However, in some  cases you may want to choose a different version of RAP as a target for your
-      application.
-    </p>
-    <p>
-      <ol>
-        <li>Open <b>Window &gt; Preferences</b> and go to the <b>Plug-in
-          Development &gt; Target Platform</b> preference page.</li>
-        <li>Add a new target definition and initialize it with "nothing".</li>
-        <li>On the next page, click <b>Add</b> and choose <b>Software Site</b>
-          from the Add Content wizard.</li>
-        <li>On the following page, enter the URL to the RAP software repository
-          in the <b>Work with</b> field and press enter. These repositories are
-          currently available:
-          <ul>
-            <li><b>RAP 1.2</b>: http://download.eclipse.org/rt/rap/1.2/runtime-update</li>
-            <li><b>RAP 1.3</b>: http://download.eclipse.org/rt/rap/1.3/runtime</li>
-            <li><b>RAP 1.4</b>: http://download.eclipse.org/rt/rap/1.4/runtime</li>
-            <li><b>RAP 1.5</b>: http://download.eclipse.org/rt/rap/1.5/runtime</li>
-          </ul>
-          </li>
-        <li>Select the target to install from the list below.</li>
-        <li>Make sure the checkbox <b>Include required software</b> is <b>not
-          checked</b>.</li>
-        <li>Click <b>Finish</b>. After the download is completed, click <b>Finish</b>
-          again to save the new target definition.</li>
-        <li>Activate the new target on the target platform preference page.</li>
-      </ol>
-    </p>
-    <p>
-      Note: if doing this with a workspace that already contains projects that
-      depend on the target, you may get compile errors. Restarting Eclipse and/or
-      doing a clean build will help.
-    </p>
-  </body>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Installing a RAP Target</title>
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+
+  <h1>Installing a RAP Target</h1>
+  <p>
+    The latest RAP target can be installed using the target installer included in the RAP Tools.
+    But you can also install a target manually, e.g. if you want to develop against a different
+    version of RAP or combine RAP with other bundles.
+    See <a href="http://wiki.eclipse.org/PDE/Target_Definitions">this Eclipse wiki article</a>
+    for more information about target definitions.
+  </p>
+
+  <h2>Create a Target Definition</h2>
+  <p>
+    To select a target platform you can either use the Target Platform preferences page
+    (<em>Window &gt; Preferences &gt; Plug-in Development &gt; Target Platform</em>) or create
+    a <em>target definition file</em>.
+    The latter is preferable, as target definition files can be checked in into your source code
+    repository and shared among team members.
+  </p>
+  <ol>
+    <li>
+      First, you may want to create a project to host your target definition files.
+      A plain project will do (<em>File &gt; New &gt; General &gt; Project</em>).
+    </li>
+    <li>
+      In this new project, create a new target definition:
+      <em>New &gt; Plug-In Development &gt; Target Definition</em>.
+      Chose a name like <em>rap-custom.target</em> and press <em>Finish</em>.
+    </li>
+    <li>
+      The target editor will open and show the contents of this target definition.
+      Now, add the RAP runtime from a p2 repository a.k.a. software site:
+      press <em>Add</em>, select <em>Software Site</em>.
+      You'll be confronted with another dialog, named <em>Add Software Site</em>.
+    </li>
+    <li>
+      Again press <em>Add</em> and enter the URL of the RAP runtime repository.
+      You find these URLs on the RAP <a href="http://eclipse.org/rap/downloads/">download page</a>,
+      e.g.
+      <ul>
+        <li>
+          for RAP 1.4: http://download.eclipse.org/rt/rap/1.4/runtime
+        </li>
+        <li>
+          for RAP 1.5: http://download.eclipse.org/rt/rap/1.5/runtime
+        </li>
+      </ul>
+      Hint: You can also install the RAP runtime directly from a download zip archive.
+      In this case, press <em>Archive…</em> and select the zip file.
+    </li>
+    <li>
+      For a basic RAP target, select the category <em>Rich Ajax Platform (RAP)</em>.
+      This category contains two features:
+      The RAP runtime itself (<em>RAP Target Components</em>),
+      and a set of Eclipse bundles needed for a basic RAP target (<em>Basic Target Requirements</em>).
+    </li>
+    <li>
+      <strong>Important:</strong> Before you click <em>finish</em>, make sure the checkbox
+      <em>Include required software</em> is <em>not</em> checked.
+    </li>
+    <li>
+      Activate the target platform by clicking the link <em>Set as Target Platform</em> in the
+      upper right corner of the target definition editor.
+    </li>
+  </ol>
+
+</body>
 </html>

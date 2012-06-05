@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Server Push</title>
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -11,7 +11,7 @@
 <body>
 
   <h1>Server Push</h1>
-
+   <h2>The Challenge</h2>
   <p>
     Sometimes it's necessary to “push” UI updates from the web server to the browser client.
     As an example, imagine a chat application that notifies the user of a chat request from a peer.
@@ -25,41 +25,25 @@
     is idle, there's no request that could fetch the UI updates from the server.
   </p>
   <p>
-    But HTTP is not designed to push data to the client.
-    An HTTP server can only answer reqests from a client, but it cannot actively send any message
-    to the client.
-    There are basically two different approaches to tackle this problem, polling and Comet.
+    HTTP is not designed to push data to the client.
+    An HTTP server can only answer requests from a client, but it cannot actively send any message
+    to the client. In modern browser there is the WebSocker API which solves this problem in a
+    standardized way, but browser support has yet to hit a state where it would efficiently 
+    implementable in RAP. There are basically two different approaches to tackle this problem, 
+    polling and Comet.
   </p>
 
   <h2>Polling</h2>
-
   <p>
-    The simple approach is to make the client issue requests at a steady interval.
-    If any changes have occured to the UI on the server, the server will send the UI updates in
-    response.
-  </p>
-  <p>
-    The implementation is simple in RAP.
-    The client needs to schedule a timer that sends an empty request to the server.
-    The server will send any pending UI changes in response.
-    The Javascript code to enable polling looks like this:
-  </p>
-  <pre><code>
-  String code =   &quot;window.setInterval( function() {\n&quot;
-                + &quot;  org.eclipse.swt.Request.getInstance().send();\n&quot;
-                + &quot;}, 20000 );&quot;; // polling interval in ms
-  JSExecutor.executeJS( code );
-  </code></pre>
-  <p>
-    Please note that this code makes use of internal API which may change without notice.
-  </p>
-  <p>
-    The polling approach may be an option when updates doesn't have to come timely.
-    The shorter the interval, the more network load is added by sending unneccessary requests
-    frequently.
+    One approach would be to make the client issue requests at a steady interval.
+    If any changes have occurred to the UI on the server, the server will send the UI updates in
+    response. This can also be <a href = "http://wiki.eclipse.org/RAP/UI_Callback#Alternative:_Polling">achieved in RAP</a>, but is not officially supported. 
+    However, this is only an option when updates doesn't have to come timely. More importantly,
+    the shorter the interval, the more network load is added by sending unnecessary requests
+    frequently. It is therefore often not a effective solution.
   </p>
 
-  <h2>Comet (UI Callback)</h2>
+  <h2 id = "uicallback">UI Callback ("Comet") </h2>
 
   <p>
     With the so-called Comet approach, the server is able to notify the client <em>immediately</em>
@@ -79,9 +63,10 @@
   <p>
     This has to be done from the UI thread, since otherwise the activation cannot be transferred to
     the client anymore.
-    The id passed to the activate method is only needed to identify the caller.
-    After the background task has completed and the UI callback is no longer needed, it should be
-    deactivated using the same id:
+    The id passed to the activate method is only needed to identify the caller. It has to be 
+    unique within the current session and should have a meaningful name, for example one that 
+    identifies the reason why the UICallBack is activated. After the background task has completed 
+    and the UI callback is no longer needed, it should be deactivated using the same id:
   </p>
   <pre><code>
   UICallBack.deactivate( "my unique id" );
@@ -89,7 +74,7 @@
   <p>
     When different instances require the UI callback at the same time, only one standing request
     will be opened by the client.
-    The UI callback system is deactivated when the last instance has called deactivate.
+    The UI callback system is deactivated only when the last instance has called deactivate.
   </p>
   <p>
     More technical details of the UI callback implementation can be found on the
