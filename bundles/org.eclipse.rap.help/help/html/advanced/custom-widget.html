@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
+
   <h1>How to Create a Custom Widget for RAP?</h1>
   <p>
     Like in SWT, you can also create custom widgets to extend the RAP widget set to your needs.
@@ -21,23 +22,25 @@
     that has an SWT-like API and inherits some methods from an SWT super class.
     Therefore you should make yourself familiar with some important rules of SWT before you get
     started.<br/><br/>
-    We highly recommend to read this article by the creators of SWT. <a href = "#ext1">[1]</a><br/>
-    The RAP Wiki may cover more recent issues regarding custom widgets. <a href = "#ext2">[2]</a><br/>
+    We highly recommend to read this article by the creators of SWT. <a href="#ext1">[1]</a><br/>
+    The RAP Wiki may cover more recent issues regarding custom widgets. <a href="#ext2">[2]</a><br/>
   </p>
+
   <h2>Different types of custom widgets</h2>
   <p>
     These types differ a lot with regard to the features they support, the dependency on a certain
     platform, and also the effort and knowledge it takes to create them.
   </p>
-  <h3 id="compound" >Compound widgets</h3>
+
+  <h3 id="compound">Compound widgets</h3>
   <p>
     These are the simplest ones.
     Compound widgets are compositions of existing SWT/RAP widgets.
     These widgets have to extend <code>Composite</code>.
     There is no fundamental difference between SWT and RAP for compound widgets.
-    Everything that is said about compound widgets in <a href = "#ext1">[1]</a> also applies to RAP.
-    f you want to make your compound widget visually distinct, 
-    use a <a href = "../rwt/theming.html#variants">custom variants</a> to style the 
+    Everything that is said about compound widgets in <a href="#ext1">[1]</a> also applies to RAP.
+    If you want to make your compound widget visually distinct,
+    use a <a href="../rwt/theming.html#variants">custom variants</a> to style the
     <code>Composite</code> and its children.
   </p>
   <ul>
@@ -45,13 +48,13 @@
     <li>Cross-browser compatibility is ensured by RAP.</li>
     <li>The widgets are re-usable in desktop applications with SWT.</li>
   </ul>
-  <h3 id="selfdrawing" >Self-drawing widgets</h3>
+  <h3 id="selfdrawing">Self-drawing widgets</h3>
   <p>
     These are also simple in design.
     Sometimes you might want a widget that completely draws itself.
     This can be done by extending <code>Canvas</code>.
     The canvas widget supports drawing in a paint listener.
-    For writing this kind of widgets, you can also follow <a href = "#ext1">[1]</a>.
+    For writing this kind of widgets, you can also follow <a href="#ext1">[1]</a>.
     Please note that the drawing capabilities of RAP are limited compared to SWT.
     Especially in Internet Explorer 7 and 8, the performance degrades with the number of drawing
     operations.
@@ -69,7 +72,9 @@
     Note that modern browser draw very fast, so the impact of this strategy is much less noticeable
     than with older ones like Internet Explorer 7. (Though you also safe some traffic.)
   </p>
-  <h3 id="browser" >Browser-based widgets</h3>
+
+  <h3 id="browser">Browser-based widgets</h3>
+
   <h4>Overview</h4>
   <p>
     These can still be rather simple.
@@ -84,21 +89,29 @@
     block the UI because they are synchronous.)
   </p>
   <ul>
-    <li>Writing a Browser-based widget requires only minor-to-moderate JavaScript knowledge, unless
-    you write the client component from scratch.</li>
-    <li>Cross-browser compatibility is ensured by RAP only for the Browser widget itself, but
-    not for the code that is running inside it.</li>
-    <li>The widgets are re-usable in desktop applications with SWT when certain conditions apply
-    (see below).</li>
+    <li>
+      Writing a Browser-based widget requires only minor-to-moderate JavaScript knowledge, unless
+      you write the client component from scratch.
+    </li>
+    <li>
+      Cross-browser compatibility is ensured by RAP only for the Browser widget itself, but
+      not for the code that is running inside it.
+    </li>
+    <li>
+      The widgets are re-usable in desktop applications with SWT when certain conditions apply
+      (see below).
+    </li>
   </ul>
+
   <h4>General Hints</h4>
   <p>
-    When using the JEE compatibility <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">OperationMode</a>, the Browser <code>evaluate</code> 
-    method works differently. Read about it <a href = "../rwt/differences.html#browser">here</a>
-    and <a href = "application-setup.html#compat">here</a>. 
-    If your custom widget is supposed to implement
-    getter that needs to obtain a value using <code>evaluate</code>, do not use the JEE 
-    compatibility mode.
+    When using the JEE compatibility
+    <a href="../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">OperationMode</a>,
+    the Browser <code>evaluate</code> method works differently.
+    Read about it <a href="../rwt/differences.html#browser">here</a> and
+    <a href="application-setup.html#compat">here</a>. 
+    If your custom widget is supposed to implement getter that needs to obtain a value using
+    <code>evaluate</code>, do not use the JEE compatibility mode.
   </p>
   <p>
     Remember not to subclass <code>Browser</code> but extend <code>Composite</code> instead and
@@ -117,6 +130,7 @@
     <code>BrowserFunctions</code> take any number of arguments and can return several values using
     an array of Object.
   </p>
+
   <h4>How to load required resources</h4>
   <p>
     It's important to decide how your resources (HTML JavaScript, CSS and image files) are
@@ -125,64 +139,76 @@
     HTTP-server, it will suffice to use the <code>setText</code> method of the browser widget.
     The resulting custom widget will also run in an SWT application. However, when using
     <code>setText</code> the Browser can not cache the loaded document, so each new instance has
-    to load and parse it again. <i> A good example of a
-    “mashup” custom widget using this strategy is the <code>Browser</code>-based Google Maps widget. <a href = "#ext3">[3]</a></i>
+    to load and parse it again.
+    A good example of a “mashup” custom widget using this strategy is the
+    <code>Browser</code>-based Google Maps widget.
+    <a href="#ext3">[3]</a>
   </p>
   <p>
     When a not all resources can be inlined in the HTML file (like images), and they are to be
     provided by the RAP application itself, there are multiple other options.
     However, the resulting custom widget will not work in an SWT application.
   </p>
-    <ul>
-      <li>
-        Make an entire folder available via the <code>org.eclipse.equinox.http.registry.resources</code>
-        extension point. This is the most simple way, but requires the
-        <code>org.eclipse.equinox.http.registry</code> bundle. <i> To see an example of this, look
-        at the JQuery-Carousel widget for RAP. <a href = "#ext4">[4]</a></i>
-      </li>
-      <li>
-        Register each file using either the <code>org.eclipse.rap.ui.resources</code> extension
-        point or your <code>org.eclipse.rwt.application.ApplicationConfiguration</code>. This only
-        requires the RWT bundle itself, but necessitates creating a Java class implementing
-        <code>org.eclipse.rwt.resources.IResource</code> for each resource-file. It may therefore
-        not be suitable for a larger amount of files.
-      </li>
-      <li>
-        Accessing <code>ResourceManager</code> directly: This has some small overhead, but then requires
-        only one line per registered file. All required code easily fits into your custom-widget
-        class. No other bundles than RWT are required. <i>A good example for this is the CKEdtior widget. <a href = "#ext4">[5]</a></i>
-      </li>
-    </ul>
-  <h3 id="clientscripting" >ClientScripting-enhanced widgets</h3>
+  <ul>
+    <li>
+      Make an entire folder available via the <code>org.eclipse.equinox.http.registry.resources</code>
+      extension point. This is the most simple way, but requires the
+      <code>org.eclipse.equinox.http.registry</code> bundle.
+      To see an example of this, look at the JQuery-Carousel widget for RAP.
+      <a href="#ext4">[4]</a>
+    </li>
+    <li>
+      Register each file using either the <code>org.eclipse.rap.ui.resources</code> extension
+      point or your <code>org.eclipse.rwt.application.ApplicationConfiguration</code>. This only
+      requires the RWT bundle itself, but necessitates creating a Java class implementing
+      <code>org.eclipse.rwt.resources.IResource</code> for each resource-file. It may therefore
+      not be suitable for a larger amount of files.
+    </li>
+    <li>
+      Accessing <code>ResourceManager</code> directly: This has some small overhead, but then requires
+      only one line per registered file. All required code easily fits into your custom-widget
+      class. No other bundles than RWT are required.
+      A good example for this is the CKEditor widget.
+      <a href="#ext4">[5]</a>
+    </li>
+  </ul>
+
+  <h3 id="clientscripting">ClientScripting-enhanced widgets</h3>
   <p>
     ClientScripting is a RAP Incubator component that allows adding client-side behavior to
     existing RAP widgets. When your custom-widget can graphically be represented by one or more
     existing SWT/RAP-widgets, but cannot be reasonably well implemented as a compound widget
     because of the latency of the
     HTTP-requests involved, ClientScripting is often the ideal solution. It can also help in
-    <i>some</i> cases where certain SWT events are not implemented in RAP
+    <em>some</em> cases where certain SWT events are not implemented in RAP
     (<code>MouseEnter</code>/<code>MouseExit</code>), or are limited compared to SWT
-    (<code>Verify</code>). ClientScripting
-    is <b>not</b> to be confused with developing a native RAP custom widget. While it
-    partially runs on the client, the difference is that ClientScripting provides an SWT-like API
-    and does not require accessing RAP internals.
+    (<code>Verify</code>).
+    ClientScripting is <strong>not</strong> to be confused with developing a native RAP custom
+    widget. While it partially runs on the client, the difference is that ClientScripting provides
+    an SWT-like API and does not require accessing RAP internals.
   </p>
   <ul>
-    <li>Writing ClientScripting-enhanced widgets requires minor-to-moderate JavaScript knowledge,
-    and no knowledge of any other browser technology.</li>
-    <li>Cross-browser compatibility is ensured by RAP as long as EcmaScript-standards are followed and
-    no DOM-elements or RAP-internals are accessed.</li>
-    <li>The widgets are currently not innately re-usable in desktop applications with SWT.
-    However, some code can be shared between both platforms, and the rest is easily ported.</li>
+    <li>
+      Writing ClientScripting-enhanced widgets requires minor-to-moderate JavaScript knowledge,
+      and no knowledge of any other browser technology.</li>
+    <li>
+      Cross-browser compatibility is ensured by RAP as long as EcmaScript-standards are followed
+      and no DOM-elements or RAP-internals are accessed.
+    </li>
+    <li>
+      The widgets are currently not innately re-usable in desktop applications with SWT.
+      However, some code can be shared between both platforms, and the rest is easily ported.
+    </li>
   </ul>
   <p>
     ClientScripting is as of June 2012 not yet feature-complete.
     However, all existing API is stable and bugs can be reported in the RAP Bugzilla.
     Detailed information
-    can be found in the RAP Wiki <a href = "#ext6">[6]</a>,
+    can be found in the RAP Wiki <a href="#ext6">[6]</a>,
     including some JavaScript hints and tips for Java Developer.
   </p>
-  <h3 id="native" >Native Custom Widgets</h3>
+
+  <h3 id="native">Native Custom Widgets</h3>
   <p>
     Just like in SWT, writing real native custom widgets is hard. You need deep knowledge of both
     RAP and the platform you are developing for, i.e. the browser and any libraries you use.
@@ -191,42 +217,49 @@
     as its partially based on internal API. This might be improved in RAP 2.0 (Kepler).
   </p>
   <ul>
-    <li>Writing a native widget may require moderate-to-advanced knowledge of JavaScript, HTML/DOM, CSS
-    and any other browser-technology you might want to use, in addition to a good knowledge of
-    RAP internals.</li>
-    <li>Cross-browser compatibility has to be ensured by the widget-developer.</li>
-    <li>Native custom widgets are not re-usable in SWT desktop applications unless an additional
-    SWT-specific version is being developed.</li>
+    <li>
+      Writing a native widget may require moderate-to-advanced knowledge of JavaScript, HTML/DOM,
+      CSS and any other browser-technology you might want to use, in addition to a good knowledge of
+      RAP internals.
+    </li>
+    <li>
+      Cross-browser compatibility has to be ensured by the widget-developer.
+    </li>
+    <li>
+      Native custom widgets are not re-usable in SWT desktop applications unless an additional
+      SWT-specific version is being developed.
+    </li>
   </ul>
   <p>
     We currently recommend to use any of the alternatives above. A native custom widget should
     only be required if for some reason you need to work directly with HTML/DOM API, and the
-    Browser widget is considered too inefficient for your use case Detailed information 
-    for native RAP custom widget development can be found via the RAP Wiki. <a href = "#ext7">[7]</a>
+    Browser widget is considered too inefficient for your use case Detailed information
+    for native RAP custom widget development can be found via the RAP Wiki. <a href="#ext7">[7]</a>
   </p>
+
   <h3>External Resources</h3>
   <ul>
-    <li id = "ext1">
+    <li id="ext1">
       [1] <a href="http://www.eclipse.org/articles/Article-Writing%20Your%20Own%20Widget/Writing%20Your%20Own%20Widget.htm">Writing Your Own Widget</a>
     </li>
-    <li id = "ext2">
-      [2] <a href = "http://wiki.eclipse.org/RAP/Custom_Widgets">RAP Wiki - Custom Widgets</a>
+    <li id="ext2">
+      [2] <a href="http://wiki.eclipse.org/RAP/Custom_Widgets">RAP Wiki - Custom Widgets</a>
     </li>
-    <li id = "ext3">
+    <li id="ext3">
       [3] <a href="http://git.eclipse.org/c/rap/incubator/org.eclipse.rap.incubator.google-maps.git/">The new Google Maps Widget for SWT and RAP</a>
     </li>
-    <li id = "ext4">
+    <li id="ext4">
       [4] <a href="https://github.com/eclipsesource/org.eclipse.rap.widget.carousel">JQuery carousel widget for RAP</a>
     </li>
-    <li id = "ex5">
+    <li id="ex5">
       [5] <a href="https://github.com/eclipsesource/rap-ckeditor">CKeditor for RAP</a>
     </li>
-    <li id = "ext6">
-      [6] <a href = "http://wiki.eclipse.org/RAP/Incubator/ClientScripting">RAP Wiki - ClientScripting</a>
+    <li id="ext6">
+      [6] <a href="http://wiki.eclipse.org/RAP/Incubator/ClientScripting">RAP Wiki - ClientScripting</a>
     </li>
-    <li id = "ext7">
+    <li id="ext7">
       [7] <a href="http://wiki.eclipse.org/RAP/Custom_Widgets#RAP-native_Custom_Widget">RAP Wiki - Native Custom Widgets</a>
-    </li>  
+    </li>
   </ul>
 
 </body>

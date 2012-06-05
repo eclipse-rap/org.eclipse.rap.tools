@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
+
   <h1> RWT standalone applications with RAP</h1>
   <p>
     It is possible to use RAP without OSGi. In that case RWT is used like normal Java library. 
@@ -16,9 +17,11 @@
     for developing RWT applications. Though it is not stricly necessary to use the tooling, it 
     eases development with a launch configuration tailored for RWT applications and documentation.
   </p>
+
   <h2>Create and launch the application</h2>
   <p>
-    Follow the steps outlined below and you will have a simple web application up and running in a few minutes.
+    Follow the steps outlined below and you will have a simple web application up and running in a
+    few minutes.
   </p>
   <ul>
     <li> 
@@ -43,7 +46,7 @@
       folder and add it to the projects' build path. The <code>org.eclipse.rap.rwt.source_*</code> 
       jar contains the RWT source code. To be able to browse the sources and read JavaDoc, specify 
       this jar as the 
-      <a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fref-properties-source-attachment.htm" >
+      <a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fref-properties-source-attachment.htm">
         Source Attachment
       </a>
     </li>
@@ -60,13 +63,14 @@
     return 0;
   }
 }</code></pre>
-  </li>
+    </li>
   </ul>
   <p>
     With the RAP Tooling installed, you can already launch your HelloWorld application. 
     To do so, select the HelloWorld class (i.e. in the Package Explorer) and choose Run 
     As &gt; RWT Application from the context menu.
   </p>
+
   <h2 id = "deploy">Deploying</h2>
   <p>
     If you whish to deploy your application on an external servlet engine, or if you need a 
@@ -109,7 +113,7 @@
   public void configure( Application application ) {
     application.addEntryPoint( "/hello", HelloWorld.class, null );
   }
-}</code></pre></div>
+}</code></pre>
     </li>
     <li> 
       Again you can use the RAP Tooling to launch the application from the just created 
@@ -129,5 +133,6 @@
     <li> <code>org.eclipse.core.commands</code></li>
     <li> <code>org.eclipse.equinox.common</code></li>
   </ul>
+
 </body>
 </html>

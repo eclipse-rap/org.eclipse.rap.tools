@@ -9,137 +9,170 @@
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
-  <h1>Choosing a RAP Application Setup</h1>
+
+  <h1>Choosing an Application Setup</h1>
   <p>
-    There are different application setups to choose from depending on which technologies to 
-    use in your application and where to deploy it.
+    RAP can be combined with various other technologies and deployed in different setups.
+    Your choice of an application setup results depends on the technologies you want to use and the
+    server you need to deploy the application.
   </p>
-  
+
   <h2>OSGi or stand-alone?</h2>
   <p>
-    RAP is designed for modular applications based on OSGi.
-    OSGi is a platform that allows you to organize your application in loosely coupled modules, and 
-    reuse existing Eclipse plug-ins.
-    Besides the reference implementation Equinox, which is used in Eclipse, there exist others 
-    like Apache Felix.
+    OSGi is a module platform for Java that allows you to organize your application in loosely
+    coupled modules, called bundles, that communicate over a service infrastructure.
+    Eclipse is based on OSGi and provides a lot of bundles that you can re-use in your application.
     RAP is designed to work with any standard-compliant OSGi implementation.
+    It is often used on Equinox, the OSGi reference implementation by Eclipse, but can also
+    be run on other OSGi containers like Apache Felix.
   </p>
   <p>
-    If you do not need or like to use OSGi in your web application, you can still use RWT as a 
-    normal Java library. This setup is usually referred to as <q><a href = "rwt-standalone.html">RWT standalone</a></q>.
+    If you don't need or don't like to use OSGi in your web application, you can still use RWT as a
+    normal Java library. This setup is usually referred to as
+    <em><a href="rwt-standalone.html">RWT standalone</a></em>.
   </p>
-  <h2 id = "compat">JEE or SWT compatibility?</h2>
+
+  <h2>Direct or WAR-Deployment?</h2>
   <p>
-    RWT has are different <a href = "../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">operation modes</a>. 
-    The default one is fully compatible with JEE, 
-    lightweight, and supports transparent session failover in <a href = "http://wiki.eclipse.org/RAP/RWT_Cluster" >clustering environments</a>. 
-    (Clustering currently requires a RWT standalone setup).
-    It is the recommended mode in most cases.
-  </p>
-  <p>
-    The alternative is the SWT compatibility mode, which emulates the SWT threading model. 
-    To do so, a separate UI Thread has to be started for every new user session.
-    Another drawback is that application code does not run in the server's request thread 
-    and thus cannot directly access JEE session contexts.
-  </p>
-  <p>
-    SWT compatibility mode is only required for blocking API. In SWT,
-    an opened dialog will block code execution until it is closed by the user, and then return 
-    a value. In JEE mode the dialog still opens, but code execution will continue, 
-    and the return value will be lost. RAP features an <a href = "../reference/api/org/eclipse/rwt/widgets/DialogUtil.html">alternative API</a> that can be used 
-    to obtain the value anyway using a callback mechanism. This mechanism does not exist in SWT.
-  </p>
-  <p>
-    The other API that blocks execution are the <code>Browser</code>-widget's execute and evaluate 
-    methods. Their return value can also be obtained with <a href = "../reference/api/org/eclipse/rwt/widgets/BrowserUtil.html">callback implementation</a>, but it 
-    may be an issue for developing <a href = "../advanced/custom-widget.html#browser">browser-based custom widgets</a>.
-  </p>
-  
-  <h2 id = "workbench">Workbench 3.x</h2>
-  <p>
-    If you're building an application based on the Eclipse 3.x workbench, you need a platform that
-    includes the Equinox OSGi implementation and the extension registry.
-    The application and all contributions, such as views or themes, 
-    must be <a href = "branding.html">registered as extensions</a>. In this setup, the SWT compatibility mode is enforced.
-  </p>
-  
-  <h2>Deployment</h2>
-  <p>
-    For OSGi-based applications there are two ways to <a href = "deployment.html">deploy</a> them. 
+    OSGi-based applications can be deployed in basically two different ways.
   </p>
   <ul>
     <li>
-      They can be deployed directly 
-      into an OSGi container together with an OSGi-based servlet engine such as Jetty.
+      The application bundles can be deployed directly in an OSGi container such as Equinox or Felix.
+      In this case, a servlet engine bundle must be running in the same OSGi instance.
+      The Jetty servlet engine is available as OSGi bundles and is a good choice for this setup.
     </li>
     <li>
-      Alternatively, the Equinox servlet-bridge allows to embed an OSGi container in a war file.
+      It is also possible to deploy an OSGi-based application to a servlet container.
+      To do so, an Equinox OSGi instance including the application bundles is wrapped
+      in a web archive (.war file) using the Equinox servlet bridge.
+      This approach is explained in the <a href="deployment.html">WAR deployment guide</a>.
     </li>
   </ul>
   <p>
-    For RWT-Standalone application the RWT servlet is <a href = "rwt-standalone.html#deploy">configured directly</a> in the servers web.xml file.
+    For RWT-Standalone application the RWT servlet is
+    <a href="rwt-standalone.html#deploy">configured directly</a> in the application's web.xml file.
   </p>
-  
-  <h2 id = "summary">Summary</h2>
+
+  <h2 id="compat">JEE or SWT compatibility?</h2>
   <p>
-  Here is a comparison of 3 typical RAP-setups: 
+    RWT has two different
+    <a href="../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"> modes of
+    operation</a>.
+    The default one is fully <em>compatible with JEE</em>, lightweight, and supports transparent
+    session failover in
+    <a href="http://wiki.eclipse.org/RAP/RWT_Cluster">clustering environments</a>
+    (clustering currently requires a RWT standalone setup).
+    This is the recommended mode in most cases.
   </p>
-  <table width = "100%" border = "1" cellpadding = "3" cellspacing = "0">
+  <p>
+    As an alternative, the <em>SWT compatibility mode</em> emulates the SWT threading model.
+    To make this possible, a separate UI thread has to be started for every user session.
+    As a consequence, the code running in the UI thread cannot directly access JEE transaction
+    or security contexts.
+  </p>
+  <p>
+    The SWT compatibility mode is only required for code that uses SWT's few blocking APIs.
+    The most obvious case are blocking dialogs (i.e. calling dialog.open() will suspend code
+    execution until the dialog is closed by the user, and then return a value).
+    In JEE mode, code execution will continue after opening the dialog, but any operations reacting
+    to closing the dialog must be done in a callback.
+    RAP provides an
+    <a href="../reference/api/org/eclipse/rwt/widgets/DialogUtil.html">alternative API</a> that can
+    be used for those dialog callbacks.
+    This mechanism does not exist in SWT.
+  </p>
+  <p>
+    Another blocking API in SWT are the <code>Browser</code>-widget's execute and evaluate
+    methods. Their return value can also be obtained with
+    <a href="../reference/api/org/eclipse/rwt/widgets/BrowserUtil.html">callback implementation</a>,
+    but this may be problematic when developing
+    <a href="../advanced/custom-widget.html#browser">browser-based custom widgets</a>.
+  </p>
+
+  <h2 id="workbench">Workbench 3.x</h2>
+  <p>
+    If you're building an application based on the Eclipse 3.x workbench, you need a platform that
+    includes the Equinox OSGi implementation and the extension registry.
+    The application and all contributions, such as views or themes, must be
+    <a href="branding.html">registered as extensions</a>.
+    In this setup, the SWT compatibility mode is enforced.
+  </p>
+
+  <h2 id="summary">Summary</h2>
+  <p>
+    Here is a comparison of 3 typical RAP-setups:
+  </p>
+  <table width="100%" border="1" cellpadding="3" cellspacing="0">
     <tr>
-      <th align="left" ></th>
-      <th align="left" >RAP with OSGi</th>
-      <th align="left" >RAP with Workbench</th>
-      <th align="left" >RWT Standalone</th>
+      <th align="left" width="10%"></th>
+      <th align="left" width="30%">RAP with OSGi</th>
+      <th align="left" width="30%">RAP with Workbench 3.x</th>
+      <th align="left" width="30%">RWT Standalone</th>
     </tr>
     <tr>
-      <th align="left" >Summary</th>
-      <td>Lightweight and flexible, recommended for applications not requiring the Workbench (or Eclipse Extensions).</td>
-      <td>Recommended primarily for Workbench 3.x applications.</td>
-      <td>Most lightweight, recommended when no OSGi architecture is required.</td>
+      <th align="left">Summary</th>
+      <td>Lightweight and flexible, recommended for new applications that do not use Eclipse extensions</td>
+      <td>For applications using the Workbench 3.x</td>
+      <td>No OSGi, RWT used as a library in a traditional web app</td>
     </tr>
     <tr>
-      <th align="left" >OSGi</th>
-      <td>Compatible with any OSGi implementation including Equinox.</td>
-      <td>Eclipse Equinox required.</td>
-      <td>Not required.</td>
+      <th align="left">OSGi</th>
+      <td>Compatible with any OSGi implementation including Equinox</td>
+      <td>Eclipse Equinox required</td>
+      <td>No OSGi</td>
     </tr>
     <tr>
-      <th align="left" >Deployment</th>
-      <td>OSGi container or embedded in web archive. Direct access to JEE contexts possible.</td>
-      <td>OSGi container or embedded in web archive.</td>
+      <th align="left">Deployment</th>
       <td>
-        <a href = "rwt-standalone.html#deploy">RWT servlet and application configured in web.xml.</a> 
-        Direct access to JEE contexts possible. Clustering supported.</td>
+        As WAR file in servlet container or directly in OSGi container with embedded server.
+        Direct access to JEE contexts possible with JEE compatibility mode.
+      </td>
+      <td>
+        As WAR file in servlet container or directly in OSGi container with embedded server.
+      </td>
+      <td>
+        As WAR file in servlet container.
+        Direct access to JEE contexts possible with JEE compatibility mode.
+        Clustering supported.
+      </td>
     </tr>
     <tr>
-      <th align="left" >Entry-point</th>
+      <th align="left">Configuration</th>
+      <td>
+        Using the <a href="application-configuration.html">Application Configuration</a> API
+      </td>
+      <td>
+        Using extension points <a href="branding.html">Branding</a>
+      </td>
+      <td>
+        Using the <a href="application-configuration.html">Application Configuration</a> API
+        <a href="rwt-standalone.html#deploy">RWT servlet and application configured in web.xml.</a>
+      </td>
+    </tr>
+    <tr>
+      <th align="left">Entry-point</th>
       <td><code>IEntryPoint</code></td>
       <td><code>IEntryPoint</code> or <code>IApplication</code></td>
       <td><code>IEntryPoint</code></td>
     </tr>
     <tr>
-      <th align="left" >Configuration</th>
-      <td><a href = "application-configuration.html">Application Configuration</a></td>
-      <td><a href = "branding.html" >Branding</a></td>
-      <td><a href = "application-configuration.html">Application Configuration</a></td>
+      <th align="left">Operation Modes</th>
+      <td>SWT or JEE compatibility mode</td>
+      <td>SWT compatibility mode enforced</td>
+      <td>SWT or JEE compatibility mode</td>
     </tr>
     <tr>
-      <th align="left" >Operation Modes</th>
-      <td><code>SWT_COMPATIBILITY</code>, <code>JEE_COMPATIBILITY</code> or <code>SESSION_FAILOVER</code></td>
-      <td><code>SWT_COMPATIBILITY</code> enforced</td>
-      <td><code>SWT_COMPATIBILITY</code>, <code>JEE_COMPATIBILITY</code> or <code>SESSION_FAILOVER</code></td>
-    </tr>
-    <tr>
-      <th align="left" >RCP Compatibility</th>
+      <th align="left">RCP Compatibility</th>
       <td>SWT, JFace</td>
       <td>SWT, JFace, Workbench</td>
       <td>SWT, JFace</td>
     </tr>
     <tr>
-      <th align="left" >Launched from IDE by</th>
-      <td><a href = "../getting-started/launcher.html#rap">RAP Launcher</a></td>
-      <td><a href = "../getting-started/launcher.html#rap">RAP Launcher</a></td>
-      <td><a href = "../getting-started/launcher.html#rwt">RWT Launcher</a></td>
+      <th align="left">Launch from IDE</th>
+      <td><a href="../getting-started/launcher.html#rap">RAP Launcher</a></td>
+      <td><a href="../getting-started/launcher.html#rap">RAP Launcher</a></td>
+      <td><a href="../getting-started/launcher.html#rwt">RWT Launcher</a></td>
     </tr>
   </table>
 </body>
