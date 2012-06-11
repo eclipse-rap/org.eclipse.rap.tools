@@ -7,36 +7,46 @@
         label="Setting up the Eclipse IDE"
         href="help/html/getting-started/setup-ide.html"/>
     <topic
-        label="Install Target Manually"
+        label="Installing a RAP Target"
         href="help/html/getting-started/target-install.html"/>
     <topic
         label="Writing a Hello World with RAP"
         href="help/html/getting-started/hello-world.html"/>
     <topic
-        label="Launching RAP Applications"
+        label="Launching RAP Applications from the IDE"
         href="help/html/getting-started/launcher.html"/>
     <topic
         label="RAP Examples"
         href="help/html/getting-started/examples.html"/>
   </topic>
   <topic label="RAP Widget Toolkit">
-    <topic href="help/html/rwt/intro.html" label="Introduction">
-    </topic>
-    <topic href="help/html/rwt/differences.html" label="Differences between SWT and RWT">
-    </topic>
-    <topic href="help/html/rwt/multi-user.html" label="Multi User Environment">
-    </topic>
-    <topic href="help/html/rwt/key-and-mouse-events.html" label="Key and Mouse Event Handling">
+    <topic
+        label="Introduction"
+        href="help/html/rwt/intro.html">
     </topic>
     <topic
-      label="RWT Theming"
-      href="help/html/rwt/theming.html"/>
+        label="Differences between SWT and RWT"
+        href="help/html/rwt/differences.html">
+    </topic>
+    <topic
+        label="Multi User Environment"
+        href="help/html/rwt/multi-user.html">
+    </topic>
+    <topic
+        label="Key and Mouse Event Handling"
+        href="help/html/rwt/key-and-mouse-events.html">
+    </topic>
+    <topic
+        label="RWT Theming"
+        href="help/html/rwt/theming.html"/>
   </topic>
   <topic label="Advanced Topics">
     <topic
-      label="Choosing a RAP Application Setup"
-      href="help/html/advanced/application-setup.html"/>
-    <topic href="help/html/advanced/application-configuration.html" label="Application Configuration">
+        label="Choosing a RAP Application Setup"
+        href="help/html/advanced/application-setup.html"/>
+    <topic
+        label="Application Configuration"
+        href="help/html/advanced/application-configuration.html">
     </topic>
     <topic
         label="Branding"

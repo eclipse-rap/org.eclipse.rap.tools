@@ -5,29 +5,34 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Launching RAP Applications</title>
+  <title>Launching RAP Applications from the IDE</title>
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
-  
-  <h1>Launching RAP Applications from IDE</h1>
+
+  <h1>Launching RAP Applications from the IDE</h1>
 
   <p>
-    To start your RAP application from the IDE, you have two choices.
-    For simple applications that are not based on OSGi, you can use the
-    <a href="#rwt">RWT Launcher</a>.
-    If your application needs OSGi to run (e.g. a workbench application) then you have to use the
-    <a href="#rap">RAP Launcher</a>.
-    <em>See also <a href = "../advanced/application-setup.html"><q>Choosing a RAP Application Setup</q></a>.</em>
-  </p>
-  
-  <p>
-    To create a launch configuration, select <em class="UILabel">Run Configurations…</em> from the 
-    <em class="UILabel">Run</em> menu and create a <em class="UILabel">New launch configuration</em> 
-    of the desired type.
+    The RAP Tools provide two dedicated launchers to start RAP applications directly from
+    the IDE:
+    the <em>RWT Launcher</em>, used for snippets and stand-alone applications, and the
+    <em>RAP Launcher</em>, used for applications based on OSGi
+    (see <a href = "../advanced/application-setup.html">Choosing an Application Setup</a>
+    for these different types of applications).
+    OSGi applications can also be started without the RAP Tools, using the plain OSGi Launcher.
   </p>
 
-  <h2><a name="rwt">Using the RWT Launcher</a></h2>
+  <p>
+    <b>Contents:</b>
+  </p>
+  <ul>
+    <li><a href="#rwt-launcher">Using the RWT Launcher</a></li>
+    <li><a href="#rap-launcher">Using the RAP Launcher</a></li>
+    <li><a href="#osgi-launcher">Using the OSGi Launcher</a></li>
+    <li><a href="#troubleshooting">TroubleShooting</a></li>
+  </ul>
+
+  <h2><a name="rwt-launcher"></a>Using the RWT Launcher</h2>
 
   <p>
     The simplest way to launch an RWT application is to run it using an RWT Application launch 
@@ -36,167 +41,150 @@
   </p>
   <ol>
     <li>
-      In the <em class="UILabel">Package Explorer</em>, select the Java compilation unit or class 
-      file with the entry point you want to launch.
+      Select the Java class that contains the entry point you want to launch (e.g. in the
+      <em class="UILabel">Package Explorer</em>).
     </li> 
     <li>
-      Press the <em class="UILabel">Run</em> [<img src="../../images/run.png" alt="Run button"/>]
-      button in the workbench toolbar or select <em class="UILabel">Run &gt; Run</em> from the
-      workbench menu bar.
-      Alternatively, select <em class="UILabel">Run As &gt; RWT Application</em> in the Package
-      Explorer pop-up menu, or select <em class="UILabel">Run &gt; Run As &gt; RWT Application</em>
-      in the workbench menu bar, or select <em class="UILabel">Run As &gt; RWT Application</em> in
-      the drop-down menu on the Run tool bar button.
+      Select <em class="UILabel">Run &gt; Run As &gt; RWT Application</em> in the workbench menu
+      (or <em class="UILabel">Run As &gt; RWT Application</em> in the context menu of this file).
     </li>
     <li>
-      The application is now launched. A browser will be opened for you to interact with the 
-      application.
+      The application will be launched and opened in a browser view.
     </li>
   </ol>
   <p>
-    You can also launch an RWT application by selecting a project instead of the compilation unit 
-    or class file. You will be prompted to select a class from those classes that define an entry
-    point. If only one class with a main method is found in the project, that class is launched as 
-    if you selected it.
-  </p>
-
-  <p>
-    When an RWT Application launch configuration is launched, it first terminates any possibly 
+    When an RWT Application launch configuration is started, it first terminates any possibly 
     running launch that shares the same launch configuration.
-    After a correct startup, a message like the one below should be displayed in the Console view:
+    After a successful start, you should see a message like this one in the Console view:
     <br/>
     <code style="color:red">INFO: Started SocketListener on 0.0.0.0:&lt;port&gt;</code>.
   </p>
 
   <h3>Further configuration options</h3>
-  
+
   <p>
-    Normally, most of the launch parameters are derived from your Java project and your workbench
-    preferences.
-    In some cases, you will want to override the derived parameters or specify additional arguments. 
+    Whenever you start an application as described above, a <em>launch configuration</em> is
+    created and added to the <em class="UILabel">Run &gt; Run History</em> menu.
+    The created launch configuration is based on your Java project and your workbench preferences.
+    It can later be edited and refined with custom or additional parameters.
   </p>
-  
-  <p>On the <em class="UILabel">Main</em> tab you can control the following aspects of the launch:</p>
+
+  <p>
+    To create a new launch configuration or to alter an existing one, select
+    <em class="UILabel">Run &gt; Run Configurations…</em> or
+    <em class="UILabel">Run &gt; Debug Configurations…</em>.
+    This opens a dialog that lets you create, modify, and delete launch configurations of different
+    types.
+    To create a new RWT Application launch configuration, select
+    <em class="UILabel">RWT Application</em> from the list of launch configuration types on the
+    left, and press the <em class="UILabel">New</em> button in the toolbar.
+    The tabs on the right allow you control specific aspects of the launch.
+  </p>
+
+  <p>
+    On the <em class="UILabel">Main</em> tab you can control the following aspects of the launch:
+  </p>
   <ul>
-    <li>The <em class="UILabel">Project</em> field denotes the project that contains the entry point 
-      to launch. You do not have to specify a project, but doing so allows a default classpath, 
+    <li>
+      The <em class="UILabel">Project</em> field denotes the project that contains the entry point
+      to launch. You do not have to specify a project, but doing so allows a default classpath,
       source lookup path, and JRE to be chosen.
     </li>
     <li>
       The <em class="UILabel">Application entry point</em> lets you specify what should be launched.
-      For simple use cases it is recommended to choose <em class="UILabel">Run entry point class</em> 
-      and specify the class that implements the <code>org.eclipse.rwt.lifecycle.IEntryPoint</code>
-      interface in the class name field.
-      <br />
-      If you wish to have more control or even would like to run an arbitrary web application, 
-      select <em class="UILabel">Run from web.xml</em> and enter the path to the web.xml in the 
+      For simple use cases, choose <em class="UILabel">Run entry point class</em> and specify the
+      class that implements the <code>IEntryPoint</code> interface in the class name field.
+      <br/>
+      If you need more control or even would like to run an arbitrary web application,
+      select <em class="UILabel">Run from web.xml</em> and enter the path to the web.xml in the
       location field.
     </li>
-    <li>The <em class="UILabel">Browser</em> group lets you control whether the application should 
-      be opened with the internal browser in the editor area or with an external browser or if no
-      browser should be opened at all.
-      The outcome depends on the browser preference settings that can be reached with the 
-      <em class="UILabel">Configure browsers...</em> link.
-      <br />
-      The servlet path should point to one of the servlets defined in the web.xml and is 
-      used to construct the URL to be opened with the browser. If you are launching an 
-      <em class="UILabel">Application entry point</em>, you are free to choose an arbitrary path. The 
-      generated web.xml will adapt to the chosen servlet path. 
-    </li>  
-    <li>It is recommended to let the launcher dynamically choose a free port for 
-      client-server communication. However if you would like to have full control 
-      over the communication channel, you can enable <em class="UILabel">Manual Port Configuration</em>
-      and explicitly specify a port number.
+    <li>
+      In the <em class="UILabel">Runtime Settings</em>, you can select a fixed network port
+      to start your application at.
+      If you don't configure a port, the launcher will choose a free port.
+    </li>
+    <li>
+      The <em class="UILabel">Browser</em> group lets you control whether the application should be
+      opened in a browser after a successful start.
+      The application can be opened either in an internal browser, i.e. embedded in the Eclipse IDE,
+      or in an external browser.
+      The external browser application can be configured in the <em>Web Browser</em> preference
+      settings, the link <em class="UILabel">Configure browsers…</em> lets you jump right there.
+    </li>
+    <li>
+      The <em class="UILabel">servlet path</em> is used to construct the URL to be opened with the
+      browser.
+      If you're launching an <em>entry point</em>, you are free to choose an arbitrary path.
+      When launching an application from a <em>web.xml</em>, it must point to one of the servlets
+      defined in the web.xml.
     </li>
   </ul>
-  
+
   <p>
     For an explanation of the other tabs see the topic
-    <a href="/help/topic/org.eclipse.jdt.doc.user/tasks/tasks-java-local-configuration.htm">
-    Creating a Java application launch configuration</a>
+    <a href="/help/topic/org.eclipse.jdt.doc.user/tasks/tasks-java-local-configuration.htm">Creating
+      a Java application launch configuration</a>
   </p>
 
-  <h2><a name="rap">Using the RAP Launcher</a></h2>
+  <h2><a name="rap-launcher"></a>Using the RAP Launcher</h2>
 
   <p>
-    The RAP Launcher is based on the 
+    The RAP Launcher is based on the
     <a href="/help/topic/org.eclipse.pde.doc.user/guide/tools/launchers/equinox_launcher.htm">OSGi Launcher</a>
     and adds a <em class="UILabel">Main</em> tab page to it.
     Please note, that the RAP Launcher only works when the Equinox OSGi Framework is selected,
     which is the default setting on page <em class="UILabel">Bundles</em>.
   </p>
 
-  <img src="../../images/launcher.png" alt="RAP launcher screenshot" />
-
-  <h3>Servlet and Entry Point/Application to Run</h3>
+  <h3>Run in Browser</h3>
   <p>
-    Within this group you need to choose the combination of servlet name and 
-    entry point/application you would like to run.
+    This setting lets you control whether the application should be opened in a browser after a
+    successful start.
+    The application can be opened either in an internal browser, i.e. embedded in the Eclipse IDE,
+    or in an external browser.
+    The external browser application can be configured in the <em>Web Browser</em> preference
+    settings, the link <em class="UILabel">Configure browsers…</em> lets you jump right there.
+  </p>
+  <p>
+    The <em class="UILabel">Servlet Path</em> and <em class="UILabel">Startup Parameter</em>
+    fields let you configure the URL that will be opened in the browser.
+    The startup parameter is considered obsolete.
+    The entrypoint to start is normally configured using the servlet name.
   </p>
 
+  <h3>Runtime Settings</h3>
   <p>
-    When the <em class="UILabel">Browse…</em> button is pressed, a selection dialog opens.
-    This dialog lists all servlet names and entry points/applications available in the workspace.
-    Open the drop down menu item in the top right corner and select <em class="UILabel">Include Target 
-    Platform</em> if you also want to see the servlet names and entry points/applications available 
-    in your target platform.
-    The RAP Launcher will display an error in case the selected servlet name, entry point or
-    application is not contained in the selection on the <em class="UILabel">Bundles</em> page.
+    <em class="UILabel">Manual Port configuration</em> lets you can select a fixed network port
+    to start your application at.
+    If you don't configure a port, the launcher will choose a free port.
   </p>
-  
   <p>
-    When the <em class="UILabel">Terminate possible running previous launch</em> option is selected,
-    an eventually running launch with the same name will be terminated before launching.
-    This might come in handy when frequently changing code and restarting the application.
+    When the option <em class="UILabel">Terminate possible running previous launch</em> is selected,
+    the launcher automatically stops an application with the same name that is currently running.
+    This helps to restart applications quickly without having to stop the application before.
   </p>
-  
-  <h3>Browser</h3>
   <p>
-    Controls whether the application should be opened with the internal browser in the editor area
-    or with an external browser or if no browser should be opened.
-    The outcome depends on the browser preference settings that can be reached with the
-    <em class="UILabel">Configure Browsers...</em> link.
-  </p>
-  
-  <h3>Manual Port Configuration</h3>
-  <p>
-    It is recommended to let the launcher dynamically choose a free port for client-server
-    communication.
-    However if you would like to have full control over the communication channel, you can
-    explicitly specify a port number.
-  </p>
-  
-  <h3>Session Timeout</h3>
-  <p>
-    Specifies the servlet session timeout in seconds.
+    <em class="UILabel">Session Timeout</em> specifies the servlet session timeout in seconds.
     If the checkbox is unselected, the session will never expire.
   </p>
-  
-  <h3>Context Path</h3>
   <p>
-    A web application can be deployed with a context path. After deployment the web application 
-    will be accessible using this path e.g. http://server:port/contextPath/webapp.
-    To simulate this during development time you can use the option to specify a context path
-    within the <em class="UILabel">Main</em> tab.
+    <em class="UILabel">Context Path</em> selects an optional context path for the web application.
+    The context path is part of a web application's URL, e.g.
+    <em>http://server:port/contextPath/servletPath</em>.
+    In a servlet container, every webapp is availble at its own context path.
+    This setting lets you simulate the same context path that your application will be accessible
+    at in the production environment.
   </p>
-  
-  <h3>Client-side Log Level</h3>
   <p>
-    <em class="UILabel">This option is outdated as of RAP 1.4.</em>
-    It is only there to support earlier runtime versions of RAP.
-    Since 1.4, the RAP client will fast-fail in case of an error but not write any log messages
-    during normal operation anymore.
-  </p>
-  
-  <h3>Client-side Library Variant</h3>
-  <p>
-    The JavaScript client of RAP can be delivered in two variants.
+    The option <em class="UILabel">Client-side Library Variant</em> selects the variant of the
+    RWT JavaScript library that will be delivered to the client.
     The <em>Standard</em> version is optimized for speed and size by compressing the JavaScript
     code.
     The <em>Debug</em> version maintains the JavaScript code in its original form.
     We recommend to use the Debug variant when developing custom widgets for RAP.
   </p>
-    
+
   <h3>Instance Area</h3>
   <p>
     The instance area location sets the Program Arguments to define the
@@ -204,14 +192,79 @@
     osgi.instance.area</a></code>. Bundles use this location to store their state location 
     data.</p>
 
-  <h3>Required plug-ins</h3>  
+  <h3>Required plug-ins</h3>
   <p>
     In the Bundles tab, the following bundles need to be activated:
   </p>
+
+  <p>
+    <em>Basic RAP bundles</em>
+  </p>
   <ul>
-    <li>com.ibm.icu.base</li>  
+    <li>org.eclipse.rap.rwt</li>
+    <li>org.eclipse.rap.rwt.osgi</li>
+  </ul>
+
+  <p>
+    <em>Basic Equinox OSGi platform</em>
+  </p>
+  <ul>
+    <li>org.eclipse.osgi</li>
+    <li>org.eclipse.osgi.services</li>
+    <li>org.eclipse.equinox.console (the OSGi console)
+      <ul>
+        <li>org.apache.felix.gogo.command (required by equinox.console)</li>
+        <li>org.apache.felix.gogo.shell (required by equinox.console)</li>
+        <li>org.apache.felix.gogo.runtime (required by equinox.console)</li>
+      </ul>
+    </li>
+    <li>org.eclipse.equinox.http.jetty</li>
+    <li>org.eclipse.equinox.http.servlet</li>
+    <li>org.eclipse.equinox.ds (to enable declarative services)
+      <ul>
+        <li>org.eclipse.equinox.util (required by equinox.ds)</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>
+    <em>The Jetty servlet container</em>
+  </p>
+  <ul>
+    <li>org.eclipse.jetty.continuation</li>
+    <li>org.eclipse.jetty.http</li>
+    <li>org.eclipse.jetty.io</li>
+    <li>org.eclipse.jetty.security</li>
+    <li>org.eclipse.jetty.server</li>
+    <li>org.eclipse.jetty.servlet</li>
+    <li>org.eclipse.jetty.util</li>
+  </ul>
+
+  <p>
+    <em>Servlet API (remove when deploying to a servlet container)</em>
+  </p>
+  <ul>
     <li>javax.servlet</li>
-    <li>org.apache.commons.logging</li>  
+  </ul>
+
+  <p>
+    <em>Additional RAP bundles (require additional platform bundles - see below)</em>
+  </p>
+  <ul>
+    <li>org.eclipse.rap.jface</li>
+    <li>org.eclipse.rap.jface.databinding</li>
+    <li>org.eclipse.rap.ui</li>
+    <li>org.eclipse.rap.ui.forms</li>
+    <li>org.eclipse.rap.ui.views</li>
+    <li>org.eclipse.rap.ui.workbench</li>
+  </ul>
+
+  <p>
+    <em>Eclipse platform bundles required by applications using JFace or the Workbench
+   (only a subset may be required, please check for the acutal dependencies)</em>
+  </p>
+  <ul>
+    <li>com.ibm.icu.base</li>
     <li>org.eclipse.core.commands</li>
     <li>org.eclipse.core.contenttype</li>
     <li>org.eclipse.core.databinding</li>
@@ -223,32 +276,63 @@
     <li>org.eclipse.core.runtime</li>
     <li>org.eclipse.equinox.app</li>
     <li>org.eclipse.equinox.common</li>
-    <li>org.eclipse.equinox.http.jetty</li>
-    <li>org.eclipse.equinox.http.registry</li>
-    <li>org.eclipse.equinox.http.servlet</li>
-    <li>org.eclipse.equinox.preferences</li>
     <li>org.eclipse.equinox.registry</li>
-    <li>org.eclipse.help</li>
-    <li>org.eclipse.osgi</li>
-    <li>org.eclipse.osgi.services</li>
-    <li>org.eclipse.rap.demo</li>
-    <li>org.eclipse.rap.jface</li>
-    <li>org.eclipse.rap.jface.databinding</li>
-    <li>org.eclipse.rap.rwt</li>
-	<li>org.eclipse.rap.rwt.osgi</li>
-    <li>org.eclipse.rap.ui</li>
-    <li>org.eclipse.rap.ui.forms</li>
-    <li>org.eclipse.rap.ui.views</li>
-    <li>org.eclipse.rap.ui.workbench</li>
-    <li>org.eclipse.jetty.continuation</li>
-    <li>org.eclipse.jetty.http</li>
-	<li>org.eclipse.jetty.io</li>
-	<li>org.eclipse.jetty.security</li>
-	<li>org.eclipse.jetty.server</li>
-	<li>org.eclipse.jetty.servlet</li>
-	<li>org.eclipse.jetty.util</li>
+    <li>org.eclipse.equinox.preferences</li>
+    <li>org.eclipse.equinox.http.registry</li>
   </ul>
-  
+
+  <p>
+    To launch a once created launch configuration you may use the launch shortcut keys
+    <code>Alt+Shift+X+R</code> (run) and <code>Alt+Shift+D+R</code> (debug).
+  </p>
+
+  <h2><a name="osgi-launcher"></a>Using the OSGi Launcher</h2>
+
+  <p>
+    Alternatively, you can also use the plain OSGi Launcher to start RAP applications.
+    In this case, you have to set the necessary system properties and program arguments on your own.
+    This includes setting the HTTP port for the server with the
+    <code>-Dorg.osgi.service.http.port=&lt;PORT&gt;</code> VM argument.
+  </p>
+
+  <h2><a name="troubleshooting"></a>TroubleShooting</h2>
+
+  <ul>
+    <li>
+      <p>
+        <b>Unsupported JRE version</b>
+      </p>
+      <p>
+        <code style="color:red">java.lang.UnsupportedClassVersionError: Bad version number in .class file</code>
+      </p>
+      <p>
+        The launcher requires JavaSE 1.6 or higher.
+        If your project is configured with a JRE &lt; 1.6, the launcher will try to start with a
+        matching JRE. If you have a 1.5 JRE configured in your IDE, it will fail with an exception
+        like the one shown above.
+        In this case, edit the launch configuration and set the JRE to a Java 6 or higher.
+      </p>
+    </li>
+    <li>
+      <p>
+        <b>Unsupported Operation mode</b>
+      </p>
+      <p>
+        <code style="color:red">java.lang.UnsupportedOperationException: The SimpleLifeCycle does not support Display#sleep()</code>
+      </p>
+      <p>
+        The RWT launcher starts applications in the JEE compatibility mode.
+        This mode does not support <code>Display.sleep()</code>, specifically, it does not support
+        the SWT main loop. When starting an SWT snippet, this code block must be removed:
+      </p>
+      <pre><code>  while( !shell.isDisposed() ) {
+    if( !display.readAndDispatch() )
+      display.sleep();
+  }
+  display.dispose();</code></pre>
+    </li>
+  </ul>
+
   <h3>Servlet engine log</h3>
   <p>
     By default the servlet engine (namely Jetty) is configured to suppress most logging 
@@ -257,20 +341,6 @@
     to the launch configuration. Valid log levels are <code>debug</code>, 
     <code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
     The default value is <code>warn</code>.
-  </p>
-    
-  <p>
-    To launch a once created launch configuration you may use the launch shortcut keys
-    <code>Alt+Shift+X+R</code> (run) and <code>Alt+Shift+D+R</code> (debug).
-  </p>
-    
-  <h2><a name="equinox">Using the Equinox Launcher</a></h2>
-  
-  <p>
-    Alternatively, you can also use the plain OSGi Launcher to start RAP applications.
-    In this case, you have to set the necessary system properties and program arguments on your own.
-    This includes setting the HTTP port for the server with the 
-    <code>-Dorg.osgi.service.http.port=&lt;PORT&gt;</code> VM argument.
   </p>
 
 </body>
