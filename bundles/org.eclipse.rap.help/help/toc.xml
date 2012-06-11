@@ -39,10 +39,13 @@
     <topic
         label="RWT Theming"
         href="help/html/rwt/theming.html"/>
-  </topic>
-  <topic label="Advanced Topics">
     <topic
-        label="Choosing a RAP Application Setup"
+        label="Custom Widgets"
+        href="help/html/advanced/custom-widget.html"/>
+  </topic>
+  <topic label="Application Development">
+    <topic
+        label="Choosing an Application Setup"
         href="help/html/advanced/application-setup.html"/>
     <topic
         label="Application Configuration"
@@ -66,9 +69,6 @@
     <topic
         label="Internationalization"
         href="help/html/advanced/internationalization.html"/>
-    <topic
-        label="Custom Widgets"
-        href="help/html/advanced/custom-widget.html"/>
     <topic
         label="Related Technologies"
         href="help/html/advanced/underlying-technologies.html"/>

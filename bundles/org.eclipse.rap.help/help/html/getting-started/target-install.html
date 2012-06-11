@@ -11,16 +11,31 @@
 <body>
 
   <h1>Installing a RAP Target</h1>
+  
+  <h2 id="target-install">Using the RAP Tools to install the latest target platform</h2>
   <p>
-    The latest RAP target can be installed using the target installer included in the RAP Tools.
-    But you can also install a target manually, e.g. if you want to develop against a different
-    version of RAP or combine RAP with other bundles.
-    See <a href="http://wiki.eclipse.org/PDE/Target_Definitions">this Eclipse wiki article</a>
-    for more information about target definitions.
+    RAP applications need to be compiled against the RAP runtime.
+    To do so, the runtime needs to be set as the target platform in Eclipse.
+  </p>
+  <p>
+    When Eclipse starts on a fresh workspace, a welcome page is displayed.
+    You can also get to the welcome page choosing <i>Welcome</i> from the <i>Help</i> menu.
+    Once there, click <strong>Overview</strong> and select the <strong>Rich Ajax Platform (RAP)</strong> section.
+    Choose <strong>Install Target Platform</strong> on the following page.
+    In the upcoming dialog confirm the default values, which starts the target
+    installation process.
+  </p>
+  <p>
+    After the installation finished you are prepared to work with RAP.
+    For your first steps you may read the
+    <a href="examples.html">RAP Examples</a>
+    topic and/or the other chapters of the getting started section.
   </p>
 
-  <h2>Create a Target Definition</h2>
+  <h2>Install Target Manually</h2>
   <p>
+    You can also install a target manually, e.g. if you want to develop against a different
+    version of RAP or combine RAP with other bundles.
     To select a target platform you can either use the Target Platform preferences page
     (<em>Window &gt; Preferences &gt; Plug-in Development &gt; Target Platform</em>) or create
     a <em>target definition file</em>.
