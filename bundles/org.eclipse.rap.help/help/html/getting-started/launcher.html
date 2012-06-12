@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Launching RAP Applications from the IDE</title>
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -53,8 +53,8 @@
     </li>
   </ol>
   <p>
-    When an RWT Application launch configuration is started, it first terminates any possibly 
-    running launch that shares the same launch configuration.
+    Before the RWT launcher starts an application, it terminates any possibly running
+    instance of the same application.
     After a successful start, you should see a message like this one in the Console view:
     <br/>
     <code style="color:red">INFO: Started SocketListener on 0.0.0.0:&lt;port&gt;</code>.
@@ -133,7 +133,7 @@
     The RAP Launcher is based on the
     <a href="/help/topic/org.eclipse.pde.doc.user/guide/tools/launchers/equinox_launcher.htm">OSGi Launcher</a>
     and adds a <em class="UILabel">Main</em> tab page to it.
-    Please note, that the RAP Launcher only works when the Equinox OSGi Framework is selected,
+    Please note that the RAP Launcher only works when the Equinox OSGi Framework is selected,
     which is the default setting on page <em class="UILabel">Bundles</em>.
   </p>
 
@@ -172,7 +172,7 @@
     <em class="UILabel">Context Path</em> selects an optional context path for the web application.
     The context path is part of a web application's URL, e.g.
     <em>http://server:port/contextPath/servletPath</em>.
-    In a servlet container, every webapp is availble at its own context path.
+    In a servlet container, every webapp is available at its own context path.
     This setting lets you simulate the same context path that your application will be accessible
     at in the production environment.
   </p>
@@ -261,7 +261,7 @@
 
   <p>
     <em>Eclipse platform bundles required by applications using JFace or the Workbench
-   (only a subset may be required, please check for the acutal dependencies)</em>
+   (only a subset may be required, please check for the actual dependencies)</em>
   </p>
   <ul>
     <li>com.ibm.icu.base</li>
@@ -283,7 +283,7 @@
 
   <p>
     To launch a once created launch configuration you may use the launch shortcut keys
-    <code>Alt+Shift+X+R</code> (run) and <code>Alt+Shift+D+R</code> (debug).
+    <em class="UILabel">Alt+Shift+X+R</em> (run) and <em class="UILabel">Alt+Shift+D+R</em> (debug).
   </p>
 
   <h2><a name="osgi-launcher"></a>Using the OSGi Launcher</h2>
@@ -291,8 +291,22 @@
   <p>
     Alternatively, you can also use the plain OSGi Launcher to start RAP applications.
     In this case, you have to set the necessary system properties and program arguments on your own.
-    This includes setting the HTTP port for the server with the
-    <code>-Dorg.osgi.service.http.port=&lt;PORT&gt;</code> VM argument.
+    At least, you have to specify the HTTP port for the server with the VM argument
+  </p>
+  <pre><code>-Dorg.osgi.service.http.port=&lt;PORT&gt;</code></pre>
+  <p>
+    Tu run RAP in debug mode, add this system property, too:
+  </p>
+  <pre><code>-Dorg.eclipse.rwt.clientLibraryVariant=DEBUG</code></pre>
+
+  <h3>Servlet engine log</h3>
+  <p>
+    By default the servlet engine (namely Jetty) is configured to suppress most logging 
+    information. This can be changed by adding the VM argument
+    <code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</code> 
+    to the launch configuration. Valid log levels are <code>debug</code>, 
+    <code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
+    The default value is <code>warn</code>.
   </p>
 
   <h2><a name="troubleshooting"></a>TroubleShooting</h2>
@@ -332,16 +346,6 @@
   display.dispose();</code></pre>
     </li>
   </ul>
-
-  <h3>Servlet engine log</h3>
-  <p>
-    By default the servlet engine (namely Jetty) is configured to suppress most logging 
-    information. This can be changed by adding the VM argument
-    <code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</code> 
-    to the launch configuration. Valid log levels are <code>debug</code>, 
-    <code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
-    The default value is <code>warn</code>.
-  </p>
 
 </body>
 </html>
