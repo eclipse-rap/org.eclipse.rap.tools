@@ -10,27 +10,33 @@
 </head>
 <body>
 
-  <h1>Understand the Underlying Technologies</h1>
+  <h1>Related Technologies</h1>
   <p>
-    RAP applications are basically 
-    <a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform">RCP applications</a> 
-    that run in a servlet container environment.
-    Consequently, it can help to have a working understanding of some of the underlying
-    technologies to develop RAP applications.
-    Those technologies include
+    Many questions and problems that occur while developing RAP applications are not directly
+    related to RAP, but to the technologies it is based on.
+    As an example, layout issues are usually related to SWT, dependencies to third-party libraries
+    are handled on the OSGi level, and questions regarding session handling are related to the
+    servlet container.
+  </p>
+  <p>
+    Therefore you should have a good understanding of the technologies that your RAP application
+    builds upon.
+    This will likely include
+    <a href="http://www.oracle.com/technetwork/java/javaee/servlet/index.html">Servlet technology</a>,
+    <a href="http://www.osgi.org/">OSGi</a>,
+    the <a href="http://www.eclipse.org/equinox/">Equinox</a> OSGi implementation,
     <a href="http://www.eclipse.org/swt">SWT</a>,
-    <a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform">RCP</a>,
-    <a href="http://www.eclipse.org/equinox/">Equinox OSGi</a>, and
-    <a href="http://java.sun.com/products/servlet/">Servlet technology</a>.
+    maybe also
+    <a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform">RCP</a>.
+    Here are some links to get you started:
   </p>
-  <p>
-    Many questions and problems that occur while developing RAP applications
-    are not particularly related to RAP, but to the technologies it is based on.
-    As an example, layout issues are usually SWT-related, dependencies
-    to third-party libraries are handled on the OSGi level,
-    and questions regarding session handling are related to the servlet
-    container.
-  </p>
+
+  <h2>OSGi</h2>
+  <ul>
+    <li>
+      <a href="http://www.osgi.org/Technology/HowOSGi">How to Get Started with OSGi</a>
+    </li>
+  </ul>
 
   <h2>Equinox</h2>
   <ul>

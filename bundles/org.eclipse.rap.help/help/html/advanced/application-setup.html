@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Choosing a RAP Application Setup</title>
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -13,8 +13,8 @@
   <h1>Choosing an Application Setup</h1>
   <p>
     RAP can be combined with various other technologies and deployed in different setups.
-    Your choice of an application setup results depends on the technologies you want to use and the
-    server you need to deploy the application.
+    Your choice of an application setup depends on the technologies you want to use and the
+    server you need to deploy the application on.
   </p>
 
   <h2>OSGi or stand-alone?</h2>
@@ -24,7 +24,7 @@
     Eclipse is based on OSGi and provides a lot of bundles that you can re-use in your application.
     RAP is designed to work with any standard-compliant OSGi implementation.
     It is often used on Equinox, the OSGi reference implementation by Eclipse, but can also
-    be run on other OSGi containers like Apache Felix.
+    run on other OSGi containers like Apache Felix.
   </p>
   <p>
     If you don't need or don't like to use OSGi in your web application, you can still use RWT as a
@@ -50,7 +50,7 @@
     </li>
   </ul>
   <p>
-    For RWT-Standalone application the RWT servlet is
+    When using RWT stand-alone, the RWT servlet is
     <a href="rwt-standalone.html#deploy">configured directly</a> in the application's web.xml file.
   </p>
 
@@ -62,11 +62,11 @@
     The default one is fully <em>compatible with JEE</em>, lightweight, and supports transparent
     session failover in
     <a href="http://wiki.eclipse.org/RAP/RWT_Cluster">clustering environments</a>
-    (clustering currently requires a RWT standalone setup).
+    (clustering currently requires an RWT standalone setup).
     This is the recommended mode in most cases.
   </p>
   <p>
-    As an alternative, the <em>SWT compatibility mode</em> emulates the SWT threading model.
+    As an alternative, the <em>SWT compatibility mode</em> exactly emulates the SWT threading model.
     To make this possible, a separate UI thread has to be started for every user session.
     As a consequence, the code running in the UI thread cannot directly access JEE transaction
     or security contexts.

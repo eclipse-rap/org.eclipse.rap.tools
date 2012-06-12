@@ -124,7 +124,8 @@
       <b>Unimplemented Features:</b> Touch Events, Accessibility
       <br/>
       While the API for touch event handling and accessibility configuration is present in RWT,
-      it does not natively support either. This is a valid implementation according to SWT documentation.
+      it does not natively support either. This is a valid implementation according to the SWT
+      documentation.
     </li>
 
     <li style="margin-bottom:20px">
@@ -171,14 +172,13 @@
       the document loaded in the <code>Browser</code> widget has to come from the
       same domain and port that the RAP application is loaded from. This is automatically given
       if the <code>setText</code> method is used.
-      <p>
-        Also, when using the
-        <a href="../advanced/application-setup.html#compat">JEE compatibility mode</a>,
-        the <code>executeScript</code> and <code>evaluate</code> methods will not block program
-        execution.
-        Like with dialogs, a workaround is possible using the class
-        <a href="../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"><code>BrowserUtil</code></a>.
-      </p>
+      <br/>
+      Also, when using the
+      <a href="../advanced/application-setup.html#compat">JEE compatibility mode</a>,
+      the <code>executeScript</code> and <code>evaluate</code> methods will not block program
+      execution.
+      Like with dialogs, a workaround is possible using the class
+      <a href="../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"><code>BrowserUtil</code></a>.
     </li>
 
     <li style="margin-bottom:20px">

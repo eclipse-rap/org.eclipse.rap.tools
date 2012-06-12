@@ -10,7 +10,7 @@
 </head>
 <body>
 
-  <h1>Understanding Scopes In RAP</h1>
+  <h1>Scopes and Data Stores in RWT</h1>
 
   <p>
     In a desktop environment, an instance of an application normally serves only a single user,
@@ -36,14 +36,14 @@
     Every application has its own set of entry points, registered resources, and so on.
     All these things have application scope.
     If you have objects that should be accessible from everywhere in the application, they need to
-    have session scope as well.
+    have application scope as well.
     RWT provides an application-scoped store for these objects, called <em>application store</em>,
     that can be accessed using <code>RWT.getApplicationStore()</code>.
   </p>
 
   <h2>Session Scope</h2>
   <p>
-    RAP builds user sessions on top of the servlet container's session management.
+    User session in RAP are built on top of the servlet container's session management.
     But in contrast to the underlying HTTP session, a user session in RAP spans exactly one
     execution of an entrypoint.
     As an example, when the browser is refreshed (usually by hitting <em>F5</em>) to start over,
@@ -75,14 +75,14 @@
   <pre><code>RWT.getSessionStore().getHttpSession().setMaxInactiveInterval(&lt;timeout in Seconds&gt;);
   </code></pre>
   <p>
-    Note that when using the RAP launcher, by default a session never expires. To change the value,
-    adjust the setting on the <em>Main</em> tab.
+    Note that when using the RAP launcher, sessions never expire by default.
+    To change this, adjust the timeout setting on the <em>Main</em> tab.
   </p>
 
   <h3>Session Cleanup</h3>
   <p>
     To cleanup session-scoped objects, a <code>SessionStoreListener</code> can be registered with
-    the the session store:
+    the session store:
   </p>
    <div dir="ltr" style="text-align: left;"><pre><code>RWT.getSessionStore().addSessionStoreListener( new SessionStoreListener() {
   public void beforeDestroy( SessionStoreEvent event ) {
@@ -221,20 +221,16 @@ button.addSelectionListener( new SelectionAdapter() {
   // other methods ...
 }
   </code></pre></div>
+
+  <h3>Access from a background thread</h3>
   <p>
-    As with the session store, it is not possible to accessing session singletons from a background thread. Any non-UI 
-    thread trying to access session singletons will fail and a 
-    <code>java.lang.IllegalStateException</code> will be 
-    thrown. The solution is to temporarily associate the thread with a session. 
-    Use <code>UICallBack#runNonUIThreadWithFakeContext</code>, to fakes a "request context" that 
-    allows the runnable code to access those singletons. 
+    As with the session store, it is not possible to access session singletons from a background
+    thread because background threads aren't bound to any specific user session.
+    Any non-UI thread trying to access a session singleton will fail with an
+    <code>java.lang.IllegalStateException</code>:
   </p>
-  <p>
-    The following code snippet throws an exception because the <code>Runnable</code> is executed 
-    in a background thread, with no access to the session singleton. 
-  </p>
-  <div dir="ltr" style="text-align: left;"><pre><code>// INCORRECT
-// will throw IllegalStateException: No context available outside of the request service lifecycle.
+  <pre><code>// INCORRECT
+// will throw IllegalStateException: No context available ...
 Runnable runnable = new Runnable() {
   public void run() {
     MySessionSingleton sessionSingleton = MySessionSingleton.getInstance();
@@ -242,13 +238,15 @@ Runnable runnable = new Runnable() {
   }
 };
 new Thread( runnable ).start();
-  </code></pre></div>
+</code></pre>
   <p>
-    Here the <code>Runnable</code> is executed via 
-    <code>UICallBack.runNonUIThreadWithFakeContext</code> which will provide the context, required 
-    for accessing the session singleton.
+    The solution is to run the code in question with a simulated context that can determine the user
+    session based on the reference to the user's display.
+    To do so, use the legendary method <code>UICallBack.runNonUIThreadWithFakeContext()</code>.
+    This method will run a given runnable in with a context that is bound to the user session
+    identified by the specified display, thus allowing the code to access session singletons:
   </p>
-  <div dir="ltr" style="text-align: left;"><pre><code>// CORRECT
+  <pre><code>// CORRECT
 final Display display = Display.getCurrent();
 final Runnable runnable = new Runnable() {
   public void run() {
@@ -261,7 +259,7 @@ final Runnable runnable = new Runnable() {
   }
 };
 new Thread( runnable ).start();
-  </code></pre></div>
+  </code></pre>
 
 </body>
 </html>

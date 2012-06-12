@@ -12,11 +12,12 @@
 
   <h1>Writing a Hello World with RAP</h1>
   <p>
-    This document describes how to quickly create a RAP application running on OSGi.
-    There are other setups and environments RAP can run in.
-    If you want to create a Workbench-based application, start with a template
+    This document describes how to quickly create and launch a first user interface with RAP.
+    Developing an entire application involves more steps, that depend on the type of
+    <a href = "../advanced/application-setup.html">application setup</a> you choose.
+    These steps are explained in the part on application development.
+    If you want to create a Workbench-based application, start with a template instead
     (see <a href = "../examples.html">Examples</a>).
-    See also <a href = "../advanced/application-setup.html">Choosing a RAP Application Setup</a>.
   </p>
 
   <h2>Preconditions</h2>
@@ -32,7 +33,7 @@
     OSGi bundles with PDE.
     From the menu, select <em class="UILabel">File &gt; New &gt; Plug-in Project</em>.
     Let's call the plug-in <code>org.example.rap.helloworld</code>.
-    In the <em class="UILabel">Target Platform</em>box, choose
+    In the <em class="UILabel">Target Platform</em> box, choose
     <em class="UILabel">an OSGi framework</em> and <em class="UILabel">standard</em> to create a
     bundle that is compatible with any OSGi framework.
   </p>
@@ -46,11 +47,10 @@
 
   <h2>Add a dependency to RWT</h2>
   <p>
-    To display some widgets, we need a dependency to the RAP widget toolkit, the RAP implementation
-    of SWT.
+    To display some widgets, we need a dependency to the RAP widget toolkit (RWT), which is RAP's
+    implementation of SWT.
     It is contained in the plug-in <code>org.eclipse.rap.rwt</code>.
-    To add this dependency, open the project's bundle manifest file
-    <code>META-INF/MANIFEST.MF</code>.
+    To add this dependency, open the bundle manifest file <code>META-INF/MANIFEST.MF</code>.
     In the <em>Plug-in Manifest Editor</em>, go to the <em class="UILabel">Dependencies</em> page.
     Add <code>org.eclipse.rap.rwt</code> to the list of <em class="UILabel">Required Plug-ins</em>
     and save.
@@ -58,10 +58,9 @@
 
   <h2>Create an entrypoint</h2>
   <p>
-    Every RAP application needs an entrypoint that is called by the framework when a user starts
-    the application.
-    An entrypoint is a class that implements the interface <em>IEntryPoint</em>
-    (workbench-based applications can also implement the Eclipse-specific interface
+    Every RAP application needs an entrypoint that creates the initial UI of the application.
+    An entrypoint is a class that implements the interface <em>IEntryPoint</em>.
+    (As a side note, workbench-based applications can also implement the Eclipse-specific interface
     <em>IApplication</em>).
   </p>
   <p>
@@ -94,10 +93,11 @@
   <p>
     <strong>Note:</strong> This template will generate a couple more lines after the
     <code>shell.open()</code>, called the SWT <em>main loop</em>.
+    You also find this code in SWT snippets.
     For workbench-based application, the main loop must be present, but for our simple applications,
     it must be <strong>removed</strong>
     (read about <a href="../advanced/application-setup.html">application setups</a> to understand
-    the details).
+    the difference).
   </p>
 
   <h2>Launch the entrypoint</h2>
@@ -118,7 +118,7 @@
     For a workbench application, this would be done using an extension.
     Leightweight OSGi applications register the entrypoint in their
     <a href="../advanced/application-configuration.html">application configuration</a>.
-    These tpoics are covered in the part on application development.
+    These topics are covered in the part on application development.
   </p>
 
 </body>
