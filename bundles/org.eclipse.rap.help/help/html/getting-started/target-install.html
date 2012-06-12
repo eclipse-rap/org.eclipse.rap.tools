@@ -11,17 +11,23 @@
 <body>
 
   <h1>Installing a RAP Target</h1>
-  
+
+  <p>
+    By default, the Eclipse IDE compiles all projects in the workspace against the running
+    platform, i.e. all bundles of the running IDE.
+    But since RAP applications must be compiled against the RAP runtime, the workspace must be
+    configured to do so.
+    This is done by setting the RAP runtime as the <em>target platform</em>.
+  </p>
+
   <h2 id="target-install">Using the RAP Tools to install the latest target platform</h2>
   <p>
-    RAP applications need to be compiled against the RAP runtime.
-    To do so, the runtime needs to be set as the target platform in Eclipse.
-  </p>
-  <p>
     When Eclipse starts on a fresh workspace, a welcome page is displayed.
-    You can also get to the welcome page choosing <i>Welcome</i> from the <i>Help</i> menu.
-    Once there, click <strong>Overview</strong> and select the <strong>Rich Ajax Platform (RAP)</strong> section.
-    Choose <strong>Install Target Platform</strong> on the following page.
+    You can always return to this welcome page choosing <em class="UILabel">Help &gt; Welcome</em>
+    from the main menu.
+    Once there, click <em class="UILabel">Overview</em> and select the
+    <em class="UILabel">Rich Ajax Platform (RAP)</em> section.
+    Choose <em class="UILabel">Install Target Platform</em> on the following page.
     In the upcoming dialog confirm the default values, which starts the target
     installation process.
   </p>
@@ -37,29 +43,29 @@
     You can also install a target manually, e.g. if you want to develop against a different
     version of RAP or combine RAP with other bundles.
     To select a target platform you can either use the Target Platform preferences page
-    (<em>Window &gt; Preferences &gt; Plug-in Development &gt; Target Platform</em>) or create
-    a <em>target definition file</em>.
+    (<em class="UILabel">Window &gt; Preferences &gt; Plug-in Development &gt; Target Platform</em>)
+    or create a <em>target definition file</em>.
     The latter is preferable, as target definition files can be checked in into your source code
     repository and shared among team members.
   </p>
   <ol>
     <li>
       First, you may want to create a project to host your target definition files.
-      A plain project will do (<em>File &gt; New &gt; General &gt; Project</em>).
+      A plain project will do (<em class="UILabel">File &gt; New &gt; General &gt; Project</em>).
     </li>
     <li>
       In this new project, create a new target definition:
-      <em>New &gt; Plug-In Development &gt; Target Definition</em>.
-      Chose a name like <em>rap-custom.target</em> and press <em>Finish</em>.
+      <em class="UILabel">New &gt; Plug-In Development &gt; Target Definition</em>.
+      Chose a name like <em>rap-custom.target</em> and press <em class="UILabel">Finish</em>.
     </li>
     <li>
       The target editor will open and show the contents of this target definition.
       Now, add the RAP runtime from a p2 repository a.k.a. software site:
-      press <em>Add</em>, select <em>Software Site</em>.
-      You'll be confronted with another dialog, named <em>Add Software Site</em>.
+      press <em class="UILabel">Add</em>, select <em class="UILabel">Software Site</em>.
+      You'll be confronted with another dialog, named <em class="UILabel">Add Software Site</em>.
     </li>
     <li>
-      Again press <em>Add</em> and enter the URL of the RAP runtime repository.
+      Again press <em class="UILabel">Add</em> and enter the URL of the RAP runtime repository.
       You find these URLs on the RAP <a href="http://eclipse.org/rap/downloads/">download page</a>,
       e.g.
       <ul>
@@ -71,7 +77,7 @@
         </li>
       </ul>
       Hint: You can also install the RAP runtime directly from a download zip archive.
-      In this case, press <em>Archive…</em> and select the zip file.
+      In this case, press <em class="UILabel">Archive…</em> and select the zip file.
     </li>
     <li>
       For a basic RAP target, select the category <em>Rich Ajax Platform (RAP)</em>.
@@ -80,12 +86,13 @@
       and a set of Eclipse bundles needed for a basic RAP target (<em>Basic Target Requirements</em>).
     </li>
     <li>
-      <strong>Important:</strong> Before you click <em>finish</em>, make sure the checkbox
-      <em>Include required software</em> is <em>not</em> checked.
+      <strong>Important:</strong> Before you click <em class="UILabel">Finish</em>, make sure the
+      checkbox <em class="UILabel">Include required software</em> is <em>not</em> checked.
     </li>
     <li>
-      Activate the target platform by clicking the link <em>Set as Target Platform</em> in the
-      upper right corner of the target definition editor.
+      Activate the target platform by clicking the link
+      <em class="UILabel">Set as Target Platform</em> in the upper right corner of the target
+      definition editor.
     </li>
   </ol>
 
