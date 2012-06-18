@@ -51,10 +51,7 @@
     RAP also provides a session-scoped data store, the <em>session store</em>, accessible using
     <code>RWT.getSessionStore()</code>.
     The session store also provides access to the HTTP session.
-    Note that the session store can not be accessed directly from a background thread.
-    <!-- 
-     See example below.
-     -->
+    Note that the session store can not be accessed directly from a background thread (see below).
     For working with session-unique singletons, see <a href="#singleton">Session Singleton</a>.
   </p>
 
@@ -160,37 +157,6 @@ display.disposeExec( new Runnable() {
     </tr>
   </table>
 
-  <!-- 
-  <p>
-    Example for accessing the HTTP session / session store from a background thread: 
-  </p>
-  <div dir="ltr" style="text-align: left;"><pre><code>final Display display = new Display();
-final Runnable bgRunnable = new Runnable() {
-  public void run() {
-    UICallBack.runNonUIThreadWithFakeContext( display, new Runnable() {
-      public void run() {
-        Object someValue = RWT.getSessionStore().getAttribute( "myAtt" );
-        System.out.println( someValue );
-        // access the HTTP session
-        RWT.getSessionStore().getHttpSession();
-      }
-    } );
-  }
-};
-Shell shell = new Shell( display );
-Button button = new Button( shell, SWT.PUSH );
-button.setText( "Start Background Thread" );
-button.addSelectionListener( new SelectionAdapter() {
-  public void widgetSelected( final SelectionEvent evt ) {
-    RWT.getSessionStore().setAttribute( "myAtt", "someValue" );
-    Thread thread = new Thread( bgRunnable );
-    thread.setDaemon( true );
-    thread.start();
-  }
-} );
-  </code></pre></div>
-   -->
-
   <h2>Singletons and Static Fields</h2>
   <p>
     The classical singleton pattern suggests that a class has only one instance and keeps the
@@ -221,30 +187,37 @@ button.addSelectionListener( new SelectionAdapter() {
   // other methods ...
 }
   </code></pre></div>
-
-  <h3>Access from a background thread</h3>
   <p>
-    As with the session store, it is not possible to access session singletons from a background
-    thread because background threads aren't bound to any specific user session.
-    Any non-UI thread trying to access a session singleton will fail with an
-    <code>java.lang.IllegalStateException</code>:
+    Note that session singletons cannot be directly accessed from a background thread.
+  </p>
+
+  <h2>Accessing the session from a background thread</h2>
+  <p>
+    RWT determines the current user session based the current thread.
+    Since the UI-thread is always associated with the user session, any code running in this thread
+    can freely access the session store and instantiate session singletons.
+    When other threads (also called <em>non-UI</em> or <em>background</em> threads try to
+    do so, the code will fail with an <code>java.lang.IllegalStateException</code>, saying that
+    there's no context available:
   </p>
   <pre><code>// INCORRECT
 // will throw IllegalStateException: No context available ...
 Runnable runnable = new Runnable() {
   public void run() {
+    ISessionStore sessionStore = RWT.getSessionStore();
+    // ... or ...
     MySessionSingleton sessionSingleton = MySessionSingleton.getInstance();
-    // do something with the session singleton
+    // ...
   }
 };
 new Thread( runnable ).start();
 </code></pre>
   <p>
-    The solution is to run the code in question with a simulated context that can determine the user
-    session based on the reference to the user's display.
+    The solution is to run the code that accesses the session with a simulated context that can
+    determine the user session based on a reference to the user's display.
     To do so, use the legendary method <code>UICallBack.runNonUIThreadWithFakeContext()</code>.
-    This method will run a given runnable in with a context that is bound to the user session
-    identified by the specified display, thus allowing the code to access session singletons:
+    This method will run a given runnable with a context that is associated with the user session
+    identified by the specified display, thus allowing the code to access the session:
   </p>
   <pre><code>// CORRECT
 final Display display = Display.getCurrent();
@@ -252,8 +225,10 @@ final Runnable runnable = new Runnable() {
   public void run() {
     UICallBack.runNonUIThreadWithFakeContext( display, new Runnable() {
       public void run() {
+        ISessionStore sessionStore = RWT.getSessionStore();
+        // ... or ...
         MySessionSingleton sessionSingleton = MySessionSingleton.getInstance();
-        // do something with the session singleton
+        // ...
       }
     } );
   }
