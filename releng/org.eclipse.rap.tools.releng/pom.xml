@@ -22,7 +22,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho-version>0.14.1</tycho-version>
+    <tycho-version>0.15.0</tycho-version>
     <base-platform>4.2milestones/S-4.2RC4-201206081400</base-platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
