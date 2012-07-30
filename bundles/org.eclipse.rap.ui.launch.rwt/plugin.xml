@@ -68,7 +68,7 @@
                       <test property="org.eclipse.jdt.core.isInJavaProject"/>
                       <test
                             property="org.eclipse.jdt.core.hasTypeOnClasspath"
-                            value="org.eclipse.rwt.lifecycle.IEntryPoint">
+                            value="org.eclipse.rap.rwt.lifecycle.IEntryPoint">
                       </test>
                   </adapt>
                  </iterate>

@@ -19,8 +19,8 @@
         version="true"
         use="true"
         windowtitle="Eclipse Rich Ajax Platform API Reference"
-        packagenames="org.eclipse.rwt.*"
-        excludePackageNames="org.eclipse.rwt.internal.*,org.eclipse.swt.internal.*">
+        packagenames="org.eclipse.rap.rwt.*"
+        excludePackageNames="org.eclipse.rap.rwt.internal.*,org.eclipse.swt.internal.*">
       <fileset
           dir="${runtimeSourceDir}/bundles/org.eclipse.rap.rwt/src"
           defaultexcludes="yes">
