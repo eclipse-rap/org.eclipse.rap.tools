@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource and others.
+ * Copyright (c) 2007, 2012 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
@@ -20,22 +20,21 @@ import org.eclipse.rap.ui.tests.Fixture;
 
 
 public class RAPLaunchConfig_Test extends TestCase {
-  
+
   private ILaunchConfigurationWorkingCopy config;
   private RAPLaunchConfig rapConfig;
-  
+
   protected void setUp() throws Exception {
     config = Fixture.createRAPLaunchConfig();
     rapConfig = new RAPLaunchConfig( config );
   }
-  
+
   protected void tearDown() throws Exception {
     config.delete();
   }
-  
+
   public void testInitialValues() throws CoreException {
     assertFalse( rapConfig.getUseManualPort() );
-    assertTrue( rapConfig.getTerminatePrevious() );
     assertFalse( "".equals( rapConfig.getServletName() ) );
     assertTrue( "".equals( rapConfig.getEntryPoint() ) );
     assertEquals( LibraryVariant.STANDARD, rapConfig.getLibraryVariant() );
@@ -44,7 +43,7 @@ public class RAPLaunchConfig_Test extends TestCase {
     assertFalse( rapConfig.getUseManualContextPath() );
     assertTrue( "".equals( rapConfig.getContextPath() ) );
   }
-  
+
   public void testEntryPoint() throws CoreException {
     rapConfig.setEntryPoint( "ep-param" );
     assertEquals( "ep-param", rapConfig.getEntryPoint() );
@@ -68,12 +67,12 @@ public class RAPLaunchConfig_Test extends TestCase {
       assertEquals( "xyz", rapConfig.getServletName() );
     }
   }
-  
+
   public void testSetDataLocation() throws CoreException {
     rapConfig.setDataLocation( "xyz" );
     assertEquals( "xyz", rapConfig.getDataLocation() );
   }
-  
+
   public void testSetDataLocationThrowsExceptionWithNullValue() throws CoreException {
     rapConfig.setDataLocation( "xyz" );
     try {
@@ -84,7 +83,7 @@ public class RAPLaunchConfig_Test extends TestCase {
       assertEquals( "xyz", rapConfig.getDataLocation() );
     }
   }
-  
+
   public void testSetContextPathValideValue() throws CoreException {
     rapConfig.setContextPath( "/xyz" );
     assertEquals( "/xyz", rapConfig.getContextPath() );
@@ -98,14 +97,14 @@ public class RAPLaunchConfig_Test extends TestCase {
       // expected
     }
   }
-  
+
   public void testUseDefaultDataLocation() throws CoreException {
     rapConfig.setUseDefaultDataLocation( false );
     assertFalse( rapConfig.getUseDefaultDatatLocation() );
     rapConfig.setUseDefaultDataLocation( true );
     assertTrue( rapConfig.getUseDefaultDatatLocation() );
   }
-  
+
   public void testDoClear() throws CoreException {
     rapConfig.setDoClearDataLocation( false );
     assertFalse( rapConfig.getDoClearDataLocation() );

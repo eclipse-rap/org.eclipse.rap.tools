@@ -61,7 +61,6 @@ public class LaunchMessages extends NLS {
   public static String MainTab_OpenApplicationIn;
   public static String MainTab_RuntimeSettings;
   public static String MainTab_ServletPath;
-  public static String MainTab_TerminatePrevious;
 
   static {
     // initialize resource bundle

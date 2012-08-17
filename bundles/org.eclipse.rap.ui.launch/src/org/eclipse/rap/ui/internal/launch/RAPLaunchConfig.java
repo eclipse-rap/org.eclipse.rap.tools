@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource and others.
+ * Copyright (c) 2007, 2012 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 
 package org.eclipse.rap.ui.internal.launch;
@@ -117,8 +117,6 @@ public final class RAPLaunchConfig {
     = PREFIX + "servletName"; //$NON-NLS-1$
   public static final String ENTRY_POINT
     = PREFIX + "entryPoint"; //$NON-NLS-1$
-  public static final String TERMINATE_PREVIOUS
-    = PREFIX + "terminatePrevious"; //$NON-NLS-1$
   public static final String OPEN_BROWSER
     = PREFIX + "openBrowser"; //$NON-NLS-1$
   public static final String BROWSER_MODE
@@ -132,20 +130,19 @@ public final class RAPLaunchConfig {
   public static final String USE_MANUAL_CONTEXTPATH
     = PREFIX + "useManualContextPath"; //$NON-NLS-1$
   public static final String SESSION_TIMEOUT
-    = PREFIX + "sessionTimeout"; //$NON-NLS-1$  
+    = PREFIX + "sessionTimeout"; //$NON-NLS-1$
   public static final String USE_SESSION_TIMEOUT
     = PREFIX + "useSessionTimeout"; //$NON-NLS-1$
   public static final String LIBRARY_VARIANT
     = PREFIX + "libraryVariant"; //$NON-NLS-1$
-  public static final String USE_DEFAULT_DATA_LOCATION 
+  public static final String USE_DEFAULT_DATA_LOCATION
     = PREFIX + "useDefaultDataLocation"; //$NON-NLS-1$
-  public static final String DATA_LOCATION 
+  public static final String DATA_LOCATION
   = PREFIX + "dataLocation"; //$NON-NLS-1$
 
   // Default values for launch configuration attribute names
   private static final String DEFAULT_SERVLET_NAME = "rap"; //$NON-NLS-1$
   private static final String DEFAULT_ENTRY_POINT = ""; //$NON-NLS-1$
-  private static final boolean DEFAULT_TERMINATE_PREVIOUS = true;
   private static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
   private static final int DEFAULT_PORT = 10080;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
@@ -161,7 +158,6 @@ public final class RAPLaunchConfig {
   public static void setDefaults( ILaunchConfigurationWorkingCopy config ) {
     config.setAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
     config.setAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
-    config.setAttribute( TERMINATE_PREVIOUS, DEFAULT_TERMINATE_PREVIOUS );
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE.getName() );
     config.setAttribute( PORT, DEFAULT_PORT );
     config.setAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
@@ -196,7 +192,7 @@ public final class RAPLaunchConfig {
   public String getName() {
     return config.getName();
   }
-  
+
   public ILaunchConfiguration getUnderlyingLaunchConfig() {
     return config;
   }
@@ -216,7 +212,7 @@ public final class RAPLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( IPDELauncherConstants.ASKCLEAR, askClear );
   }
-  
+
   public boolean getDoClearDataLocation() throws CoreException {
     return config.getAttribute( IPDELauncherConstants.DOCLEAR, false );
   }
@@ -246,7 +242,7 @@ public final class RAPLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( DATA_LOCATION, dataLocation );
   }
-  
+
   public String getServletName() throws CoreException {
     return config.getAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
   }
@@ -269,16 +265,6 @@ public final class RAPLaunchConfig {
     }
     checkWorkingCopy();
     workingCopy.setAttribute( ENTRY_POINT, entryPoint );
-  }
-
-  public boolean getTerminatePrevious() throws CoreException {
-    return config.getAttribute( TERMINATE_PREVIOUS,
-                                DEFAULT_TERMINATE_PREVIOUS );
-  }
-
-  public void setTerminatePrevious( final boolean terminatePrevious ) {
-    checkWorkingCopy();
-    workingCopy.setAttribute( TERMINATE_PREVIOUS, terminatePrevious );
   }
 
   public boolean getOpenBrowser() throws CoreException {
@@ -320,7 +306,7 @@ public final class RAPLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( PORT, port );
   }
-  
+
   public boolean getUseManualContextPath() throws CoreException {
     return config.getAttribute( USE_MANUAL_CONTEXTPATH, DEFAULT_USE_MANUAL_CONTEXTPATH );
   }
@@ -341,7 +327,7 @@ public final class RAPLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( CONTEXTPATH, contextPath );
   }
-  
+
   public boolean getUseSessionTimeout() throws CoreException {
     return config.getAttribute( USE_SESSION_TIMEOUT, false );
   }
@@ -370,7 +356,7 @@ public final class RAPLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( LIBRARY_VARIANT, libraryVariant.getName() );
   }
-  
+
   /////////////////
   // Helping method
 

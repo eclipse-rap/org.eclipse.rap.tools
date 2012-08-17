@@ -46,7 +46,6 @@ public final class MainTab extends AbstractLauncherTab {
   private final Image warnImage;
   private Text servletPathTextField;
   private Text startupParamTextField;
-  private Button terminatePreviousCheckBox;
   private Button openBrowserCheckBox;
   private Button internalBrowserRadioButton;
   private Button externalBrowserRadioButton;
@@ -123,7 +122,6 @@ public final class MainTab extends AbstractLauncherTab {
     try {
       servletPathTextField.setText( rapConfig.getServletName() );
       startupParamTextField.setText( rapConfig.getEntryPoint() );
-      terminatePreviousCheckBox.setSelection( rapConfig.getTerminatePrevious() );
       manualPortCheckBox.setSelection( rapConfig.getUseManualPort() );
       portSpinner.setSelection( rapConfig.getPort() );
       contextPathCheckBox.setSelection( rapConfig.getUseManualContextPath() );
@@ -154,7 +152,6 @@ public final class MainTab extends AbstractLauncherTab {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     rapConfig.setServletName( servletPathTextField.getText() );
     rapConfig.setEntryPoint( startupParamTextField.getText() );
-    rapConfig.setTerminatePrevious( terminatePreviousCheckBox.getSelection() );
     rapConfig.setOpenBrowser( openBrowserCheckBox.getSelection() );
     rapConfig.setBrowserMode( getBrowserMode() );
     portSpinner.setEnabled( manualPortCheckBox.getSelection() );
@@ -237,14 +234,6 @@ public final class MainTab extends AbstractLauncherTab {
     startupParamTextField.setLayoutData( spanHorizontal( 2, 0 ) );
     startupParamTextField.addModifyListener( modifyListener );
     createStartupParameterDecorator();
-  }
-
-  private void createSessionPart( Composite parent ) {
-    terminatePreviousCheckBox = new Button( parent, SWT.CHECK );
-    terminatePreviousCheckBox.setLayoutData( spanHorizontal( 3, 0 ) );
-    String text = LaunchMessages.MainTab_TerminatePrevious;
-    terminatePreviousCheckBox.setText( text );
-    terminatePreviousCheckBox.addSelectionListener( selectionListener );
   }
 
   private void createBrowserModeSection( Composite parent ) {
@@ -353,7 +342,6 @@ public final class MainTab extends AbstractLauncherTab {
     contextPathTextField = new Text( leftPartComposite, SWT.BORDER | SWT.SINGLE );
     GridDataFactory.fillDefaults().grab( true, false ).applyTo( contextPathTextField );
     contextPathTextField.addModifyListener( modifyListener );
-    createSessionPart( leftPartComposite );
   }
 
   private void createRuntimeSettingsRightPart( Composite righttPartComposite ) {
