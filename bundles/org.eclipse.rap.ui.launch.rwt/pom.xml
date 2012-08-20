@@ -16,13 +16,13 @@
 
   <groupId>org.eclipse.rap</groupId>
   <artifactId>org.eclipse.rap.ui.launch.rwt</artifactId>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 
   <parent>
     <groupId>org.eclipse.rap</groupId>
     <artifactId>org.eclipse.rap.tooling-parent</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.5.1-SNAPSHOT</version>
     <relativePath>../../releng/org.eclipse.rap.tools.releng/pom.xml</relativePath>
   </parent>
 

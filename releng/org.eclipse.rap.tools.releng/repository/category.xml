@@ -17,7 +17,7 @@
 
   <feature url="http://eclipse.org/rap"
       id="org.eclipse.rap.tools"
-      version="1.5.0.qualifier">
+      version="1.5.1.qualifier">
     <category name="org.eclipse.rap.category"/>
   </feature>
 
