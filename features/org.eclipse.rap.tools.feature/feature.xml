@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.rap.tools"
+      id="org.eclipse.rap.tools.feature"
       label="Rich Ajax Platform (RAP) Tools"
       version="2.0.0.qualifier"
       provider-name="Eclipse.org - RAP">
@@ -18,7 +18,7 @@
    </license>
 
    <url>
-      <update label="Rich Ajax Platform (RAP) 2.0 Tools Repository" url="http://download.eclipse.org/rt/rap/2.0/tools/"/>
+      <update label="Rich Ajax Platform (RAP) 2.0 Tools Repository" url="http://download.eclipse.org/rt/rap/tools/2.0/"/>
    </url>
 
    <requires>

@@ -21,7 +21,7 @@
     <relativePath>../../releng/org.eclipse.rap.tools.releng/pom.xml</relativePath>
   </parent>
 
-  <artifactId>org.eclipse.rap.tools</artifactId>
+  <artifactId>org.eclipse.rap.tools.feature</artifactId>
   <packaging>eclipse-feature</packaging>
 
 </project>
