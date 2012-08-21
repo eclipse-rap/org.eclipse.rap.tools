@@ -20,8 +20,8 @@ Clone the RAP Tools repository from the remote Git source code repository:
 This will create a complete clone of the RAP Tools Git repository on your disk in a
 new directory 'org.eclipse.rap.tools' with the latest HEAD version of the RAP Tools.
 
-RAP Tooling
------------
+RAP Tools
+---------
 
 Run Maven in the RAP Tools build project:
 

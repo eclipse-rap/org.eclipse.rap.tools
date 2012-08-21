@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script is used to trigger the tooling build with parameters passed by Hudson.
+# This script is used to trigger the tools build with parameters passed by Hudson.
 # All values are retrieved trough system variables set by Hudson.
 # See Job -> Configure... -> This build is parameterized
 
@@ -29,7 +29,7 @@ $SCRIPTS_DIR/ant-runner.sh releng/org.eclipse.rap.tools.releng/reference/build.x
   -DtoolsSourceDir="${WORKSPACE}/org.eclipse.rap.tools" || exit 1
 
 ######################################################################
-# Build RAP Tooling
+# Build RAP Tools
 
 cd "$WORKSPACE/org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng" || exit 1
 echo "Running maven on $PWD, sign=$sign"
@@ -42,8 +42,8 @@ echo "Timestamp is '$TIMESTAMP'"
 test -n "$VERSION" || exit 1
 test -n "$TIMESTAMP" || exit 1
 
-# Example: rap-tooling-1.5.0-N-20110814-2110.zip
-zipFileName=rap-tooling-$VERSION-$BUILD_TYPE-$TIMESTAMP.zip
+# Example: rap-tools-1.5.0-N-20110814-2110.zip
+zipFileName=rap-tools-$VERSION-$BUILD_TYPE-$TIMESTAMP.zip
 if [ -d repository/target/fixedSigned ]; then
   cd repository/target/fixedSigned
   zip -r "$WORKSPACE/$zipFileName" .
@@ -53,7 +53,7 @@ else
   mv repository/target/*.zip "$WORKSPACE/$zipFileName"
 fi
 
-repoZipFileName=rap-tooling-repo-$VERSION-$BUILD_TYPE-$TIMESTAMP.zip
+repoZipFileName=rap-tools-repo-$VERSION-$BUILD_TYPE-$TIMESTAMP.zip
 if [ -d repository/target/fixedPacked ]; then
   cd repository/target/fixedPacked
   zip -r "$WORKSPACE/$repoZipFileName" .
