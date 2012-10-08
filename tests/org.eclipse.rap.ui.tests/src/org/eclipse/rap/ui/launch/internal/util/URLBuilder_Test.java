@@ -28,15 +28,15 @@ public class URLBuilder_Test extends TestCase {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     // servlet name starting with a slash, default entry point
-    rapConfig.setServletName( "/startsWithSlash" );
+    rapConfig.setServletPath( "/startsWithSlash" );
     String url = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
     assertEquals( "http://127.0.0.1:80/startsWithSlash", url );
     // servlet name starting without a slash, default entry point
-    rapConfig.setServletName( "startsWithoutSlash" );
+    rapConfig.setServletPath( "startsWithoutSlash" );
     String url2 = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
     assertEquals( "http://127.0.0.1:80/startsWithoutSlash", url2 );
     // servlet name starting without a slash, distinct entry point
-    rapConfig.setServletName( "servletName" );
+    rapConfig.setServletPath( "servletName" );
     rapConfig.setEntryPoint( "entryPoint" );
     String url3 = URLBuilder.fromLaunchConfig( rapConfig, 80, false );
     assertEquals( "http://127.0.0.1:80/servletName?startup=entryPoint", url3 );

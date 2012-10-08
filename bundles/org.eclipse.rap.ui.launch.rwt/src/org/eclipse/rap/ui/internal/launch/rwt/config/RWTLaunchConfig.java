@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
@@ -16,13 +17,13 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 
 
 public final class RWTLaunchConfig {
-  
-  static final String LAUNCH_CONFIG_TYPE 
+
+  static final String LAUNCH_CONFIG_TYPE
     = "org.eclipse.rap.ui.internal.launch.rwt.RWTLaunchConfigType"; //$NON-NLS-1$
 
   public static final int MIN_PORT_NUMBER = 0;
   public static final int MAX_PORT_NUMBER = 65535;
-  
+
   public static enum LaunchTarget {
     ENTRY_POINT,
     WEB_XML,
@@ -33,7 +34,7 @@ public final class RWTLaunchConfig {
     = IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME;
   public static final String WORKING_DIRECTORY
     = IJavaLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY;
-  private static final String VM_ARGUMENTS 
+  private static final String VM_ARGUMENTS
     = IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS;
 
   // Attribute names specific to the RWT launcher
@@ -55,14 +56,14 @@ public final class RWTLaunchConfig {
   private static final String DEFAULT_VM_ARGUMENTS = ""; //$NON-NLS-1$
   private static final String DEFAULT_WEB_XML_LOCATION = ""; //$NON-NLS-1$
   private static final String DEFAULT_WEB_APP_LOCATION = ""; //$NON-NLS-1$
-  private static final String DEFAULT_SERVLET_PATH = "rap"; //$NON-NLS-1$
+  private static final String DEFAULT_SERVLET_PATH = "/rap"; //$NON-NLS-1$
   private static final String DEFAULT_WORKING_DIRECTORY = null;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
   private static final int DEFAULT_PORT = 8080;
   private static final boolean DEFAULT_OPEN_BROWSER = true;
   private static final String DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL.toString();
 
-  
+
   public static ILaunchConfigurationType getType() {
     ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
     return launchManager.getLaunchConfigurationType( LAUNCH_CONFIG_TYPE );
@@ -99,7 +100,7 @@ public final class RWTLaunchConfig {
   public String getName() {
     return config.getName();
   }
-  
+
   public ILaunchConfiguration getUnderlyingLaunchConfig() {
     return config;
   }
@@ -110,7 +111,7 @@ public final class RWTLaunchConfig {
   public String getProjectName() {
     return getAttribute( PROJECT_NAME, DEFAULT_PROJECT_NAME );
   }
-  
+
   public void setProjectName( String projectName ) {
     checkNotNull( projectName, "projectName" ); //$NON-NLS-1$
     checkWorkingCopy();
@@ -126,22 +127,22 @@ public final class RWTLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( VM_ARGUMENTS, vmArguments );
   }
-  
+
   public LaunchTarget getLaunchTarget() {
     String attribute = getAttribute( LAUNCH_TARGET, DEFAULT_LAUNCH_TARGET.name() );
     return Enum.valueOf( LaunchTarget.class, attribute );
   }
-  
+
   public void setLaunchTarget( LaunchTarget launchTarget ) {
     checkNotNull( launchTarget, "launchTarget" ); //$NON-NLS-1$
     checkWorkingCopy();
     workingCopy.setAttribute( LAUNCH_TARGET, launchTarget.name() );
   }
-  
+
   public String getWebXmlLocation() {
     return getAttribute( WEB_XML_LOCATION, DEFAULT_WEB_XML_LOCATION );
   }
-  
+
   public void setWebXmlLocation( String webXmlLocation ) {
     checkNotNull( webXmlLocation, "webXmlLocation" ); //$NON-NLS-1$
     checkWorkingCopy();
@@ -153,7 +154,7 @@ public final class RWTLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( WEB_APP_LOCATION, webAppLocation );
   }
-  
+
   public String getWebAppLocation() {
     return getAttribute( WEB_APP_LOCATION, DEFAULT_WEB_APP_LOCATION );
   }
@@ -261,7 +262,7 @@ public final class RWTLaunchConfig {
     }
     return result;
   }
-  
+
   private void handleException( String name, CoreException e ) {
     String msg = "Failed to read launch configuration attribute: " + name; //$NON-NLS-1$
     throw new RuntimeException( msg, e );

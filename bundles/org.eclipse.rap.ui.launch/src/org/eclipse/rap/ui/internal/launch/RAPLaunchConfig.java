@@ -113,35 +113,22 @@ public final class RAPLaunchConfig {
 
   // Launch configuration attribute names
   private static final String PREFIX = "org.eclipse.rap.launch."; //$NON-NLS-1$
-  public static final String SERVLET_NAME
-    = PREFIX + "servletName"; //$NON-NLS-1$
-  public static final String ENTRY_POINT
-    = PREFIX + "entryPoint"; //$NON-NLS-1$
-  public static final String OPEN_BROWSER
-    = PREFIX + "openBrowser"; //$NON-NLS-1$
-  public static final String BROWSER_MODE
-    = PREFIX + "browserMode"; //$NON-NLS-1$
-  public static final String PORT
-    = PREFIX + "port"; //$NON-NLS-1$
-  public static final String USE_MANUAL_PORT
-    = PREFIX + "useManualPort"; //$NON-NLS-1$
-  public static final String CONTEXTPATH
-    = PREFIX + "contextpath"; //$NON-NLS-1$
-  public static final String USE_MANUAL_CONTEXTPATH
-    = PREFIX + "useManualContextPath"; //$NON-NLS-1$
-  public static final String SESSION_TIMEOUT
-    = PREFIX + "sessionTimeout"; //$NON-NLS-1$
-  public static final String USE_SESSION_TIMEOUT
-    = PREFIX + "useSessionTimeout"; //$NON-NLS-1$
-  public static final String LIBRARY_VARIANT
-    = PREFIX + "libraryVariant"; //$NON-NLS-1$
-  public static final String USE_DEFAULT_DATA_LOCATION
-    = PREFIX + "useDefaultDataLocation"; //$NON-NLS-1$
-  public static final String DATA_LOCATION
-  = PREFIX + "dataLocation"; //$NON-NLS-1$
+  public static final String SERVLET_PATH = PREFIX + "servletPath"; //$NON-NLS-1$
+  public static final String ENTRY_POINT = PREFIX + "entryPoint"; //$NON-NLS-1$
+  public static final String OPEN_BROWSER = PREFIX + "openBrowser"; //$NON-NLS-1$
+  public static final String BROWSER_MODE = PREFIX + "browserMode"; //$NON-NLS-1$
+  public static final String PORT = PREFIX + "port"; //$NON-NLS-1$
+  public static final String USE_MANUAL_PORT = PREFIX + "useManualPort"; //$NON-NLS-1$
+  public static final String CONTEXTPATH = PREFIX + "contextpath"; //$NON-NLS-1$
+  public static final String USE_MANUAL_CONTEXTPATH = PREFIX + "useManualContextPath"; //$NON-NLS-1$
+  public static final String SESSION_TIMEOUT = PREFIX + "sessionTimeout"; //$NON-NLS-1$
+  public static final String USE_SESSION_TIMEOUT = PREFIX + "useSessionTimeout"; //$NON-NLS-1$
+  public static final String LIBRARY_VARIANT = PREFIX + "libraryVariant"; //$NON-NLS-1$
+  public static final String USE_DEFAULT_DATA_LOCATION = PREFIX + "useDefaultDataLocation"; //$NON-NLS-1$
+  public static final String DATA_LOCATION = PREFIX + "dataLocation"; //$NON-NLS-1$
 
   // Default values for launch configuration attribute names
-  private static final String DEFAULT_SERVLET_NAME = "rap"; //$NON-NLS-1$
+  private static final String DEFAULT_SERVLET_PATH = "/rap"; //$NON-NLS-1$
   private static final String DEFAULT_ENTRY_POINT = ""; //$NON-NLS-1$
   private static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
   private static final int DEFAULT_PORT = 10080;
@@ -156,7 +143,7 @@ public final class RAPLaunchConfig {
     = "${workspace_loc}/.metadata/.plugins/"; //$NON-NLS-1$
 
   public static void setDefaults( ILaunchConfigurationWorkingCopy config ) {
-    config.setAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
+    config.setAttribute( SERVLET_PATH, DEFAULT_SERVLET_PATH );
     config.setAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE.getName() );
     config.setAttribute( PORT, DEFAULT_PORT );
@@ -243,16 +230,16 @@ public final class RAPLaunchConfig {
     workingCopy.setAttribute( DATA_LOCATION, dataLocation );
   }
 
-  public String getServletName() throws CoreException {
-    return config.getAttribute( SERVLET_NAME, DEFAULT_SERVLET_NAME );
+  public String getServletPath() throws CoreException {
+    return config.getAttribute( SERVLET_PATH, DEFAULT_SERVLET_PATH );
   }
 
-  public void setServletName( final String servletName ) {
-    if( servletName == null ) {
-      throw new NullPointerException( "servletName" ); //$NON-NLS-1$
+  public void setServletPath( final String servletPath ) {
+    if( servletPath == null ) {
+      throw new NullPointerException( "servletPath" ); //$NON-NLS-1$
     }
     checkWorkingCopy();
-    workingCopy.setAttribute( SERVLET_NAME, servletName );
+    workingCopy.setAttribute( SERVLET_PATH, servletPath );
   }
 
   public String getEntryPoint() throws CoreException {

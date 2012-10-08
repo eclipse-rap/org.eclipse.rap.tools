@@ -120,7 +120,7 @@ public final class MainTab extends AbstractLauncherTab {
   public void initializeFrom( ILaunchConfiguration config ) {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     try {
-      servletPathTextField.setText( rapConfig.getServletName() );
+      servletPathTextField.setText( rapConfig.getServletPath() );
       startupParamTextField.setText( rapConfig.getEntryPoint() );
       manualPortCheckBox.setSelection( rapConfig.getUseManualPort() );
       portSpinner.setSelection( rapConfig.getPort() );
@@ -150,7 +150,7 @@ public final class MainTab extends AbstractLauncherTab {
 
   public void performApply( ILaunchConfigurationWorkingCopy config ) {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    rapConfig.setServletName( servletPathTextField.getText() );
+    rapConfig.setServletPath( servletPathTextField.getText() );
     rapConfig.setEntryPoint( startupParamTextField.getText() );
     rapConfig.setOpenBrowser( openBrowserCheckBox.getSelection() );
     rapConfig.setBrowserMode( getBrowserMode() );

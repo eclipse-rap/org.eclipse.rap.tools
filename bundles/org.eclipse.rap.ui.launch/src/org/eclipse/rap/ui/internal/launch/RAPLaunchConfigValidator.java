@@ -26,7 +26,7 @@ public final class RAPLaunchConfigValidator {
 
   // FIXME remove this when Platfrom.WS_RAP defined
   public static final String WS_RAP = "rap"; //$NON-NLS-1$
-  public static final int ERR_SERVLET_NAME = 6001;
+  public static final int ERR_SERVLET_PATH = 6001;
   public static final int ERR_PORT = 6004;
   public static final int ERR_URL = 6005;
   public static final int ERR_TIMEOUT = 6007;
@@ -86,11 +86,11 @@ public final class RAPLaunchConfigValidator {
 
   private IStatus validateServletPath() throws CoreException {
     IStatus result = Status.OK_STATUS;
-    String servletName = config.getServletName();
-    if( servletName == null || EMPTY.equals( servletName ) ) {
+    String servletPath = config.getServletPath();
+    if( servletPath == null || EMPTY.equals( servletPath ) ) {
       String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathEmpty;
-      result = createError( msg, ERR_SERVLET_NAME, null );
-    } else if( !servletName.startsWith( "/" ) ) {
+      result = createError( msg, ERR_SERVLET_PATH, null );
+    } else if( !servletPath.startsWith( "/" ) ) {
       String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathLeadingSlash;
       result = createWarning( msg, WARN_SERVLET_PATH, null );
     }

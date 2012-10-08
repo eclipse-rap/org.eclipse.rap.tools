@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource and others.
+ * Copyright (c) 2007, 2012 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,14 +45,14 @@ public final class URLBuilder {
 
   private static String getUrlPath( RAPLaunchConfig config ) throws CoreException {
     String contextPath = getContextPath( config );
-    String servletName = getServletName( config );
+    String servletPath = getServletPath( config );
     StringBuffer buffer = new StringBuffer();
     buffer.append( SLASH );
     if( !EMPTY.equals( contextPath ) ) {
       buffer.append( contextPath );
       buffer.append( SLASH );
     }
-    buffer.append( servletName );
+    buffer.append( servletPath );
     return buffer.toString();
   }
 
@@ -69,9 +69,9 @@ public final class URLBuilder {
     return query;
   }
 
-  private static String getServletName( RAPLaunchConfig config ) throws CoreException {
-    String servletName = config.getServletName();
-    return stripLeadingAndTrailingSlashes( servletName );
+  private static String getServletPath( RAPLaunchConfig config ) throws CoreException {
+    String servletPath = config.getServletPath();
+    return stripLeadingAndTrailingSlashes( servletPath );
   }
 
   private static String getContextPath( RAPLaunchConfig config ) throws CoreException {

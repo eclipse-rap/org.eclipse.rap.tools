@@ -61,7 +61,7 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   }
 
   public void testValidateServletPath() throws Exception {
-    rapConfig.setServletName( "/foo" );
+    rapConfig.setServletPath( "/foo" );
 
     IStatus[] states = validator.validate();
 
@@ -70,15 +70,15 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
 
   public void testValidateServletPathEmpty() {
     // servlet name has a default value, clear this
-    rapConfig.setServletName( "" );
+    rapConfig.setServletPath( "" );
 
     IStatus[] states = validator.validate();
 
-    assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_NAME ) );
+    assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_PATH ) );
   }
 
   public void testValidateServletPathLeadingSlash() {
-    rapConfig.setServletName( "rap" );
+    rapConfig.setServletPath( "rap" );
 
     IStatus[] states = validator.validate();
 

@@ -35,7 +35,7 @@ public class RAPLaunchConfig_Test extends TestCase {
 
   public void testInitialValues() throws CoreException {
     assertFalse( rapConfig.getUseManualPort() );
-    assertFalse( "".equals( rapConfig.getServletName() ) );
+    assertFalse( "".equals( rapConfig.getServletPath() ) );
     assertTrue( "".equals( rapConfig.getEntryPoint() ) );
     assertEquals( LibraryVariant.STANDARD, rapConfig.getLibraryVariant() );
     assertEquals( 0, rapConfig.getSessionTimeout() );
@@ -57,14 +57,14 @@ public class RAPLaunchConfig_Test extends TestCase {
   }
 
   public void testServletName() throws CoreException {
-    rapConfig.setServletName( "xyz" );
-    assertEquals( "xyz", rapConfig.getServletName() );
+    rapConfig.setServletPath( "xyz" );
+    assertEquals( "xyz", rapConfig.getServletPath() );
     try {
-      rapConfig.setServletName( null );
+      rapConfig.setServletPath( null );
       fail( "Must not allow to set servlet name to null" );
     } catch( NullPointerException e ) {
       // expected
-      assertEquals( "xyz", rapConfig.getServletName() );
+      assertEquals( "xyz", rapConfig.getServletPath() );
     }
   }
 

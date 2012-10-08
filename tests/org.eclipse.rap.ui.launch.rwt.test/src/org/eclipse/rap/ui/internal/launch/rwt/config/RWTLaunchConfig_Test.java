@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
@@ -26,12 +27,12 @@ public class RWTLaunchConfig_Test extends TestCase {
     ILaunchConfigurationType launchConfigurationType = RWTLaunchConfig.getType();
     assertEquals( RWTLaunchConfig.LAUNCH_CONFIG_TYPE, launchConfigurationType.getIdentifier() );
   }
-  
+
   public void testSetDefaults() {
     RWTLaunchConfig.setDefaults( config );
     assertEquals( "", rwtConfig.getProjectName() );
     assertEquals( LaunchTarget.ENTRY_POINT, rwtConfig.getLaunchTarget() );
-    assertEquals( "rap", rwtConfig.getServletPath() );
+    assertEquals( "/rap", rwtConfig.getServletPath() );
     assertEquals( "", rwtConfig.getEntryPoint() );
     assertEquals( "", rwtConfig.getWebXmlLocation() );
     assertEquals( "", rwtConfig.getWebAppLocation() );
@@ -41,7 +42,7 @@ public class RWTLaunchConfig_Test extends TestCase {
     assertTrue( rwtConfig.getOpenBrowser() );
     assertSame( BrowserMode.INTERNAL, rwtConfig.getBrowserMode() );
   }
-  
+
   public void testConstructorWithNullArgument() {
     try {
       new RWTLaunchConfig( null );
@@ -53,17 +54,17 @@ public class RWTLaunchConfig_Test extends TestCase {
   public void testGetUnderlyingLaunchConfig() {
     assertSame( config, rwtConfig.getUnderlyingLaunchConfig() );
   }
-  
+
   public void testGetName() {
     assertEquals( config.getName(), rwtConfig.getName() );
   }
-  
+
   public void testProjectName() {
     String projectName = "projectName";
     rwtConfig.setProjectName( projectName );
     assertEquals( projectName, rwtConfig.getProjectName() );
   }
-  
+
   public void testSetProjectNameWithNullArgument() {
     try {
       rwtConfig.setProjectName( null );
@@ -71,21 +72,21 @@ public class RWTLaunchConfig_Test extends TestCase {
     } catch( NullPointerException expected ) {
     }
   }
-  
+
   public void testLaunchTargetWithNullArgument() {
     try {
       rwtConfig.setLaunchTarget( null );
     } catch( NullPointerException expected ) {
-      
+
     }
   }
-  
+
   public void testWebXmlLocation() {
     String webXmlLocation = "/location/of/web.xml";
     rwtConfig.setWebXmlLocation( webXmlLocation );
     assertEquals( webXmlLocation, rwtConfig.getWebXmlLocation() );
   }
-  
+
   public void testWebXmlLocationWithNullArgument() {
     try {
       rwtConfig.setWebXmlLocation( null );
@@ -93,13 +94,13 @@ public class RWTLaunchConfig_Test extends TestCase {
     } catch( NullPointerException expected ) {
     }
   }
-  
+
   public void testWebAppFolderLocation() {
     String webAppLocation = "foo";
     rwtConfig.setWebAppLocation( webAppLocation );
     assertEquals( webAppLocation, rwtConfig.getWebAppLocation() );
   }
-  
+
   public void testWebAppLocationWithNullArgument() {
     try {
       rwtConfig.setWebAppLocation( null );
@@ -107,13 +108,13 @@ public class RWTLaunchConfig_Test extends TestCase {
     } catch( NullPointerException expected ) {
     }
   }
-  
+
   public void testServletPath() {
     String servletName = "servletPath";
     rwtConfig.setServletPath( servletName );
     assertEquals( servletName, rwtConfig.getServletPath() );
   }
-  
+
   public void testServletPathWithNullArgument() {
     try {
       rwtConfig.setServletPath( null );
@@ -121,13 +122,13 @@ public class RWTLaunchConfig_Test extends TestCase {
     } catch( NullPointerException expected ) {
     }
   }
-  
+
   public void testEntryPoint() {
     String entryPoint = "ep";
     rwtConfig.setEntryPoint( entryPoint );
     assertEquals( entryPoint, rwtConfig.getEntryPoint() );
   }
-  
+
   public void testSetEntryPointWithNullArgument() {
     try {
       rwtConfig.setEntryPoint( null );
@@ -135,7 +136,7 @@ public class RWTLaunchConfig_Test extends TestCase {
     } catch( NullPointerException expected ) {
     }
   }
-  
+
   public void testSetVMArgumentsWithNullArgument() {
     try {
       rwtConfig.setVMArguments( null );
@@ -143,33 +144,33 @@ public class RWTLaunchConfig_Test extends TestCase {
     } catch( NullPointerException expected ) {
     }
   }
-  
+
   public void testVMArguments() {
     String vmArguments = "vmArguments";
     rwtConfig.setVMArguments( vmArguments );
     assertEquals( vmArguments, rwtConfig.getVMArguments() );
   }
-  
+
   public void testUseManualPort() {
     rwtConfig.setUseManualPort( true );
     assertTrue( rwtConfig.getUseManualPort() );
   }
-  
+
   public void testPort() {
     rwtConfig.setPort( 1234 );
     assertEquals( 1234, rwtConfig.getPort() );
   }
-  
+
   public void testOpenBrowser() {
     rwtConfig.setOpenBrowser( false );
     assertFalse( rwtConfig.getOpenBrowser() );
   }
-  
+
   public void testBrowserMode() {
     rwtConfig.setBrowserMode( BrowserMode.EXTERNAL );
     assertSame( BrowserMode.EXTERNAL, rwtConfig.getBrowserMode() );
   }
-  
+
   public void testSetBrowserModeWithNullArgument() {
     try {
       rwtConfig.setBrowserMode( null );
@@ -177,12 +178,12 @@ public class RWTLaunchConfig_Test extends TestCase {
     } catch( NullPointerException expected ) {
     }
   }
-  
+
   protected void setUp() throws Exception {
     config = Fixture.createRWTLaunchConfig();
     rwtConfig = new RWTLaunchConfig( config );
   }
-  
+
   protected void tearDown() throws Exception {
     config.delete();
   }
