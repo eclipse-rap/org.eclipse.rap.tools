@@ -32,7 +32,7 @@ public class RWTLaunchConfig_Test extends TestCase {
     RWTLaunchConfig.setDefaults( config );
     assertEquals( "", rwtConfig.getProjectName() );
     assertEquals( LaunchTarget.ENTRY_POINT, rwtConfig.getLaunchTarget() );
-    assertEquals( "/rap", rwtConfig.getServletPath() );
+    assertEquals( "rap", rwtConfig.getServletPath() );
     assertEquals( "", rwtConfig.getEntryPoint() );
     assertEquals( "", rwtConfig.getWebXmlLocation() );
     assertEquals( "", rwtConfig.getWebAppLocation() );
