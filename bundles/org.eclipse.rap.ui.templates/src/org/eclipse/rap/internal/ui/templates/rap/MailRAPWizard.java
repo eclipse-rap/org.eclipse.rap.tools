@@ -17,7 +17,7 @@ import org.eclipse.pde.ui.templates.ITemplateSection;
 public class MailRAPWizard extends AbstractRAPWizard {
 
   private AbstractRAPTemplate template;
-  
+
   public void init( final IFieldData data ) {
     super.init( data );
     setWindowTitle( Messages.mailRAPWizard_windowTitle );
@@ -34,8 +34,8 @@ public class MailRAPWizard extends AbstractRAPWizard {
     return template.getFullApplicationId();
   }
 
-  protected String getServletName() {
-    return "mail";
+  protected String getServletPath() {
+    return template.getServletPath();
   }
-    
+
 }

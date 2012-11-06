@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource
+ * Copyright (c) 2007, 2012 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.internal.ui.templates.rap;
 
@@ -50,8 +50,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   private static final String CHARSET = "ISO-8859-1"; //$NON-NLS-1$
   private static final String PREFERENCE_INSTALL_TARGET = "installTarget"; //$NON-NLS-1$
 
-  private static final String TAG_ENTRY_POINT = "${entryPoint}"; //$NON-NLS-1$
-  private static final String TAG_SERVLET_NAME = "${servletName}"; //$NON-NLS-1$
+  private static final String TAG_SERVLET_PATH = "${servletPath}"; //$NON-NLS-1$
   private static final String TAG_PLUGIN_ID = "${pluginId}"; //$NON-NLS-1$
   private static final String TAG_PROJECT_NAME = "${projectName}"; //$NON-NLS-1$
 
@@ -68,7 +67,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     }
     return result;
   }
-  
+
   private void copyLaunchConfig( final IProject project,
                                  final IPluginModelBase model )
   {
@@ -112,14 +111,11 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     replacePlaceholder( buffer, TAG_PROJECT_NAME, project.getName() );
     String pluginId = model.getPluginBase().getId();
     replacePlaceholder( buffer, TAG_PLUGIN_ID, pluginId );
-    replacePlaceholder( buffer, TAG_ENTRY_POINT, getEntryPointName() );
-    replacePlaceholder( buffer, TAG_SERVLET_NAME, getServletName() );
+    replacePlaceholder( buffer, TAG_SERVLET_PATH, getServletPath() );
     return new ByteArrayInputStream( buffer.toString().getBytes() );
   }
-  
-  protected abstract String getEntryPointName();
-  
-  protected abstract String getServletName();
+
+  protected abstract String getServletPath();
 
   private static void replacePlaceholder( final StringBuffer buffer,
                                           final String placeholder,
@@ -137,12 +133,12 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       handleRapTargetInstalation();
     }
   }
-  
+
   private boolean containsRapUi() {
     IPluginModelBase rapUiPluginModel = PluginRegistry.findModel( "org.eclipse.rap.ui" );//$NON-NLS-1$
     return rapUiPluginModel != null;
   }
-  
+
   private void handleRapTargetInstalation() {
     final Display currentDisplay = Display.getCurrent();
     currentDisplay.asyncExec( new Runnable() {
@@ -164,13 +160,13 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     String preferenceInstallTarget = store.getString( PREFERENCE_INSTALL_TARGET );
     boolean result = false;
     if( isPromptRequired( preferenceInstallTarget ) ) {
-      MessageDialogWithToggle dialog = 
-        MessageDialogWithToggle.openYesNoQuestion( parentShell, 
-                                                   title, 
-                                                   message,  
-                                                   null, 
-                                                   false, 
-                                                   store, 
+      MessageDialogWithToggle dialog =
+        MessageDialogWithToggle.openYesNoQuestion( parentShell,
+                                                   title,
+                                                   message,
+                                                   null,
+                                                   false,
+                                                   store,
                                                    PREFERENCE_INSTALL_TARGET );
       result = dialog.getReturnCode() == IDialogConstants.YES_ID;
     } else {
@@ -184,10 +180,10 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     boolean promptRequired = MessageDialogWithToggle.PROMPT.equals( preferenceInstallTarget );
     return preferenceEmpty || promptRequired;
   }
-  
+
   private void executeInstallTargetCommand() {
     IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-    IHandlerService handlerService 
+    IHandlerService handlerService
       = ( IHandlerService )workbenchWindow.getService( IHandlerService.class );
     try {
       handlerService.executeCommand( "org.eclipse.rap.ui.intro.installTarget", null ); //$NON-NLS-1$

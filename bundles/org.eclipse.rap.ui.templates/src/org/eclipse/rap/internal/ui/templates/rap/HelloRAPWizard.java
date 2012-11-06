@@ -30,12 +30,8 @@ public class HelloRAPWizard extends AbstractRAPWizard {
     };
   }
 
-  protected String getEntryPointName() {
-    return template.getFullApplicationId();
+  protected String getServletPath() {
+    return template.getServletPath();
   }
 
-  protected String getServletName() {
-    return "rap";
-  }
-    
 }

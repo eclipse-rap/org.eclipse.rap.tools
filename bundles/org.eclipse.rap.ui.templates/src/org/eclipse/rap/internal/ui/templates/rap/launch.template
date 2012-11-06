@@ -15,11 +15,10 @@
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=info"/>
 <stringAttribute key="org.eclipse.rap.launch.browserMode" value="INTERNAL"/>
-<stringAttribute key="org.eclipse.rap.launch.entryPoint" value="${entryPoint}"/>
 <stringAttribute key="org.eclipse.rap.launch.libraryVariant" value="STANDARD"/>
 <stringAttribute key="org.eclipse.rap.launch.logLevel" value="OFF"/>
 <intAttribute key="org.eclipse.rap.launch.port" value="10080"/>
-<stringAttribute key="org.eclipse.rap.launch.servletName" value="${servletName}"/>
+<stringAttribute key="org.eclipse.rap.launch.servletPath" value="${servletPath}"/>
 <booleanAttribute key="org.eclipse.rap.launch.terminatePrevious" value="true"/>
 <booleanAttribute key="org.eclipse.rap.launch.useManualPort" value="false"/>
 <stringAttribute key="pde.version" value="3.3"/>

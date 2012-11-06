@@ -34,8 +34,8 @@ public class ViewRAPWizard extends AbstractRAPWizard {
     return template.getFullApplicationId();
   }
 
-  protected String getServletName() {
-    return "view";
+  protected String getServletPath() {
+    return template.getServletPath();
   }
-    
+
 }

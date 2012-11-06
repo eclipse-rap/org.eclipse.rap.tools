@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource
+ * Copyright (c) 2007, 2012 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.internal.ui.templates.rap;
 
@@ -26,7 +26,7 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
     createTemplateOptions();
   }
 
-  public void addPages( final Wizard wizard ) {
+  public void addPages( Wizard wizard ) {
     WizardPage page = createPage( 0 );
     page.setTitle( Messages.helloRAPTemplate_pageTitle );
     page.setDescription( Messages.helloRAPTemplate_pageDescr );
@@ -37,53 +37,51 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
   public String getSectionId() {
     return "helloRAP"; //$NON-NLS-1$
   }
-  
+
   public String getApplicationId() {
     return "helloapp";
   }
 
-  protected void updateModel( final IProgressMonitor monitor )
-    throws CoreException
-  {
+  public String getServletPath() {
+    return "/hello";
+  }
+
+  protected void updateModel( IProgressMonitor monitor ) throws CoreException {
     createApplicationExtension();
     createPerspectivesExtension();
   }
 
-  ///////////////////
+  //////////////////
   // helping methods
-  
+
   private void createApplicationExtension() throws CoreException {
-    IPluginExtension extension = createExtension( XmlNames.XID_APPLICATION,
-                                                  true );
+    IPluginExtension extension = createExtension( XmlNames.XID_APPLICATION, true );
     extension.setId( getApplicationId() );
     IPluginElement applicationElement = createElement( extension );
     applicationElement.setName( XmlNames.ELEM_APPLICATION );
-    applicationElement.setAttribute( XmlNames.ATT_VISIBLE, 
-                                     "true" ); //$NON-NLS-1$
-    applicationElement.setAttribute( XmlNames.ATT_CARDINALITY,
-                                     "singleton-global" ); //$NON-NLS-1$
-    applicationElement.setAttribute( XmlNames.ATT_THREAD, 
-                                     "main" ); //$NON-NLS-1$
+    applicationElement.setAttribute( XmlNames.ATT_VISIBLE, "true" ); //$NON-NLS-1$
+    applicationElement.setAttribute( XmlNames.ATT_CARDINALITY, "singleton-global" ); //$NON-NLS-1$
+    applicationElement.setAttribute( XmlNames.ATT_THREAD, "main" ); //$NON-NLS-1$
     extension.add( applicationElement );
     IPluginElement runElement = createElement( extension );
     runElement.setName( XmlNames.ELEM_RUN ); //$NON-NLS-1$
-    runElement.setAttribute( XmlNames.ATT_CLASS, getApplicationClass() ); //$NON-NLS-1$
+    runElement.setAttribute( XmlNames.ATT_CLASS, getApplicationClass() );
     applicationElement.add( runElement );
+    IPluginElement pathElement = createElement( extension );
+    pathElement.setName( XmlNames.ELEM_PARAMETER );
+    pathElement.setAttribute( XmlNames.ATT_NAME, "path" ); //$NON-NLS-1$
+    pathElement.setAttribute( XmlNames.ATT_VALUE, getServletPath() );
+    runElement.add( pathElement );
     addExtensionToPlugin( extension );
   }
 
   private void createPerspectivesExtension() throws CoreException {
-    IPluginExtension extension 
-      = createExtension( XmlNames.XID_PERSPECTIVES, true );
-    
+    IPluginExtension extension = createExtension( XmlNames.XID_PERSPECTIVES, true );
     IPluginElement element = createElement( extension );
     element.setName( XmlNames.ELEM_PERSPECTIVE );
-    element.setAttribute( XmlNames.ATT_CLASS, 
-                          getPackageName() + ".Perspective" ); //$NON-NLS-1$
-    element.setAttribute( XmlNames.ATT_NAME,
-                          Messages.helloRAPTemplate_perspectiveName );
-    element.setAttribute( XmlNames.ATT_ID, 
-                          getPluginId() + ".perspective" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_CLASS, getPackageName() + ".Perspective" ); //$NON-NLS-1$
+    element.setAttribute( XmlNames.ATT_NAME, Messages.helloRAPTemplate_perspectiveName );
+    element.setAttribute( XmlNames.ATT_ID, getPluginId() + ".perspective" ); //$NON-NLS-1$
     extension.add( element );
     addExtensionToPlugin( extension );
   }
@@ -96,8 +94,8 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
     addOption( KEY_PACKAGE_NAME, Messages.helloRAPTemplate_packageNmae, null, 0 );
     addOption( KEY_APPLICATION_CLASS,
                Messages.helloRAPTemplate_appClass,
-               "Application", //$NON-NLS-1$ 
-               0 ); 
+               "Application", //$NON-NLS-1$
+               0 );
   }
-  
+
 }

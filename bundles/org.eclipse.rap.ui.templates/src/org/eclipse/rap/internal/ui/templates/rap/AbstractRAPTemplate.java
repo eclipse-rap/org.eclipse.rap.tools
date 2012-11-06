@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource
+ * Copyright (c) 2007, 2012 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.internal.ui.templates.rap;
 
@@ -28,6 +28,8 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
   protected static final String TEMPLATES_DIRECTORY = "templates"; //$NON-NLS-1$
 
   public abstract String getApplicationId();
+
+  public abstract String getServletPath();
 
   protected final URL getInstallURL() {
     return TemplateUtil.getInstallURL();
@@ -90,7 +92,7 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
   public final String getFullApplicationId() {
     return getPluginId() + "." + getApplicationId();
   }
-  
+
   protected final String getPackageName() {
     return getStringOption( KEY_PACKAGE_NAME );
   }
@@ -103,5 +105,5 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
   protected final String getTemplateDirectory() {
     return TEMPLATES_DIRECTORY;
   }
-  
+
 }
