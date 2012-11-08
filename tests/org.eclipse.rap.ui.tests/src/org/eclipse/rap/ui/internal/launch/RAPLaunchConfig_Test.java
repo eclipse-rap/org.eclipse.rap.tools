@@ -36,24 +36,11 @@ public class RAPLaunchConfig_Test extends TestCase {
   public void testInitialValues() throws CoreException {
     assertFalse( rapConfig.getUseManualPort() );
     assertFalse( "".equals( rapConfig.getServletPath() ) );
-    assertTrue( "".equals( rapConfig.getEntryPoint() ) );
     assertEquals( LibraryVariant.STANDARD, rapConfig.getLibraryVariant() );
     assertEquals( 0, rapConfig.getSessionTimeout() );
     assertFalse( rapConfig.getUseSessionTimeout() );
     assertFalse( rapConfig.getUseManualContextPath() );
     assertTrue( "".equals( rapConfig.getContextPath() ) );
-  }
-
-  public void testEntryPoint() throws CoreException {
-    rapConfig.setEntryPoint( "ep-param" );
-    assertEquals( "ep-param", rapConfig.getEntryPoint() );
-    try {
-      rapConfig.setEntryPoint( null );
-      fail( "Must not allow to set entry point to null" );
-    } catch( NullPointerException e ) {
-      // expected
-      assertEquals( "ep-param", rapConfig.getEntryPoint() );
-    }
   }
 
   public void testServletName() throws CoreException {

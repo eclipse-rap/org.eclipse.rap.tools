@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.*;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.fieldassist.*;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -45,7 +44,6 @@ public final class MainTab extends AbstractLauncherTab {
   private final Image tabImage;
   private final Image warnImage;
   private Text servletPathTextField;
-  private Text startupParamTextField;
   private Button openBrowserCheckBox;
   private Button internalBrowserRadioButton;
   private Button externalBrowserRadioButton;
@@ -121,7 +119,6 @@ public final class MainTab extends AbstractLauncherTab {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     try {
       servletPathTextField.setText( rapConfig.getServletPath() );
-      startupParamTextField.setText( rapConfig.getEntryPoint() );
       manualPortCheckBox.setSelection( rapConfig.getUseManualPort() );
       portSpinner.setSelection( rapConfig.getPort() );
       contextPathCheckBox.setSelection( rapConfig.getUseManualContextPath() );
@@ -151,7 +148,6 @@ public final class MainTab extends AbstractLauncherTab {
   public void performApply( ILaunchConfigurationWorkingCopy config ) {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     rapConfig.setServletPath( servletPathTextField.getText() );
-    rapConfig.setEntryPoint( startupParamTextField.getText() );
     rapConfig.setOpenBrowser( openBrowserCheckBox.getSelection() );
     rapConfig.setBrowserMode( getBrowserMode() );
     portSpinner.setEnabled( manualPortCheckBox.getSelection() );
@@ -227,15 +223,6 @@ public final class MainTab extends AbstractLauncherTab {
     servletPathTextField.addModifyListener( modifyListener );
   }
 
-  private void createStartupParamPart( Composite parent ) {
-    Label lblEntryPoint = new Label( parent, SWT.NONE );
-    lblEntryPoint.setText( LaunchMessages.MainTab_StartupParam );
-    startupParamTextField = new Text( parent, SWT.BORDER );
-    startupParamTextField.setLayoutData( spanHorizontal( 2, 0 ) );
-    startupParamTextField.addModifyListener( modifyListener );
-    createStartupParameterDecorator();
-  }
-
   private void createBrowserModeSection( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
@@ -244,7 +231,6 @@ public final class MainTab extends AbstractLauncherTab {
     createBrowserActivationPart( group );
     createBrowserModePart( group );
     createServletPathPart( group );
-    createStartupParamPart( group );
     createApplicationUrlPart( group );
   }
 
@@ -279,7 +265,6 @@ public final class MainTab extends AbstractLauncherTab {
         internalBrowserRadioButton.setEnabled( openBrowser );
         externalBrowserRadioButton.setEnabled( openBrowser );
         servletPathTextField.setEnabled( openBrowser );
-        startupParamTextField.setEnabled( openBrowser );
       }
     } );
   }
@@ -357,31 +342,6 @@ public final class MainTab extends AbstractLauncherTab {
         updateLaunchConfigurationDialog();
       }
     } );
-  }
-
-  private void createStartupParameterDecorator() {
-    final ControlDecoration decorator = new ControlDecoration( startupParamTextField, SWT.LEFT );
-    FieldDecorationRegistry registry = FieldDecorationRegistry.getDefault();
-    FieldDecoration warningDecoration
-      = registry.getFieldDecoration( FieldDecorationRegistry.DEC_WARNING );
-    decorator.setImage( warningDecoration.getImage() );
-    decorator.setShowHover( true );
-    decorator.setDescriptionText( LaunchMessages.MainTab_StartupParamWarningMsg );
-    decorator.setMarginWidth( 5 );
-    updateStartupDecorator( decorator );
-    startupParamTextField.addModifyListener( new ModifyListener() {
-      public void modifyText( ModifyEvent e ) {
-        updateStartupDecorator( decorator );
-      }
-    } );
-  }
-
-  private void updateStartupDecorator( ControlDecoration decorator ) {
-    if( startupParamTextField.getText().length() == 0 ) {
-      decorator.hide();
-    } else {
-      decorator.show();
-    }
   }
 
   ////////////////

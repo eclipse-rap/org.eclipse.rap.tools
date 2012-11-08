@@ -114,7 +114,6 @@ public final class RAPLaunchConfig {
   // Launch configuration attribute names
   private static final String PREFIX = "org.eclipse.rap.launch."; //$NON-NLS-1$
   public static final String SERVLET_PATH = PREFIX + "servletPath"; //$NON-NLS-1$
-  public static final String ENTRY_POINT = PREFIX + "entryPoint"; //$NON-NLS-1$
   public static final String OPEN_BROWSER = PREFIX + "openBrowser"; //$NON-NLS-1$
   public static final String BROWSER_MODE = PREFIX + "browserMode"; //$NON-NLS-1$
   public static final String PORT = PREFIX + "port"; //$NON-NLS-1$
@@ -129,7 +128,6 @@ public final class RAPLaunchConfig {
 
   // Default values for launch configuration attribute names
   private static final String DEFAULT_SERVLET_PATH = "/rap"; //$NON-NLS-1$
-  private static final String DEFAULT_ENTRY_POINT = ""; //$NON-NLS-1$
   private static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
   private static final int DEFAULT_PORT = 10080;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
@@ -144,7 +142,6 @@ public final class RAPLaunchConfig {
 
   public static void setDefaults( ILaunchConfigurationWorkingCopy config ) {
     config.setAttribute( SERVLET_PATH, DEFAULT_SERVLET_PATH );
-    config.setAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE.getName() );
     config.setAttribute( PORT, DEFAULT_PORT );
     config.setAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
@@ -240,18 +237,6 @@ public final class RAPLaunchConfig {
     }
     checkWorkingCopy();
     workingCopy.setAttribute( SERVLET_PATH, servletPath );
-  }
-
-  public String getEntryPoint() throws CoreException {
-    return config.getAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
-  }
-
-  public void setEntryPoint( final String entryPoint ) {
-    if( entryPoint == null ) {
-      throw new NullPointerException( "entryPoint" ); //$NON-NLS-1$
-    }
-    checkWorkingCopy();
-    workingCopy.setAttribute( ENTRY_POINT, entryPoint );
   }
 
   public boolean getOpenBrowser() throws CoreException {

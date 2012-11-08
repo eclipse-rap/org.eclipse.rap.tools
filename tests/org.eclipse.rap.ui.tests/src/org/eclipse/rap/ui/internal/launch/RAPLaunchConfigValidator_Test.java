@@ -217,14 +217,6 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
-  public void testUrl() {
-    rapConfig.setEntryPoint( "entryPoint" );
-
-    IStatus[] states = validator.validate();
-
-    assertTrue( isOk( states ) );
-  }
-
   private static boolean hasStatusCode( IStatus[] states, int code ) {
     boolean result = false;
     for( int i = 0; !result && i < states.length; i++ ) {

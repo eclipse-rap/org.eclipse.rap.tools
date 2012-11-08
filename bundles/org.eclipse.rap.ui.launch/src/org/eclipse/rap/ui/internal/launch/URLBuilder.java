@@ -21,9 +21,6 @@ public final class URLBuilder {
 
   private static final String PROTOCOL = "http"; //$NON-NLS-1$
   private static final String HOST = "127.0.0.1"; //$NON-NLS-1$
-  private static final String QUERY_STARTUP = "?startup="; //$NON-NLS-1$
-  private static final String QUERY_STARTUP_TEST
-    = "?startup=rapjunit&testentrypoint="; //$NON-NLS-1$
 
   public static String getHost() {
     return HOST;
@@ -39,8 +36,7 @@ public final class URLBuilder {
     throws CoreException
   {
     String path = getUrlPath( config );
-    String query = getUrlQuery( config, testMode );
-    return PROTOCOL + "://" + HOST + ":" + port + path + query;
+    return PROTOCOL + "://" + HOST + ":" + port + path;
   }
 
   private static String getUrlPath( RAPLaunchConfig config ) throws CoreException {
@@ -54,19 +50,6 @@ public final class URLBuilder {
     }
     buffer.append( servletPath );
     return buffer.toString();
-  }
-
-  private static String getUrlQuery( RAPLaunchConfig config, boolean testMode )
-    throws CoreException
-  {
-    String entryPoint = config.getEntryPoint();
-    String query = EMPTY;
-    if( testMode ) {
-      query = QUERY_STARTUP_TEST + entryPoint;
-    } else if( !EMPTY.equals( entryPoint ) ) {
-      query = QUERY_STARTUP + entryPoint;
-    }
-    return query;
   }
 
   private static String getServletPath( RAPLaunchConfig config ) throws CoreException {
