@@ -42,8 +42,7 @@ public final class RAPJUnitLaunchShortcut extends JUnitWorkbenchLaunchShortcut {
   {
     ILaunchConfigurationWorkingCopy result = super.createLaunchConfiguration( element );
     ols.initializeConfiguration( result );
-    result.setAttribute( RAPLaunchConfig.SERVLET_PATH, "/rap" ); //$NON-NLS-1$
-    result.setAttribute( RAPLaunchConfig.ENTRY_POINT, "rapjunit" ); //$NON-NLS-1$
+    result.setAttribute( RAPLaunchConfig.SERVLET_PATH, "/rapjunit" ); //$NON-NLS-1$
     return result;
   }
 }
