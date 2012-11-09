@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>The RAP Client</title>
+  <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+
+  <h1>The RAP Client</h1>
+  <!-- TODO : add links to API reference -->
+  <p>
+    The term "RAP client" is used to identify the software that interacts with a RAP Server and
+    displays the actual UI of a RAP application. It does not include the enviroment an instance of
+    the client runs in (browser and/or OS), or the hardware ("device") itself.
+  </p>
+  <p>
+    The RAP project includes the default RAP client, written in JavaScript. It it will be referred
+    to simply as the "web client" from here on. The web client is downloaded and started
+    automatically when the URL of a RAP application is entered into a browser. In-depth
+    information about this client can be found in the
+    <a href="http://wiki.eclipse.org/RAP/WebClient">RAP Wiki</a>.
+    Other client
+    implementations than the web client are currently not part of the RAP project.
+  </p>
+  <h2>The Client Interface</h2>
+  <p>
+    Every client implementation is represented by a class implementing the <code>Client</code>
+    interface, e.g. <code>WebClient</code>. An instance of such a class can be obtained
+    from <code>RWT.getClient()</code>. It represents the client instance connected to the current
+    RAP session. By using the <code>instanceof</code> operator, the instance can be used to
+    identify the client.
+  </p>
+<pre><code>  if( RWT.getClient() instanceof WebClient ) {
+  ...
+  }</code></pre><p>
+  The client interface mainly specifies methods to obtain information about the
+  client<!-- (e.g. the timezone) -->, while the client class itself only adds constants to be used in the
+  <a href = "../advanced/application-configuration.html">application configuration</a>.
+  In addition, the interface specifies the <code>getService()</code> method, described below.
+  </p>
+  <h2>Client Services</h2>
+  <p>
+    Client services are interfaces that can provide client-specific features.
+    The <code>getService</code> method of the client object can be used to obtain an implementation
+    of a given service, provided it is supported by the connected client. Wether or not
+    a service is supported depends on the RAP client implementation, but may also change
+    depending on the clients runtime enviroment and configuration. A list of supported services
+    can be found on the client class, e.g. <code>WebClient</code>.
+  </p>
+  <p>If a service is not supported, the method returns null. If this is a possibility given the
+    used service and targeted RAP client, a null check should be performed before using the service.
+  </p><p>
+  Example usage of a service:
+  </p>
+<pre><code>  BrowserHistory history = RWT.getClient().getService( BrowserHistory.class );
+  if( history != null ) {
+    ...
+  }
+</code></pre>
+  <h3>
+    Services that are included in RWT
+  </h3>
+  <p>The services are all supported by the web client and can be found in the package
+  <code>org.eclipse.rap.rwt.client.service</code>.</p>
+  <ul>
+
+    <li style="margin-bottom:20px">
+      <b>BrowserHistory</b>
+      <br/>
+      Allows navigating within an application using the browser's <em>back</em> and
+      <em>forward</em> buttons. <br/>
+      <strong>NOTE:</strong> There are known issues when using the browser history
+      and the <code>Browser</code> widget in the same application.
+    </li>
+
+    <li style="margin-bottom:20px">
+      <b>ExitConfirmation</b>
+      <br/>
+      This service can control the exit confirmation that is shown whenever
+      the user tries to close the browser window or tab or navigates to another URL.
+      <img style="padding-top:5px" src="../../images/branding/exitConfirmation.png" alt="Exit confirmation dialog"/>
+       <br/>
+      <strong>NOTE:</strong>
+      Some browsers may show additional text in the confirmation dialog, or replace
+      the text completely for security reasons.
+    </li>
+
+    <li style="margin-bottom:20px">
+      <b>JavaScriptExecuter</b>
+      <br/>
+      Allows executing arbitrary JavaScript code in the window the RAP client runs in.
+      This is usually not necessary, but may be useful to work around minor limitations in RAP or
+      implement very simple features.
+       <br/>
+      <strong>NOTE:</strong>
+      This feature allows manipulating to the html DOM or accessing internals of the web client.
+      Doing so is <b>not</b> recommended and may have unintended consequences, including
+      crashing the client.
+    </li>
+
+  </ul>
+</body>
+</html>

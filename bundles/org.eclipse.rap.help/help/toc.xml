@@ -28,6 +28,8 @@
         label="Differences between RWT and SWT"
         href="help/html/rwt/differences.html">
     </topic>
+    <topic href="help/html/rwt/client.html" label="The RAP Client">
+    </topic>
     <topic
         label="Scopes and Data Stores in RWT"
         href="help/html/rwt/scopes.html">
