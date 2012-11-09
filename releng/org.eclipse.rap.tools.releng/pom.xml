@@ -24,9 +24,12 @@
   <properties>
     <tycho-version>0.16.0</tycho-version>
     <tycho-extras-version>${tycho-version}</tycho-extras-version>
-    <base-platform>4.3milestones/S-4.3M2-201209201300</base-platform>
+    <base-platform>4.3milestones/S-4.3M3-201210312000</base-platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/rap/org.eclipse.rap.tools.git</tycho.scmUrl>
+    <!-- disabled due to bug 393977
     <baseline-repository>http://download.eclipse.org/rt/rap/nightly/tooling/</baseline-repository>
+     -->
   </properties>
 
   <prerequisites>
@@ -86,6 +89,11 @@
             <artifactId>tycho-buildtimestamp-jgit</artifactId>
             <version>${tycho-extras-version}</version>
           </dependency>
+          <dependency> 
+            <groupId>org.eclipse.tycho.extras</groupId> 
+            <artifactId>tycho-sourceref-jgit</artifactId> 
+            <version>${tycho-extras-version}</version> 
+          </dependency> 
         </dependencies>
         <configuration>
           <timestampProvider>jgit</timestampProvider>
@@ -93,6 +101,9 @@
             pom.xml
           </jgit.ignore>
           <format>yyyyMMdd-HHmm</format>
+          <sourceReferences> 
+            <generate>true</generate> 
+          </sourceReferences> 
         </configuration>
       </plugin>
 
@@ -100,6 +111,7 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-plugin</artifactId>
         <version>${tycho-version}</version>
+        <!-- disabled due to bug 393977
         <configuration>
           <baselineRepositories>
             <repository>
@@ -107,6 +119,7 @@
             </repository>
           </baselineRepositories>
         </configuration>
+         -->
       </plugin>
 
       <plugin>
