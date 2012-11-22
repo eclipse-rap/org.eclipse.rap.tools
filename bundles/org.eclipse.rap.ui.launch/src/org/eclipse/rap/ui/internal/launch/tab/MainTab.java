@@ -18,12 +18,11 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.viewers.*;
 import org.eclipse.pde.ui.launcher.AbstractLauncherTab;
 import org.eclipse.rap.ui.internal.launch.*;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
-import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
-import org.eclipse.rap.ui.internal.launch.util.*;
+import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
+import org.eclipse.rap.ui.internal.launch.util.Images;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
@@ -54,7 +53,7 @@ public final class MainTab extends AbstractLauncherTab {
   private Spinner portSpinner;
   private Button useSessionTimeoutCheckBox;
   private Spinner sessionTimeoutSpinner;
-  private ComboViewer libraryVariantCombo;
+  private Button developmentModeCheckBox;
   private ILaunchConfigurationListener launchConfigListener;
   private DataLocationBlock dataLocationBlock;
 
@@ -102,6 +101,7 @@ public final class MainTab extends AbstractLauncherTab {
     container.setLayout( new GridLayout() );
     createBrowserModeSection( container );
     createRuntimeSettingsSection( container );
+    createRAPSettingsSection( container );
     createDataLocationSection( container );
     Dialog.applyDialogFont( container );
     setControl( container );
@@ -136,9 +136,7 @@ public final class MainTab extends AbstractLauncherTab {
       }
       useSessionTimeoutCheckBox.setSelection( rapConfig.getUseSessionTimeout() );
       sessionTimeoutSpinner.setSelection( rapConfig.getSessionTimeout() );
-      LibraryVariant libVariant = rapConfig.getLibraryVariant();
-      StructuredSelection libSelection = new StructuredSelection( libVariant );
-      libraryVariantCombo.setSelection( libSelection );
+      developmentModeCheckBox.setSelection( rapConfig.getDevelopmentMode() );
       dataLocationBlock.initializeFrom( rapConfig );
     } catch( CoreException e ) {
       ErrorUtil.show( null, e );
@@ -159,7 +157,7 @@ public final class MainTab extends AbstractLauncherTab {
     sessionTimeoutSpinner.setEnabled( useSessionTimeoutCheckBox.getSelection() );
     rapConfig.setUseSessionTimeout( useSessionTimeoutCheckBox.getSelection() );
     rapConfig.setSessionTimeout( sessionTimeoutSpinner.getSelection() );
-    rapConfig.setLibraryVariant( getLibraryVariant() );
+    rapConfig.setDevelopmentMode( developmentModeCheckBox.getSelection() );
     rapConfig.setDataLocation( dataLocationBlock.getLocation() );
     boolean useDefaultDataLocation = dataLocationBlock.getUseDefaultDataLocation();
     rapConfig.setUseDefaultDataLocation( useDefaultDataLocation );
@@ -285,7 +283,7 @@ public final class MainTab extends AbstractLauncherTab {
   private void createRuntimeSettingsSection( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
-    group.setText( LaunchMessages.MainTab_RuntimeSettings );
+    group.setText( LaunchMessages.MainTab_ServerSettings );
     group.setLayout( new GridLayout( 2, true ) );
     Composite leftPart = new Composite( group, SWT.NONE );
     leftPart.setLayout( createGridLayoutWithoutMargin( 2 ) );
@@ -294,7 +292,20 @@ public final class MainTab extends AbstractLauncherTab {
     Composite rightPart = new Composite( group, SWT.NONE );
     rightPart.setLayout( createGridLayoutWithoutMargin( 2 ) );
     GridDataFactory.fillDefaults().grab( true, false ).indent( 15, 0 ).applyTo( rightPart );
-    createRuntimeSettingsRightPart( rightPart );
+  }
+
+  private void createRAPSettingsSection( Composite parent ) {
+    Group group = new Group( parent, SWT.NONE );
+    group.setLayoutData( fillHorizontal.create() );
+    group.setText( LaunchMessages.MainTab_RAPSettings );
+    group.setLayout( new GridLayout( 2, true ) );
+    Composite leftPart = new Composite( group, SWT.NONE );
+    leftPart.setLayout( createGridLayoutWithoutMargin( 1 ) );
+    GridDataFactory.fillDefaults().grab( true, false ).applyTo( leftPart );
+    createRAPSettingsLeftPart( leftPart );
+    Composite rightPart = new Composite( group, SWT.NONE );
+    rightPart.setLayout( createGridLayoutWithoutMargin( 2 ) );
+    GridDataFactory.fillDefaults().grab( true, false ).indent( 15, 0 ).applyTo( rightPart );
   }
 
   private GridLayout createGridLayoutWithoutMargin( int numColumns ) {
@@ -329,19 +340,10 @@ public final class MainTab extends AbstractLauncherTab {
     contextPathTextField.addModifyListener( modifyListener );
   }
 
-  private void createRuntimeSettingsRightPart( Composite righttPartComposite ) {
-    Label libraryVariantLabel = new Label( righttPartComposite, SWT.NONE );
-    libraryVariantLabel.setText( LaunchMessages.MainTab_ClientLibraryVariant );
-    libraryVariantCombo = new ComboViewer( righttPartComposite, SWT.DROP_DOWN | SWT.READ_ONLY );
-    libraryVariantCombo.getCombo().setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
-    libraryVariantCombo.setLabelProvider( new LibraryVariantLabelProvider() );
-    libraryVariantCombo.setContentProvider( new ArrayContentProvider() );
-    libraryVariantCombo.setInput( LibraryVariant.values() );
-    libraryVariantCombo.addSelectionChangedListener( new ISelectionChangedListener() {
-      public void selectionChanged( SelectionChangedEvent event ) {
-        updateLaunchConfigurationDialog();
-      }
-    } );
+  private void createRAPSettingsLeftPart( Composite leftPartComposite ) {
+    developmentModeCheckBox = new Button( leftPartComposite, SWT.CHECK );
+    developmentModeCheckBox.setText( LaunchMessages.MainTab_DevelopmentMode );
+    developmentModeCheckBox.addSelectionListener( selectionListener );
   }
 
   ////////////////
@@ -433,30 +435,4 @@ public final class MainTab extends AbstractLauncherTab {
     return selection ? BrowserMode.EXTERNAL : BrowserMode.INTERNAL;
   }
 
-  private LibraryVariant getLibraryVariant() {
-    LibraryVariant result = LibraryVariant.STANDARD;
-    ISelection selection = libraryVariantCombo.getSelection();
-    if( !selection.isEmpty() ) {
-      IStructuredSelection structuredSel = ( IStructuredSelection )selection;
-      result = ( LibraryVariant )structuredSel.getFirstElement();
-    }
-    return result;
-  }
-
-  ////////////////
-  // Inner classes
-
-  private static final class LibraryVariantLabelProvider extends LabelProvider {
-    public String getText( Object element ) {
-      String result;
-      if( LibraryVariant.STANDARD.equals( element ) ) {
-        result = LaunchMessages.MainTab_LibraryVariantStandard;
-      } else if( LibraryVariant.DEBUG.equals( element ) ) {
-        result = LaunchMessages.MainTab_LibraryVariantDebug;
-      } else {
-        result = super.getText( element );
-      }
-      return result;
-    }
-  }
 }

@@ -43,19 +43,18 @@ public class LaunchMessages extends NLS {
   public static String SelectionDialogUtil_Unknown;
   public static String SelectionDialogUtil_UnknownProject;
   public static String MainTab_Browser;
-  public static String MainTab_ClientLibraryVariant;
   public static String MainTab_ConfigureBrowsers;
   public static String MainTab_ExternalBrowser;
   public static String MainTab_InternalBrowser;
   public static String MainTab_ApplicationUrl;
-  public static String MainTab_LibraryVariantDebug;
-  public static String MainTab_LibraryVariantStandard;
   public static String MainTab_ManualPortConfig;
   public static String MainTab_ManualContextPath;
   public static String MainTab_ManualTimeoutConfig;
   public static String MainTab_Name;
   public static String MainTab_OpenApplicationIn;
-  public static String MainTab_RuntimeSettings;
+  public static String MainTab_ServerSettings;
+  public static String MainTab_RAPSettings;
+  public static String MainTab_DevelopmentMode;
   public static String MainTab_ServletPath;
 
   static {

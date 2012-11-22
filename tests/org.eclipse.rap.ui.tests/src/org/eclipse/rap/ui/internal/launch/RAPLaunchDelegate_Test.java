@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2012 Innoopract Informationssysteme GmbH and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
@@ -28,19 +28,19 @@ import org.eclipse.rap.ui.tests.Fixture;
 
 
 public class RAPLaunchDelegate_Test extends TestCase {
-  
+
   /*
    * Make sure that user VM arguments are 'overridden' by those added by the
    * launch delegate.
    * Overriding currently is done by ensuring that the VM arguments added by
-   * the launcher come *after* the user VM arguments. 
+   * the launcher come *after* the user VM arguments.
    */
   public void testGetVMArguments() throws CoreException {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
     // prepare launch configuration
-    config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, 
+    config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
                          "-Dorg.osgi.service.http.port=manually" );
     rapConfig.setUseManualPort( true );
     rapConfig.setPort( 1234 );
@@ -59,9 +59,24 @@ public class RAPLaunchDelegate_Test extends TestCase {
     assertTrue( autoPortIndex > -1 );
     assertTrue( autoPortIndex > manualPortIndex );
   }
-  
+
+  public void testGetVMArguments_DevelopmentMode() throws CoreException {
+    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
+    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
+    rapConfig.setDevelopmentMode( false );
+    try {
+      launchDelegate.launch( config, null, null, null );
+    } catch( Throwable thr ) {
+      // ignore any exceptions, the only purpose of the above call is to
+      // set the 'config' field of the RAPLaunchDelegate
+    }
+    String[] arguments = launchDelegate.getVMArguments( config );
+    assertTrue( indexOf( arguments, "-Dorg.eclipse.rap.rwt.developmentMode=false" ) > -1 );
+  }
+
   /*
-   * Make sure that user program arguments contain -data 
+   * Make sure that user program arguments contain -data
    */
   public void testGetProgramArgumentsDefaultLocation() throws CoreException {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
@@ -138,11 +153,11 @@ public class RAPLaunchDelegate_Test extends TestCase {
   private String resolveVariable( String defaultDataLocation ) throws CoreException {
     final VariablesPlugin variablePlugin = VariablesPlugin.getDefault();
     IStringVariableManager stringVariableManager = variablePlugin.getStringVariableManager();
-    String defaultDataLocationResolved 
+    String defaultDataLocationResolved
       = stringVariableManager.performStringSubstitution( defaultDataLocation );
     return defaultDataLocationResolved;
   }
-  
+
   private File createDataLocation() throws IOException {
     File dataLocation = File.createTempFile( "dataLocation", "" );
     dataLocation.delete();
@@ -151,7 +166,7 @@ public class RAPLaunchDelegate_Test extends TestCase {
     path.toFile().createNewFile();
     return dataLocation;
   }
-  
+
   /*
    * Make sure that the user specified session timeout value is used, when the
    * "use session timeout" checkbox is selected.
@@ -200,7 +215,7 @@ public class RAPLaunchDelegate_Test extends TestCase {
     int timeoutIndex = indexOf( arguments, expected );
     assertTrue( timeoutIndex > -1 );
   }
-  
+
   private static int indexOf( final String[] strings, final String string ) {
     int result = -1;
     for( int i = 0; result == -1 && i < strings.length; i++ ) {

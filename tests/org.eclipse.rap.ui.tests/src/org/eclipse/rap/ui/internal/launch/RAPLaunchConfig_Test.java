@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
 import org.eclipse.rap.ui.tests.Fixture;
 
 
@@ -36,7 +35,7 @@ public class RAPLaunchConfig_Test extends TestCase {
   public void testInitialValues() throws CoreException {
     assertFalse( rapConfig.getUseManualPort() );
     assertFalse( "".equals( rapConfig.getServletPath() ) );
-    assertEquals( LibraryVariant.STANDARD, rapConfig.getLibraryVariant() );
+    assertTrue( rapConfig.getDevelopmentMode() );
     assertEquals( 0, rapConfig.getSessionTimeout() );
     assertFalse( rapConfig.getUseSessionTimeout() );
     assertFalse( rapConfig.getUseManualContextPath() );

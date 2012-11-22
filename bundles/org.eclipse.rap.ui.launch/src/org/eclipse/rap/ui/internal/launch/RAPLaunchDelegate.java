@@ -25,7 +25,6 @@ import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.pde.internal.launching.launcher.LauncherUtils;
 import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
-import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.LibraryVariant;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.*;
@@ -38,8 +37,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   // VM argument contants
   private static final String VMARG_PORT
     = "-Dorg.osgi.service.http.port="; //$NON-NLS-1$
-  private static final String VMARG_LIBRARY_VARIANT
-    = "-Dorg.eclipse.rwt.clientLibraryVariant="; //$NON-NLS-1$
+  private static final String VMARG_DEVELOPMENT_MODE
+    = "-Dorg.eclipse.rap.rwt.developmentMode="; //$NON-NLS-1$
   private static final String VMARG_SESSION_TIMEOUT
     = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval="; //$NON-NLS-1$
   private static final String VMARG_CONTEXT_PATH
@@ -147,12 +146,9 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   }
 
   private String[] getRAPVMArguments() throws CoreException {
-    List list = new ArrayList();
+    List<String> list = new ArrayList<String>();
     list.add( VMARG_PORT + port );
-    LibraryVariant libraryVariant = config.getLibraryVariant();
-    if( libraryVariant != LibraryVariant.STANDARD ) {
-      list.add( VMARG_LIBRARY_VARIANT + libraryVariant.getName() );
-    }
+    list.add( VMARG_DEVELOPMENT_MODE + config.getDevelopmentMode() );
     if( config.getUseSessionTimeout() ) {
       list.add( VMARG_SESSION_TIMEOUT + config.getSessionTimeout() );
     } else {

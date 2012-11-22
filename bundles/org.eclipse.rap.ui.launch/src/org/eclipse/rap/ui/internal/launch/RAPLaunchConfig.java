@@ -64,48 +64,6 @@ public final class RAPLaunchConfig {
     }
   }
 
-  public static final class LibraryVariant {
-
-    public static final LibraryVariant STANDARD
-      = new LibraryVariant( "STANDARD" ); //$NON-NLS-1$
-    public static final LibraryVariant DEBUG
-      = new LibraryVariant( "DEBUG" ); //$NON-NLS-1$
-
-    public static LibraryVariant[] values() {
-      return new LibraryVariant[] { STANDARD, DEBUG };
-    }
-
-    public static LibraryVariant parse( final String name ) {
-      LibraryVariant result = null;
-      LibraryVariant[] knownValues = values();
-      for( int i = 0; result == null && i < knownValues.length; i++ ) {
-        if( knownValues[ i ].getName().equalsIgnoreCase( name ) ) {
-          result = knownValues[ i ];
-        }
-      }
-      if( result == null ) {
-        String text = "Unknown LibraryVariant ''{0}''."; //$NON-NLS-1$
-        String msg = MessageFormat.format( text, new Object[] { name } );
-        throw new IllegalArgumentException( msg );
-      }
-      return result;
-    }
-
-    private final String name;
-
-    private LibraryVariant( final String name ) {
-      this.name = name;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public String toString() {
-      return name;
-    }
-  }
-
   public static final int MIN_PORT_NUMBER = 0;
   public static final int MAX_PORT_NUMBER = 65535;
   public static final int MIN_SESSION_TIMEOUT = 0;
@@ -122,7 +80,7 @@ public final class RAPLaunchConfig {
   public static final String USE_MANUAL_CONTEXTPATH = PREFIX + "useManualContextPath"; //$NON-NLS-1$
   public static final String SESSION_TIMEOUT = PREFIX + "sessionTimeout"; //$NON-NLS-1$
   public static final String USE_SESSION_TIMEOUT = PREFIX + "useSessionTimeout"; //$NON-NLS-1$
-  public static final String LIBRARY_VARIANT = PREFIX + "libraryVariant"; //$NON-NLS-1$
+  public static final String DEVELOPMENT_MODE = PREFIX + "developmentMode"; //$NON-NLS-1$
   public static final String USE_DEFAULT_DATA_LOCATION = PREFIX + "useDefaultDataLocation"; //$NON-NLS-1$
   public static final String DATA_LOCATION = PREFIX + "dataLocation"; //$NON-NLS-1$
 
@@ -135,8 +93,7 @@ public final class RAPLaunchConfig {
   private static final boolean DEFAULT_USE_MANUAL_CONTEXTPATH = false;
   private static final int DEFAULT_SESSION_TIMEOUT = MIN_SESSION_TIMEOUT;
   private static final boolean DEFAULT_USE_SESSION_TIMEOUT = false;
-  private static final String DEFAULT_LIBRARY_VARIANT
-    = LibraryVariant.STANDARD.getName();
+  private static final boolean DEFAULT_DEVELOPMENT_MODE = true;
   private static final String DEFAULT_DATA_LOCATION
     = "${workspace_loc}/.metadata/.plugins/"; //$NON-NLS-1$
 
@@ -149,7 +106,7 @@ public final class RAPLaunchConfig {
     config.setAttribute( USE_MANUAL_CONTEXTPATH, DEFAULT_USE_MANUAL_CONTEXTPATH );
     config.setAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
     config.setAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
-    config.setAttribute( LIBRARY_VARIANT, DEFAULT_LIBRARY_VARIANT );
+    config.setAttribute( DEVELOPMENT_MODE, DEFAULT_DEVELOPMENT_MODE );
     config.setAttribute( USE_DEFAULT_DATA_LOCATION, true );
     config.setAttribute( IPDELauncherConstants.DOCLEAR, false );
     config.setAttribute( IPDELauncherConstants.ASKCLEAR, false );
@@ -262,7 +219,7 @@ public final class RAPLaunchConfig {
   public boolean getUseManualPort() throws CoreException {
     // If not specified, return false instead of the default value (true) to
     // remain backwards compatible
-    return config.getAttribute( USE_MANUAL_PORT, false );
+    return config.getAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
   }
 
   public void setUseManualPort( final boolean useManualPort  ) {
@@ -301,7 +258,7 @@ public final class RAPLaunchConfig {
   }
 
   public boolean getUseSessionTimeout() throws CoreException {
-    return config.getAttribute( USE_SESSION_TIMEOUT, false );
+    return config.getAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
   }
 
   public void setUseSessionTimeout( final boolean useSessionTimeout  ) {
@@ -318,15 +275,13 @@ public final class RAPLaunchConfig {
     workingCopy.setAttribute( SESSION_TIMEOUT, timeout );
   }
 
-  public LibraryVariant getLibraryVariant() throws CoreException {
-    String value
-      = config.getAttribute( LIBRARY_VARIANT, DEFAULT_LIBRARY_VARIANT );
-    return LibraryVariant.parse( value );
+  public boolean getDevelopmentMode() throws CoreException {
+    return config.getAttribute( DEVELOPMENT_MODE, DEFAULT_DEVELOPMENT_MODE );
   }
 
-  public void setLibraryVariant( final LibraryVariant libraryVariant ) {
+  public void setDevelopmentMode( final boolean developmentMode ) {
     checkWorkingCopy();
-    workingCopy.setAttribute( LIBRARY_VARIANT, libraryVariant.getName() );
+    workingCopy.setAttribute( DEVELOPMENT_MODE, developmentMode );
   }
 
   /////////////////
