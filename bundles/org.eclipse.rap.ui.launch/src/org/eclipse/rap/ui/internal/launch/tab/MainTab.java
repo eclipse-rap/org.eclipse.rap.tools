@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.*;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.pde.ui.launcher.AbstractLauncherTab;
 import org.eclipse.rap.ui.internal.launch.*;
@@ -26,8 +25,7 @@ import org.eclipse.rap.ui.internal.launch.util.Images;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
@@ -47,7 +45,7 @@ public final class MainTab extends AbstractLauncherTab {
   private Button internalBrowserRadioButton;
   private Button externalBrowserRadioButton;
   private Text applicationUrlTextField;
-  private Button manualPortCheckBox;
+  private Button useFixedPortCheckBox;
   private Button contextPathCheckBox;
   private Text contextPathTextField;
   private Spinner portSpinner;
@@ -78,6 +76,7 @@ public final class MainTab extends AbstractLauncherTab {
 
   private SelectionAdapter createDialogSelectionListener() {
      SelectionAdapter result = new SelectionAdapter() {
+      @Override
       public void widgetSelected( SelectionEvent e ) {
         updateLaunchConfigurationDialog();
       }
@@ -88,6 +87,7 @@ public final class MainTab extends AbstractLauncherTab {
   ////////////
   // Overrides
 
+  @Override
   public void dispose() {
     tabImage.dispose();
     warnImage.dispose();
@@ -111,6 +111,7 @@ public final class MainTab extends AbstractLauncherTab {
     return LaunchMessages.MainTab_Name;
   }
 
+  @Override
   public Image getImage() {
     return tabImage;
   }
@@ -119,7 +120,7 @@ public final class MainTab extends AbstractLauncherTab {
     RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
     try {
       servletPathTextField.setText( rapConfig.getServletPath() );
-      manualPortCheckBox.setSelection( rapConfig.getUseManualPort() );
+      useFixedPortCheckBox.setSelection( rapConfig.getUseManualPort() );
       portSpinner.setSelection( rapConfig.getPort() );
       contextPathCheckBox.setSelection( rapConfig.getUseManualContextPath() );
       contextPathTextField.setText( rapConfig.getContextPath() );
@@ -148,8 +149,8 @@ public final class MainTab extends AbstractLauncherTab {
     rapConfig.setServletPath( servletPathTextField.getText() );
     rapConfig.setOpenBrowser( openBrowserCheckBox.getSelection() );
     rapConfig.setBrowserMode( getBrowserMode() );
-    portSpinner.setEnabled( manualPortCheckBox.getSelection() );
-    rapConfig.setUseManualPort( manualPortCheckBox.getSelection() );
+    portSpinner.setEnabled( useFixedPortCheckBox.getSelection() );
+    rapConfig.setUseManualPort( useFixedPortCheckBox.getSelection() );
     rapConfig.setPort( portSpinner.getSelection() );
     contextPathTextField.setEnabled( contextPathCheckBox.getSelection() );
     rapConfig.setUseManualContextPath( contextPathCheckBox.getSelection() );
@@ -171,10 +172,12 @@ public final class MainTab extends AbstractLauncherTab {
     RAPLaunchConfig.setDefaults( config );
   }
 
+  @Override
   public boolean isValid( ILaunchConfiguration launchConfig ) {
     return getErrorMessage() == null;
   }
 
+  @Override
   public void validateTab() {
     // We validate on performApply and launcher changes. No need to validate here.
   }
@@ -213,51 +216,60 @@ public final class MainTab extends AbstractLauncherTab {
     blockControl.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
   }
 
-  private void createServletPathPart( Composite parent ) {
-    Label lblServletName = new Label( parent, SWT.NONE );
-    lblServletName.setText( LaunchMessages.MainTab_ServletPath );
-    servletPathTextField = new Text( parent, SWT.BORDER );
-    servletPathTextField.setLayoutData( spanHorizontal( 2, 0 ) );
-    servletPathTextField.addModifyListener( modifyListener );
-  }
-
   private void createBrowserModeSection( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
     group.setText( LaunchMessages.MainTab_Browser );
-    group.setLayout( new GridLayout( 3, false ) );
+    group.setLayout( new GridLayout() );
     createBrowserActivationPart( group );
-    createBrowserModePart( group );
     createServletPathPart( group );
-    createApplicationUrlPart( group );
   }
 
   private void createBrowserActivationPart( Composite parent ) {
-    openBrowserCheckBox = new Button( parent, SWT.CHECK );
-    GridDataFactory.swtDefaults().grab( true, false ).span( 2, 1 ).applyTo( openBrowserCheckBox );
+    Composite composite = new Composite( parent, SWT.NONE );
+    composite.setLayoutData( fillHorizontal.span( 2, 1 ).create() );
+    GridLayout layout = new GridLayout( 2, false );
+    layout.horizontalSpacing = 10;
+    layout.verticalSpacing = 0;
+    composite.setLayout( layout );
+    openBrowserCheckBox = new Button( composite, SWT.CHECK );
+    openBrowserCheckBox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
     openBrowserCheckBox.setText( LaunchMessages.MainTab_OpenApplicationIn );
-    openBrowserCheckBox.addSelectionListener( selectionListener );
-    Link lnkBrowserPrefs = new Link( parent, SWT.NONE );
-    lnkBrowserPrefs.setText( LaunchMessages.MainTab_ConfigureBrowsers );
-    lnkBrowserPrefs.addSelectionListener( new SelectionAdapter() {
-      public void widgetSelected( SelectionEvent event ) {
-        handleBrowserPrefsLink();
-      }
-    } );
+    Link browserPrefsLink = createBrowserPrefsLink( composite );
+    browserPrefsLink.setLayoutData( new GridData( SWT.END, SWT.CENTER, false, false ) );
+    Composite modePart = createBrowserModePart( composite );
+    modePart.setLayoutData( GridDataFactory.fillDefaults().span( 2, 1 ).indent( 17, 0 ).create() );
+    addSelectionListeners();
   }
 
-  private void createBrowserModePart( Composite parent ) {
-    internalBrowserRadioButton = new Button( parent, SWT.RADIO );
-    GridDataFactory radioBtnData = GridDataFactory.fillDefaults().indent( 17, 0 );
-    internalBrowserRadioButton.setLayoutData( radioBtnData.create() );
+  private Link createBrowserPrefsLink( Composite composite ) {
+    Link link = new Link( composite, SWT.NONE );
+    link.setText( LaunchMessages.MainTab_ConfigureBrowsers );
+    link.addSelectionListener( new SelectionAdapter() {
+      @Override
+      public void widgetSelected( SelectionEvent event ) {
+        openBrowserPrefs();
+      }
+    } );
+    return link;
+  }
+
+  private Composite createBrowserModePart( Composite parent ) {
+    Composite composite = new Composite( parent, SWT.NONE );
+    composite.setLayout( new RowLayout( SWT.HORIZONTAL ) );
+    internalBrowserRadioButton = new Button( composite, SWT.RADIO );
     internalBrowserRadioButton.setText( LaunchMessages.MainTab_InternalBrowser );
     internalBrowserRadioButton.addSelectionListener( selectionListener );
-    externalBrowserRadioButton = new Button( parent, SWT.RADIO );
-    externalBrowserRadioButton.setLayoutData( spanHorizontal( 2, 17 ) );
+    externalBrowserRadioButton = new Button( composite, SWT.RADIO );
     externalBrowserRadioButton.setText( LaunchMessages.MainTab_ExternalBrowser );
     externalBrowserRadioButton.addSelectionListener( selectionListener );
-    openBrowserCheckBox.addSelectionListener( new SelectionAdapter() {
+    return composite;
+  }
 
+  private void addSelectionListeners() {
+    openBrowserCheckBox.addSelectionListener( selectionListener );
+    openBrowserCheckBox.addSelectionListener( new SelectionAdapter() {
+      @Override
       public void widgetSelected( SelectionEvent e ) {
         boolean openBrowser = openBrowserCheckBox.getSelection();
         internalBrowserRadioButton.setEnabled( openBrowser );
@@ -267,15 +279,20 @@ public final class MainTab extends AbstractLauncherTab {
     } );
   }
 
-  private void createApplicationUrlPart( Composite parent ) {
-    Composite urlComposite = new Composite( parent, SWT.NONE );
-    Label finalUrlLabel = new Label( urlComposite, SWT.NONE );
-    GridDataFactory.fillDefaults().grab( true, false ).span( 3, 1 ).applyTo( urlComposite );
-    GridLayoutFactory.fillDefaults().numColumns( 3 ).generateLayout( urlComposite );
+  private void createServletPathPart( Composite parent ) {
+    Composite composite = new Composite( parent, SWT.NONE );
+    composite.setLayoutData( fillHorizontal.create() );
+    composite.setLayout( new GridLayout( 2, false ) );
+    Label lblServletName = new Label( composite, SWT.NONE );
+    lblServletName.setText( LaunchMessages.MainTab_ServletPath );
+    servletPathTextField = new Text( composite, SWT.BORDER );
+    servletPathTextField.addModifyListener( modifyListener );
+    GridDataFactory.fillDefaults().grab( true, false ).applyTo( servletPathTextField );
+    Label finalUrlLabel = new Label( composite, SWT.NONE );
     finalUrlLabel.setText( LaunchMessages.MainTab_ApplicationUrl );
     // Create a text area which is read-only but not disabled to allow the user to select the text
     // and copy it, set the background to make it clear to the user this is not a place to edit
-    applicationUrlTextField = new Text( urlComposite, SWT.SINGLE | SWT.READ_ONLY );
+    applicationUrlTextField = new Text( composite, SWT.SINGLE | SWT.READ_ONLY );
     applicationUrlTextField.setBackground( applicationUrlTextField.getParent().getBackground() );
     GridDataFactory.fillDefaults().grab( true, false ).applyTo( applicationUrlTextField );
   }
@@ -284,14 +301,29 @@ public final class MainTab extends AbstractLauncherTab {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
     group.setText( LaunchMessages.MainTab_ServerSettings );
-    group.setLayout( new GridLayout( 2, true ) );
-    Composite leftPart = new Composite( group, SWT.NONE );
-    leftPart.setLayout( createGridLayoutWithoutMargin( 2 ) );
-    GridDataFactory.fillDefaults().grab( true, false ).applyTo( leftPart );
-    createRuntimeSettingsLeftPart( leftPart );
-    Composite rightPart = new Composite( group, SWT.NONE );
-    rightPart.setLayout( createGridLayoutWithoutMargin( 2 ) );
-    GridDataFactory.fillDefaults().grab( true, false ).indent( 15, 0 ).applyTo( rightPart );
+    group.setLayout( new GridLayout( 2, false ) );
+    useFixedPortCheckBox = new Button( group, SWT.CHECK );
+    useFixedPortCheckBox.setText( LaunchMessages.MainTab_ManualPortConfig );
+    useFixedPortCheckBox.addSelectionListener( selectionListener );
+    portSpinner = new Spinner( group, SWT.BORDER );
+    portSpinner.setLayoutData( new GridData( SWT.FILL, SWT.DEFAULT, true, false ) );
+    portSpinner.setMinimum( RAPLaunchConfig.MIN_PORT_NUMBER );
+    portSpinner.setMaximum( RAPLaunchConfig.MAX_PORT_NUMBER );
+    portSpinner.addModifyListener( modifyListener );
+    useSessionTimeoutCheckBox = new Button( group, SWT.CHECK );
+    useSessionTimeoutCheckBox.setText( LaunchMessages.MainTab_ManualTimeoutConfig );
+    useSessionTimeoutCheckBox.addSelectionListener( selectionListener );
+    sessionTimeoutSpinner = new Spinner( group, SWT.BORDER );
+    sessionTimeoutSpinner.setLayoutData( new GridData( SWT.FILL, SWT.DEFAULT, true, false ) );
+    sessionTimeoutSpinner.setMinimum( RAPLaunchConfig.MIN_SESSION_TIMEOUT );
+    sessionTimeoutSpinner.setMaximum( RAPLaunchConfig.MAX_SESSION_TIMEOUT );
+    sessionTimeoutSpinner.addModifyListener( modifyListener );
+    contextPathCheckBox = new Button( group, SWT.CHECK );
+    contextPathCheckBox.setText( LaunchMessages.MainTab_ManualContextPath );
+    contextPathCheckBox.addSelectionListener( selectionListener );
+    contextPathTextField = new Text( group, SWT.BORDER | SWT.SINGLE );
+    GridDataFactory.fillDefaults().grab( true, false ).applyTo( contextPathTextField );
+    contextPathTextField.addModifyListener( modifyListener );
   }
 
   private void createRAPSettingsSection( Composite parent ) {
@@ -315,44 +347,10 @@ public final class MainTab extends AbstractLauncherTab {
     return result;
   }
 
-  private void createRuntimeSettingsLeftPart( Composite leftPartComposite ) {
-    manualPortCheckBox = new Button( leftPartComposite, SWT.CHECK );
-    manualPortCheckBox.setText( LaunchMessages.MainTab_ManualPortConfig );
-    manualPortCheckBox.addSelectionListener( selectionListener );
-    portSpinner = new Spinner( leftPartComposite, SWT.BORDER );
-    portSpinner.setLayoutData( new GridData( SWT.FILL, SWT.DEFAULT, true, false ) );
-    portSpinner.setMinimum( RAPLaunchConfig.MIN_PORT_NUMBER );
-    portSpinner.setMaximum( RAPLaunchConfig.MAX_PORT_NUMBER );
-    portSpinner.addModifyListener( modifyListener );
-    useSessionTimeoutCheckBox = new Button( leftPartComposite, SWT.CHECK );
-    useSessionTimeoutCheckBox.setText( LaunchMessages.MainTab_ManualTimeoutConfig );
-    useSessionTimeoutCheckBox.addSelectionListener( selectionListener );
-    sessionTimeoutSpinner = new Spinner( leftPartComposite, SWT.BORDER );
-    sessionTimeoutSpinner.setLayoutData( new GridData( SWT.FILL, SWT.DEFAULT, true, false ) );
-    sessionTimeoutSpinner.setMinimum( RAPLaunchConfig.MIN_SESSION_TIMEOUT );
-    sessionTimeoutSpinner.setMaximum( RAPLaunchConfig.MAX_SESSION_TIMEOUT );
-    sessionTimeoutSpinner.addModifyListener( modifyListener );
-    contextPathCheckBox = new Button( leftPartComposite, SWT.CHECK );
-    contextPathCheckBox.setText( LaunchMessages.MainTab_ManualContextPath );
-    contextPathCheckBox.addSelectionListener( selectionListener );
-    contextPathTextField = new Text( leftPartComposite, SWT.BORDER | SWT.SINGLE );
-    GridDataFactory.fillDefaults().grab( true, false ).applyTo( contextPathTextField );
-    contextPathTextField.addModifyListener( modifyListener );
-  }
-
   private void createRAPSettingsLeftPart( Composite leftPartComposite ) {
     developmentModeCheckBox = new Button( leftPartComposite, SWT.CHECK );
     developmentModeCheckBox.setText( LaunchMessages.MainTab_DevelopmentMode );
     developmentModeCheckBox.addSelectionListener( selectionListener );
-  }
-
-  ////////////////
-  // Layout helper
-
-  private static GridData spanHorizontal( int span, int indent ) {
-    GridData result = new GridData( SWT.FILL, SWT.CENTER, true, false, span, SWT.DEFAULT );
-    result.horizontalIndent = indent;
-    return result;
   }
 
   /////////////
@@ -417,10 +415,7 @@ public final class MainTab extends AbstractLauncherTab {
     return result;
   }
 
-  ////////////////
-  // Handle events
-
-  private void handleBrowserPrefsLink() {
+  private void openBrowserPrefs() {
     PreferenceDialog dialog
       = PreferencesUtil.createPreferenceDialogOn( getShell(), BROWSER_PREFERENCE_PAGE, null, null );
     dialog.open();
