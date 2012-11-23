@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2011 IBM Corporation and others.
+ * Copyright (c) 2005, 2012 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,8 +23,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
-/* 
- * TODO: This class was copied form org.eclipse.pde.internal.ui.launcher.WorkspaceDataBlock and 
+
+/*
+ * TODO: This class was copied form org.eclipse.pde.internal.ui.launcher.WorkspaceDataBlock and
  * modified to fit RAP's needs. Maybe we can add our own implementation in the future to avoid the
  * discouraged access warnings.
  */
@@ -78,14 +79,17 @@ public class DataLocationBlock extends BaseBlock {
     return clearInstanceAreaButton.getSelection();
   }
 
+  @Override
   public String getLocation() {
     return super.getLocation();
   }
 
+  @Override
   protected String getName() {
     return "instanceAreaBlock"; //$NON-NLS-1$
   }
 
+  @Override
   protected boolean isFile() {
     return false;
   }
@@ -94,6 +98,7 @@ public class DataLocationBlock extends BaseBlock {
     final Button button = new Button( parent, SWT.CHECK );
     button.setText( PDEUIMessages.ConfigurationTab_useDefaultLoc );
     button.addSelectionListener( new SelectionAdapter() {
+      @Override
       public void widgetSelected( final SelectionEvent e ) {
         updateUseDefaultLocation( button.getSelection() );
       }
@@ -139,5 +144,5 @@ public class DataLocationBlock extends BaseBlock {
     result.horizontalSpan = horizontalSpan;
     return result;
   }
-  
+
 }
