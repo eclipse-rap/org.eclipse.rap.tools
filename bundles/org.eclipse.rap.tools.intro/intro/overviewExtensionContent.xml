@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <introContent>
-  <extensionContent id="rap-introExtension" style="css/overview.css" name="Rich Ajax Platform (RAP)" path="overview/@">
+  <extensionContent id="rap-introExtension" style="css/overview.css" name="Remote Application Platform (RAP)" path="overview/@">
     <group style-id="content-group" id="rap-introLink-group">
-      <link label="Rich Ajax Platform (RAP)" url="http://org.eclipse.ui.intro/showPage?id=rapoverview" id="rap-introLink" style-id="content-link">
+      <link label="Remote Application Platform (RAP)" url="http://org.eclipse.ui.intro/showPage?id=rapoverview" id="rap-introLink" style-id="content-link">
         <text>
-          Learn how to install and use the Rich Ajax Platform
+          Learn how to install and use the Remote Application Platform
         </text>
       </link>
     </group>
@@ -13,7 +13,7 @@
   <!-- overview page -->
   <page id="rapoverview" style="$theme$/html/overview.css,css/overview.css" alt-style="$theme$/swt/overview.properties" style-id="page">
     <anchor id="head-anchor"/>
-    <title style-id="intro-header">Rich Ajax Platform</title>
+    <title style-id="intro-header">Remote Application Platform</title>
     <group id="extra-group1" filteredFrom="swt"/>
     <!-- navigation -->
     <group id="navigation-links" filteredFrom="swt">
@@ -28,13 +28,13 @@
     <!-- content -->
     <group id="page-content">
 
-      <group id="content-header" label="Rich Ajax Platform (RAP)" filteredFrom="swt">
+      <group id="content-header" label="Remote Application Platform (RAP)" filteredFrom="swt">
       </group>
       <text
           style-id="page-title"
           id="page-title"
           filteredFrom="html">
-        Rich Ajax Platform (RAP)
+        Remote Application Platform (RAP)
       </text>
       <text style-id="page-description" id="page-description">
         The RAP project aims to enable developers to build rich, Ajax-enabled
@@ -63,7 +63,7 @@
             id="rap-quicktour"
             style-id="content-link">
           <text>
-            Learn how to install and start a demo of the Rich Ajax Platform.
+            Learn how to install and start a demo of the Remote Application Platform.
           </text>
         </link>
       </group>

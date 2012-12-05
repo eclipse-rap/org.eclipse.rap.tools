@@ -18,7 +18,7 @@
         author="false"
         version="true"
         use="true"
-        windowtitle="Eclipse Rich Ajax Platform API Reference"
+        windowtitle="Eclipse Remote Application Platform API Reference"
         packagenames="org.eclipse.rap.rwt.*"
         excludePackageNames="org.eclipse.rap.rwt.internal.*,org.eclipse.swt.internal.*">
       <fileset
@@ -28,13 +28,13 @@
         <exclude name="org/eclipse/**/internal/**/*.java" />
       </fileset>
       <doctitle>
-        <![CDATA[<h1>Eclipse Rich Ajax Platform API Reference</h1>]]>
+        <![CDATA[<h1>Eclipse Remote Application Platform API Reference</h1>]]>
       </doctitle>
       <bottom>
         <![CDATA[<font size="-1"><p>Copyright (c) EclipseSource and others 2002, 2012. All rights reserved.</p></font>]]>
       </bottom>
       <header>
-        <![CDATA[<b>Eclipse Rich Ajax Platform</b>]]>
+        <![CDATA[<b>Eclipse Remote Application Platform</b>]]>
       </header>
       <link href="http://download.oracle.com/javase/1.5.0/docs/api/"
         offline="true"

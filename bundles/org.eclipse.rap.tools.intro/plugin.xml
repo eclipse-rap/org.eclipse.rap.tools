@@ -18,7 +18,7 @@
       </cheatsheet>
       <category
             id="org.eclipse.cheatsheets.category.rap"
-            name="Rich Ajax Platform">
+            name="Remote Application Platform">
       </category>
    </extension>
    <extension
@@ -41,7 +41,7 @@
       <target
             definition="target/rap.target"
             id="org.eclipse.rap.target"
-            name="Rich Ajax Platform (with source)">
+            name="Remote Application Platform (with source)">
       </target>
    </extension>
    -->
