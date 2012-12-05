@@ -38,7 +38,7 @@ $SCRIPTS_DIR/ant-runner.sh releng/org.eclipse.rap.tools.build/reference/build.xm
 ######################################################################
 # Build RAP Tools
 
-cd "$WORKSPACE/org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng" || exit 1
+cd "$WORKSPACE/org.eclipse.rap.tools/releng/org.eclipse.rap.tools.build" || exit 1
 echo "Running maven on $PWD, sign=$sign"
 $MVN clean package -Dsign=$sign || exit 1
 
@@ -72,6 +72,6 @@ fi
 # Include legal files in zip
 
 cd "$WORKSPACE"
-cp -f org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng/legal/notice.html .
-cp -f org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng/legal/epl-v10.html .
+cp -f org.eclipse.rap.tools/releng/org.eclipse.rap.tools.build/legal/notice.html .
+cp -f org.eclipse.rap.tools/releng/org.eclipse.rap.tools.build/legal/epl-v10.html .
 zip "$zipFileName" notice.html epl-v10.html

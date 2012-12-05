@@ -25,7 +25,7 @@ RAP Tools
 
 Run Maven in the RAP Tools build project:
 
-  cd cd org.eclipse.rap.tools/releng/org.eclipse.rap.tools.releng/
+  cd cd org.eclipse.rap.tools/releng/org.eclipse.rap.tools.build/
   mvn clean package
 
 A p2 repository with the RAP Tools will be created in repository/target
