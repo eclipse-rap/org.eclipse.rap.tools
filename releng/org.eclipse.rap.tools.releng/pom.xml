@@ -43,10 +43,10 @@
     <module>repository</module>
     <!-- The bundles -->
     <module>../../bundles/org.eclipse.rap.doc</module>
-    <module>../../bundles/org.eclipse.rap.ui.intro</module>
-    <module>../../bundles/org.eclipse.rap.ui.templates</module>
-    <module>../../bundles/org.eclipse.rap.ui.launch</module>
-    <module>../../bundles/org.eclipse.rap.ui.launch.rwt</module>
+    <module>../../bundles/org.eclipse.rap.tools.intro</module>
+    <module>../../bundles/org.eclipse.rap.tools.templates</module>
+    <module>../../bundles/org.eclipse.rap.tools.launch</module>
+    <module>../../bundles/org.eclipse.rap.tools.launch.rwt</module>
   </modules>
 
   <repositories>

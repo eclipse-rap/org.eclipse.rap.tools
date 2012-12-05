@@ -44,56 +44,56 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.ui.intro"
+         id="org.eclipse.rap.tools.intro"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.ui.intro.source"
+         id="org.eclipse.rap.tools.intro.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.ui.templates"
+         id="org.eclipse.rap.tools.templates"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.ui.templates.source"
+         id="org.eclipse.rap.tools.templates.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.ui.launch"
+         id="org.eclipse.rap.tools.launch"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.ui.launch.source"
+         id="org.eclipse.rap.tools.launch.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.ui.launch.rwt"
+         id="org.eclipse.rap.tools.launch.rwt"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.ui.launch.rwt.source"
+         id="org.eclipse.rap.tools.launch.rwt.source"
          download-size="0"
          install-size="0"
          version="0.0.0"

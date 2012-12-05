@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
-Bundle-SymbolicName: org.eclipse.rap.ui.launch.rwt.tests
+Bundle-SymbolicName: org.eclipse.rap.tools.launch.rwt.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Fragment-Host: org.eclipse.rap.ui.launch.rwt;bundle-version="[1.4.0,2.0.0)"

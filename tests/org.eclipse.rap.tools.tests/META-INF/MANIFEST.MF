@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
-Bundle-SymbolicName: org.eclipse.rap.ui.tests
+Bundle-SymbolicName: org.eclipse.rap.tools.tests
 Bundle-Version: 1.5.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)",
@@ -13,8 +13,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.ui.cheatsheets;bundle-version="3.3.0",
  org.eclipse.pde.core;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.ant.core;bundle-version="[3.2.0,4.0.0)",
- org.eclipse.rap.ui.intro;bundle-version="[1.3.0,2.0.0)",
- org.eclipse.rap.ui.launch;bundle-version="[1.3.0,2.0.0)",
+ org.eclipse.rap.tools.intro;bundle-version="[1.3.0,2.0.0)",
+ org.eclipse.rap.tools.launch;bundle-version="[1.3.0,2.0.0)",
  org.eclipse.debug.core;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.jdt.launching;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.pde.ui;bundle-version="[3.5.0,4.0.0)",
