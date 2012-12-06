@@ -25,23 +25,23 @@ import org.eclipse.debug.core.ILaunchManager;
 
 
 public final class Fixture {
-  
-  private static final int BUFFER = 2048;
-  public static final String PLUGIN_ID = "org.eclipse.rap.ui.tests"; //$NON-NLS-1$
 
-  private static final String RAP_LAUNCHER 
+  private static final int BUFFER = 2048;
+  public static final String PLUGIN_ID = "org.eclipse.rap.tools.tests"; //$NON-NLS-1$
+
+  private static final String RAP_LAUNCHER
     = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
 
   private static int uniqueId;
 
-  public static ILaunchConfigurationWorkingCopy createRAPLaunchConfig() 
-    throws CoreException 
+  public static ILaunchConfigurationWorkingCopy createRAPLaunchConfig()
+    throws CoreException
   {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     ILaunchManager manager = debugPlugin.getLaunchManager();
-    ILaunchConfigurationType type 
+    ILaunchConfigurationType type
       = manager.getLaunchConfigurationType( RAP_LAUNCHER );
-    String name 
+    String name
       = manager.generateUniqueLaunchConfigurationNameFrom( "RAPLaunchConfig" );
     return type.newInstance( null, name );
   }
@@ -96,7 +96,7 @@ public final class Fixture {
     }
     return input.toString();
   }
-  
+
   private Fixture() {
     // prevent instantiation
   }

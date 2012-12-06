@@ -28,11 +28,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.core.target.ITargetDefinition;
 import org.eclipse.pde.core.target.ITargetHandle;
 import org.eclipse.pde.core.target.ITargetPlatformService;
 import org.eclipse.pde.core.target.TargetBundle;
+import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.rap.ui.tests.Fixture;
 import org.osgi.framework.Bundle;
 
@@ -181,7 +181,7 @@ public class TargetSwitcher_Test extends TestCase {
   }
 
   private URL getResourceURL( String resource ) throws IOException {
-    Bundle testsBundle = Platform.getBundle( "org.eclipse.rap.ui.tests" );
+    Bundle testsBundle = Platform.getBundle( "org.eclipse.rap.tools.tests" );
     Path resourcePath = new Path( resource );
     URL resourceURL = FileLocator.find( testsBundle, resourcePath, null );
     return FileLocator.resolve( resourceURL );
@@ -189,7 +189,7 @@ public class TargetSwitcher_Test extends TestCase {
 
   private String createTargetDefinitionFile( String targetLocation ) throws Exception {
     String fakeRepositoryUri = createFakeRepository( targetLocation );
-    Bundle bundle = Platform.getBundle( "org.eclipse.rap.ui.tests" );
+    Bundle bundle = Platform.getBundle( "org.eclipse.rap.tools.tests" );
     IPath targetTemplateFiletPath = new Path( targetLocation ).append( "target_template" );
     URL unresolvedFileUrl = FileLocator.find( bundle, targetTemplateFiletPath, null );
     URL targetTemplateFileUrl = FileLocator.resolve( unresolvedFileUrl );
