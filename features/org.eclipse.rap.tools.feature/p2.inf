@@ -1,0 +1,26 @@
+# Prevent installation if other IUs are already installed with a negative requirement.
+
+requires.0.name = org.eclipse.rap.help
+requires.0.namespace = org.eclipse.equinox.p2.iu
+requires.0.min = 0
+requires.0.max = 0
+
+requires.1.name = org.eclipse.rap.ui.intro
+requires.1.namespace = org.eclipse.equinox.p2.iu
+requires.1.min = 0
+requires.1.max = 0
+
+requires.2.name = org.eclipse.rap.ui.launch
+requires.2.namespace = org.eclipse.equinox.p2.iu
+requires.2.min = 0
+requires.2.max = 0
+
+requires.3.name = org.eclipse.rap.ui.launch.rwt
+requires.3.namespace = org.eclipse.equinox.p2.iu
+requires.3.min = 0
+requires.3.max = 0
+
+requires.4.name = org.eclipse.rap.ui.templates
+requires.4.namespace = org.eclipse.equinox.p2.iu
+requires.4.min = 0
+requires.4.max = 0
