@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.rap.tools"
+      label="Remote Application Platform (RAP) Tools (Eclipse Juno Release)"
+      version="2.0.0.qualifier"
+      provider-name="Eclipse.org - RAP">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import feature="org.eclipse.rap.tools.feature" version="2.0.0" match="compatible"/>
+   </requires>
+
+</feature>

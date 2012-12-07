@@ -10,15 +10,11 @@
      EclipseSource - initial implementation
 -->
 <site>
-
-  <category-def
-      name="org.eclipse.rap.category"
-      label="Remote Application Platform (RAP)" />
-
-  <feature url="http://eclipse.org/rap"
-      id="org.eclipse.rap.tools.feature"
-      version="2.0.0.qualifier">
-    <category name="org.eclipse.rap.category"/>
-  </feature>
-
+   <feature url="http://eclipse.org/rap" id="org.eclipse.rap.tools.feature" version="2.0.0.qualifier">
+      <category name="org.eclipse.rap.category"/>
+   </feature>
+   <feature url="http://eclipse.org/rap" id="org.eclipse.rap.tools" version="2.0.0.qualifier">
+      <category name="org.eclipse.rap.category"/>
+   </feature>
+   <category-def name="org.eclipse.rap.category" label="Remote Application Platform (RAP)"/>
 </site>
