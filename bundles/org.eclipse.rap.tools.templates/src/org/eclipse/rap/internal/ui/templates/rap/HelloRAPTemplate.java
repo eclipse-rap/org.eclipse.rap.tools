@@ -47,6 +47,7 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
   }
 
   protected void updateModel( IProgressMonitor monitor ) throws CoreException {
+    createEntryPointExtension();
     createApplicationExtension();
     createPerspectivesExtension();
   }
@@ -54,9 +55,21 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
   //////////////////
   // helping methods
 
+  private void createEntryPointExtension() throws CoreException {
+    IPluginExtension extension = createExtension( XmlNames.XID_ENTRYPOINT, true );
+    extension.setId( getApplicationId() + ".entrypoints" );
+    IPluginElement entryPointElement = createElement( extension );
+    entryPointElement.setName( XmlNames.ELEM_ENTRYPOINT );
+    entryPointElement.setAttribute( XmlNames.ATT_ID, getApplicationId() + ".entrypoint" );
+    entryPointElement.setAttribute( XmlNames.ATT_SERVLET_PATH, getServletPath() );
+    entryPointElement.setAttribute( XmlNames.ATT_APPLICATION_ID, getFullApplicationId() );
+    extension.add( entryPointElement );
+    addExtensionToPlugin( extension );
+  }
+
   private void createApplicationExtension() throws CoreException {
     IPluginExtension extension = createExtension( XmlNames.XID_APPLICATION, true );
-    extension.setId( getApplicationId() );
+    extension.setId( getFullApplicationId() );
     IPluginElement applicationElement = createElement( extension );
     applicationElement.setName( XmlNames.ELEM_APPLICATION );
     applicationElement.setAttribute( XmlNames.ATT_VISIBLE, "true" ); //$NON-NLS-1$
@@ -67,11 +80,6 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
     runElement.setName( XmlNames.ELEM_RUN ); //$NON-NLS-1$
     runElement.setAttribute( XmlNames.ATT_CLASS, getApplicationClass() );
     applicationElement.add( runElement );
-    IPluginElement pathElement = createElement( extension );
-    pathElement.setName( XmlNames.ELEM_PARAMETER );
-    pathElement.setAttribute( XmlNames.ATT_NAME, "path" ); //$NON-NLS-1$
-    pathElement.setAttribute( XmlNames.ATT_VALUE, getServletPath() );
-    runElement.add( pathElement );
     addExtensionToPlugin( extension );
   }
 

@@ -24,7 +24,7 @@ public final class XmlNames {
   public static final String ATT_ID = "id"; //$NON-NLS-1$
   public static final String ATT_NAME = "name"; //$NON-NLS-1$
   public static final String ATT_VALUE = "value"; //$NON-NLS-1$
-  public static final String ATT_SERVLET = "servletName"; //$NON-NLS-1$
+  public static final String ATT_SERVLET_PATH = "path"; //$NON-NLS-1$
   public static final String ATT_DEFAULT_ENTRYPOINT = "defaultEntrypointId"; //$NON-NLS-1$
   public static final String ATT_THEME_ID = "themeId"; //$NON-NLS-1$
   public static final String ATT_TITLE = "title"; //$NON-NLS-1$
@@ -32,7 +32,10 @@ public final class XmlNames {
   public static final String ATT_CARDINALITY = "cardinality"; //$NON-NLS-1$
   public static final String ATT_THREAD = "thread"; //$NON-NLS-1$
   public static final String ATT_VISIBLE = "visible"; //$NON-NLS-1$
+  public static final String ATT_APPLICATION_ID = "applicationId"; //$NON-NLS-1$
+  public static final String ATT_BRANDING_ID = "brandingId"; //$NON-NLS-1$
 
+  public static final String ELEM_ENTRYPOINT = "entrypoint"; //$NON-NLS-1$
   public static final String ELEM_APPLICATION = "application"; //$NON-NLS-1$
   public static final String ELEM_RUN = "run"; //$NON-NLS-1$
   public static final String ELEM_PARAMETER = "parameter"; //$NON-NLS-1$
@@ -51,4 +54,5 @@ public final class XmlNames {
   public static final String XID_PERSPECTIVES = "org.eclipse.ui.perspectives"; //$NON-NLS-1$
   public static final String XID_VIEWS = "org.eclipse.ui.views"; //$NON-NLS-1$
   public static final String XID_BRANDING = "org.eclipse.rap.ui.branding"; //$NON-NLS-1$
+  public static final String XID_ENTRYPOINT = "org.eclipse.rap.ui.entrypoint"; //$NON-NLS-1$
 }

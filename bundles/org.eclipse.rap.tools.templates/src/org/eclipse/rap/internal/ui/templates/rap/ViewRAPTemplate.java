@@ -47,9 +47,8 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
     return "/view";
   }
 
-  protected void updateModel( IProgressMonitor monitor )
-    throws CoreException
-  {
+  protected void updateModel( IProgressMonitor monitor ) throws CoreException {
+    createEntryPointExtension();
     createApplicationExtension();
     createPerspectivesExtension();
     createViewsExtension();
@@ -59,9 +58,22 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
   //////////////////
   // helping methods
 
+  private void createEntryPointExtension() throws CoreException {
+    IPluginExtension extension = createExtension( XmlNames.XID_ENTRYPOINT, true );
+    extension.setId( getApplicationId() + ".entrypoints" );
+    IPluginElement entryPointElement = createElement( extension );
+    entryPointElement.setName( XmlNames.ELEM_ENTRYPOINT );
+    entryPointElement.setAttribute( XmlNames.ATT_ID, getApplicationId() + ".entrypoint" );
+    entryPointElement.setAttribute( XmlNames.ATT_SERVLET_PATH, getServletPath() );
+    entryPointElement.setAttribute( XmlNames.ATT_APPLICATION_ID, getFullApplicationId() );
+    entryPointElement.setAttribute( XmlNames.ATT_BRANDING_ID, getPackageName() + ".branding" );
+    extension.add( entryPointElement );
+    addExtensionToPlugin( extension );
+  }
+
   private void createApplicationExtension() throws CoreException {
     IPluginExtension extension = createExtension( XmlNames.XID_APPLICATION, true );
-    extension.setId( getApplicationId() );
+    extension.setId( getFullApplicationId() );
     IPluginElement applicationElement = createElement( extension );
     applicationElement.setName( XmlNames.ELEM_APPLICATION );
     applicationElement.setAttribute( XmlNames.ATT_VISIBLE, "true" ); //$NON-NLS-1$
@@ -72,16 +84,6 @@ class ViewRAPTemplate extends AbstractRAPTemplate {
     runElement.setName( XmlNames.ELEM_RUN );
     runElement.setAttribute( XmlNames.ATT_CLASS, getApplicationClass() );
     applicationElement.add( runElement );
-    IPluginElement pathElement = createElement( extension );
-    pathElement.setName( XmlNames.ELEM_PARAMETER );
-    pathElement.setAttribute( XmlNames.ATT_NAME, "path" ); //$NON-NLS-1$
-    pathElement.setAttribute( XmlNames.ATT_VALUE, getServletPath() );
-    runElement.add( pathElement );
-    IPluginElement brandingElement = createElement( extension );
-    brandingElement.setName( XmlNames.ELEM_PARAMETER );
-    brandingElement.setAttribute( XmlNames.ATT_NAME, "brandingId" ); //$NON-NLS-1$
-    brandingElement.setAttribute( XmlNames.ATT_VALUE, getPackageName() + ".branding" );
-    runElement.add( brandingElement );
     addExtensionToPlugin( extension );
   }
 

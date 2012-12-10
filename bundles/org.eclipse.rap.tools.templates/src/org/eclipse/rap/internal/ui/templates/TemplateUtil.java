@@ -1,10 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html Contributors:
- * IBM Corporation - initial API and implementation Innoopract
- * Informationssysteme GmbH - adapter for RAP templates
+ * Copyright (c) 2007, 2012 Innoopract Informationssysteme GmbH and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.internal.ui.templates;
 
@@ -21,16 +24,16 @@ import org.osgi.framework.Bundle;
  */
 public final class TemplateUtil {
 
-  public static final String PLUGIN_ID = "org.eclipse.rap.ui.templates"; //$NON-NLS-1$
-  public static final String BUSINESS_THEME_ID 
+  public static final String PLUGIN_ID = "org.eclipse.rap.tools.templates"; //$NON-NLS-1$
+  public static final String BUSINESS_THEME_ID
     = "org.eclipse.rap.design.example.business.theme"; //$NON-NLS-1$
-  public static final String FANCY_THEME_ID 
+  public static final String FANCY_THEME_ID
     = "org.eclipse.rap.design.example.fancy.theme"; //$NON-NLS-1$
-  public static final String BUSINESS_FACTORY_ID 
+  public static final String BUSINESS_FACTORY_ID
     = "org.eclipse.rap.design.example.business.factory"; //$NON-NLS-1$
-  public static final String BUSINESS_LAYOUT_ID 
+  public static final String BUSINESS_LAYOUT_ID
     = "org.eclipse.rap.design.example.business.layout"; //$NON-NLS-1$
-  public static final String STACK_ID 
+  public static final String STACK_ID
     = "org.eclipse.rap.design.example.stack.view"; //$NON-NLS-1$
 
   private TemplateUtil() {
@@ -68,7 +71,7 @@ public final class TemplateUtil {
 
   ///////////////////
   // helping methods
-  
+
   private static Bundle getBundle() {
     return Platform.getBundle( PLUGIN_ID );
   }
