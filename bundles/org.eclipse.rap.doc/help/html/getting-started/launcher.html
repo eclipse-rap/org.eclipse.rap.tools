@@ -35,15 +35,15 @@
   <h2><a name="rwt-launcher"></a>Using the RWT Launcher</h2>
 
   <p>
-    The simplest way to launch an RWT application is to run it using an RWT Application launch 
-    configuration. This launch configuration type uses information derived from the workbench 
-    preferences and your applications's Java project to launch the program. 
+    The simplest way to launch an RWT application is to run it using an RWT Application launch
+    configuration. This launch configuration type uses information derived from the workbench
+    preferences and your applications's Java project to launch the program.
   </p>
   <ol>
     <li>
       Select the Java class that contains the entry point you want to launch (e.g. in the
       <em class="UILabel">Package Explorer</em>).
-    </li> 
+    </li>
     <li>
       Select <em class="UILabel">Run &gt; Run As &gt; RWT Application</em> in the workbench menu
       (or <em class="UILabel">Run As &gt; RWT Application</em> in the context menu of this file).
@@ -177,19 +177,19 @@
     at in the production environment.
   </p>
   <p>
-    The option <em class="UILabel">Client-side Library Variant</em> selects the variant of the
+    The option <em class="UILabel">Start in development mode</em> selects the variant of the
     RWT JavaScript library that will be delivered to the client.
-    The <em>Standard</em> version is optimized for speed and size by compressing the JavaScript
-    code.
-    The <em>Debug</em> version maintains the JavaScript code in its original form.
-    We recommend to use the Debug variant when developing custom widgets for RAP.
+    If development mode is on, the client maintains the JavaScript code in its original,
+    human-readable form. If it is off, the client is optimized for speed and size by compressing the
+    JavaScript code. It will also print non-critical JavaScript errors to the browsers
+    console instead of crashing the entire client.
   </p>
 
   <h3>Instance Area</h3>
   <p>
     The instance area location sets the Program Arguments to define the
     <code><a href="/help/topic/org.eclipse.platform.doc.isv/reference/misc/runtime-options.html">
-    osgi.instance.area</a></code>. Bundles use this location to store their state location 
+    osgi.instance.area</a></code>. Bundles use this location to store their state location
     data.</p>
 
   <h3>Required plug-ins</h3>
@@ -295,16 +295,16 @@
   </p>
   <pre><code>-Dorg.osgi.service.http.port=&lt;PORT&gt;</code></pre>
   <p>
-    Tu run RAP in debug mode, add this system property, too:
+    Tu run RAP in development mode, add this system property, too:
   </p>
-  <pre><code>-Dorg.eclipse.rwt.clientLibraryVariant=DEBUG</code></pre>
+  <pre><code>-Dorg.eclipse.rap.rwt.developmentMode=true</code></pre>
 
   <h3>Servlet engine log</h3>
   <p>
-    By default the servlet engine (namely Jetty) is configured to suppress most logging 
+    By default the servlet engine (namely Jetty) is configured to suppress most logging
     information. This can be changed by adding the VM argument
-    <code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</code> 
-    to the launch configuration. Valid log levels are <code>debug</code>, 
+    <code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</code>
+    to the launch configuration. Valid log levels are <code>debug</code>,
     <code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
     The default value is <code>warn</code>.
   </p>
