@@ -12,9 +12,9 @@
 
   <h1> RWT standalone applications with RAP</h1>
   <p>
-    It is possible to use RAP without OSGi. In that case RWT is used like normal Java library. 
-    It is recommended to use the <a href="http://eclipse.org/rap/downloads" >RAP Tooling</a> 
-    for developing RWT applications. Though it is not stricly necessary to use the tooling, it 
+    It is possible to use RAP without OSGi. In that case RWT is used like normal Java library.
+    It is recommended to use the <a href="http://eclipse.org/rap/downloads" >RAP Tooling</a>
+    for developing RWT applications. Though it is not stricly necessary to use the tooling, it
     eases development with a launch configuration tailored for RWT applications and documentation.
   </p>
 
@@ -24,34 +24,34 @@
     few minutes.
   </p>
   <ul>
-    <li> 
-      Create a Java Project (or a plug-in project if you prefer and if you 
+    <li>
+      Create a Java Project (or a plug-in project if you prefer and if you
       are familiar with plug-in development)
     </li>
-    <li> 
-      Configure the project to match the layout of a web application. You may skip or postpone 
-      this step if you are using RAP Tooling to launch the application. The layout is neccessary 
+    <li>
+      Configure the project to match the layout of a web application. You may skip or postpone
+      this step if you are using RAP Tooling to launch the application. The layout is neccessary
       if you want to deploy the project as a WAR.
       <ul>
-        <li> 
-          Create the three folders: <code>WEB-INF</code>, <code>WEB-INF/lib</code>, 
+        <li>
+          Create the three folders: <code>WEB-INF</code>, <code>WEB-INF/lib</code>,
           <code>WEB-INF/classes</code>
         </li>
         <li> Change the projects' output folder to <code>WEB-INF/classes</code>. </li>
       </ul>
     </li>
-    <li> 
-      Copy the <code>org.eclipse.rap.rwt_*</code> jar from the 
-      <a href="http://eclipse.org/rap/downloads">RAP Runtime</a> into the <code>WEB-INF/lib</code> 
-      folder and add it to the projects' build path. The <code>org.eclipse.rap.rwt.source_*</code> 
-      jar contains the RWT source code. To be able to browse the sources and read JavaDoc, specify 
-      this jar as the 
+    <li>
+      Copy the <code>org.eclipse.rap.rwt_*</code> jar from the
+      <a href="http://eclipse.org/rap/downloads">RAP Runtime</a> into the <code>WEB-INF/lib</code>
+      folder and add it to the projects' build path. The <code>org.eclipse.rap.rwt.source_*</code>
+      jar contains the RWT source code. To be able to browse the sources and read JavaDoc, specify
+      this jar as the
       <a href="http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fref-properties-source-attachment.htm">
         Source Attachment
       </a>
     </li>
-    <li> Implement an <code>IEntryPoint</code> like below: 
-<pre dir="ltr" style="text-align: left;"><code>public class HelloWorld implements IEntryPoint {
+    <li> Implement an <code>IEntryPoint</code> like below:
+<pre dir="ltr" style="text-align: left;"><code>public class HelloWorld implements EntryPoint {
   public int createUI() {
     Display display = new Display();
     Shell shell = new Shell( display );
@@ -66,19 +66,19 @@
     </li>
   </ul>
   <p>
-    With the RAP Tooling installed, you can already launch your HelloWorld application. 
-    To do so, select the HelloWorld class (i.e. in the Package Explorer) and choose Run 
+    With the RAP Tooling installed, you can already launch your HelloWorld application.
+    To do so, select the HelloWorld class (i.e. in the Package Explorer) and choose Run
     As &gt; RWT Application from the context menu.
   </p>
 
   <h2 id = "deploy">Deploying</h2>
   <p>
-    If you whish to deploy your application on an external servlet engine, or if you need a 
-    deployment descriptor for other reasons, or if you haven't installed the RAP Tooling, a few 
+    If you whish to deploy your application on an external servlet engine, or if you need a
+    deployment descriptor for other reasons, or if you haven't installed the RAP Tooling, a few
     more steps are required to run the application.
   </p>
   <ul>
-    <li> Place a deployment descriptor (<code>web.xml</code>) in the <code>WEB-INF</code> folder 
+    <li> Place a deployment descriptor (<code>web.xml</code>) in the <code>WEB-INF</code> folder
     with the content below:
 <pre dir="ltr" style="text-align: left;"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;web-app xmlns="http://java.sun.com/xml/ns/j2ee"
@@ -104,10 +104,10 @@
     &lt;servlet-name&gt;rwtServlet&lt;/servlet-name&gt;
     &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
   &lt;/servlet-mapping&gt;
-&lt;/web-app&gt; </code></pre> 
+&lt;/web-app&gt; </code></pre>
     </li>
-    <li> 
-      Provide an implementation of <code>ApplicationConfigurator</code> 
+    <li>
+      Provide an implementation of <code>ApplicationConfigurator</code>
       to configure your application like shown below:
   <pre dir="ltr" style="text-align: left;"><code>public class HelloWorldConfiguration implements ApplicationConfiguration {
   public void configure( Application application ) {
@@ -115,16 +115,16 @@
   }
 }</code></pre>
     </li>
-    <li> 
-      Again you can use the RAP Tooling to launch the application from the just created 
-      <code>web.xml</code>. To do so, create a new <i>RWT Launch Configuration</i> and select 
-      "Run from web.xml". Enter the location of the web.xml file and specify "hello" as the 
+    <li>
+      Again you can use the RAP Tooling to launch the application from the just created
+      <code>web.xml</code>. To do so, create a new <i>RWT Launch Configuration</i> and select
+      "Run from web.xml". Enter the location of the web.xml file and specify "hello" as the
       servlet path.
     </li>
   </ul>
   <p>
-    You may also find the <a href="http://wiki.eclipse.org/index.php/JFace">JFace</a> components 
-    useful. In order to use them from RWT standalone, you will need to add the following jars from 
+    You may also find the <a href="http://wiki.eclipse.org/index.php/JFace">JFace</a> components
+    useful. In order to use them from RWT standalone, you will need to add the following jars from
     the <a href="http://eclipse.org/rap/downloads">RAP Runtime</a>:
   </p>
   <ul>

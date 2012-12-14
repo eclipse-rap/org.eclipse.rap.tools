@@ -109,7 +109,7 @@
     <a href="../reference/api/org/eclipse/rwt/application/Application.html#OperationMode">OperationMode</a>,
     the Browser <code>evaluate</code> method works differently.
     Read about it <a href="../rwt/differences.html#browser">here</a> and
-    <a href="application-setup.html#compat">here</a>. 
+    <a href="application-setup.html#compat">here</a>.
     If your custom widget is supposed to implement getter that needs to obtain a value using
     <code>evaluate</code>, do not use the JEE compatibility mode.
   </p>
@@ -161,7 +161,7 @@
       Register each file using either the <code>org.eclipse.rap.ui.resources</code> extension
       point or your <code>org.eclipse.rap.rwt.application.ApplicationConfiguration</code>. This only
       requires the RWT bundle itself, but necessitates creating a Java class implementing
-      <code>org.eclipse.rap.rwt.resources.IResource</code> for each resource-file. It may therefore
+      <code>org.eclipse.rap.ui.resources.IResource</code> for each resource-file. It may therefore
       not be suitable for a larger amount of files.
     </li>
     <li>

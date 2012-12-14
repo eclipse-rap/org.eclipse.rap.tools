@@ -61,7 +61,7 @@
   <h2>Create an entrypoint</h2>
   <p>
     Every RAP application needs an entrypoint that creates the initial UI of the application.
-    An entrypoint is a class that implements the interface <em>IEntryPoint</em>.
+    An entrypoint is a class that implements the interface <em>EntryPoint</em>.
     (As a side note, workbench-based applications can also implement the Eclipse-specific interface
     <em>IApplication</em>).
   </p>
@@ -69,14 +69,14 @@
     Before creating the Java code, we need a package.
     It's a good practice to name the main package in a bundle after the bundle id, so
     let's name the package <code>org.example.rap.helloworld</code>.
-    In this package, we create a class named <code>EntryPoint</code> that implements
-    <code>IEntryPoint</code>.
+    In this package, we create a class named <code>HelloWorldEntryPoint</code> that implements
+    <code>EntryPoint</code>.
     In the method <code>createUI</code>, we add some SWT code.
     You can generate the skeleton of this code using an SWT template (type <em>main</em> and hit
     Ctrl+Space, then select the template named <em>mainloop</em>).
     In the example below, we added a Button with the text “Hello world!”:
   </p>
-  <pre><code>  public class EntryPoint implements IEntryPoint {
+  <pre><code>  public class HelloWorldEntryPoint implements EntryPoint {
 
     public int createUI() {
       Display display = new Display();

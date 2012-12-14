@@ -111,9 +111,8 @@
     </li>
 
     <li style="margin-bottom:20px">
-       <!-- TODO rename interfaces -->
-      <b>Multi-User Environment:</b> <code>ISettingsStore</code>, <code>IApplicationStore</code>,
-      <code>ISessionStore</code>, <code>IServiceStore</code>, <code>SessionSingletonBase</code>
+      <b>Multi-User Environment:</b> <code>SettingsStore</code>, <code>ApplicationContext</code>,
+      <code>UISession</code>, <code>SingletonUtil</code>
       <br/>
       Not directly related to the UI aspects of RWT, but a very important difference to SWT
       is that RWT operates in a multi-user environment.
@@ -200,8 +199,8 @@
       combining a number of changes into one event. Also, the values of the
       <code>VerifyEvent</code> fields <code>text</code>, <code>start</code> and <code>end</code>
       currently always report the entire text to have changed.
-      The <a href="http://wiki.eclipse.org/RAP/ClientScripting">ClientScripting</a> was
-      created specifically to provide an alternative.
+      The <a href="http://wiki.eclipse.org/RAP/ClientScripting">ClientScripting</a> project was
+      started specifically to provide an alternative.
     </li>
 
     <li style="margin-bottom:20px">
@@ -220,9 +219,10 @@
       background-thread, the UI may not be updated immediately. This is due to the client-server
       architecture of RAP, in which only the client can send requests to the server.
       There is a solution for this provided by the class
+      <!-- TODO rename UICallBack to whatever it will be named... --->
       <a href="../reference/api/org/eclipse/rwt/lifecycle/UICallBack.html"><code>UICallBack</code></a>.
       Read more about it <a href="../advanced/server-push.html">here</a>.
-      Note that as of RAP 1.5, <code>timerExec</code> does <em>not</em> require a UICallBack anymore
+      Note that <code>timerExec</code> does <em>not</em> require a UICallBack anymore
       (it uses UICallBack internally).
     </li>
 
