@@ -10,13 +10,13 @@
 </head>
 <body>
 
-  <h1>Scopes and Data Stores in RWT</h1>
+  <h1>Scopes in RWT</h1>
 
   <p>
     In a desktop environment, an instance of an application normally serves only a single user,
     runs in its own Java VM instance, and the operating system usually provides a user-specific
     storage on the file system.
-    For RAP applications, things are very different.
+    For RAP applications, these things work differently.
   </p>
   <p>
     A RAP application does not own the VM. It runs on a server and shares the VM with the servlet
@@ -37,28 +37,31 @@
     All these things have application scope.
     If you have objects that should be accessible from everywhere in the application, they need to
     have application scope as well.
-    RWT provides an application-scoped store for these objects, called <em>application store</em>,
-    that can be accessed using <code>RWT.getApplicationStore()</code>.
+    RWT provides an application-scoped store for these objects, called <em>application context</em>,
+    that can be accessed using <code>RWT.getApplicationContext()</code>.
   </p>
 
-  <h2>Session Scope</h2>
+  <h2>UI Session Scope</h2>
   <p>
-    User session in RAP are built on top of the servlet container's session management.
-    But in contrast to the underlying HTTP session, a user session in RAP spans exactly one
+    UI sessions in RAP are built on top of the servlet container's session management.
+    But in contrast to the underlying HTTP session, a UI session spans exactly one
     execution of an entrypoint.
     As an example, when the browser is refreshed (usually by hitting <em>F5</em>) to start over,
-    the user still has the same HTTP session, but a fresh RAP session.
-    RAP also provides a session-scoped data store, the <em>session store</em>, accessible using
-    <code>RWT.getSessionStore()</code>.
+    the user still has the same HTTP session, but a fresh UI session.
+    A UI session is represented by an <code>UISsession</code> instance, accessible using
+    <code>RWT.getUISession()</code>. Similar to <em>application context</em>, it can be used to
+    store session-scoped data.
     The session store also provides access to the HTTP session.
-    Note that the session store can not be accessed directly from a background thread (see below).
-    For working with session-unique singletons, see <a href="#singleton">Session Singleton</a>.
+    Note that the session store can not be directly accessed via <code>RWT.getUISession()</code>
+    from a background thread (see below). For working with session-unique singletons, see
+    <a href="#singleton">Session Singleton</a>.
   </p>
 
   <h3>Session Timeout</h3>
   <p>
-    A RAP session ends when the execution of an entrypoint is finished or when the underlying
-    HTTP session times out.
+
+    A UI session ends when the execution of an entrypoint is finished <!-- True for JEE mode? -->
+    or when the underlying HTTP session times out.
     The timeout interval must be be configured with the servlet container.
     For web applications, this can be done in the web application's deployment descriptor (web.xml):
   </p>
@@ -69,7 +72,7 @@
   <p>
     The timeout value can also be changed programmatically on a per session basis:
   </p>
-  <pre><code>RWT.getSessionStore().getHttpSession().setMaxInactiveInterval(&lt;timeout in Seconds&gt;);
+  <pre><code>RWT.getUISession().getHttpSession().setMaxInactiveInterval(&lt;timeout in Seconds&gt;);
   </code></pre>
   <p>
     Note that when using the RAP launcher, sessions never expire by default.
@@ -78,25 +81,25 @@
 
   <h3>Session Cleanup</h3>
   <p>
-    To cleanup session-scoped objects, a <code>SessionStoreListener</code> can be registered with
-    the session store:
+    To cleanup session-scoped objects, a <code>UISessionListener</code> can be registered with
+    the UI session:
   </p>
-   <div dir="ltr" style="text-align: left;"><pre><code>RWT.getSessionStore().addSessionStoreListener( new SessionStoreListener() {
-  public void beforeDestroy( SessionStoreEvent event ) {
-    // Perform cleanup        
+   <div dir="ltr" style="text-align: left;"><pre><code>RWT.getUISession().addUISessionListener( new UISessionListener() {
+  public void beforeDestroy( UISessionEvent event ) {
+    // Perform cleanup
   }
 } );
    </code></pre></div>
-  <!-- 
+  <!--
   <p>
     There are several ways to do some cleanup before the session is destroyed. The first choice
     in most cases is to attach an <code>SWT.Close</code> listener to the Display or register a
-    Runnable with disposeExec(): 
+    Runnable with disposeExec():
   </p>
 
    <div dir="ltr" style="text-align: left;"><pre><code>display.addListener( new Listener() {
   public void handleEvent( Event event ) {
-    // Perform cleanup        
+    // Perform cleanup
   }
 } );
 display.disposeExec( new Runnable() {
@@ -107,14 +110,6 @@ display.disposeExec( new Runnable() {
    </code></pre></div>
    -->
 
-  <h2>Request Scope</h2>
-  <p>
-    A third scope in RAP spans the processing of a single request.
-    There is also a request-scoped store available, called <em>service store</em>, which can be
-    accessed using <code>RWT.getServiceStore()</code>.
-    Normally, this scope is not relevant for RAP application development.
-  </p>
-
   <h2>Persisting User Data</h2>
   <p>
     RWT provides a persistent data store called SettingStore, which can be accessed using
@@ -123,34 +118,28 @@ display.disposeExec( new Runnable() {
     By default, the cookie expires after 3 months, but may also be deleted by the user before then.
   </p>
 
-  <h2>Data Stores (Overview)</h2>
+  <h2>Data Scopes (Overview)</h2>
   <table border="1" cellpadding="3" cellspacing="0">
     <tr>
-      <th align="left">Store</th>
+      <th align="left">Interface</th>
       <th align="left">Access</th>
       <th align="left">Scope</th>
       <th align="left">cleared</th>
     </tr>
     <tr>
-      <td><code>IApplicationStore</code></td>
-      <td><code>RWT.getApplicationStore()</code></td>
+      <td><code>ApplicationContext</code></td>
+      <td><code>RWT.getApplicationContext()</code></td>
       <td>application</td>
       <td>when application is stopped/restarted</td>
     </tr>
     <tr>
-      <td><code>ISessionStore</code></td>
-      <td><code>RWT.getSessionStore()</code></td>
+      <td><code>UISession</code></td>
+      <td><code>RWT.getUISession()</code></td>
       <td style="white-space:nowrap">session</td>
       <td>when session expires</td>
     </tr>
     <tr>
-      <td><code>IServiceStore</code></td>
-      <td><code>RWT.getServiceStore()</code></td>
-      <td style="white-space:nowrap">request</td>
-      <td>when HTTP response is sent to client</td>
-    </tr>
-    <tr>
-      <td><code>ISettingsStore</code></td>
+      <td><code>SettingsStore</code></td>
       <td><code>RWT.getSettingStore()</code></td>
       <td>user (persistent)</td>
       <td>never, cookie lasts 3 month by default</td>
@@ -168,12 +157,12 @@ display.disposeExec( new Runnable() {
   </p>
   <p>
     Instead of using singletons and static fields, all data must be kept in the correct scope in RAP.
-    RAP provides a helper class <code>SessionSingletonBase</code> for creating session-unique
+    RAP provides a helper class <code>SingletonUtil</code> that can create session-unique
     instances of a given class, so called “session singletons”.
-    In the context of one user session
-    <code>SessionSingletonBase.getInstance( Class )</code> will always return the same object,
+    In the context of one UI session
+    <code>SingletonUtil.getSessionInstance( Class )</code> will always return the same object,
     but for different user sessions the returned instances will be different.
-    The following code snippet illustrates this pattern: 
+    The following code snippet illustrates this pattern:
   </p>
   <div dir="ltr" style="text-align: left;"><pre><code>public class MySessionSingleton {
   private MySessionSingleton() {
@@ -181,30 +170,27 @@ display.disposeExec( new Runnable() {
   }
 
   public static MySessionSingleton getInstance() {
-    return SessionSingletonBase.getInstance( MySessionSingleton.class );
+    return SingletonUtil.getSessionInstance( MySessionSingleton.class );
   }
 
   // other methods ...
 }
   </code></pre></div>
-  <p>
-    Note that session singletons cannot be directly accessed from a background thread.
-  </p>
 
-  <h2>Accessing the session from a background thread</h2>
+  <h2>Access from a background thread</h2>
   <p>
-    RWT determines the current user session based the current thread.
-    Since the UI-thread is always associated with the user session, any code running in this thread
-    can freely access the session store and instantiate session singletons.
-    When other threads (also called <em>non-UI</em> or <em>background</em> threads try to
+    RWT determines the UI session based the current thread. When <em>background</em> threads try to
     do so, the code will fail with an <code>java.lang.IllegalStateException</code>, saying that
-    there's no context available:
+    there's no context available. The same is true for access to the sessions <code>Client</code>
+    instance.
   </p>
   <pre><code>// INCORRECT
 // will throw IllegalStateException: No context available ...
 Runnable runnable = new Runnable() {
   public void run() {
-    ISessionStore sessionStore = RWT.getSessionStore();
+    UISession session = RWT.getUISession();
+    // ... or ...
+    Client client = RWT.getClient();
     // ... or ...
     MySessionSingleton sessionSingleton = MySessionSingleton.getInstance();
     // ...
@@ -213,19 +199,21 @@ Runnable runnable = new Runnable() {
 new Thread( runnable ).start();
 </code></pre>
   <p>
-    The solution is to run the code that accesses the session with a simulated context that can
-    determine the user session based on a reference to the user's display.
-    To do so, use the legendary method <code>UICallBack.runNonUIThreadWithFakeContext()</code>.
-    This method will run a given runnable with a context that is associated with the user session
-    identified by the specified display, thus allowing the code to access the session:
+    The solution is to run the code in question with a simulated UI session context.
+    To do so, an <code>UISession</code> instance is needed first. If it is not stored somewhere
+    the thread can access it (in a field or final variable), an instance of <code>Display</code>
+    can be used to obtain it from <code>RWT.getUISession( Display display )</code>. Then,
+    call the method <code>UISession#exec( Runnable runnable )</code>. The code in the runnable
+    will be able to access all data associated with the session.
   </p>
   <pre><code>// CORRECT
 final Display display = Display.getCurrent();
 final Runnable runnable = new Runnable() {
   public void run() {
-    UICallBack.runNonUIThreadWithFakeContext( display, new Runnable() {
+    UISession uiSession = RWT.getUISession( display );
+    uiSession.exec( new Runnable() {
       public void run() {
-        ISessionStore sessionStore = RWT.getSessionStore();
+        Client client = RWT.getClient();
         // ... or ...
         MySessionSingleton sessionSingleton = MySessionSingleton.getInstance();
         // ...
