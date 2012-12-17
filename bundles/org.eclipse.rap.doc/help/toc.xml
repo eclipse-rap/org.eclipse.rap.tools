@@ -152,6 +152,14 @@
     <topic label="RAP Theming Reference">
       <link toc="help/html/reference/theming/toc.xml" />
     </topic>
+    <topic href="help/html/reference/jsdoc/index.html" label="RAP WebClient API Reference">
+       <topic href="help/html/reference/jsdoc/symbols/rap.html" label="rap">
+       </topic>
+       <topic href="help/html/reference/jsdoc/symbols/Composite.html" label="Composite">
+       </topic>
+       <topic href="help/html/reference/jsdoc/symbols/RemoteObject.html" label="RemoteObject">
+       </topic>
+    </topic>
   </topic>
 
   <topic label="Legal" href="help/html/legal.html" />
