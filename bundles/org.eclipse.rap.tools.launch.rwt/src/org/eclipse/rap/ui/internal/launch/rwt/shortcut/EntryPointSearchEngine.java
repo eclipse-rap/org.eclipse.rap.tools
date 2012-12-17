@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.shortcut;
 
@@ -22,17 +23,17 @@ import org.eclipse.rap.ui.internal.launch.rwt.util.StringArrays;
 
 
 class EntryPointSearchEngine {
-  
+
   private static final int SCOPE_CONSTRAINTS
-    = IJavaSearchScope.SOURCES 
-    | IJavaSearchScope.APPLICATION_LIBRARIES 
+    = IJavaSearchScope.SOURCES
+    | IJavaSearchScope.APPLICATION_LIBRARIES
     | IJavaSearchScope.REFERENCED_PROJECTS;
 
   private final RunnableContextHelper runnableContextHelper;
   private final EntryPointCollector entryPointCollector;
   private IJavaSearchScope searchScope;
 
-  
+
   EntryPointSearchEngine( IRunnableContext runnableContext ) {
     runnableContextHelper = new RunnableContextHelper( runnableContext );
     entryPointCollector = new EntryPointCollector();
@@ -56,8 +57,8 @@ class EntryPointSearchEngine {
       int matchRule = SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE;
       SearchPattern pattern
         = SearchPattern.createPattern( "createUI() int",  //$NON-NLS-1$
-                                       IJavaSearchConstants.METHOD, 
-                                       IJavaSearchConstants.DECLARATIONS, 
+                                       IJavaSearchConstants.METHOD,
+                                       IJavaSearchConstants.DECLARATIONS,
                                        matchRule );
       SearchParticipant[] participants = getSearchParticipants();
       IProgressMonitor searchMonitor = new SubProgressMonitor( monitor, 100 );
@@ -78,7 +79,7 @@ class EntryPointSearchEngine {
     public EntryPointCollector() {
       collectedTypes = new LinkedList<IType>();
     }
-    
+
     void clear() {
       collectedTypes.clear();
     }
@@ -92,38 +93,38 @@ class EntryPointSearchEngine {
       if( enclosingElement instanceof IMethod ) {
         IMethod method = ( IMethod )enclosingElement;
         IType type = method.getDeclaringType();
-        if( isIEntryPointType( type ) ) {
+        if( isEntryPointType( type ) ) {
           collectedTypes.add( type );
         }
       }
     }
-    
-    private static boolean isIEntryPointType( IType type ) throws JavaModelException {
-      return new TypeInspector( type ).isIEntryPointType();
+
+    private static boolean isEntryPointType( IType type ) throws JavaModelException {
+      return new TypeInspector( type ).isEntryPointType();
     }
   }
 
   private static class TypeInspector {
     private static final String[] NO_PARAMETERS = new String[ 0 ];
-    
+
     private final IType type;
 
     TypeInspector( IType type ) {
       this.type = type;
     }
-    
-    boolean isIEntryPointType() throws JavaModelException {
-      return type.isClass() && implementsIEntryPoint() && hasCreateUIMethod();
+
+    boolean isEntryPointType() throws JavaModelException {
+      return type.isClass() && implementsEntryPoint() && hasCreateUIMethod();
     }
 
     private boolean hasCreateUIMethod() {
       IMethod method = type.getMethod( "createUI", NO_PARAMETERS ); //$NON-NLS-1$
       return method.exists();
     }
-    
-    private boolean implementsIEntryPoint() throws JavaModelException {
+
+    private boolean implementsEntryPoint() throws JavaModelException {
       String[] superInterfaceNames = type.getSuperInterfaceNames();
-      return StringArrays.contains( superInterfaceNames, "IEntryPoint" ); //$NON-NLS-1$
+      return StringArrays.contains( superInterfaceNames, "EntryPoint" ); //$NON-NLS-1$
     }
   }
 }
