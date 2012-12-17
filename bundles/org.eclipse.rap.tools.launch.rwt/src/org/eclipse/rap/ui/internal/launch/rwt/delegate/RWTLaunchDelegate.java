@@ -60,7 +60,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
 
   public String[] getClasspath( ILaunchConfiguration configuration ) throws CoreException {
     String[] result = super.getClasspath( configuration );
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.rap.ui.launch.rwt" ) ); //$NON-NLS-1$
+    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.rap.tools.launch.rwt" ) ); //$NON-NLS-1$
     result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.continuation" ) ); //$NON-NLS-1$
     result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.http" ) ); //$NON-NLS-1$
     result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.io" ) ); //$NON-NLS-1$
