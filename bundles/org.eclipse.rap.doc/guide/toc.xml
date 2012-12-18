@@ -1,0 +1,167 @@
+<toc label="RAP Developer Guide">
+
+  <topic label="Introduction" href="guide/intro.html" />
+
+  <topic label="Getting Started">
+    <topic
+        label="Setting up the Eclipse IDE"
+        href="guide/getting-started/setup-ide.html"/>
+    <topic
+        label="Installing a RAP Target"
+        href="guide/getting-started/target-install.html"/>
+    <topic
+        label="Writing a Hello World with RAP"
+        href="guide/getting-started/hello-world.html"/>
+    <topic
+        label="Launching RAP Applications from the IDE"
+        href="guide/getting-started/launcher.html"/>
+    <topic
+        label="RAP Examples"
+        href="guide/getting-started/examples.html"/>
+  </topic>
+  <topic label="RAP Widget Toolkit (RWT)">
+    <topic
+        label="Introduction"
+        href="guide/rwt/intro.html">
+    </topic>
+    <topic
+        label="Differences between RWT and SWT"
+        href="guide/rwt/differences.html">
+    </topic>
+    <topic href="guide/rwt/client.html" label="The RAP Client">
+    </topic>
+    <topic
+        label="Scopes and Data Stores in RWT"
+        href="guide/rwt/scopes.html">
+    </topic>
+    <topic
+        label="Key and Mouse Event Handling"
+        href="guide/rwt/key-and-mouse-events.html">
+    </topic>
+    <topic
+        label="RWT Theming"
+        href="guide/rwt/theming.html"/>
+    <topic
+        label="Custom Widgets"
+        href="guide/rwt/custom-widget.html"/>
+  </topic>
+  <topic label="Application Development">
+    <topic
+        label="Choosing an Application Setup"
+        href="guide/advanced/application-setup.html"/>
+    <topic
+        label="Application Configuration"
+        href="guide/advanced/application-configuration.html">
+    </topic>
+    <topic
+        label="Branding"
+        href="guide/advanced/branding.html"/>
+    <topic
+        label="RWT Standalone"
+        href="guide/advanced/rwt-standalone.html"/>
+    <topic
+        label="WAR Deployment"
+        href="guide/advanced/deployment.html"/>
+    <topic
+        label="Look and Feel"
+        href="guide/advanced/look-and-feel.html"/>
+    <topic
+        label="Server Push"
+        href="guide/advanced/server-push.html"/>
+    <topic
+        label="Internationalization"
+        href="guide/advanced/internationalization.html"/>
+    <topic
+        label="Related Technologies"
+        href="guide/advanced/related-technologies.html"/>
+  </topic>
+
+  <topic label="Reference">
+    <topic label="API Reference"
+        href="guide/reference/api/overview-summary.html">
+      <topic label="org.eclipse.rap.rwt"
+          href="guide/reference/api/org/eclipse/rwt/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.application"
+          href="guide/reference/api/org/eclipse/rwt/application/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.branding"
+          href="guide/reference/api/org/eclipse/rwt/branding/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.client"
+          href="guide/reference/api/org/eclipse/rwt/client/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.engine"
+          href="guide/reference/api/org/eclipse/rwt/engine/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.events"
+          href="guide/reference/api/org/eclipse/rwt/events/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.graphics"
+          href="guide/reference/api/org/eclipse/rwt/graphics/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.lifecycle"
+          href="guide/reference/api/org/eclipse/rwt/lifecycle/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.resources"
+          href="guide/reference/api/org/eclipse/rwt/resources/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.service"
+          href="guide/reference/api/org/eclipse/rwt/service/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.theme"
+          href="guide/reference/api/org/eclipse/rwt/theme/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.widgets"
+          href="guide/reference/api/org/eclipse/rwt/widgets/package-summary.html"/>
+      <topic label="org.eclipse.swt"
+          href="guide/reference/api/org/eclipse/swt/package-summary.html"/>
+      <topic label="org.eclipse.swt.accessibility"
+          href="guide/reference/api/org/eclipse/swt/accessibility/package-summary.html"/>
+      <topic label="org.eclipse.swt.browser"
+          href="guide/reference/api/org/eclipse/swt/browser/package-summary.html"/>
+      <topic label="org.eclipse.swt.custom"
+          href="guide/reference/api/org/eclipse/swt/custom/package-summary.html"/>
+      <topic label="org.eclipse.swt.events"
+          href="guide/reference/api/org/eclipse/swt/events/package-summary.html"/>
+      <topic label="org.eclipse.swt.dnd"
+          href="guide/reference/api/org/eclipse/swt/dnd/package-summary.html"/>
+      <topic label="org.eclipse.swt.graphics"
+          href="guide/reference/api/org/eclipse/swt/graphics/package-summary.html"/>
+      <topic label="org.eclipse.swt.layout"
+          href="guide/reference/api/org/eclipse/swt/layout/package-summary.html"/>
+      <topic label="org.eclipse.swt.widgets"
+          href="guide/reference/api/org/eclipse/swt/widgets/package-summary.html"/>
+    </topic>
+
+    <topic label="RAP Extension Points Reference"
+        href="guide/reference/extension-points/index.html">
+      <topic label="org.eclipse.rap.ui.adapterfactory"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_adapterfactory.html"/>
+      <topic label="org.eclipse.rap.ui.branding"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_branding.html"/>
+      <topic label="org.eclipse.rap.ui.entrypoint"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_entrypoint.html"/>
+      <topic label="org.eclipse.rap.ui.layouts"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_layouts.html"/>
+      <topic label="org.eclipse.rap.ui.phaselistener"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_phaselistener.html"/>
+      <topic label="org.eclipse.rap.ui.resources"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_resources.html"/>
+      <topic label="org.eclipse.rap.ui.serviceHandler"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_serviceHandler.html"/>
+      <topic label="org.eclipse.rap.ui.settingstores"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_settingstores.html"/>
+      <topic label="org.eclipse.rap.ui.stackPresentations"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_stackPresentations.html"/>
+      <topic label="org.eclipse.rap.ui.themeableWidgets"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_themeableWidgets.html"/>
+      <topic label="org.eclipse.rap.ui.themes"
+          href="guide/reference/extension-points/org_eclipse_rap_ui_themes.html"/>
+    </topic>
+
+    <topic label="RAP Theming Reference">
+      <link toc="guide/reference/theming/toc.xml" />
+    </topic>
+    <topic href="guide/reference/jsdoc/index.html" label="RAP WebClient API Reference">
+       <topic href="guide/reference/jsdoc/symbols/rap.html" label="rap">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Composite.html" label="Composite">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/RemoteObject.html" label="RemoteObject">
+       </topic>
+    </topic>
+  </topic>
+
+  <topic label="Legal" href="guide/legal.html" />
+
+</toc>
