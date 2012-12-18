@@ -46,7 +46,7 @@
       <group style-id="content-group" id="rap-target-one-group">
         <link
             label="Install Target Platform"
-            url="http://org.eclipse.ui.intro/runAction?class=org.eclipse.rap.ui.internal.intro.target.InstallRAPTargetAction&amp;pluginId=org.eclipse.rap.ui.intro&amp;standby=true"
+            url="http://org.eclipse.ui.intro/runAction?class=org.eclipse.rap.ui.internal.intro.target.InstallRAPTargetAction&amp;pluginId=org.eclipse.rap.tools.intro&amp;standby=true"
             id="rap-target-installer"
             style-id="content-link">
           <text>
