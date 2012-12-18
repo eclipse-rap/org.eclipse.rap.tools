@@ -110,42 +110,6 @@ display.disposeExec( new Runnable() {
    </code></pre></div>
    -->
 
-  <h2>Persisting User Data</h2>
-  <p>
-    RWT provides a persistent data store called SettingStore, which can be accessed using
-    <code>RWT.getSettingStore()</code>.
-    The settings store uses a cookie to identify a returning user.
-    By default, the cookie expires after 3 months, but may also be deleted by the user before then.
-  </p>
-
-  <h2>Data Scopes (Overview)</h2>
-  <table border="1" cellpadding="3" cellspacing="0">
-    <tr>
-      <th align="left">Interface</th>
-      <th align="left">Access</th>
-      <th align="left">Scope</th>
-      <th align="left">cleared</th>
-    </tr>
-    <tr>
-      <td><code>ApplicationContext</code></td>
-      <td><code>RWT.getApplicationContext()</code></td>
-      <td>application</td>
-      <td>when application is stopped/restarted</td>
-    </tr>
-    <tr>
-      <td><code>UISession</code></td>
-      <td><code>RWT.getUISession()</code></td>
-      <td style="white-space:nowrap">session</td>
-      <td>when session expires</td>
-    </tr>
-    <tr>
-      <td><code>SettingsStore</code></td>
-      <td><code>RWT.getSettingStore()</code></td>
-      <td>user (persistent)</td>
-      <td>never, cookie lasts 3 month by default</td>
-    </tr>
-  </table>
-
   <h2>Singletons and Static Fields</h2>
   <p>
     The classical singleton pattern suggests that a class has only one instance and keeps the
@@ -177,7 +141,7 @@ display.disposeExec( new Runnable() {
 }
   </code></pre></div>
 
-  <h2>Access from a background thread</h2>
+  <h2>Session access from a background thread</h2>
   <p>
     RWT determines the UI session based the current thread. When <em>background</em> threads try to
     do so, the code will fail with an <code>java.lang.IllegalStateException</code>, saying that
@@ -223,6 +187,64 @@ final Runnable runnable = new Runnable() {
 };
 new Thread( runnable ).start();
   </code></pre>
+
+  <h3>UISession#exec Vs. Display#asyncExec</h3>
+  <p>
+    SWT/RWT widgets can only be accessed from a UI thread. While <code>UISession#exec</code>
+    provides a UI session scope, it does not execute the runnable within the UI thread. To do so,
+    <code>Display#asyncExec</code> has to be used. However, to do so from a background thread, a
+    <a href="../advanced/server-push.html">ServerPushSession</a>
+    has to be running, and an HTTP request will be triggered when it is called. In contrast,
+    <code>UISession#exec</code> never causes any additional network traffic.
+  </p>
+  <p>
+    In summary, when a thread needs to access session scope
+    (e.g. by using <code>SingletonUtil</code>
+    or <code>RWT.getClient</code>), <code>UISession#exec</code> should be used.
+    Only when the UI needs to be updated <code>Display#asyncExec</code> should be used, which
+    provides session scope <em>and</em> access to the UI. Using one from within the other is
+    pointless.
+  </p>
+
+
+
+
+
+  <h2>Persisting User Data</h2>
+  <p>
+    RWT provides a persistent data store called SettingStore, which can be accessed using
+    <code>RWT.getSettingStore()</code>.
+    The settings store uses a cookie to identify a returning user.
+    By default, the cookie expires after 3 months, but may also be deleted by the user before then.
+  </p>
+
+  <h2>Data Scopes (Overview)</h2>
+  <table border="1" cellpadding="3" cellspacing="0">
+    <tr>
+      <th align="left">Interface</th>
+      <th align="left">Access</th>
+      <th align="left">Scope</th>
+      <th align="left">cleared</th>
+    </tr>
+    <tr>
+      <td><code>ApplicationContext</code></td>
+      <td><code>RWT.getApplicationContext()</code></td>
+      <td>application</td>
+      <td>when application is stopped/restarted</td>
+    </tr>
+    <tr>
+      <td><code>UISession</code></td>
+      <td><code>RWT.getUISession()</code></td>
+      <td style="white-space:nowrap">session</td>
+      <td>when session expires</td>
+    </tr>
+    <tr>
+      <td><code>SettingsStore</code></td>
+      <td><code>RWT.getSettingStore()</code></td>
+      <td>user (persistent)</td>
+      <td>never, cookie lasts 3 month by default</td>
+    </tr>
+  </table>
 
 </body>
 </html>
