@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Server Push</title>
   <link rel="stylesheet" href="../../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -11,75 +11,71 @@
 <body>
 
   <h1>Server Push</h1>
-   <h2>The Challenge</h2>
+
+  <h2>The Challenge</h2>
+
   <p>
-    Sometimes it's necessary to “push” UI updates from the web server to the browser client.
+    Sometimes it's necessary to “push” UI updates from the RAP server to the RAP client.
     As an example, imagine a chat application that notifies the user of a chat request from a peer.
   </p>
-  <p>
-    Usually, the UI is updated in the UI thread as a result of a user interaction, e.g. in a
-    listener.
-    These updates are processed during request processing, so that the UI changes are immediately
-    rendered in the response.
-    But when the UI is updated from a background thread using Display.asyncExec() while the user
-    is idle, there's no request that could fetch the UI updates from the server.
-  </p>
-  <p>
-    HTTP is not designed to push data to the client.
+    HTTP is not designed to actively push data to the client.
     An HTTP server can only answer requests from a client, but it cannot actively send any message
-    to the client. In modern browser there is the WebSocker API which solves this problem in a
-    standardized way, but browser support has yet to hit a state where it would efficiently 
-    implementable in RAP. There are basically two different approaches to tackle this problem, 
-    polling and Comet.
-  </p>
-
-  <h2>Polling</h2>
-  <p>
-    One approach would be to make the client issue requests at a steady interval.
-    If any changes have occurred to the UI on the server, the server will send the UI updates in
-    response. This can also be <a href = "http://wiki.eclipse.org/RAP/UI_Callback#Alternative:_Polling">achieved in RAP</a>, but is not officially supported. 
-    However, this is only an option when updates doesn't have to come timely. More importantly,
-    the shorter the interval, the more network load is added by sending unnecessary requests
-    frequently. It is therefore often not a effective solution.
-  </p>
-
-  <h2 id = "uicallback">UI Callback ("Comet") </h2>
-
-  <p>
-    With the so-called Comet approach, the server is able to notify the client <em>immediately</em>
-    without the need for frequent requests.
-    The basic idea is that the client sends a special “callback” request to the server.
-    This request is not answered by the server, so the client keeps waiting for a response.
-    When the server needs to notify the client of a change, it sends a response to the standing
-    request and asks the client to call back.
+    to the client. In RAP the UI is typically updated
+    within a request caused by a user interaction, in which case this restriction is not an issue.
+    However, when the UI is updated from a background thread using <code>Display.asyncExec()</code>,
+    there's usually no request that could fetch the UI updates from the server.
+    In this case the UI changes would not be rendered until the next HTTP request is triggered.
   </p>
   <p>
-    RAP provides an implementation of this mechanism which is called UI callback.
-    Before starting a background task, the UI callback can be activated by calling:
+
+  <h2>The Solution</h2>
+
+  <p>
+    With the so-called Comet ("long polling") approach, the server is able to notify the client
+    <em>immediately</em>. The basic idea is that the client sends a request to the server that is
+    not answered until the server needs to notify the client of a change.
+  </p>
+  <p>
+    RAP provides an implementation of this mechanism which can be used via the
+    ServerPushSession API.
+    <em>Before</em> starting a background task, create an instance of <code>ServerPushSession</code>
+    and call <code>start</code>. When the background task completes and no longer needs the
+    ServerPush mechanism, call <code>stop</code>. Example:
   </p>
   <pre><code>
-  UICallBack.activate( "my unique id" );
-  </code></pre>
+final ServerPushSession pushSession = new ServerPushSession();
+Runnable bgRunnable = new Runnable() {
+  public void run() {
+  // do some background work ...
+  // schedule the UI update
+  display.asyncExec( new Runnable() {
+    public void run() {
+      if( !widget.isDisposed() ) {
+        // update the UI
+        label.setText( "updated" );
+        // close push session when finished
+        pushSession.stop();
+      }
+    }
+  } );
+};
+pushSession.start();
+Thread bgThread = new Thread( bgRunnable );
+bgThread.setDaemon( true );
+bgThread.start();
+</code></pre>
   <p>
-    This has to be done from the UI thread, since otherwise the activation cannot be transferred to
-    the client anymore.
-    The id passed to the activate method is only needed to identify the caller. It has to be 
-    unique within the current session and should have a meaningful name, for example one that 
-    identifies the reason why the UICallBack is activated. After the background task has completed 
-    and the UI callback is no longer needed, it should be deactivated using the same id:
-  </p>
-  <pre><code>
-  UICallBack.deactivate( "my unique id" );
-  </code></pre>
-  <p>
-    When different instances require the UI callback at the same time, only one standing request
-    will be opened by the client.
-    The UI callback system is deactivated only when the last instance has called deactivate.
+    One UI session may have any number of instances of ServerPushSession at the same time.
+    The underlying mechanism will be activated once the first ServerPushSession calls <code>start</code>,
+    and deactivated when the last instance has called <code>stop</code>.
   </p>
   <p>
-    More technical details of the UI callback implementation can be found on the
-    <a href="http://wiki.eclipse.org/RAP/UI_Callback" target="blank">UI Callback wiki page</a>.
+    Note that unlike <code>Display.asyncExec()</code>, <code>Display.timerExec()</code>
+    does <em>not</em> require a ServerPushSession, as RAP creates one automatically in this case.
   </p>
-
+  <p>
+    More technical details of the ServerPush implementation can be found on the
+    <a href="http://wiki.eclipse.org/RAP/UI_Callback" target="blank">RAP Wiki</a>.
+  </p>
 </body>
 </html>
