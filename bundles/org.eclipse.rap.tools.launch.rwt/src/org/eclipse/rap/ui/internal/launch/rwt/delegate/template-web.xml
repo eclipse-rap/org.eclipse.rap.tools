@@ -24,6 +24,6 @@
  
   <servlet-mapping>
     <servlet-name>rwtServlet</servlet-name>
-    <url-pattern>/${servletPath}</url-pattern>
+    <url-pattern>${servletPath}</url-pattern>
   </servlet-mapping>
 </web-app>

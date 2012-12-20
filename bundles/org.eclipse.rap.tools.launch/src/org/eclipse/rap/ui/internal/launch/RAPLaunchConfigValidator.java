@@ -34,9 +34,10 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_SERVLET_BUNDLE = 6009;
   public static final int ERR_DATA_LOCATION = 6010;
   public static final int ERR_CONTEXT_PATH = 6011;
+  public static final int ERR_SERVLET_PATH_LEADING_SLASH = 60012;
+  public static final int ERR_SERVLET_PATH_INVALID = 60013;
   public static final int WARN_OSGI_FRAMEWORK = 7002;
   public static final int WARN_WS_WRONG = 7003;
-  public static final int WARN_SERVLET_PATH = 7004;
   private static final String RAP_LAUNCH_CONFIG_TYPE = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
   private static final String EMPTY = ""; //$NON-NLS-1$
   private static final String PARAM_WS = "-ws";//$NON-NLS-1$
@@ -86,15 +87,31 @@ public final class RAPLaunchConfigValidator {
 
   private IStatus validateServletPath() throws CoreException {
     IStatus result = Status.OK_STATUS;
-    String servletPath = config.getServletPath();
-    if( servletPath == null || EMPTY.equals( servletPath ) ) {
-      String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathEmpty;
-      result = createError( msg, ERR_SERVLET_PATH, null );
-    } else if( !servletPath.startsWith( "/" ) ) {
-      String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathLeadingSlash;
-      result = createWarning( msg, WARN_SERVLET_PATH, null );
+    if( config.getOpenBrowser() ) {
+      String servletPath = config.getServletPath();
+      if( servletPath == null || EMPTY.equals( servletPath ) ) {
+        String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathEmpty;
+        result = createError( msg, ERR_SERVLET_PATH, null );
+      } else if( !servletPath.startsWith( "/" ) ) {
+        String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathLeadingSlash;
+        result = createError( msg, ERR_SERVLET_PATH_LEADING_SLASH, null );
+      } else if( containsChars( servletPath.substring( 1 ), new char[] { '*', '/', '\\' } ) ) {
+        String msg = LaunchMessages.RAPLaunchConfigValidator_ServletPathInvalid;
+        result = createError( msg, ERR_SERVLET_PATH_INVALID, null );
+      }
     }
     return result;
+  }
+
+  private static boolean containsChars( String string, char[] chars ) {
+    boolean hasInvalidChar = false;
+    String pattern = new String( chars );
+    for( int i = 0; !hasInvalidChar && i < string.length(); i++ ) {
+      if( pattern.indexOf( string.charAt( i ) ) != -1 ) {
+        hasInvalidChar = true;
+      }
+    }
+    return hasInvalidChar;
   }
 
   private IStatus validateContextPath() throws CoreException {

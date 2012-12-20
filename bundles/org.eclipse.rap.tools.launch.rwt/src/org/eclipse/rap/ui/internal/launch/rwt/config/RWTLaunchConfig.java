@@ -56,7 +56,7 @@ public final class RWTLaunchConfig {
   private static final String DEFAULT_VM_ARGUMENTS = ""; //$NON-NLS-1$
   private static final String DEFAULT_WEB_XML_LOCATION = ""; //$NON-NLS-1$
   private static final String DEFAULT_WEB_APP_LOCATION = ""; //$NON-NLS-1$
-  private static final String DEFAULT_SERVLET_PATH = "rap"; //$NON-NLS-1$
+  private static final String DEFAULT_SERVLET_PATH = "/rap"; //$NON-NLS-1$
   private static final String DEFAULT_WORKING_DIRECTORY = null;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
   private static final int DEFAULT_PORT = 8080;

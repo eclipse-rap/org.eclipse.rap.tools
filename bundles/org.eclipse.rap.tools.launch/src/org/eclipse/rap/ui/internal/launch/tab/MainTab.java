@@ -283,8 +283,8 @@ public final class MainTab extends AbstractLauncherTab {
     Composite composite = new Composite( parent, SWT.NONE );
     composite.setLayoutData( fillHorizontal.create() );
     composite.setLayout( new GridLayout( 2, false ) );
-    Label lblServletName = new Label( composite, SWT.NONE );
-    lblServletName.setText( LaunchMessages.MainTab_ServletPath );
+    Label lblServletPath = new Label( composite, SWT.NONE );
+    lblServletPath.setText( LaunchMessages.MainTab_ServletPath );
     servletPathTextField = new Text( composite, SWT.BORDER );
     servletPathTextField.addModifyListener( modifyListener );
     GridDataFactory.fillDefaults().grab( true, false ).applyTo( servletPathTextField );

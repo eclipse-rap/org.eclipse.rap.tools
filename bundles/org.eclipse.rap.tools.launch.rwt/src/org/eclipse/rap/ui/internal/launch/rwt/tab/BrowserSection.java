@@ -11,13 +11,13 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.rap.ui.internal.launch.rwt.config.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
@@ -27,13 +27,17 @@ public class BrowserSection extends RWTLaunchTab {
   private static final String BROWSER_PREFERENCE_PAGE
     = "org.eclipse.ui.browser.preferencePage"; //$NON-NLS-1$
 
-  private static final int MARGIN = 17;
-
+  private final GridDataFactory fillHorizontal;
   private Button cbOpenBrowser;
   private Button rbInternalBrowser;
   private Button rbExternalBrowser;
   private Label lblServletPath;
   private Text txtServletPath;
+
+  public BrowserSection() {
+    GridData gridData = new GridData( SWT.FILL, SWT.CENTER, true, false );
+    fillHorizontal = GridDataFactory.createFrom( gridData );
+  }
 
   public String getName() {
     return "Browser";
@@ -41,33 +45,61 @@ public class BrowserSection extends RWTLaunchTab {
 
   public void createControl( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
-    group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
-    group.setText( "Browser" );
-    group.setLayout( new GridLayout( 2, false ) );
-    cbOpenBrowser = createCheckButton( group, "Open application in" );
-    cbOpenBrowser.setLayoutData( newGridData( SWT.BEGINNING, true ) );
-    cbOpenBrowser.addSelectionListener( new OpenBrowserSelectionListener() );
-    Link lnkBrowserPrefs = new Link( group, SWT.NONE );
-    lnkBrowserPrefs.setText( "<a>Configure browsers...</a>" );
-    lnkBrowserPrefs.setLayoutData( newGridData( SWT.END, false ) );
-    lnkBrowserPrefs.addSelectionListener( new BrowserPrefsSelectionListener() );
-    rbInternalBrowser = createRadioButton( group, "Internal browser" );
-    rbInternalBrowser.setLayoutData( newGridData( MARGIN, SWT.BEGINNING, false, 2 ) );
-    rbInternalBrowser.addSelectionListener( new BrowserSelectionListener() );
-    rbExternalBrowser = createRadioButton( group, "External browser" );
-    rbExternalBrowser.setLayoutData( newGridData( MARGIN, SWT.BEGINNING, false, 2 ) );
-    rbExternalBrowser.addSelectionListener( new BrowserSelectionListener() );
-    Composite cmpServletPath = new Composite( group, SWT.NONE );
-    cmpServletPath.setLayout( new GridLayout( 2, false ) );
-    cmpServletPath.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
-    lblServletPath = createLabel( cmpServletPath, "Servlet path" );
-    lblServletPath.setLayoutData( newGridData( SWT.BEGINNING, false ) );
-    txtServletPath = new Text( cmpServletPath, SWT.BORDER );
-    txtServletPath.setLayoutData( newGridData( SWT.FILL, true ) );
-    txtServletPath.addModifyListener( new TextModifyListener() );
+    group.setLayoutData( fillHorizontal.create() );
+    group.setText( "Open in Browser" );
+    group.setLayout( new GridLayout() );
+    createBrowserActivationPart( group );
+    createServletPathPart( group );
     setControl( group );
     HelpContextIds.assign( getControl(), HelpContextIds.MAIN_TAB );
     updateEnablement();
+  }
+
+  private void createBrowserActivationPart( Composite parent ) {
+    Composite composite = new Composite( parent, SWT.NONE );
+    composite.setLayoutData( fillHorizontal.span( 2, 1 ).create() );
+    GridLayout layout = new GridLayout( 2, false );
+    layout.horizontalSpacing = 10;
+    layout.verticalSpacing = 0;
+    composite.setLayout( layout );
+    cbOpenBrowser = new Button( composite, SWT.CHECK );
+    cbOpenBrowser.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
+    cbOpenBrowser.setText( "&Open application in" );
+    cbOpenBrowser.addSelectionListener( new OpenBrowserSelectionListener() );
+    Link browserPrefsLink = createBrowserPrefsLink( composite );
+    browserPrefsLink.setLayoutData( new GridData( SWT.END, SWT.CENTER, false, false ) );
+    Composite modePart = createBrowserModePart( composite );
+    modePart.setLayoutData( GridDataFactory.fillDefaults().span( 2, 1 ).indent( 17, 0 ).create() );
+  }
+
+  private Link createBrowserPrefsLink( Composite composite ) {
+    Link link = new Link( composite, SWT.NONE );
+    link.setText( "<a>Configure Browsers...</a>" );
+    link.addSelectionListener( new BrowserPrefsSelectionListener() );
+    return link;
+  }
+
+  private Composite createBrowserModePart( Composite parent ) {
+    Composite composite = new Composite( parent, SWT.NONE );
+    composite.setLayout( new RowLayout( SWT.HORIZONTAL ) );
+    rbInternalBrowser = new Button( composite, SWT.RADIO );
+    rbInternalBrowser.setText( "Internal web browser" );
+    rbInternalBrowser.addSelectionListener( new BrowserSelectionListener() );
+    rbExternalBrowser = new Button( composite, SWT.RADIO );
+    rbExternalBrowser.setText( "E&xternal web browser" );
+    rbExternalBrowser.addSelectionListener( new BrowserSelectionListener() );
+    return composite;
+  }
+
+  private void createServletPathPart( Composite parent ) {
+    Composite composite = new Composite( parent, SWT.NONE );
+    composite.setLayoutData( fillHorizontal.create() );
+    composite.setLayout( new GridLayout( 2, false ) );
+    lblServletPath = new Label( composite, SWT.NONE );
+    lblServletPath.setText( "&Servlet path:" );
+    txtServletPath = new Text( composite, SWT.BORDER );
+    txtServletPath.addModifyListener( new TextModifyListener() );
+    GridDataFactory.fillDefaults().grab( true, false ).applyTo( txtServletPath );
   }
 
   public void initializeFrom( RWTLaunchConfig config ) {
@@ -102,21 +134,6 @@ public class BrowserSection extends RWTLaunchTab {
       = PreferencesUtil.createPreferenceDialogOn( getShell(), BROWSER_PREFERENCE_PAGE, null, null );
     dialog.open();
     dialog.close();
-  }
-
-  private static GridData newGridData( int horizontalAlign, boolean grapHorizontal ) {
-    return newGridData( 0, horizontalAlign, grapHorizontal, 1 );
-  }
-
-  private static GridData newGridData( int indent,
-                                       int horizontalAlign,
-                                       boolean grapHorizontal,
-                                       int span )
-  {
-    GridData result = new GridData( horizontalAlign, SWT.CENTER, grapHorizontal, false );
-    result.horizontalIndent = indent;
-    result.horizontalSpan = span;
-    return result;
   }
 
   private class OpenBrowserSelectionListener extends SelectionAdapter {

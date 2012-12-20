@@ -24,15 +24,15 @@ class RWTLaunch {
 
   private static final String PREFIX = RWTLaunch.class.getName();
   private static final String PORT = PREFIX + "#port"; //$NON-NLS-1$
-  
+
   private final ILaunch launch;
   private final RWTLaunchConfig config;
-  
+
   RWTLaunch( ILaunch launch ) {
     this.launch = launch;
     this.config = new RWTLaunchConfig( launch.getLaunchConfiguration() );
   }
-  
+
   RWTLaunchConfig getLaunchConfig() {
     return config;
   }
@@ -49,13 +49,13 @@ class RWTLaunch {
     }
     return result;
   }
-  
+
   String computeBrowserUrl() {
     String port = String.valueOf( getPort() );
-    String servletName = config.getServletPath();
-    return MessageFormat.format( "http://127.0.0.1:{0}/{1}", port, servletName ); //$NON-NLS-1$
+    String servletPath = config.getServletPath();
+    return MessageFormat.format( "http://127.0.0.1:{0}{1}", port, servletPath ); //$NON-NLS-1$
   }
-  
+
   void cleanUp() {
     IOUtil.delete( getBasePath() );
   }
@@ -71,7 +71,7 @@ class RWTLaunch {
   File getWebXmlPath() {
     return new File( getWebAppPath(), "WEB-INF/web.xml" ); //$NON-NLS-1$
   }
-  
+
   private File getPath( String suffix ) {
     File basePath = getBasePath();
     return new File( basePath, suffix );

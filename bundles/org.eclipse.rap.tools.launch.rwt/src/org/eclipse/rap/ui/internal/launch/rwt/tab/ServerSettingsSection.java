@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
@@ -18,24 +19,24 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
 
-public class RuntimeSettingsSection extends RWTLaunchTab {
+public class ServerSettingsSection extends RWTLaunchTab {
 
   private Button cbManualPort;
   private Spinner spnPort;
 
   public String getName() {
-    return "Runtime Settings";
+    return "Server Settings";
   }
 
   public void createControl( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
-    group.setText( "Runtime Settings" );
+    group.setText( "Server Settings" );
     group.setLayout( new GridLayout( 2, false ) );
-    cbManualPort = createCheckButton( group, "Manual port configuration" );
+    cbManualPort = createCheckButton( group, "Use a fixed port:" );
     cbManualPort.addSelectionListener( new ManualPortSelectionListener() );
     spnPort = new Spinner( group, SWT.BORDER );
-    spnPort.setLayoutData( new GridData( 60, SWT.DEFAULT ) );
+    spnPort.setLayoutData( new GridData( SWT.FILL, SWT.DEFAULT, true, false ) );
     spnPort.setMinimum( RWTLaunchConfig.MIN_PORT_NUMBER );
     spnPort.setMaximum( RWTLaunchConfig.MAX_PORT_NUMBER );
     spnPort.addModifyListener( new TextModifyListener() );
@@ -58,7 +59,7 @@ public class RuntimeSettingsSection extends RWTLaunchTab {
   private void updateEnablement() {
     spnPort.setEnabled( cbManualPort.getSelection() );
   }
-  
+
   private class ManualPortSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
       updateEnablement();

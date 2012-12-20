@@ -37,13 +37,13 @@ class BrowserOpener {
     this.launchConfig = new RWTLaunchConfig( launch.getLaunchConfiguration() );
     this.url = toURL( computeBrowserUrl() );
   }
-  
+
   void scheduleOpen() {
     DebugPlugin.getDefault().addDebugEventListener( new IDebugEventSetListener() {
       public void handleDebugEvents( DebugEvent[] events ) {
         if( DebugUtil.containsCreateEventFor( events, launch ) ) {
           DebugPlugin.getDefault().removeDebugEventListener( this );
-          // Start a separate job to wait for the servlet engine and launch  the browser. 
+          // Start a separate job to wait for the servlet engine and launch  the browser.
           // Otherwise we would block the application on whose service we are waiting for
           scheduleOpenJob();
         } else if( DebugUtil.containsTerminateEventFor( events, launch ) ) {
@@ -55,18 +55,18 @@ class BrowserOpener {
 
   String computeBrowserUrl() {
     int port = new RWTLaunch( launch ).getPort();
-    String servletName = launchConfig.getServletPath();
+    String servletPath = launchConfig.getServletPath();
     String result;
     if( port == -1 ) {
       String pattern = "http://127.0.0.1/{1}"; //$NON-NLS-1$
-      result = MessageFormat.format( pattern, servletName ); 
+      result = MessageFormat.format( pattern, servletPath );
     } else {
-      String pattern = "http://127.0.0.1:{0}/{1}"; //$NON-NLS-1$
-      result = MessageFormat.format( pattern, String.valueOf( port ), servletName );
+      String pattern = "http://127.0.0.1:{0}{1}"; //$NON-NLS-1$
+      result = MessageFormat.format( pattern, String.valueOf( port ), servletPath );
     }
     return result;
   }
-  
+
   private void scheduleOpenJob() {
     final String taskName = "Starting client application";
     Job job = new Job( taskName ) {
@@ -137,13 +137,13 @@ class BrowserOpener {
     try {
       long start = System.currentTimeMillis();
       boolean isReady = false;
-      while(    System.currentTimeMillis() - start <= CONNECT_TIMEOUT 
+      while(    System.currentTimeMillis() - start <= CONNECT_TIMEOUT
              && !isReady
              && !Thread.interrupted()
              && !monitor.isCanceled()
-             && !launch.isTerminated() ) 
+             && !launch.isTerminated() )
       {
-        isReady = canConnectToUrl(); 
+        isReady = canConnectToUrl();
         if( !isReady ) {
           // http service not yet started - wait a bit
           try {
@@ -168,7 +168,7 @@ class BrowserOpener {
     }
     return result;
   }
-  
+
   private static void handleCoreException( CoreException coreException ) {
     IStatus status = coreException.getStatus();
     StatusManager.getManager().handle( status, StatusManager.SHOW );

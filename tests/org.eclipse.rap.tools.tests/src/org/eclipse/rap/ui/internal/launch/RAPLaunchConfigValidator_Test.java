@@ -16,6 +16,7 @@ package org.eclipse.rap.ui.internal.launch;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IProject;
@@ -61,6 +62,7 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   }
 
   public void testValidateServletPath() throws Exception {
+    rapConfig.setOpenBrowser( true );
     rapConfig.setServletPath( "/foo" );
 
     IStatus[] states = validator.validate();
@@ -69,6 +71,7 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   }
 
   public void testValidateServletPathEmpty() {
+    rapConfig.setOpenBrowser( true );
     // servlet name has a default value, clear this
     rapConfig.setServletPath( "" );
 
@@ -77,12 +80,31 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_PATH ) );
   }
 
+  public void testValidateServletPathInvalidCharacters() {
+    rapConfig.setOpenBrowser( true );
+    rapConfig.setServletPath( "/rap*" );
+
+    IStatus[] states = validator.validate();
+
+    assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_PATH_INVALID ) );
+  }
+
   public void testValidateServletPathLeadingSlash() {
+    rapConfig.setOpenBrowser( true );
     rapConfig.setServletPath( "rap" );
 
     IStatus[] states = validator.validate();
 
-    assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.WARN_SERVLET_PATH ) );
+    assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_PATH_LEADING_SLASH ) );
+  }
+
+  public void testValidateServletPathLeadingSlashWithoutOpenBrowser() {
+    rapConfig.setOpenBrowser( false );
+    rapConfig.setServletPath( "rap" );
+
+    IStatus[] states = validator.validate();
+
+    assertTrue( isOk( states ) );
   }
 
   public void testValidateWsRAP() throws Exception {

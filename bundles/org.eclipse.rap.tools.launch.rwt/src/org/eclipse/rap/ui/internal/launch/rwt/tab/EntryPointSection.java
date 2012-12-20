@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
@@ -25,29 +26,29 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 
 
 public class EntryPointSection extends RWTLaunchTab {
-  
+
   private static final int MARGIN = 20;
-  
+
   private Button rbEntryPoint;
   private SearchText stEntryPoint;
   private Button rbWebXml;
   private SearchText stWebXmlLocation;
-  
+
   public String getName() {
     return "Application Entry Point";
   }
-  
+
   public void createControl( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setText( "Application entry point" );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     group.setLayout( new GridLayout( 3, false ) );
     rbEntryPoint = createLaunchTargetRadioButton( group, "Run entry point class" );
-    stEntryPoint = new SearchText( group, "Class name", "Search...", MARGIN );
+    stEntryPoint = new SearchText( group, "Class name:", "Search...", MARGIN );
     stEntryPoint.addModifyListener( new TextModifyListener() );
     stEntryPoint.addSelectionListener( new EntryPointClassSelectionListener() );
     rbWebXml = createLaunchTargetRadioButton( group, "Run from web.xml" );
-    stWebXmlLocation = new SearchText( group, "Location", "Search...", MARGIN );
+    stWebXmlLocation = new SearchText( group, "Location:", "Search...", MARGIN );
     stWebXmlLocation.addModifyListener( new TextModifyListener() );
     stWebXmlLocation.addSelectionListener( new WebXmlSelectionListener() );
     Dialog.applyDialogFont( group );
@@ -63,7 +64,7 @@ public class EntryPointSection extends RWTLaunchTab {
     stEntryPoint.setText( launchConfig.getEntryPoint() );
     updateEnablement();
   }
-  
+
   public void performApply( RWTLaunchConfig launchConfig ) {
     if( rbEntryPoint.getSelection() ) {
       launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
@@ -78,7 +79,7 @@ public class EntryPointSection extends RWTLaunchTab {
     stEntryPoint.setEnabled( rbEntryPoint.getSelection() );
     stWebXmlLocation.setEnabled( rbWebXml.getSelection() );
   }
-  
+
   private void selectWebXml() {
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
     int file = IResource.FILE;
@@ -117,14 +118,14 @@ public class EntryPointSection extends RWTLaunchTab {
       updateLaunchConfigurationDialog();
     }
   }
-  
+
   private class EntryPointClassSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
       selectEntryPointClass();
       updateLaunchConfigurationDialog();
     }
   }
-  
+
   private class WebXmlSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
       selectWebXml();
