@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-  Copyright (c) 2010 EclipseSource.
+  Copyright (c) 2010, 2012 EclipseSource.
   All rights reserved. This program and the accompanying materials
   are made available under the terms of the Eclipse Public License v1.0
   which accompanies this distribution, and is available at
@@ -22,10 +22,10 @@
 
   <xsl:template match="/">
     <toc label="RWT Theming Reference">
-      <topic label="Widgets" href="help/html/reference/theming/index.html">
+      <topic label="Widgets" href="guide/reference/theming/index.html">
         <xsl:apply-templates select="index/file[ element ]" />
       </topic>
-      <topic label="Properties" href="help/html/reference/theming/Properties.html"/>
+      <topic label="Properties" href="guide/reference/theming/Properties.html"/>
     </toc>  
   </xsl:template>
 
@@ -36,7 +36,7 @@
         <xsl:value-of select="element[ 1 ]/@name" />
       </xsl:attribute>  
       <xsl:attribute name="href">
-        <xsl:value-of select="concat( 'help/html/reference/theming/', $prefix, '.html' )" />
+        <xsl:value-of select="concat( 'guide/reference/theming/', $prefix, '.html' )" />
       </xsl:attribute>
       <xsl:apply-templates select="element[ position() &gt; 1 ][ @name != '*' ]">
         <xsl:with-param name="prefix" select="$prefix" />
@@ -51,7 +51,7 @@
         <xsl:value-of select="@name" />
       </xsl:attribute>
       <xsl:attribute name="href">
-        <xsl:value-of select="concat( 'help/html/reference/theming/', $prefix, '.html#', @name )" />
+        <xsl:value-of select="concat( 'guide/reference/theming/', $prefix, '.html#', @name )" />
       </xsl:attribute>
     </topic>
   </xsl:template>

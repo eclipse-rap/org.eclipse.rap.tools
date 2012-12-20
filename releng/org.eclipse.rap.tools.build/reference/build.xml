@@ -3,16 +3,16 @@
   <target name="default"
       depends="buildExtensionPointReference,buildApiReference,buildThemingReference">
   </target>
-	
+
   <target name="buildExtensionPointReference">
     <pde.convertSchemaToHTML
         manifest="${runtimeSourceDir}/bundles/org.eclipse.rap.ui/plugin.xml"
-        destination="${toolsSourceDir}/bundles/org.eclipse.rap.doc/help/html/reference/extension-points" />
+        destination="${toolsSourceDir}/bundles/org.eclipse.rap.doc/guide/reference/extension-points" />
   </target>
 
   <target name="buildApiReference">
     <javadoc
-        destdir="${toolsSourceDir}/bundles/org.eclipse.rap.doc/help/html/reference/api"
+        destdir="${toolsSourceDir}/bundles/org.eclipse.rap.doc/guide/reference/api"
         encoding="UTF-8"
         charset="UTF-8"
         author="false"
@@ -50,7 +50,7 @@
       <property name="src.dir"
           value="${runtimeSourceDir}/bundles/org.eclipse.rap.rwt/" />
       <property name="dest.dir"
-          value="${toolsSourceDir}/bundles/org.eclipse.rap.doc/help/html/reference/theming" />
+          value="${toolsSourceDir}/bundles/org.eclipse.rap.doc/guide/reference/theming" />
     </ant>
   </target>
 
