@@ -155,14 +155,13 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       list.add( VMARG_SESSION_TIMEOUT + RAPLaunchConfig.MIN_SESSION_TIMEOUT );
     }
     if( config.getUseManualContextPath() ) {
-      String contextPath1 = config.getContextPath();
-      if( !contextPath1.startsWith( URLBuilder.SLASH ) ) {
-        contextPath1 = URLBuilder.SLASH + contextPath1;
+      String contextPath = config.getContextPath();
+      if( !contextPath.startsWith( URLBuilder.SLASH ) ) {
+        contextPath = URLBuilder.SLASH + contextPath;
       }
-      if( contextPath1.endsWith( URLBuilder.SLASH ) ) {
-        contextPath1 = contextPath1.substring( 0, contextPath1.length() - 1 );
+      if( contextPath.endsWith( URLBuilder.SLASH ) ) {
+        contextPath = contextPath.substring( 0, contextPath.length() - 1 );
       }
-      String contextPath = contextPath1;
       list.add( VMARG_CONTEXT_PATH + contextPath );
     }
     String[] result = new String[ list.size() ];
