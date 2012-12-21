@@ -89,7 +89,7 @@ public final class RAPLaunchConfig {
   private static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
   private static final int DEFAULT_PORT = 10080;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
-  private static final String DEFAULT_CONTEXTPATH = "";
+  private static final String DEFAULT_CONTEXTPATH = "/";
   private static final boolean DEFAULT_USE_MANUAL_CONTEXTPATH = false;
   private static final int DEFAULT_SESSION_TIMEOUT = MIN_SESSION_TIMEOUT;
   private static final boolean DEFAULT_USE_SESSION_TIMEOUT = false;

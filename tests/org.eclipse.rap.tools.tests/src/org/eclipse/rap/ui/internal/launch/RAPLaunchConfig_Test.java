@@ -39,7 +39,7 @@ public class RAPLaunchConfig_Test extends TestCase {
     assertEquals( 0, rapConfig.getSessionTimeout() );
     assertFalse( rapConfig.getUseSessionTimeout() );
     assertFalse( rapConfig.getUseManualContextPath() );
-    assertTrue( "".equals( rapConfig.getContextPath() ) );
+    assertTrue( "/".equals( rapConfig.getContextPath() ) );
   }
 
   public void testServletName() throws CoreException {

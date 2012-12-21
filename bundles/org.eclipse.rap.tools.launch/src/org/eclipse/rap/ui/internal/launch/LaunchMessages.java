@@ -28,6 +28,7 @@ public class LaunchMessages extends NLS {
   public static String RAPLaunchConfigValidator_ServletPathEmpty;
   public static String RAPLaunchConfigValidator_ServletPathLeadingSlash;
   public static String RAPLaunchConfigValidator_ServletPathInvalid;
+  public static String RAPLaunchConfigValidator_ContextPathLeadingSlash;
   public static String RAPLaunchConfigValidator_InvalidContextPath;
   public static String RAPLaunchConfigValidator_TimeoutInvalid;
   public static String RAPLaunchConfigValidator_WsEmpty;

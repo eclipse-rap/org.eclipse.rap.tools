@@ -36,6 +36,7 @@ public final class RAPLaunchConfigValidator {
   public static final int ERR_CONTEXT_PATH = 6011;
   public static final int ERR_SERVLET_PATH_LEADING_SLASH = 60012;
   public static final int ERR_SERVLET_PATH_INVALID = 60013;
+  public static final int ERR_CONTEXT_PATH_LEADING_SLASH = 60014;
   public static final int WARN_OSGI_FRAMEWORK = 7002;
   public static final int WARN_WS_WRONG = 7003;
   private static final String RAP_LAUNCH_CONFIG_TYPE = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
@@ -116,11 +117,12 @@ public final class RAPLaunchConfigValidator {
 
   private IStatus validateContextPath() throws CoreException {
     IStatus result = Status.OK_STATUS;
-    boolean useManualContextPath = config.getUseManualContextPath();
-    if( useManualContextPath ) {
+    if( config.getUseManualContextPath() ) {
       String contextPath = config.getContextPath();
-      boolean isValid = isValidContextPath( contextPath );
-      if( !isValid ) {
+      if( !contextPath.startsWith( "/" ) ) {
+        String msg = LaunchMessages.RAPLaunchConfigValidator_ContextPathLeadingSlash;
+        result = createError( msg, ERR_CONTEXT_PATH_LEADING_SLASH, null );
+      } else if( !isValidContextPath( contextPath ) ) {
         String unformatedMsg = LaunchMessages.RAPLaunchConfigValidator_InvalidContextPath;
         String msg = MessageFormat.format( unformatedMsg, new Object[] { contextPath } );
         result = createError( msg, ERR_CONTEXT_PATH, null );

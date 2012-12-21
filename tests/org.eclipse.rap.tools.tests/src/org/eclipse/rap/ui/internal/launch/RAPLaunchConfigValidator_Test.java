@@ -165,8 +165,17 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
+  public void testContextPath_MissingLeadingSlash() {
+    rapConfig.setContextPath( "noleadingslash" );
+    rapConfig.setUseManualContextPath( true );
+
+    IStatus[] states = validator.validate();
+
+    assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_CONTEXT_PATH_LEADING_SLASH ) );
+  }
+
   public void testInvalidContextPath() {
-    rapConfig.setContextPath( "invalid\\character" );
+    rapConfig.setContextPath( "/invalid\\character" );
     rapConfig.setUseManualContextPath( true );
 
     IStatus[] states = validator.validate();
@@ -175,7 +184,7 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   }
 
   public void testContextPathWithSpaces() {
-    rapConfig.setContextPath( "contains space" );
+    rapConfig.setContextPath( "/contains space" );
     rapConfig.setUseManualContextPath( true );
 
     IStatus[] states = validator.validate();
@@ -184,7 +193,7 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   }
 
   public void testContextPathWithDoubleSlash() {
-    rapConfig.setContextPath( "double//slash" );
+    rapConfig.setContextPath( "/double//slash" );
     rapConfig.setUseManualContextPath( true );
 
     IStatus[] states = validator.validate();
