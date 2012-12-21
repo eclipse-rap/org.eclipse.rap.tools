@@ -70,8 +70,7 @@ class WebXmlProvider {
     templateParser.registerVariable( "webAppName", config.getName() ); //$NON-NLS-1$
     templateParser.registerVariable( "entryPoint", config.getEntryPoint() ); //$NON-NLS-1$
     templateParser.registerVariable( "servletPath", config.getServletPath() ); //$NON-NLS-1$
-    templateParser.registerVariable( "sessionTimeout",
-                                     String.valueOf( config.getSessionTimeout() ) ); //$NON-NLS-1$
+    templateParser.registerVariable( "sessionTimeout", getSessionTimeout() ); //$NON-NLS-1$
     return templateParser.parse();
   }
 
@@ -91,4 +90,13 @@ class WebXmlProvider {
       throw new RuntimeException( uee );
     }
   }
+
+  private String getSessionTimeout() {
+    String result = "0";
+    if( config.getUseSessionTimeout() ) {
+      result = String.valueOf( config.getSessionTimeout() );
+    }
+    return result;
+  }
+
 }
