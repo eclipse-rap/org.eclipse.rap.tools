@@ -39,6 +39,10 @@ public class RWTLaunchConfig_Test extends TestCase {
     assertEquals( "", rwtConfig.getVMArguments() );
     assertFalse( rwtConfig.getUseManualPort() );
     assertEquals( 8080, rwtConfig.getPort() );
+    assertFalse( rwtConfig.getUseManualContextPath() );
+    assertEquals( "/", rwtConfig.getContextPath() );
+    assertFalse( rwtConfig.getUseSessionTimeout() );
+    assertEquals( 0, rwtConfig.getSessionTimeout() );
     assertTrue( rwtConfig.getOpenBrowser() );
     assertSame( BrowserMode.INTERNAL, rwtConfig.getBrowserMode() );
   }
@@ -110,14 +114,30 @@ public class RWTLaunchConfig_Test extends TestCase {
   }
 
   public void testServletPath() {
-    String servletName = "servletPath";
-    rwtConfig.setServletPath( servletName );
-    assertEquals( servletName, rwtConfig.getServletPath() );
+    String servletPath = "/servletPath";
+    rwtConfig.setServletPath( servletPath );
+    assertEquals( servletPath, rwtConfig.getServletPath() );
   }
 
   public void testServletPathWithNullArgument() {
     try {
       rwtConfig.setServletPath( null );
+      fail();
+    } catch( NullPointerException expected ) {
+    }
+  }
+
+  public void testContextPath() {
+    String contextPath = "/contextPath";
+
+    rwtConfig.setContextPath( contextPath );
+
+    assertEquals( contextPath, rwtConfig.getContextPath() );
+  }
+
+  public void testContextPathWithNullArgument() {
+    try {
+      rwtConfig.setContextPath( null );
       fail();
     } catch( NullPointerException expected ) {
     }
@@ -159,6 +179,12 @@ public class RWTLaunchConfig_Test extends TestCase {
   public void testPort() {
     rwtConfig.setPort( 1234 );
     assertEquals( 1234, rwtConfig.getPort() );
+  }
+
+  public void testSessionTimeout() {
+    rwtConfig.setSessionTimeout( 1234 );
+
+    assertEquals( 1234, rwtConfig.getSessionTimeout() );
   }
 
   public void testOpenBrowser() {

@@ -23,6 +23,8 @@ public final class RWTLaunchConfig {
 
   public static final int MIN_PORT_NUMBER = 0;
   public static final int MAX_PORT_NUMBER = 65535;
+  public static final int MIN_SESSION_TIMEOUT = 0;
+  public static final int MAX_SESSION_TIMEOUT = Integer.MAX_VALUE;
 
   public static enum LaunchTarget {
     ENTRY_POINT,
@@ -46,6 +48,10 @@ public final class RWTLaunchConfig {
   private static final String SERVLET_PATH = PREFIX + "servletPath"; //$NON-NLS-1$
   private static final String USE_MANUAL_PORT = PREFIX + "useManualPort"; //$NON-NLS-1$
   private static final String PORT = PREFIX + "port"; //$NON-NLS-1$
+  public static final String USE_MANUAL_CONTEXTPATH = PREFIX + "useManualContextPath"; //$NON-NLS-1$
+  public static final String CONTEXTPATH = PREFIX + "contextpath"; //$NON-NLS-1$
+  public static final String USE_SESSION_TIMEOUT = PREFIX + "useSessionTimeout"; //$NON-NLS-1$
+  public static final String SESSION_TIMEOUT = PREFIX + "sessionTimeout"; //$NON-NLS-1$
   private static final String OPEN_BROWSER = PREFIX + "openBrowser"; //$NON-NLS-1$
   private static final String BROWSER_MODE = PREFIX + "browserMode"; //$NON-NLS-1$
 
@@ -60,6 +66,10 @@ public final class RWTLaunchConfig {
   private static final String DEFAULT_WORKING_DIRECTORY = null;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
   private static final int DEFAULT_PORT = 8080;
+  private static final boolean DEFAULT_USE_MANUAL_CONTEXTPATH = false;
+  private static final String DEFAULT_CONTEXTPATH = "/";
+  private static final boolean DEFAULT_USE_SESSION_TIMEOUT = false;
+  private static final int DEFAULT_SESSION_TIMEOUT = MIN_SESSION_TIMEOUT;
   private static final boolean DEFAULT_OPEN_BROWSER = true;
   private static final String DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL.toString();
 
@@ -80,6 +90,10 @@ public final class RWTLaunchConfig {
     config.setAttribute( WORKING_DIRECTORY, DEFAULT_WORKING_DIRECTORY );
     config.setAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
     config.setAttribute( PORT, DEFAULT_PORT );
+    config.setAttribute( USE_MANUAL_CONTEXTPATH, DEFAULT_USE_MANUAL_CONTEXTPATH );
+    config.setAttribute( CONTEXTPATH, DEFAULT_CONTEXTPATH );
+    config.setAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
+    config.setAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
     config.setAttribute( OPEN_BROWSER, DEFAULT_OPEN_BROWSER );
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE );
   }
@@ -179,9 +193,6 @@ public final class RWTLaunchConfig {
     workingCopy.setAttribute( ENTRY_POINT, entryPoint );
   }
 
-  /////////////////
-  // Helping method
-
   public boolean getUseManualPort() {
     return getAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
   }
@@ -198,6 +209,45 @@ public final class RWTLaunchConfig {
   public void setPort( int port ) {
     checkWorkingCopy();
     workingCopy.setAttribute( PORT, port );
+  }
+
+  public boolean getUseManualContextPath() {
+    return getAttribute( USE_MANUAL_CONTEXTPATH, DEFAULT_USE_MANUAL_CONTEXTPATH );
+  }
+
+  public void setUseManualContextPath( boolean useManualContextPath ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( USE_MANUAL_CONTEXTPATH, useManualContextPath );
+  }
+
+  public String getContextPath() {
+    return getAttribute( CONTEXTPATH, DEFAULT_CONTEXTPATH );
+  }
+
+  public void setContextPath( String contextPath ) {
+    if( contextPath == null ) {
+      throw new NullPointerException( "contextPath" ); //$NON-NLS-1$
+    }
+    checkWorkingCopy();
+    workingCopy.setAttribute( CONTEXTPATH, contextPath );
+  }
+
+  public boolean getUseSessionTimeout() {
+    return getAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
+  }
+
+  public void setUseSessionTimeout( final boolean useSessionTimeout  ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( USE_SESSION_TIMEOUT, useSessionTimeout );
+  }
+
+  public int getSessionTimeout() {
+    return getAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
+  }
+
+  public void setSessionTimeout( final int timeout ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( SESSION_TIMEOUT, timeout );
   }
 
   public boolean getOpenBrowser() {
@@ -219,6 +269,9 @@ public final class RWTLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( BROWSER_MODE, browserMode.toString() );
   }
+
+  /////////////////
+  // Helping method
 
   private static void checkNotNull( Object argument, String argumentName ) {
     if( argument == null ) {

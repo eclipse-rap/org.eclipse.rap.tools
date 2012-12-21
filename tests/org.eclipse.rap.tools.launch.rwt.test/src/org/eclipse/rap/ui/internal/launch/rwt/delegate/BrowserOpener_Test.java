@@ -45,6 +45,31 @@ public class BrowserOpener_Test extends TestCase {
     assertEquals( "http://127.0.0.1:1234/servletpath", url );
   }
 
+  public void testComputeBrowserUrl_WithContextPath() {
+    launchConfig.setServletPath( "/servletpath" );
+    launchConfig.setUseManualContextPath( true );
+    launchConfig.setContextPath( "/contextpath" );
+    setLaunchPort( 1234 );
+    BrowserOpener browserOpener = new BrowserOpener( launch );
+
+    String url = browserOpener.computeBrowserUrl();
+
+    assertEquals( "http://127.0.0.1:1234/contextpath/servletpath", url );
+  }
+
+
+  public void testComputeBrowserUrl_WithContextPathAndTrailingSlash() {
+    launchConfig.setServletPath( "/servletpath" );
+    launchConfig.setUseManualContextPath( true );
+    launchConfig.setContextPath( "/contextpath/" );
+    setLaunchPort( 1234 );
+    BrowserOpener browserOpener = new BrowserOpener( launch );
+
+    String url = browserOpener.computeBrowserUrl();
+
+    assertEquals( "http://127.0.0.1:1234/contextpath/servletpath", url );
+  }
+
   public void testGetBrowserAssignedDifferentIdsForInternalAndExternal() throws Exception {
     launchConfig.setBrowserMode( BrowserMode.EXTERNAL );
     setLaunchPort( 1234 );

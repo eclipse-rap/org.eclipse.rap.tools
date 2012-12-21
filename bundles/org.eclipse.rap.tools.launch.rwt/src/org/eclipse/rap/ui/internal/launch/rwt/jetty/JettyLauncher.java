@@ -14,7 +14,6 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.bio.SocketConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.util.URIUtil;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -31,8 +30,8 @@ public class JettyLauncher {
       server.setConnectors( new Connector[]{ connector } );
 
       WebAppContext webapp = new WebAppContext();
-      webapp.setWar( args[ 1 ] );
-      webapp.setContextPath( URIUtil.SLASH );
+      webapp.setContextPath( args[ 1 ] );
+      webapp.setWar( args[ 2 ] );
       contexts.addHandler(webapp);
 
       server.start();

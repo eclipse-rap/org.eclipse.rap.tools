@@ -11,7 +11,6 @@
 package org.eclipse.rap.ui.internal.launch.rwt.delegate;
 
 import java.io.File;
-import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunch;
@@ -48,12 +47,6 @@ class RWTLaunch {
       result = Integer.valueOf( attribute ).intValue();
     }
     return result;
-  }
-
-  String computeBrowserUrl() {
-    String port = String.valueOf( getPort() );
-    String servletPath = config.getServletPath();
-    return MessageFormat.format( "http://127.0.0.1:{0}{1}", port, servletPath ); //$NON-NLS-1$
   }
 
   void cleanUp() {

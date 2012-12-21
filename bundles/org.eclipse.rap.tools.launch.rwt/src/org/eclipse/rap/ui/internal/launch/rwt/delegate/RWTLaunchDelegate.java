@@ -19,8 +19,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.JavaLaunchDelegate;
 import org.eclipse.jdt.launching.SocketUtil;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
-import org.eclipse.rap.ui.internal.launch.rwt.util.BundleFileLocator;
-import org.eclipse.rap.ui.internal.launch.rwt.util.StringArrays;
+import org.eclipse.rap.ui.internal.launch.rwt.util.*;
 
 
 public class RWTLaunchDelegate extends JavaLaunchDelegate {
@@ -77,8 +76,10 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
   public String getProgramArguments( ILaunchConfiguration configuration ) {
     // don't call super, program arguments are not configurable via the UI
     String port = String.valueOf( launch.getPort() );
+    String contextPath = getContextPath();
     String webAppDirectory = launch.getWebAppPath().getAbsolutePath();
-    return MessageFormat.format( "{0} \"{1}\"", new Object[] { port, webAppDirectory } ); //$NON-NLS-1$
+    Object[] arguments = new Object[] { port, contextPath, webAppDirectory };
+    return MessageFormat.format( "{0} {1} \"{2}\"", arguments ); //$NON-NLS-1$
   }
 
   public String getVMArguments( ILaunchConfiguration configuration ) throws CoreException {
@@ -102,6 +103,15 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
       result = launchConfig.getPort();
     } else {
       result = SocketUtil.findFreePort();
+    }
+    return result;
+  }
+
+  private String getContextPath() {
+    RWTLaunchConfig config = launch.getLaunchConfig();
+    String result = "/";
+    if( config.getUseManualContextPath() && !config.getContextPath().equals( "/" ) ) {
+      result = StringUtil.stripTrailingSlash( config.getContextPath() );
     }
     return result;
   }

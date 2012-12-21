@@ -19,6 +19,7 @@ import org.eclipse.debug.core.*;
 import org.eclipse.rap.ui.internal.launch.rwt.config.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
 import org.eclipse.rap.ui.internal.launch.rwt.util.DebugUtil;
+import org.eclipse.rap.ui.internal.launch.rwt.util.StringUtil;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
@@ -26,6 +27,7 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 class BrowserOpener {
+
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
 
   private final ILaunch launch;
@@ -55,16 +57,25 @@ class BrowserOpener {
 
   String computeBrowserUrl() {
     int port = new RWTLaunch( launch ).getPort();
+    String contextPath = getContextPath();
     String servletPath = launchConfig.getServletPath();
     String result;
     if( port == -1 ) {
-      String pattern = "http://127.0.0.1/{1}"; //$NON-NLS-1$
-      result = MessageFormat.format( pattern, servletPath );
+      String pattern = "http://127.0.0.1{1}{2}"; //$NON-NLS-1$
+      result = MessageFormat.format( pattern, contextPath, servletPath );
     } else {
-      String pattern = "http://127.0.0.1:{0}{1}"; //$NON-NLS-1$
-      result = MessageFormat.format( pattern, String.valueOf( port ), servletPath );
+      String pattern = "http://127.0.0.1:{0}{1}{2}"; //$NON-NLS-1$
+      result = MessageFormat.format( pattern, String.valueOf( port ), contextPath, servletPath );
     }
     return result;
+  }
+
+  private String getContextPath() {
+    String contextPath = "";
+    if( launchConfig.getUseManualContextPath() ) {
+      contextPath = launchConfig.getContextPath();
+    }
+    return StringUtil.stripTrailingSlash( contextPath );
   }
 
   private void scheduleOpenJob() {
