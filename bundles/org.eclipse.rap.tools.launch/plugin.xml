@@ -212,7 +212,7 @@
             class="org.eclipse.rap.ui.internal.launch.PortBusyStatusHandler"
             code="601"
             id="org.eclipse.rap.ui.launch.portBusyStatusHandler"
-            plugin="org.eclipse.rap.ui.launch">
+            plugin="org.eclipse.rap.tools.launch">
       </statusHandler>
    </extension>   
 </plugin>
