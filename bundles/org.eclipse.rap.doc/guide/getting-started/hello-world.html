@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Writing a Hello World with RAP</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -13,9 +13,8 @@
   <h1>Writing a Hello World with RAP</h1>
   <p>
     This document describes how to quickly create and launch a first user interface with RAP.
-    Developing an entire application involves more steps, that depend on the type of
-    <a href = "../advanced/application-setup.html">application setup</a> you choose.
-    These steps are explained in the part on application development.
+    A complete application includes a few more components, depending on your
+    <a href = "../advanced/application-setup.html">application setup</a>.
     If you want to create a Workbench-based application, start with a template instead
     (see <a href = "../examples.html">Examples</a>).
   </p>
@@ -28,11 +27,14 @@
 
   <h2>Create a new project</h2>
   <p>
-    First you need a project for your application.
-    We suggest to create a <em>plug-in project</em> because that's the type of projects used for
-    developing OSGi bundles with PDE.
-    (If you're not writing an OSGi application, you can also create a plain Java Project here.
-     In this case, you have to add rwt to the Java Build Path in the next step).
+    First we need to create a project for your application.
+    It is recommended to use a <em>Plug-in Project</em>,
+    unless you want to write an <a href = "../advanced/rwt-standalone">RAP applications
+    without OSGi<a>. In the latter case, you can also create a plain <em>Java Project</em> here.
+    (If you do so, the project setup will differ slightly from this tutorial. Most notably, you
+    will have to add <code>org.eclipse.rap.rwt</code> to the Java Build Path/"Required Projects"
+    in the next step.)
+  </p><p>
     From the menu, select <em class="UILabel">File &gt; New &gt; Plug-in Project</em>.
     Let's call the plug-in <code>org.example.rap.helloworld</code>.
     In the <em class="UILabel">Target Platform</em> box, choose
@@ -43,63 +45,48 @@
   <p>
     On the second page of the wizard, disable the option
     <em class="UILabel">Generate an activator, …</em>.
-    This would create a bundle activator, but we don't need that now.
+    (This option would create a bundle activator, but we don't need that now.)
+    Click "Finish".
   </p>
   <img src="../images/hello-world/NewProject-2.png" alt="New Project Wizard"/>
 
   <h2>Add a dependency to RWT</h2>
   <p>
-    To display some widgets, we need a dependency to the RAP widget toolkit (RWT), which is RAP's
+    To display widgets, we need a dependency to the RAP widget toolkit (RWT), which is RAP's
     implementation of SWT.
     It is contained in the plug-in <code>org.eclipse.rap.rwt</code>.
-    To add this dependency, open the bundle manifest file <code>META-INF/MANIFEST.MF</code>.
-    In the <em>Plug-in Manifest Editor</em>, go to the <em class="UILabel">Dependencies</em> page.
-    Add <code>org.eclipse.rap.rwt</code> to the list of <em class="UILabel">Required Plug-ins</em>
-    and save.
+    To add this dependency, open the bundle manifest file <code>META-INF/MANIFEST.MF</code> with
+    the <em>Plug-in Manifest Editor</em> (the default for this file type). Go to the
+    <em class="UILabel">Dependencies</em> page and add <code>org.eclipse.rap.rwt</code> to the
+    list of <em class="UILabel">Required Plug-ins</em> and save.
   </p>
 
   <h2>Create an entrypoint</h2>
   <p>
-    Every RAP application needs an entrypoint that creates the initial UI of the application.
-    An entrypoint is a class that implements the interface <em>EntryPoint</em>.
-    (As a side note, workbench-based applications can also implement the Eclipse-specific interface
-    <em>IApplication</em>).
+    Every RAP application needs an entrypoint class that creates the initial UI of the application.
   </p>
   <p>
-    Before creating the Java code, we need a package.
-    It's a good practice to name the main package in a bundle after the bundle id, so
-    let's name the package <code>org.example.rap.helloworld</code>.
-    In this package, we create a class named <code>HelloWorldEntryPoint</code> that implements
-    <code>EntryPoint</code>.
-    In the method <code>createUI</code>, we add some SWT code.
-    You can generate the skeleton of this code using an SWT template (type <em>main</em> and hit
-    Ctrl+Space, then select the template named <em>mainloop</em>).
+    Before we can create the entrypoint, we need a package.
+    A good name for the main package in a bundle is the bundle id,
+    so we name the package <code>org.example.rap.helloworld</code>.
+    In this package, we create a class named <code>HelloWorldEntryPoint</code> that extends
+    <code>AbstractEntryPoint</code>.
+    In the method <code>createContents</code>, we add some SWT code.
     In the example below, we added a Button with the text “Hello world!”:
   </p>
-  <pre><code>  public class HelloWorldEntryPoint implements EntryPoint {
+  <pre><code>  public class HelloWorldEntryPoint extends AbstractEntryPoint {
 
-    public int createUI() {
-      Display display = new Display();
-      Shell shell = new Shell( display );
-      shell.setLayout( new GridLayout( 1, false ) );
-
+    @Override
+    protected void createContents( Composite parent ) {
       Button button = new Button( shell, SWT.PUSH );
       button.setText( "Hello world!" );
-
-      shell.pack();
-      shell.open();
-      return 0;
     }
+
   }
 </code></pre>
   <p>
-    <strong>Note:</strong> This template will generate a couple more lines after the
-    <code>shell.open()</code>, called the SWT <em>main loop</em>.
-    You also find this code in SWT snippets.
-    For workbench-based application, the main loop must be present, but for our simple applications,
-    it must be <strong>removed</strong>
-    (read about <a href="../advanced/application-setup.html">application setups</a> to understand
-    the difference).
+    <strong>Note:</strong> RAP 1.x also required the SWT <em>main loop</em> here.
+    This is no longer needed if <code>AbstractEntryPoint</code> is used.
   </p>
 
   <h2>Launch the entrypoint</h2>
@@ -121,6 +108,7 @@
     Leightweight OSGi applications register the entrypoint in their
     <a href="../advanced/application-configuration.html">application configuration</a>.
     These topics are covered in the part on application development.
+    <!-- TODO update after renamings --->
   </p>
 
 </body>

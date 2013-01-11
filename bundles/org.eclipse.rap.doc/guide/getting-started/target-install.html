@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2012 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Installing a RAP Target</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -14,7 +14,7 @@
 
   <p>
     By default, the Eclipse IDE compiles all projects in the workspace against the running
-    platform, i.e. all bundles of the running IDE.
+    platform, which is the IDE itself.
     But since RAP applications must be compiled against the RAP runtime, the workspace must be
     configured to do so.
     This is done by setting the RAP runtime as the <em>target platform</em>.
@@ -22,23 +22,19 @@
 
   <h2 id="target-install">Using the RAP Tools to install the latest target platform</h2>
   <p>
-    When Eclipse starts on a fresh workspace, a welcome page is displayed.
-    You can always return to this welcome page choosing <em class="UILabel">Help &gt; Welcome</em>
-    from the main menu.
-    Once there, click <em class="UILabel">Overview</em> and select the
-    <em class="UILabel">Remote Application Platform (RAP)</em> section.
+    On the Eclipse welcome screen (<em class="UILabel">Help &gt; Welcome</em>),
+    go to <em class="UILabel">Overview &gt; Remote Application Platform</em>.
     Choose <em class="UILabel">Install Target Platform</em> on the following page.
     In the upcoming dialog confirm the default values, which starts the target
     installation process.
   </p>
   <p>
     After the installation finished you are prepared to work with RAP.
-    For your first steps you may read the
-    <a href="examples.html">RAP Examples</a>
-    topic and/or the other chapters of the getting started section.
+    For your first steps you may try out some <a href="examples.html">RAP Examples</a>
+    and/or write a <a href="hello-world.html">Hello World</a> Application.
   </p>
 
-  <h2>Install Target Manually</h2>
+  <h2>Alternative: Install Target Manually</h2>
   <p>
     You can also install a target manually, e.g. if you want to develop against a different
     version of RAP or combine RAP with other bundles.
@@ -60,8 +56,8 @@
     </li>
     <li>
       The target editor will open and show the contents of this target definition.
-      Now, add the RAP runtime from a p2 repository a.k.a. software site:
-      press <em class="UILabel">Add</em>, select <em class="UILabel">Software Site</em>.
+      Now, you must add the RAP runtime from a p2 repository ("software site").
+      Press <em class="UILabel">Add</em>, select <em class="UILabel">Software Site</em>.
       You'll be confronted with another dialog, named <em class="UILabel">Add Software Site</em>.
     </li>
     <li>
@@ -70,10 +66,10 @@
       e.g.
       <ul>
         <li>
-          for RAP 1.4: http://download.eclipse.org/rt/rap/1.4/runtime
+          for RAP 1.5: http://download.eclipse.org/rt/rap/1.5/runtime
         </li>
         <li>
-          for RAP 1.5: http://download.eclipse.org/rt/rap/1.5/runtime
+          for RAP 2.0: http://download.eclipse.org/rt/rap/2.0
         </li>
       </ul>
       Hint: You can also install the RAP runtime directly from a download zip archive.
