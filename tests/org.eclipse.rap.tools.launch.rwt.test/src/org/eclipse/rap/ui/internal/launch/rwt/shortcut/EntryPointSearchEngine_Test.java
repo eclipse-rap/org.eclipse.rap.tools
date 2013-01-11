@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -117,12 +117,29 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
   }
 
+  public void testSearchWithValidIEntryPointClass() throws Exception {
+    String code
+      = "package foo;\n"
+      + "class Foo implements IEntryPoint {\n"
+      + "  public int createUI() {\n"
+      + "    return 0;\n"
+      + "  }\n"
+      + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] entryPointTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 1, entryPointTypes.length );
+    assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
+  }
+
   public void testSearchNameWithCompilationUnit() throws Exception {
     String code
       = "package foo;\n"
       + "class Foo implements EntryPoint {\n"
       + "  public int createUI() {\n"
-      + "    return 0\n"
+      + "    return 0;\n"
       + "  }\n"
       + "}\n";
     ICompilationUnit compilationUnit = project.createJavaClass( "foo", "Foo", code );
@@ -138,11 +155,11 @@ public class EntryPointSearchEngine_Test extends TestCase {
       = "package foo;\n"
       + "class Foo implements EntryPoint {\n"
       + "  public int createUI() {\n"
-      + "    return 0\n"
+      + "    return 0;\n"
       + "  }\n"
       + "  class NestedFoo implements EntryPoint {\n"
       + "    public int createUI() {\n"
-      + "      return 0\n"
+      + "      return 0;\n"
       + "    }\n"
       + "  }\n"
       + "}\n";
@@ -161,7 +178,7 @@ public class EntryPointSearchEngine_Test extends TestCase {
       + "class Foo {\n"
       + "  class NestedFoo implements EntryPoint {\n"
       + "    public int createUI() {\n"
-      + "      return 0\n"
+      + "      return 0;\n"
       + "    }\n"
       + "  }\n"
       + "}\n";
@@ -179,11 +196,11 @@ public class EntryPointSearchEngine_Test extends TestCase {
       = "package foo;\n"
       + "class Foo implements EntryPoint {\n"
       + "  public int createUI() {\n"
-      + "    return 0\n"
+      + "    return 0;\n"
       + "  }\n"
       + "  class NestedFoo implements EntryPoint {\n"
       + "    public int createUI() {\n"
-      + "      return 0\n"
+      + "      return 0;\n"
       + "    }\n"
       + "  }\n"
       + "}\n";
@@ -194,6 +211,53 @@ public class EntryPointSearchEngine_Test extends TestCase {
 
     assertEquals( 1, entryPointTypes.length );
     assertEquals( "foo.Foo$NestedFoo", entryPointTypes[ 0 ].getFullyQualifiedName() );
+  }
+
+  public void testSearchWithExtendedAbstractEntryPoint() throws Exception {
+    String code
+    = "package foo;\n"
+        + "class Foo extends AbstractEntryPoint {\n"
+        + "  protected void createContents( Composite parent ) {\n"
+        + "  }\n"
+        + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] entryPointTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 1, entryPointTypes.length );
+    assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
+  }
+
+  public void testSearchWithoutExtendsAbstractEntryPoint() throws Exception {
+    String code
+    = "package foo;\n"
+        + "class Foo {\n"
+        + "  protected void createContents( Composite parent ) {\n"
+        + "  }\n"
+        + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] entryPointTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 0, entryPointTypes.length );
+  }
+
+  public void testSearchWithAbstractClass() throws Exception {
+    String code
+    = "package foo;\n"
+        + "abstract class Foo implements EntryPoint {\n"
+        + "  public int createUI() {\n"
+        + "    return 0;\n"
+        + "  }\n"
+        + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] entryPointTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 0, entryPointTypes.length );
   }
 
   public void testSearchWithProject() throws Exception {
@@ -229,7 +293,7 @@ public class EntryPointSearchEngine_Test extends TestCase {
       = "package foo;\n"
       + "class Foo implements EntryPoint {\n"
       + "  public int createUI() {\n"
-      + "    return 0\n"
+      + "    return 0;\n"
       + "  }\n"
       + "}\n";
     project.createJavaClass( "foo", "Foo", code );

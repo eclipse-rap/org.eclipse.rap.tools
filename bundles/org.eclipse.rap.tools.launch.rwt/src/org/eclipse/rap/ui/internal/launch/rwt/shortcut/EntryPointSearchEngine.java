@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,14 +55,20 @@ class EntryPointSearchEngine {
     monitor.beginTask( "Searching for entry points...", 100 );
     try {
       int matchRule = SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE;
-      SearchPattern pattern
-        = SearchPattern.createPattern( "createUI() int",  //$NON-NLS-1$
-                                       IJavaSearchConstants.METHOD,
-                                       IJavaSearchConstants.DECLARATIONS,
-                                       matchRule );
       SearchParticipant[] participants = getSearchParticipants();
       IProgressMonitor searchMonitor = new SubProgressMonitor( monitor, 100 );
       SearchEngine searchEngine = new SearchEngine();
+      SearchPattern pattern1
+        = SearchPattern.createPattern( "createUI() int", //$NON-NLS-1$
+                                       IJavaSearchConstants.METHOD,
+                                       IJavaSearchConstants.DECLARATIONS,
+                                       matchRule );
+      SearchPattern pattern2
+        = SearchPattern.createPattern( "createContents( Composite ) void", //$NON-NLS-1$
+                                       IJavaSearchConstants.METHOD,
+                                       IJavaSearchConstants.DECLARATIONS,
+                                       matchRule );
+      SearchPattern pattern = SearchPattern.createOrPattern( pattern1, pattern2 );
       searchEngine.search( pattern, participants, searchScope, entryPointCollector, searchMonitor );
     } finally {
       monitor.done();
@@ -106,6 +112,7 @@ class EntryPointSearchEngine {
 
   private static class TypeInspector {
     private static final String[] NO_PARAMETERS = new String[ 0 ];
+    private static final String[] COMPOSITE_PARAMETER = new String[] { "QComposite;" }; //$NON-NLS-1$
 
     private final IType type;
 
@@ -114,7 +121,21 @@ class EntryPointSearchEngine {
     }
 
     boolean isEntryPointType() throws JavaModelException {
-      return type.isClass() && implementsEntryPoint() && hasCreateUIMethod();
+      boolean result = false;
+      if( type.isClass() ) {
+        if( implementsEntryPoint() ) {
+          result = hasCreateUIMethod() && !isAbstract();
+        } else if( extendsAbstractEntryPoint() ) {
+          result = hasCreateContentsMethod() && !isAbstract();
+        }
+      }
+      return result;
+    }
+
+    private boolean implementsEntryPoint() throws JavaModelException {
+      String[] superInterfaceNames = type.getSuperInterfaceNames();
+      return    StringArrays.contains( superInterfaceNames, "EntryPoint" ) //$NON-NLS-1$
+             || StringArrays.contains( superInterfaceNames, "IEntryPoint" ); //$NON-NLS-1$
     }
 
     private boolean hasCreateUIMethod() {
@@ -122,9 +143,18 @@ class EntryPointSearchEngine {
       return method.exists();
     }
 
-    private boolean implementsEntryPoint() throws JavaModelException {
-      String[] superInterfaceNames = type.getSuperInterfaceNames();
-      return StringArrays.contains( superInterfaceNames, "EntryPoint" ); //$NON-NLS-1$
+    private boolean extendsAbstractEntryPoint() throws JavaModelException {
+      String superClassName = type.getSuperclassName();
+      return "AbstractEntryPoint".equals( superClassName ); //$NON-NLS-1$
+    }
+
+    private boolean hasCreateContentsMethod() {
+      IMethod method = type.getMethod( "createContents", COMPOSITE_PARAMETER ); //$NON-NLS-1$
+      return method.exists();
+    }
+
+    private boolean isAbstract() throws JavaModelException {
+      return Flags.isAbstract( type.getFlags() );
     }
   }
 }
