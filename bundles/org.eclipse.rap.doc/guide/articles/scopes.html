@@ -110,7 +110,7 @@ display.disposeExec( new Runnable() {
    </code></pre></div>
    -->
 
-  <h2>Singletons and Static Fields</h2>
+  <h2 id="singleton" >Singletons and Static Fields</h2>
   <p>
     The classical singleton pattern suggests that a class has only one instance and keeps the
     reference to this instance in a static field.
@@ -193,7 +193,7 @@ new Thread( runnable ).start();
     SWT/RWT widgets can only be accessed from a UI thread. While <code>UISession#exec</code>
     provides a UI session scope, it does not execute the runnable within the UI thread. To do so,
     <code>Display#asyncExec</code> has to be used. However, to do so from a background thread, a
-    <a href="../advanced/server-push.html">ServerPushSession</a>
+    <a href="server-push.html">ServerPushSession</a>
     has to be running, and an HTTP request will be triggered when it is called. In contrast,
     <code>UISession#exec</code> never causes any additional network traffic.
   </p>

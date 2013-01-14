@@ -18,6 +18,7 @@
     Sometimes it's necessary to “push” UI updates from the RAP server to the RAP client.
     As an example, imagine a chat application that notifies the user of a chat request from a peer.
   </p>
+  <p>
     HTTP is not designed to actively push data to the client.
     An HTTP server can only answer requests from a client, but it cannot actively send any message
     to the client. In RAP the UI is typically updated
@@ -75,7 +76,7 @@ bgThread.start();
   </p>
   <p>
     More technical details of the ServerPush implementation can be found on the
-    <a href="http://wiki.eclipse.org/RAP/UI_Callback" target="blank">RAP Wiki</a>.
+    <a href="http://wiki.eclipse.org/RAP/Server_Push" target="blank">RAP Wiki</a>.
   </p>
 </body>
 </html>
