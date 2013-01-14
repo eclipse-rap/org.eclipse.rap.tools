@@ -195,7 +195,7 @@ ul.inheritsList
   <li><a href="../symbols/rap.html">rap</a></li>
   
 </ul>
-<h2>Classes</h2>
+<h2>Types</h2>
 <ul class="classList">
   
   <li><a href="../symbols/Composite.html">Composite</a></li>
@@ -213,7 +213,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
       <h1 class="classTitle">
         
-        Class RemoteObject
+        Type RemoteObject
       </h1>
 
 <!-- ============================== class summary ========================== -->
@@ -227,27 +227,6 @@ and are used to write operations into the next protocol message.
       </p>
 
 <!-- ============================== constructor summary ==================== -->
-      
-      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class RemoteObject.">
-        <caption>Class Summary</caption>
-        <thead>
-          <tr>
-            <th scope="col">Constructor Attributes</th>
-            <th scope="col">Constructor Name and Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="attributes">&lt;private&gt; &nbsp;</td>
-            <td class="nameDescription" >
-              <div class="fixedFont">
-                <b><a href="../symbols/RemoteObject.html#constructor">RemoteObject</a></b>()
-              </div>
-              <div class="description">This constructor is not available in the global namespace.</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
       
 
 <!-- ============================== properties summary ===================== -->
@@ -307,7 +286,7 @@ and are used to write operations into the next protocol message.
       
       <div class="details"><a name="constructor"> </a>
         <div class="sectionTitle">
-          Class Detail
+          Type Detail
         </div>
 
         <div class="fixedFont">&lt;private&gt; 
@@ -368,8 +347,9 @@ be obtained from <a href="../symbols/rap.html#.getRemoteObject">rap.getRemoteObj
           </div>
           <div class="description">
             Instructs the remote object to call the given method.
-Calling this method causes the message to be sent to the server within a
-few milliseconds.
+Calling this method will write a "call" operation into the message, which will to be sent to
+the server within a few milliseconds. One message
+may contain several "call" operations, if they are added consecutively.
             
             
           </div>
@@ -413,10 +393,11 @@ properties/fields associated with the call. It may also be null or omitted.</dd>
           </div>
           <div class="description">
             Notifies the remote object that an event of the given type occurred.
-Sending an event of a type the server is currently not
-listening for (see <a href="../symbols/rap.html#.registerTypeHandler">rap.registerTypeHandler</a>, <b>handler.listeners</b>) is illegal usage
-of the RAP protocol, but currently not prevented. Calling this method causes the message to be
-sent to the server within a few milliseconds.
+Notifications can only be sent for types that the server is currently listening for
+(see <a href="../symbols/rap.html#.registerTypeHandler">rap.registerTypeHandler</a>, <b>handler.events</b>). If this is not the
+case, no "notify" operation is written into the message and no request will be sent.
+Otherwise the message will be sent to the server within a few milliseconds. One message
+may contain several "notify" operations, if they are added consecutively.
             
             
           </div>
@@ -461,8 +442,9 @@ properties/fields associated with the event. It may also be null or omitted.</dd
           <div class="description">
             Sets the specified property of the remote object to the given value.
 Calling this method multiple times for the same property will overwrite the previous value,
-the message will not become longer.
-This method does not cause the message to be sent immediately.
+the message will not become longer. This method does not cause the message to be sent
+immediately. Instead it will be sent the next time a "notify" or "call" operation is
+written to the message.
             
             
           </div>

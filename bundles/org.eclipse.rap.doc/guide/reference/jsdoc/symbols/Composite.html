@@ -195,7 +195,7 @@ ul.inheritsList
   <li><a href="../symbols/rap.html">rap</a></li>
   
 </ul>
-<h2>Classes</h2>
+<h2>Types</h2>
 <ul class="classList">
   
   <li><a href="../symbols/Composite.html">Composite</a></li>
@@ -213,7 +213,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
       <h1 class="classTitle">
         
-        Class Composite
+        Type Composite
       </h1>
 
 <!-- ============================== class summary ========================== -->
@@ -221,32 +221,11 @@ ul.inheritsList
         
         
 
-        Wrapper for RWT Composite widgets
+        Represents RWT Composite widgets
 
       </p>
 
 <!-- ============================== constructor summary ==================== -->
-      
-      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Composite.">
-        <caption>Class Summary</caption>
-        <thead>
-          <tr>
-            <th scope="col">Constructor Attributes</th>
-            <th scope="col">Constructor Name and Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="attributes">&lt;private&gt; &nbsp;</td>
-            <td class="nameDescription" >
-              <div class="fixedFont">
-                <b><a href="../symbols/Composite.html#constructor">Composite</a></b>()
-              </div>
-              <div class="description">This constructor is not available in the global namespace.</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
       
 
 <!-- ============================== properties summary ===================== -->
@@ -269,9 +248,36 @@ ul.inheritsList
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Composite.html#addListener">addListener</a></b>(type, listener)
+                </div>
+                <div class="description">Register the function as a listener of the given type</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
                 <div class="fixedFont"><b><a href="../symbols/Composite.html#append">append</a></b>(childElement)
                 </div>
                 <div class="description">Adds a given HTMLElement to the Composite.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Composite.html#getClientArea">getClientArea</a></b>()
+                </div>
+                <div class="description">Returns the client Area of the Composite</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Composite.html#removeListener">removeListener</a></b>(type, listener)
+                </div>
+                <div class="description">De-register the function as a listener of the given type</div>
               </td>
             </tr>
           
@@ -283,12 +289,41 @@ ul.inheritsList
       
 <!-- ============================== events summary ======================== -->
       
+        
+        
+        <table class="summaryTable" cellspacing="0" summary="A summary of the events documented in the class Composite.">
+          <caption>Event Summary</caption>
+          <thead>
+            <tr>
+              <th scope="col">Event Attributes</th>
+              <th scope="col">Event Name and Description</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Composite.html#event:Resize">Resize</a></b>
+                </div>
+                <div class="description">Sent when widget changes size.</div>
+              </td>
+            </tr>
+          
+          </tbody>
+        </table>
+        
+
+        
+      
 
 <!-- ============================== constructor details ==================== -->
       
       <div class="details"><a name="constructor"> </a>
         <div class="sectionTitle">
-          Class Detail
+          Type Detail
         </div>
 
         <div class="fixedFont">&lt;private&gt; 
@@ -329,6 +364,48 @@ be obtained from <a href="../symbols/rap.html#.getObject">rap.getObject</a>.
           Method Detail
         </div>
         
+          <a name="addListener"> </a>
+          <div class="fixedFont">
+
+          
+          <b>addListener</b>(type, listener)
+
+          </div>
+          <div class="description">
+            Register the function as a listener of the given type
+            
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>type</b>
+                  
+                </dt>
+                <dd>The type of the event (e.g. "Resize").</dd>
+              
+                <dt>
+                  <span class="light fixedFont">{Function}</span> <b>listener</b>
+                  
+                </dt>
+                <dd>The callback function. It is executed in global context.</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+
+          <hr />
+        
           <a name="append"> </a>
           <div class="fixedFont">
 
@@ -363,11 +440,115 @@ be obtained from <a href="../symbols/rap.html#.getObject">rap.getObject</a>.
             
             
 
+          <hr />
+        
+          <a name="getClientArea"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{int[]}</span>
+          <b>getClientArea</b>()
+
+          </div>
+          <div class="description">
+            Returns the client Area of the Composite
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{int[]}</span> the client area as array [ x, y, width, height ]</dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
+          <a name="removeListener"> </a>
+          <div class="fixedFont">
+
+          
+          <b>removeListener</b>(type, listener)
+
+          </div>
+          <div class="description">
+            De-register the function as a listener of the given type
+            
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>type</b>
+                  
+                </dt>
+                <dd>The type of the event (e.g. "Resize").</dd>
+              
+                <dt>
+                  <span class="light fixedFont">{Function}</span> <b>listener</b>
+                  
+                </dt>
+                <dd>The callback function</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+
           
         
       
 
 <!-- ============================== event details ========================= -->
+      
+        <div class="sectionTitle">
+          Event Detail
+        </div>
+        
+          <a name="event:Resize"> </a>
+          <div class="fixedFont">
+
+          
+          <b>Resize</b>
+
+          </div>
+          <div class="description">
+            Sent when widget changes size.
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+            
+            
+
+          
+        
       
 
       <hr />
