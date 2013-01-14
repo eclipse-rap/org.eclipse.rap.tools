@@ -13,15 +13,17 @@
   <h1>The RAP Client</h1>
   <!-- TODO : add links to API reference -->
   <p>
-    The term "RAP client" is used to identify the software that interacts with a RAP Server and
-    displays the actual UI of a RAP application. It does not include the enviroment an instance of
+    The term "RAP client" is used to identify the software that displays the actual UI of a
+    RAP application, and communicates with the RAP server using the
+    <a href="http://wiki.eclipse.org/RAP/Protocol">RAP Protocol</a>.
+    The term does not include the enviroment an instance of
     the client runs in (browser and/or OS), or the hardware ("device") itself.
   </p>
   <p>
     The RAP project includes the default RAP client, written in JavaScript. It it will be referred
     to simply as the "web client" from here on. The web client is downloaded and started
     automatically when the URL of a RAP application is entered into a browser. In-depth
-    information about this client can be found in the
+    technical information about this client can be found in the
     <a href="http://wiki.eclipse.org/RAP/WebClient">RAP Wiki</a>.
     Other client
     implementations than the web client are currently not part of the RAP project.
@@ -62,14 +64,14 @@
   }
 </code></pre>
   <h3>
-    Services that are included in RWT
+    Services included in RWT
   </h3>
   <p>The services are all supported by the web client and can be found in the package
   <code>org.eclipse.rap.rwt.client.service</code>.</p>
   <ul>
 
     <li style="margin-bottom:20px">
-      <b>BrowserHistory</b>
+      <b>BrowserNavigation</b>
       <br/>
       Allows navigating within an application using the browser's <em>back</em> and
       <em>forward</em> buttons. <br/>
