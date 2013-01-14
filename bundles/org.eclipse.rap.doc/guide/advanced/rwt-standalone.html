@@ -51,16 +51,10 @@
       </a>
     </li>
     <li> Implement an <code>EntryPoint</code> like below:
-<pre dir="ltr" style="text-align: left;"><code>public class HelloWorld implements EntryPoint {
-  public int createUI() {
-    Display display = new Display();
-    Shell shell = new Shell( display );
-    shell.setLayout( new GridLayout() );
-    Label label = new Label( shell, SWT.NONE );
+<pre dir="ltr" style="text-align: left;"><code>public class HelloWorld extends AbstractEntryPoint {
+  public void createContents( Composite parent ) {
+    Label label = new Label( parent, SWT.NONE );
     label.setText( "Hello RAP World" );
-    shell.setSize( 500, 400 );
-    shell.open();
-    return 0;
   }
 }</code></pre>
     </li>
@@ -107,7 +101,7 @@
 &lt;/web-app&gt; </code></pre>
     </li>
     <li>
-      Provide an implementation of <code>ApplicationConfigurator</code>
+      Provide an implementation of <code>ApplicationConfiguration</code>
       to configure your application like shown below:
   <pre dir="ltr" style="text-align: left;"><code>public class HelloWorldConfiguration implements ApplicationConfiguration {
   public void configure( Application application ) {

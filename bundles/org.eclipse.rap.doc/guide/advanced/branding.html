@@ -23,15 +23,16 @@
     RAP application. This includes for example the page title which is shown in the
     browser or the theme to be used for the application.
   </p>
-  <img src="../images/branding/example.png" alt="Example branding"/>
 
   <h3>Capabilities of the Branding</h3>
   <p>
     You can define a new branding by creating an extension for the
     <code>org.eclipse.rap.ui.branding</code>
-    extension point.
+    extension point. To use it in your application, create a
+    <code>org.eclipse.rap.ui.entrypoint</code> extension (if you haven't done so already) and enter
+    the brandings id in the <code>brandingId</code> field.
   </p>
-  <img src="../images/branding/extension.png" alt="Extension point editor"/>
+  <img src="../images/extension.png" alt="Extension point editor"/>
   <p>
     And here the same as it appears in the <code>plugin.xml</code>:
   </p>
@@ -40,34 +41,17 @@
       point=&quot;org.eclipse.rap.ui.branding&quot;&gt;
     &lt;branding
         id=&quot;my.project.branding1&quot;
-        servletName=&quot;myapp&quot;
         title=&quot;My Custom Title&quot;
         favicon=&quot;icons/favicon.png&quot;
         body=&quot;body.html&quot;
-        defaultEntrypointId=&quot;my.project.entrypoint1&quot;
-        themeId=&quot;org.eclipse.rap.design.example.fancy.theme&quot;
+        themeId=&quot;org.eclipse.rap.design.example.business.theme&quot;
     &lt;/branding&gt;
   &lt;/extension&gt;
   </code></pre>
 
-  <h4>servletName</h4>
+  <h4>id</h4>
   <p>
-    The <code>servletName</code> attribute defines the URL path to the application.
-    The application will be available at<br/>
-    <code>http://host[:port]/[contextName/]<b>servletName</b></code>.
-    The <code>contextName</code> is optional.
-    In a deployment, this will be the webapp path.
-    You can also specify a context path in the RAP launcher.
-  </p>
-
-  <h4>defaultEntrypointId</h4>
-  <p>
-    The id of the entrypoint that should be started by default for this branding.
-    For example, with the example configuration shown above, the following URLs are equivalent:<br/>
-    <code>http://host[:port]/myapp</code><br/>
-    <code>http://host[:port]/myapp?startup=foo</code><br/>
-    given that the <code>parameter</code> of the entrypoint <code>my.project.entrypoint1</code>
-    is <code>foo</code>.
+    The id is used to reference the branding in a <code>org.eclipse.rap.ui.entrypoint</code> extension.
   </p>
 
   <h4>themeId</h4>
@@ -116,43 +100,6 @@
   <p>
     Available tags are <code>&lt;meta&gt;</code> and <code>&lt;link&gt;</code>.
     You can add more additional attributes to each tag with the <code>attribute</code> element.
-  </p>
-
-  <h4>Element associatedEntrypoints</h4>
-  <p>
-    This is an optional sub-element that allows to limit the available entrypoints of a branding.
-    Without this element, all entrypoints are available in every branding.
-    When the element <code>&lt;associatedEntrypoints&gt;</code> is specified, only the included
-    entrypoints are available for this branding.
-  </p>
-  <p>
-    Here's an example: imagine you have the following entrypoints defined:
-  </p>
-  <ul>
-    <li>customerA</li>
-    <li>customerB</li>
-    <li>administrationA</li>
-    <li>administrationB</li>
-  </ul>
-  <p>
-    Using different brandings, you can now group them so that customer A and
-    administration A have the same branding (page title, servletName, theme, etc.)
-    and are not allowed to access the applications for customer B.
-    A sample implementation of the branding for customer A could look like this:
-  </p>
-  <pre><code>
-  &lt;branding
-      id=&quot;my.project.brandingA&quot;
-      ... &gt;
-    &lt;associatedEntrypoints&gt;
-        &lt;entrypoint id="my.project.customerA"&gt;
-        &lt;/entrypoint&gt;
-        &lt;entrypoint id="my.project.administrationA"&gt;
-        &lt;/entrypoint&gt;
-    &lt;/associatedEntrypoints&gt;
-  </code></pre>
-  <p>
-    The same would be done for Customer B (with different entrypoint ids).
   </p>
 
 </body>

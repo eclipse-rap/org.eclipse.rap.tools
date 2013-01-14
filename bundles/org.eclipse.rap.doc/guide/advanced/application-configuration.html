@@ -24,7 +24,6 @@
   <p>
     A RAP application consists of various parts, such as entrypoints, URL mappings, themes,
     service handlers, etc.
-    <!-- TODO: link -->
     All these parts constitute an <em>ApplicationConfiguration</em>.
     The configuration is like the blueprint for an application.
     Based on an ApplicationConfiguration, the framework can create and start an application instance.
@@ -32,11 +31,10 @@
     ports or different servlet contexts.
   </p>
   <p>
-    An implementation of the interface <code>ApplicationConfiguration</code> is used to configure
-    an application before it is started.
-    For this step, RAP follows a callback approach to leave the responsibility for creating and
-    starting the application with the framework.
-    Therefore, the configuration must actively configure the application.
+    An implementation of the interface <code><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html">ApplicationConfiguration</a></code>
+    is used to configure an application before it is started.
+    Creating and starting the application is the responsibility of the framework.
+    Therefore, RAP uses a callback approach to configure the application.
     This is done in the method <code>configure( Application )</code>.
     The framework provides a reference to the created <code>Application</code>
     as a parameter to this method. Here’s how a simple implementation looks like:
@@ -88,8 +86,9 @@
 
   <h3>RWT stand-alone</h3>
   <p>
-    When using RWT as a library in a traditional web application, i.e. without OSGi, the
-    ApplicationConfiguration can be registered in the deployment descriptor (web.xml) by adding a
+    When using <a href="rwt-standalone.html">RWT as a library</a> in a traditional web application,
+    i.e. without OSGi, the ApplicationConfiguration can be registered in the deployment descriptor
+    (web.xml) by adding a
     <code>context-param</code> with the fully qualified class name of the implementation:
   </p>
   <pre><code>&lt;context-param&gt;

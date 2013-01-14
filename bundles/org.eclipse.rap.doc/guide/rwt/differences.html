@@ -21,11 +21,9 @@
   </p>
   <p>
     RWT also provides some additional features that are not part of SWT.
-    Partly, these are features related to the RAP client such as the browser history,
-    partly enhancements of SWT widgets such as the HTML markup support.
     However, RWT does not add any new API to the classes adopted from SWT.
-    All RWT features are accessible by API in the package <code>org.eclipse.rap.rwt</code>.
-    Most of the widget-specific additional features are activated using the
+    All RWT-specific features are accessible by API in the package <code>org.eclipse.rap.rwt</code>.
+    Many are activated using a
     widget's <code>setData</code> method with a constant from the <code> RWT</code> class as the
     key. For example <code>table.setData( RWT.MARKUP_ENABLED, Boolean.TRUE )</code>.
     Others additional features may be accessed via the <code>Client</code> interface.
@@ -43,22 +41,13 @@
         <li>Interacting with the browsers history.</li>
         <li>Executing JavaScript.</li>
         <li>Configuring the exit confirmation message.</li>
-        <!-- <li>Dicovering the users locale and timezone.</li> -->
-        <!-- <li>Updating the UI from a background thread.</li> -->
-        <!-- <li>Opening an new browser window.</li> -->
+        <li>Dicovering the users locale and timezone.</li>
+        <li>Opening an new browser window.</li>
       </ul>
       The <code>Client</code> interface and client Services are documented in more detail
       <a href="client.html">here</a>.
     </li>
 
-    <!-- TODO move after this becomes a client service -->
-    <li style="margin-bottom:20px">
-      <b>External Browser Windows:</b> <code>ExternalBrowser</code>
-      <br/>
-      This widget allows opening (and closing) a new browser window or tab to display content from
-      a given URL.
-      Note that depending on the browser configuration, this may be prevented by a popup-blocker.
-    </li>
 
     <li style="margin-bottom:20px">
       <b>HTTP File Upload:</b> <code>FileUpload</code>
@@ -220,10 +209,9 @@
       architecture of RAP, in which only the client can send requests to the server.
       There is a solution for this provided by the class
       <!-- TODO rename UICallBack to whatever it will be named... --->
-      <a href="../reference/api/org/eclipse/rwt/lifecycle/UICallBack.html"><code>UICallBack</code></a>.
+      <a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html"><code>ServerPushSession</code></a>.
       Read more about it <a href="../advanced/server-push.html">here</a>.
-      Note that <code>timerExec</code> does <em>not</em> require a UICallBack anymore
-      (it uses UICallBack internally).
+      Note that <code>timerExec</code> does <em>not</em> require a ServerPushSession.
     </li>
 
   </ul>

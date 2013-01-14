@@ -15,11 +15,14 @@
   <p>
     The RAP Tools provide two dedicated launchers to start RAP applications directly from
     the IDE:
-    the <em>RWT Launcher</em>, used for snippets and stand-alone applications, and the
-    <em>RAP Launcher</em>, used for applications based on OSGi
-    (see <a href = "../advanced/application-setup.html">Choosing an Application Setup</a>
-    for these different types of applications).
-    OSGi applications can also be started without the RAP Tools, using the plain OSGi Launcher.
+    the <em>RWT Launcher</em>, used for
+    <a href="../getting-started/hello-world.html">snippets</a>
+    and
+    <a href =../advanced/rwt-standalone.html>stand-alone applications</a>,
+    and the
+    <em>RAP Launcher</em>, used for
+    <a href = "../advanced/application-setup.html#osgi">applications based on OSGi</a>.
+    The latter you can also be started without the RAP Tools, using the plain <em>OSGi Launcher</em>.
   </p>
 
   <p>
@@ -35,9 +38,12 @@
   <h2><a name="rwt-launcher"></a>Using the RWT Launcher</h2>
 
   <p>
-    The simplest way to launch an RWT application is to run it using an RWT Application launch
-    configuration. This launch configuration type uses information derived from the workbench
-    preferences and your applications's Java project to launch the program.
+    The RWT Launcher is the simplest way to start a RAP application.
+    It requires no
+    <a href="../advanced/application-setup.html#osgi">OSGi</a>,
+    <a href="../advanced/application-configuration.html">application configuration</a> or
+    <a href="../advanced/branding.html">Branding</a>, only an
+    <a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">entry point</a>.
   </p>
   <ol>
     <li>
@@ -45,15 +51,15 @@
       <em class="UILabel">Package Explorer</em>).
     </li>
     <li>
-      Select <em class="UILabel">Run &gt; Run As &gt; RWT Application</em> in the workbench menu
-      (or <em class="UILabel">Run As &gt; RWT Application</em> in the context menu of this file).
+      Select <em class="UILabel">Run &gt; Run As &gt; RWT Application</em> in the menu bar,
+      or <em class="UILabel">Run As &gt; RWT Application</em> in the context menu of the file.
     </li>
     <li>
       The application will be launched and opened in a browser view.
     </li>
   </ol>
   <p>
-    Before the RWT launcher starts an application, it terminates any possibly running
+    Before the RWT launcher starts the application, it terminates any possibly running
     instance of the same application.
     After a successful start, you should see a message like this one in the Console view:
     <br/>
@@ -65,7 +71,7 @@
   <p>
     Whenever you start an application as described above, a <em>launch configuration</em> is
     created and added to the <em class="UILabel">Run &gt; Run History</em> menu.
-    The created launch configuration is based on your Java project and your workbench preferences.
+    The created launch configuration is based on your Java project and your IDE preferences.
     It can later be edited and refined with custom or additional parameters.
   </p>
 
@@ -102,7 +108,8 @@
     <li>
       In the <em class="UILabel">Runtime Settings</em>, you can select a fixed network port
       to start your application at.
-      If you don't configure a port, the launcher will choose a free port.
+      If you don't configure a port, the launcher will choose a free port, which may be different
+      on every launch.
     </li>
     <li>
       The <em class="UILabel">Browser</em> group lets you control whether the application should be
@@ -137,7 +144,7 @@
     which is the default setting on page <em class="UILabel">Bundles</em>.
   </p>
 
-  <h3>Run in Browser</h3>
+  <h3>Open in Browser</h3>
   <p>
     This setting lets you control whether the application should be opened in a browser after a
     successful start.
@@ -147,17 +154,18 @@
     settings, the link <em class="UILabel">Configure browsers…</em> lets you jump right there.
   </p>
   <p>
-    The <em class="UILabel">Servlet Path</em> and <em class="UILabel">Startup Parameter</em>
-    fields let you configure the URL that will be opened in the browser.
-    The startup parameter is considered obsolete.
-    The entrypoint to start is normally configured using the servlet name.
+    The <em class="UILabel">Servlet Path</em> field lets you configure the URL that will be
+    opened in the browser. Which path is mapped to which entry point is configured in the
+    <a href="../advanced/application-configuration.html">application configuration</a> or
+    (for Workbench applications) in the <a href="../advanced/branding.html">Branding</a>.
   </p>
 
   <h3>Runtime Settings</h3>
   <p>
     <em class="UILabel">Manual Port configuration</em> lets you can select a fixed network port
     to start your application at.
-    If you don't configure a port, the launcher will choose a free port.
+    If you don't configure a port, the launcher will choose a free port, which may be
+    different on every launch.
   </p>
   <p>
     When the option <em class="UILabel">Terminate possible running previous launch</em> is selected,
@@ -248,7 +256,7 @@
   </ul>
 
   <p>
-    <em>Additional RAP bundles (require additional platform bundles - see below)</em>
+    <em>Optional RAP bundles (require additional platform bundles - see below)</em>
   </p>
   <ul>
     <li>org.eclipse.rap.jface</li>
@@ -282,8 +290,8 @@
   </ul>
 
   <p>
-    To launch a once created launch configuration you may use the launch shortcut keys
-    <em class="UILabel">Alt+Shift+X+R</em> (run) and <em class="UILabel">Alt+Shift+D+R</em> (debug).
+    To launch an existing launch configuration you may use the launch shortcut keys
+    <em class="UILabel">Alt+Shift+X, R</em> (run) and <em class="UILabel">Alt+Shift+D, R</em> (debug).
   </p>
 
   <h2><a name="osgi-launcher"></a>Using the OSGi Launcher</h2>
@@ -291,7 +299,7 @@
   <p>
     Alternatively, you can also use the plain OSGi Launcher to start RAP applications.
     In this case, you have to set the necessary system properties and program arguments on your own.
-    At least, you have to specify the HTTP port for the server with the VM argument
+    At minimum, you have to specify the HTTP port for the server with the VM argument
   </p>
   <pre><code>-Dorg.osgi.service.http.port=&lt;PORT&gt;</code></pre>
   <p>
@@ -335,16 +343,34 @@
         <code style="color:red">java.lang.UnsupportedOperationException: The SimpleLifeCycle does not support Display#sleep()</code>
       </p>
       <p>
-        The RWT launcher starts applications in the JEE compatibility mode.
+        The RWT launcher starts applications in the
+        <a href="../advanced/application-setup.html#compat">JEE compatibility mode</a>.
         This mode does not support <code>Display.sleep()</code>, specifically, it does not support
-        the SWT main loop. When starting an SWT snippet, this code block must be removed:
+        the SWT main loop. When starting an SWT snippet, this code may not be used:
       </p>
       <pre><code>  while( !shell.isDisposed() ) {
     if( !display.readAndDispatch() )
       display.sleep();
   }
   display.dispose();</code></pre>
+      <p>
+        As of RAP 2.0, it is recommended to extend <a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint<a> instead of
+        implementing the <a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a>
+        interface directly. With AbstractEntryPoint no main loop is required, no matter which operation
+        mode is used.
+      </p>
     </li>
+    <li>
+      <p>
+        <b>404 Error Page</b>
+      </p>
+      <p>
+        There are two reasons a 404 page may be displayed in the browser. Either the URL is
+        incorrect (check the servlet path), or the browser opend faster than the application
+        could start. In that case, simply hit F5 (refresh).
+      </p>
+    </li>
+
   </ul>
 
 </body>
