@@ -17,18 +17,6 @@
          </description>
       </wizard>
       <wizard
-            class="org.eclipse.rap.internal.ui.templates.rap.ViewRAPWizard"
-            icon="$nl$/icons/etool16/newexprj_wiz.gif"
-            id="org.eclipse.rap.internal.ui.templates.rap.ViewRAPWizard"
-            java="true"
-            rcp="false"
-            name="%viewRAP.name"
-            ui-content="true">
-         <description>
-            %viewRAP.description
-         </description>
-      </wizard>
-      <wizard
             class="org.eclipse.rap.internal.ui.templates.rap.MailRAPWizard"
             icon="$nl$/icons/etool16/newexprj_wiz.gif"
             id="org.eclipse.rap.internal.ui.templates.rap.MailRAPWizard"

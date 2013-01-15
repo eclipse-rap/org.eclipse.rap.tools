@@ -1,20 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 EclipseSource
+ * Copyright (c) 2007, 2013 EclipseSource
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.internal.ui.templates.rap;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-  
+
   public static String AbstractRAPWizard_targetQuestionDialogMessage;
   public static String AbstractRAPWizard_targetQuestionDialogTitle;
   public static String AbstractRAPWizard_Modifying;
@@ -43,17 +43,7 @@ public class Messages extends NLS {
   public static String mailRAPTemplate_windowTitle;
   public static String mailRAPWizard_windowTitle;
 
-  public static String viewRAPTemplate_appClass;
-  public static String viewRAPTemplate_appWindowTitle;
-  public static String viewRAPTemplate_packageName;
-  public static String viewRAPTemplate_pageDescr;
-  public static String viewRAPTemplate_pageTitle;
-  public static String viewRAPTemplate_perspectiveName;
-  public static String viewRAPTemplate_viewName;
-  public static String viewRAPTemplate_windowTitle;
-  public static String viewRAPWizard_windowTitle;
-
-  private static final String BUNDLE_NAME 
+  private static final String BUNDLE_NAME
     = "org.eclipse.rap.internal.ui.templates.rap.messages"; //$NON-NLS-1$
 
   static {
