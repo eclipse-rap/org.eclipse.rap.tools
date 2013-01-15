@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource and others
+ * Copyright (c) 2007, 2013 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,26 +40,29 @@ import org.eclipse.ui.handlers.IHandlerService;
  * {@link #createTemplateSections()}.
  * </p>
  * <p>
- * This class is responsible for modying the MANIFEST.MF after it has been
+ * This class is responsible for modifying the MANIFEST.MF after it has been
  * created, in order to make it work for RAP.
  * </p>
  */
 abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
-  private static final String LAUNCH_TEMPLATE = "launch.template"; //$NON-NLS-1$
+  private static final String WORKBENCH_LAUNCH_TEMPLATE = "workbench_launch.template"; //$NON-NLS-1$
+  private static final String BASIC_LAUNCH_TEMPLATE = "basic_launch.template"; //$NON-NLS-1$
   private static final String CHARSET = "ISO-8859-1"; //$NON-NLS-1$
   private static final String PREFERENCE_INSTALL_TARGET = "installTarget"; //$NON-NLS-1$
 
   private static final String TAG_SERVLET_PATH = "${servletPath}"; //$NON-NLS-1$
   private static final String TAG_PLUGIN_ID = "${pluginId}"; //$NON-NLS-1$
   private static final String TAG_PROJECT_NAME = "${projectName}"; //$NON-NLS-1$
+  private static final String TAG_PACKAGE_NAME = "${packageName}"; //$NON-NLS-1$
 
-  public boolean performFinish( final IProject project,
-                                final IPluginModelBase model,
-                                final IProgressMonitor monitor )
+  private static final String SERVICE_COMPONENT_FILE = "OSGI-INF/contribution.xml"; //$NON-NLS-1$
+
+  public boolean performFinish( IProject project, IPluginModelBase model, IProgressMonitor monitor )
   {
     boolean result = super.performFinish( project, model, monitor );
     if( result ) {
+      copyServiceComponentConfig( project, model );
       copyLaunchConfig( project, model );
       IResourceChangeListener listener = new ManifestListener();
       ResourcesPlugin.getWorkspace().addResourceChangeListener( listener );
@@ -68,30 +71,41 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     return result;
   }
 
-  private void copyLaunchConfig( final IProject project,
-                                 final IPluginModelBase model )
-  {
-    String name = project.getName() + ".launch"; //$NON-NLS-1$
-    IFile launchConfig = project.getFile( name );
-    if( !launchConfig.exists() ) {
+  private void copyServiceComponentConfig( IProject project, IPluginModelBase model ) {
+    IFile serviceComponentXml = project.getFile( SERVICE_COMPONENT_FILE );
+    if( serviceComponentXml.exists() ) {
       try {
-        InputStream stream = readLaunchConfig( project, model );
-        launchConfig.create( stream, true, new NullProgressMonitor() );
-      } catch( final CoreException ce ) {
-        TemplateUtil.log( ce.getStatus() );
+        String pluginId = model.getPluginBase().getId();
+        InputStream templete = serviceComponentXml.getContents();
+        InputStream stream = readTemplete( templete, project.getName(), pluginId );
+        serviceComponentXml.setContents( stream, true, false, new NullProgressMonitor() );
+      } catch( CoreException exception ) {
+        TemplateUtil.log( exception.getStatus() );
       }
     }
   }
 
-  private InputStream readLaunchConfig( final IProject project,
-                                        final IPluginModelBase model )
+  private void copyLaunchConfig( IProject project, IPluginModelBase model ) {
+    String name = project.getName() + ".launch"; //$NON-NLS-1$
+    IFile launchConfig = project.getFile( name );
+    if( !launchConfig.exists() ) {
+      try {
+        String pluginId = model.getPluginBase().getId();
+        InputStream templete = AbstractRAPWizard.class.getResourceAsStream( getLaunchTemplete( project ) );
+        InputStream stream = readTemplete( templete, project.getName(), pluginId );
+        launchConfig.create( stream, true, new NullProgressMonitor() );
+      } catch( CoreException exception ) {
+        TemplateUtil.log( exception.getStatus() );
+      }
+    }
+  }
+
+  private InputStream readTemplete( InputStream templete, String projectName, String pluginId )
     throws CoreException
   {
-    InputStream template
-      = AbstractRAPWizard.class.getResourceAsStream( LAUNCH_TEMPLATE );
     StringBuffer buffer = new StringBuffer();
     try {
-      InputStreamReader reader = new InputStreamReader( template, CHARSET );
+      InputStreamReader reader = new InputStreamReader( templete, CHARSET );
       BufferedReader br = new BufferedReader( reader );
       try {
         int character = br.read();
@@ -102,14 +116,14 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       } finally {
         br.close();
       }
-    } catch( final Exception ex ) {
-      String pluginId = TemplateUtil.PLUGIN_ID;
-      String msg = "Could not read launch template"; //$NON-NLS-1$
-      throw new CoreException( new Status( IStatus.ERROR, pluginId, msg, ex ) );
+    } catch( Exception exception ) {
+      String msg = "Could not read template"; //$NON-NLS-1$
+      Status status = new Status( IStatus.ERROR, TemplateUtil.PLUGIN_ID, msg, exception );
+      throw new CoreException( status );
     }
     // Replace $-placeholder with actual values
-    replacePlaceholder( buffer, TAG_PROJECT_NAME, project.getName() );
-    String pluginId = model.getPluginBase().getId();
+    replacePlaceholder( buffer, TAG_PROJECT_NAME, projectName );
+    replacePlaceholder( buffer, TAG_PACKAGE_NAME, getPackageName() );
     replacePlaceholder( buffer, TAG_PLUGIN_ID, pluginId );
     replacePlaceholder( buffer, TAG_SERVLET_PATH, getServletPath() );
     return new ByteArrayInputStream( buffer.toString().getBytes() );
@@ -117,9 +131,16 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   protected abstract String getServletPath();
 
-  private static void replacePlaceholder( final StringBuffer buffer,
-                                          final String placeholder,
-                                          final String replacement )
+  protected abstract String getPackageName();
+
+  private String getLaunchTemplete( IProject project ) {
+    IFile serviceComponentXml = project.getFile( SERVICE_COMPONENT_FILE );
+    return serviceComponentXml.exists() ? BASIC_LAUNCH_TEMPLATE : WORKBENCH_LAUNCH_TEMPLATE;
+  }
+
+  private static void replacePlaceholder( StringBuffer buffer,
+                                          String placeholder,
+                                          String replacement )
   {
     int index = buffer.indexOf( placeholder );
     while( index != -1 ) {
@@ -135,7 +156,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   }
 
   private boolean containsRapUi() {
-    IPluginModelBase rapUiPluginModel = PluginRegistry.findModel( "org.eclipse.rap.ui" );//$NON-NLS-1$
+    IPluginModelBase rapUiPluginModel = PluginRegistry.findModel( "org.eclipse.rap.ui" ); //$NON-NLS-1$
     return rapUiPluginModel != null;
   }
 
@@ -200,7 +221,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   private static class ManifestListener implements IResourceChangeListener {
 
-    public void resourceChanged( final IResourceChangeEvent event ) {
+    public void resourceChanged( IResourceChangeEvent event ) {
       try {
         event.getDelta().accept( new ManifestModifier( this ) );
       } catch( CoreException cex ) {
@@ -217,16 +238,13 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     private final ManifestListener listener;
     private boolean isDone = false;
 
-    public ManifestModifier( final ManifestListener manifestListener ) {
+    public ManifestModifier( ManifestListener manifestListener ) {
       listener = manifestListener;
     }
 
-    public boolean visit( final IResourceDelta delta ) throws CoreException {
+    public boolean visit( IResourceDelta delta ) throws CoreException {
       String name = delta.getResource().getName();
-      if( MANIFEST_FILE.equals( name )
-          && IResourceDelta.ADDED == delta.getKind()
-          && !isDone )
-      {
+      if( MANIFEST_FILE.equals( name ) && IResourceDelta.ADDED == delta.getKind() && !isDone ) {
         isDone = true;
         IWorkspace ws = ResourcesPlugin.getWorkspace();
         ws.removeResourceChangeListener( listener );
@@ -235,17 +253,13 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       return !isDone;
     }
 
-    private void modifyManifest( final IResource resource )
-      throws CoreException
-    {
+    private void modifyManifest( IResource resource ) throws CoreException {
       final IFile file = ( IFile )resource;
       try {
-        BufferedReader reader
-          = new BufferedReader( new InputStreamReader( file.getContents() ) );
+        BufferedReader reader = new BufferedReader( new InputStreamReader( file.getContents() ) );
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-          BufferedWriter writer
-            = new BufferedWriter( new OutputStreamWriter( baos ) );
+          BufferedWriter writer = new BufferedWriter( new OutputStreamWriter( baos ) );
           try {
             String line = reader.readLine();
             while( line != null ) {
@@ -263,6 +277,10 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
             }
             writer.write( "Import-Package: javax.servlet;version=\"2.4.0\"," + NL ); //$NON-NLS-1$
             writer.write( " javax.servlet.http;version=\"2.4.0\"" + NL ); //$NON-NLS-1$
+            IFile serviceComponentXml = file.getProject().getFile( SERVICE_COMPONENT_FILE );
+            if( serviceComponentXml.exists() ) {
+              writer.write( "Service-Component: OSGI-INF/contribution.xml" + NL );
+            }
           } finally {
             writer.close();
           }
@@ -270,30 +288,23 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
           reader.close();
         }
         scheduleJob( file, baos );
-      } catch( IOException ioe ) {
+      } catch( IOException exception ) {
         IStatus status = new Status( IStatus.ERROR,
                                      TemplateUtil.PLUGIN_ID,
                                      IStatus.OK,
                                      "Could not process " + MANIFEST_FILE, //$NON-NLS-1$
-                                     ioe );
+                                     exception );
         throw new CoreException( status );
       }
     }
 
-    private void scheduleJob( final IFile file,
-                              final ByteArrayOutputStream baos )
-    {
-      IResourceRuleFactory ruleFactory
-        = ResourcesPlugin.getWorkspace().getRuleFactory();
+    private void scheduleJob( final IFile file, final ByteArrayOutputStream baos ) {
+      IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
       ISchedulingRule rule = ruleFactory.createRule( file );
-      String jobName = NLS.bind( Messages.AbstractRAPWizard_Modifying,
-                                 MANIFEST_FILE );
+      String jobName = NLS.bind( Messages.AbstractRAPWizard_Modifying, MANIFEST_FILE );
       Job job = new WorkspaceJob( jobName ) {
-        public IStatus runInWorkspace( final IProgressMonitor monitor )
-          throws CoreException
-        {
-          ByteArrayInputStream bais
-            = new ByteArrayInputStream( baos.toByteArray() );
+        public IStatus runInWorkspace( IProgressMonitor monitor ) throws CoreException {
+          ByteArrayInputStream bais = new ByteArrayInputStream( baos.toByteArray() );
           file.setContents( bais, true, false, new NullProgressMonitor() );
           return Status.OK_STATUS;
         }
@@ -301,5 +312,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
       job.setRule( rule );
       job.schedule( 1000 );
     }
+
   }
+
 }

@@ -19,9 +19,8 @@ public class Messages extends NLS {
   public static String AbstractRAPWizard_targetQuestionDialogTitle;
   public static String AbstractRAPWizard_Modifying;
 
-  public static String helloRAPTemplate_appClass;
   public static String helloRAPTemplate_appWindowTitle;
-  public static String helloRAPTemplate_packageNmae;
+  public static String helloRAPTemplate_packageName;
   public static String helloRAPTemplate_pageDescr;
   public static String helloRAPTemplate_pageTitle;
   public static String helloRAPTemplate_perspectiveName;

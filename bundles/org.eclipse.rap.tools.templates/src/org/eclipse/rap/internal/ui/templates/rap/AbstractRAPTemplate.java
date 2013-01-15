@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource and others
+ * Copyright (c) 2007, 2013 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,18 +51,18 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
     return true;
   }
 
-  public void initializeFields( final IPluginModelBase modelBase ) {
+  public void initializeFields( IPluginModelBase modelBase ) {
     String id = modelBase.getPluginBase().getId();
     String packageName = TemplateUtil.getFormattedPackageName( id );
     initializeOption( KEY_PACKAGE_NAME, packageName );
   }
 
-  protected void initializeFields( final IFieldData data ) {
+  protected void initializeFields( IFieldData data ) {
     String packageName = TemplateUtil.getFormattedPackageName( data.getId() );
     initializeOption( KEY_PACKAGE_NAME, packageName );
   }
 
-  public IPluginReference[] getDependencies( final String schemaVersion ) {
+  public IPluginReference[] getDependencies( String schemaVersion ) {
     return new IPluginReference[] {
       new PluginReference( "org.eclipse.rap.ui", null, IMatchRules.NONE ) //$NON-NLS-1$
     };
@@ -71,16 +71,14 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
   ////////////////////
   // protected methods
 
-  protected final void addExtensionToPlugin( final IPluginExtension extension )
-    throws CoreException
-  {
+  protected final void addExtensionToPlugin( IPluginExtension extension ) throws CoreException {
     IPluginBase plugin = model.getPluginBase();
     if( !extension.isInTheModel() ) {
       plugin.add( extension );
     }
   }
 
-  protected final IPluginElement createElement( final IPluginExtension extension ) {
+  protected final IPluginElement createElement( IPluginExtension extension ) {
     IPluginModelFactory factory = model.getPluginFactory();
     return factory.createElement( extension );
   }

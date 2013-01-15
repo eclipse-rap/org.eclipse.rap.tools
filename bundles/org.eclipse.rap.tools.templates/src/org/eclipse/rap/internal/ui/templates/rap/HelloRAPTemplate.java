@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource and others
+ * Copyright (c) 2007, 2013 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.pde.core.plugin.IPluginElement;
-import org.eclipse.pde.core.plugin.IPluginExtension;
-import org.eclipse.rap.internal.ui.templates.XmlNames;
+import org.eclipse.pde.core.plugin.IMatchRules;
+import org.eclipse.pde.core.plugin.IPluginReference;
+import org.eclipse.rap.internal.ui.templates.PluginReference;
 
 class HelloRAPTemplate extends AbstractRAPTemplate {
 
@@ -46,64 +46,25 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
     return "/hello";
   }
 
+  public IPluginReference[] getDependencies( String schemaVersion ) {
+    return new IPluginReference[] {
+      new PluginReference( "org.eclipse.rap.rwt", null, IMatchRules.NONE ) //$NON-NLS-1$
+    };
+  }
+
+  @Override
   protected void updateModel( IProgressMonitor monitor ) throws CoreException {
-    createEntryPointExtension();
-    createApplicationExtension();
-    createPerspectivesExtension();
   }
 
   //////////////////
   // helping methods
-
-  private void createEntryPointExtension() throws CoreException {
-    IPluginExtension extension = createExtension( XmlNames.XID_ENTRYPOINT, true );
-    extension.setId( getApplicationId() + ".entrypoints" );
-    IPluginElement entryPointElement = createElement( extension );
-    entryPointElement.setName( XmlNames.ELEM_ENTRYPOINT );
-    entryPointElement.setAttribute( XmlNames.ATT_ID, getApplicationId() + ".entrypoint" );
-    entryPointElement.setAttribute( XmlNames.ATT_SERVLET_PATH, getServletPath() );
-    entryPointElement.setAttribute( XmlNames.ATT_APPLICATION_ID, getFullApplicationId() );
-    extension.add( entryPointElement );
-    addExtensionToPlugin( extension );
-  }
-
-  private void createApplicationExtension() throws CoreException {
-    IPluginExtension extension = createExtension( XmlNames.XID_APPLICATION, true );
-    extension.setId( getFullApplicationId() );
-    IPluginElement applicationElement = createElement( extension );
-    applicationElement.setName( XmlNames.ELEM_APPLICATION );
-    applicationElement.setAttribute( XmlNames.ATT_VISIBLE, "true" ); //$NON-NLS-1$
-    applicationElement.setAttribute( XmlNames.ATT_CARDINALITY, "singleton-global" ); //$NON-NLS-1$
-    applicationElement.setAttribute( XmlNames.ATT_THREAD, "main" ); //$NON-NLS-1$
-    extension.add( applicationElement );
-    IPluginElement runElement = createElement( extension );
-    runElement.setName( XmlNames.ELEM_RUN ); //$NON-NLS-1$
-    runElement.setAttribute( XmlNames.ATT_CLASS, getApplicationClass() );
-    applicationElement.add( runElement );
-    addExtensionToPlugin( extension );
-  }
-
-  private void createPerspectivesExtension() throws CoreException {
-    IPluginExtension extension = createExtension( XmlNames.XID_PERSPECTIVES, true );
-    IPluginElement element = createElement( extension );
-    element.setName( XmlNames.ELEM_PERSPECTIVE );
-    element.setAttribute( XmlNames.ATT_CLASS, getPackageName() + ".Perspective" ); //$NON-NLS-1$
-    element.setAttribute( XmlNames.ATT_NAME, Messages.helloRAPTemplate_perspectiveName );
-    element.setAttribute( XmlNames.ATT_ID, getPluginId() + ".perspective" ); //$NON-NLS-1$
-    extension.add( element );
-    addExtensionToPlugin( extension );
-  }
 
   private void createTemplateOptions() {
     addOption( KEY_WINDOW_TITLE,
                Messages.helloRAPTemplate_windowTitle,
                Messages.helloRAPTemplate_appWindowTitle,
                0 );
-    addOption( KEY_PACKAGE_NAME, Messages.helloRAPTemplate_packageNmae, null, 0 );
-    addOption( KEY_APPLICATION_CLASS,
-               Messages.helloRAPTemplate_appClass,
-               "Application", //$NON-NLS-1$
-               0 );
+    addOption( KEY_PACKAGE_NAME, Messages.helloRAPTemplate_packageName, null, 0 );
   }
 
 }
