@@ -15,9 +15,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.pde.core.plugin.IMatchRules;
-import org.eclipse.pde.core.plugin.IPluginReference;
-import org.eclipse.rap.internal.ui.templates.PluginReference;
 
 class HelloRAPTemplate extends AbstractRAPTemplate {
 
@@ -44,12 +41,6 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
 
   public String getServletPath() {
     return "/hello";
-  }
-
-  public IPluginReference[] getDependencies( String schemaVersion ) {
-    return new IPluginReference[] {
-      new PluginReference( "org.eclipse.rap.rwt", null, IMatchRules.NONE ) //$NON-NLS-1$
-    };
   }
 
   @Override

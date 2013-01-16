@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.pde.core.plugin.*;
 import org.eclipse.pde.ui.IFieldData;
 import org.eclipse.pde.ui.templates.OptionTemplateSection;
-import org.eclipse.rap.internal.ui.templates.PluginReference;
 import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 
 abstract class AbstractRAPTemplate extends OptionTemplateSection {
@@ -63,9 +62,7 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
   }
 
   public IPluginReference[] getDependencies( String schemaVersion ) {
-    return new IPluginReference[] {
-      new PluginReference( "org.eclipse.rap.ui", null, IMatchRules.NONE ) //$NON-NLS-1$
-    };
+    return new IPluginReference[ 0 ];
   }
 
   ////////////////////

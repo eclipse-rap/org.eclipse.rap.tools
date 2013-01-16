@@ -40,4 +40,9 @@ public class HelloRAPWizard extends AbstractRAPWizard {
     return template.getPackageName();
   }
 
+  @Override
+  protected String getRequiredBundles() {
+    return "org.eclipse.rap.rwt";
+  }
+
 }

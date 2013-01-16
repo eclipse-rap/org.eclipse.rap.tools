@@ -64,7 +64,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     if( result ) {
       copyServiceComponentConfig( project, model );
       copyLaunchConfig( project, model );
-      IResourceChangeListener listener = new ManifestListener();
+      IResourceChangeListener listener = new ManifestListener( this );
       ResourcesPlugin.getWorkspace().addResourceChangeListener( listener );
       handleRapTargetVerification();
     }
@@ -132,6 +132,8 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   protected abstract String getServletPath();
 
   protected abstract String getPackageName();
+
+  protected abstract String getRequiredBundles();
 
   private String getLaunchTemplete( IProject project ) {
     IFile serviceComponentXml = project.getFile( SERVICE_COMPONENT_FILE );
@@ -221,9 +223,15 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   private static class ManifestListener implements IResourceChangeListener {
 
+    private final AbstractRAPWizard wizard;
+
+    public ManifestListener( AbstractRAPWizard wizard ) {
+      this.wizard = wizard;
+    }
+
     public void resourceChanged( IResourceChangeEvent event ) {
       try {
-        event.getDelta().accept( new ManifestModifier( this ) );
+        event.getDelta().accept( new ManifestModifier( wizard, this ) );
       } catch( CoreException cex ) {
         TemplateUtil.log( cex.getStatus() );
       }
@@ -235,19 +243,20 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     private static final String MANIFEST_FILE = "MANIFEST.MF"; //$NON-NLS-1$
     private static final String NL = "\r\n"; //$NON-NLS-1$
 
+    private final AbstractRAPWizard wizard;
     private final ManifestListener listener;
     private boolean isDone = false;
 
-    public ManifestModifier( ManifestListener manifestListener ) {
-      listener = manifestListener;
+    public ManifestModifier( AbstractRAPWizard wizard, ManifestListener listener ) {
+      this.wizard = wizard;
+      this.listener = listener;
     }
 
     public boolean visit( IResourceDelta delta ) throws CoreException {
       String name = delta.getResource().getName();
       if( MANIFEST_FILE.equals( name ) && IResourceDelta.ADDED == delta.getKind() && !isDone ) {
         isDone = true;
-        IWorkspace ws = ResourcesPlugin.getWorkspace();
-        ws.removeResourceChangeListener( listener );
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener( listener );
         modifyManifest( delta.getResource() );
       }
       return !isDone;
@@ -262,19 +271,23 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
           BufferedWriter writer = new BufferedWriter( new OutputStreamWriter( baos ) );
           try {
             String line = reader.readLine();
+            boolean inRequiredBundles = false;
             while( line != null ) {
               String result = line + NL;
-              if( "Require-Bundle: org.eclipse.ui,".equals( line ) ) { //$NON-NLS-1$
-                result = "Require-Bundle: org.eclipse.rap.ui" + NL; //$NON-NLS-1$
-              } else if(    " org.eclipse.core.runtime,".equals( line ) //$NON-NLS-1$
-                         || " org.eclipse.rap.ui".equals( line ) ) { //$NON-NLS-1$
+              if( result.startsWith( "Require-Bundle:" ) ) { //$NON-NLS-1$
+                inRequiredBundles = true;
                 result = null;
+              } else if( inRequiredBundles && line.startsWith( " " ) ) { //$NON-NLS-1$
+                result = null;
+              } else {
+                inRequiredBundles = false;
               }
               if( result != null ) {
                 writer.write( result );
               }
               line = reader.readLine();
             }
+            writer.write( "Require-Bundle: " + wizard.getRequiredBundles() + NL ); //$NON-NLS-1$
             writer.write( "Import-Package: javax.servlet;version=\"2.4.0\"," + NL ); //$NON-NLS-1$
             writer.write( " javax.servlet.http;version=\"2.4.0\"" + NL ); //$NON-NLS-1$
             IFile serviceComponentXml = file.getProject().getFile( SERVICE_COMPONENT_FILE );
