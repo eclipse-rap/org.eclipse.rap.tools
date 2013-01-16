@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Tree and Table Enhancements</title>
+  <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+
+  <h1>Tree and Table Enhancements</h1>
+
+   <p>
+     Tree and Table are the most powerful widgets in RAP. Not only can they easily display
+     vast amounts of data (thanks to JFace and virtual rendering) in various ways, they also feature
+     some additional functionality in RAP compared to their SWT counterparts.
+   </p>
+   <p>The following is a list of hints you might find helpful when working with Tree or Table.</p>
+
+   <h4>JFace support:</h4>
+   <p>
+     RAP includes it's own JFace implementation that can be used
+     to sort, filter and edit data in Trees and Tables.
+     Simply create Tree/Table
+     <a href="/help/topic/org.eclipse.platform.doc.isv/guide/jface_viewers.htm">viewers</a>
+     instead of the widget itself. RAP-specific features can still be enabled by accessing the widget
+     within the viewer directly. <br/>
+      Example:&nbsp; <code>viewer.getTable().setData( RWT.MARKUP_ENABLED, Boolean.TRUE );</code>
+   </p>
+
+    <h4>Fixed Columns:</h4>
+    <p>
+      When a table or tree displays many columns, the user often has to scroll horizontally to see
+      specific data.
+      Doing so means losing sight of the first columns, which may contain vital information that
+      should be visible at all times.
+      Using <code>RWT.FIXED_COLUMNS</code>, it is possible to exclude any number of leftmost
+      columns from scrolling, so that they always stick on the left border of the tree or table.<br/>
+      Example:&nbsp; <code>tree.setData( RWT.FIXED_COLUMNS, new Integer( 1 ) );</code>
+    </p>
+
+    <h4>Markup Support:</h4>
+    <p>
+      You can greatly enhance the look and interactivity
+      of any Tree or Table using the RAP markup feature.
+    </p>
+
+    <h4>Line breaks in Columns:</h4>
+    <p>
+      Unlike SWT, RAP supports line breaks ( "\n" ) in a columns text property.
+    </p>
+
+    <h4>Virtual rendering and performance:</h4>
+    <p>
+      There are two ways Tree and Table support virtual rendering. <br/> First, any Tree/Table will
+      only render HTML for the data that is currently visible on screen. <br/>
+      Second, if the widget (or viewer) is created with a <code>VIRTUAL</code> flag,
+      items can be created lazily. As a result, data that is not visible will also
+      not be transferred to the client, saving even more memory and initial rendering time.
+     </p><p>
+      The drawback of these features is a slight impact on performance when scrolling. If you
+      experience unsatisfying performance while scrolling, try reducing the number of columns,
+      or hide some columns (setting width to zero). When using the <code>VIRTUAL</code> flag,
+      you will also experience a small rendering delay when scrolling to previously unseen data.
+      You can reduce this effect by pre-caching data you assume will be displayed in the near future.
+      A very basic implementation of such a feature could look like this:
+    </p>
+    <pre><code>  ScrollBar bar = viewer.getTable().getVerticalBar();
+  bar.addListener( SWT.Selection, new Listener(){
+    public void handleEvent( Event event ) {
+      Table table = viewer.getTable();
+      int index = table.getTopIndex();
+      int max = Math.min(  index + 100, table.getItemCount() );
+      for( int i = index; i &lt; max; i++ ) {
+        table.getItem( i ).getText();
+      }
+    }
+  } );</code></pre>
+
+
+    <h4>Selection/Hover rendering order</h4>
+    <p>
+      Any item and every cell of an item may have a custom background to highlight a specific unit
+      of data. In SWT (and RAP, by default), hovering or selecting such an item will completely
+      overlay these backgrounds, essentially removing onscreen information. This behavior
+      can be configured in RAP using the CSS Theming API. Note that any item that has a background
+      set on all cells (or the item itself), will only be identifiable as selected by the text color,
+      or not at all (if there is <em>also</em> a custom foreground set).
+    </p>
+    <p>
+     In addition to the <code>TableItem</code> / <code>TreeItem</code> theming elements, there are also
+     <code>Table-RowOverlay</code> / <code>Tree-RowOverlay</code> elements. In the default theme,
+     these overlay elements are used to define the hover and selection behavior. If you wish
+     for the item backgrounds to paint over the selection/hover effects, you will have to use
+     these overlay element to create the effects. (You can also mix, so that hover or selection
+     paints over the backgrounds, but not the other.)
+    </p>
+    <p>
+      Assuming you implement a complete custom theme, this is easy. Simply use only the item-element
+      to define the effect and define the overlay element as below:
+    </p>
+    <pre><code>Table-RowOverlay {
+  background-color: transparent;
+  color: inherit;
+  background-image: none;
+}</code></pre>
+    <p>
+      If you wish to only make a theme contribution, you also need to overwrite every possible
+      combination for the overlay-element:
+    </p>
+    <pre><code>Table-RowOverlay,
+Table-RowOverlay:hover,
+Table-RowOverlay:selected,
+Table-RowOverlay:linesvisible:even:hover,
+Table-RowOverlay:linesvisible:even:selected,
+TableItem:linesvisible:even:selected:unfocused {
+  background-color: transparent;
+  color: inherit;
+  background-image: none;
+}</code></pre>
+    <p>
+      To restore the hover effect you have to define all these combinations for the item-element,
+      just as it is done for the overlay-element in the default theme.
+    </p>
+
+    <h4>Alternative: Nebula Grid</h4>
+    <p>
+      Available in the <a href="http://eclipse.org/rap/incubator/">RAP Incubator</a>
+      is a RAP implementation of the Nebula Grid widget. Based on the same JavaScript
+      code as Tree and Table, it adds features like column grouping,
+      checkboxes on multiple columns, variable item height and column footer.
+    </p>
+
+</body>
+</html>
