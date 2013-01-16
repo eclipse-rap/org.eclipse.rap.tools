@@ -32,6 +32,8 @@
         label="Key and Mouse Event Handling"
         href="guide/articles/key-and-mouse-events.html">
     </topic>
+    <topic href="guide/articles/markup.html" label="Fonts and Markup in RAP">
+    </topic>
     <topic href="guide/articles/client.html" label="The RAP Client">
     </topic>
     <topic
