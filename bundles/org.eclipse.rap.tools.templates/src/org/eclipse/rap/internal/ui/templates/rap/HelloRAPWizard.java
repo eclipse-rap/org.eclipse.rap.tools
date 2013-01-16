@@ -41,8 +41,18 @@ public class HelloRAPWizard extends AbstractRAPWizard {
   }
 
   @Override
-  protected String getRequiredBundles() {
+  protected String getRequireBundles() {
     return "org.eclipse.rap.rwt";
+  }
+
+  @Override
+  protected String getActivatorName() {
+    return template.getActivatorName();
+  }
+
+  @Override
+  protected boolean shouldModifyActivator() {
+    return true;
   }
 
 }

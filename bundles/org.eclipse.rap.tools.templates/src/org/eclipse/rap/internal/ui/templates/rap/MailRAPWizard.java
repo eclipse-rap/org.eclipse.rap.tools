@@ -41,8 +41,18 @@ public class MailRAPWizard extends AbstractRAPWizard {
   }
 
   @Override
-  protected String getRequiredBundles() {
+  protected String getRequireBundles() {
     return "org.eclipse.rap.ui";
+  }
+
+  @Override
+  protected String getActivatorName() {
+    return template.getActivatorName();
+  }
+
+  @Override
+  protected boolean shouldModifyActivator() {
+    return false;
   }
 
 }

@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.pde.core.plugin.*;
 import org.eclipse.pde.ui.IFieldData;
+import org.eclipse.pde.ui.templates.AbstractTemplateSection;
 import org.eclipse.pde.ui.templates.OptionTemplateSection;
 import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 
@@ -48,6 +49,10 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
 
   public boolean isDependentOnParentWizard() {
     return true;
+  }
+
+  public String getActivatorName() {
+    return ( String )getValue( AbstractTemplateSection.KEY_ACTIVATOR_SIMPLE );
   }
 
   public void initializeFields( IPluginModelBase modelBase ) {
