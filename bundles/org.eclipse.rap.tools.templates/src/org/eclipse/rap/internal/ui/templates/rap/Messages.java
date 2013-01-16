@@ -23,7 +23,6 @@ public class Messages extends NLS {
   public static String helloRAPTemplate_packageName;
   public static String helloRAPTemplate_pageDescr;
   public static String helloRAPTemplate_pageTitle;
-  public static String helloRAPTemplate_perspectiveName;
   public static String helloRAPTemplate_windowTitle;
   public static String helloRAPWizard_windowTitle;
 
