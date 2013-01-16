@@ -19,24 +19,20 @@
         label="RAP Examples"
         href="guide/articles/examples.html"/>
   </topic>
-  <topic label="RAP Widget Toolkit (RWT)">
+  <topic label="RAP Widget Toolkit">
     <topic
         label="Introduction"
         href="guide/articles/rwt.html">
     </topic>
     <topic
-        label="Differences between RWT and SWT"
+        label="Important Differences to SWT"
         href="guide/articles/differences.html">
-    </topic>
-    <topic href="guide/articles/client.html" label="The RAP Client">
-    </topic>
-    <topic
-        label="Scopes and Data Stores in RWT"
-        href="guide/articles/scopes.html">
     </topic>
     <topic
         label="Key and Mouse Event Handling"
         href="guide/articles/key-and-mouse-events.html">
+    </topic>
+    <topic href="guide/articles/client.html" label="The RAP Client">
     </topic>
     <topic
         label="RWT Theming"
@@ -45,7 +41,24 @@
         label="Custom Widgets"
         href="guide/articles/custom-widget.html"/>
   </topic>
-  <topic label="Application Development">
+  <topic label="Scopes and Threads in RAP">
+    <topic
+        label="Overview"
+        href="guide/articles/scopes.html">
+    </topic>
+    <topic
+        label="Singletons and Static Fields"
+        href="guide/articles/singletons.html">
+    </topic>
+    <topic href="guide/articles/data-stores.html" label="Data Storage">
+    </topic>
+    <topic
+        label="Session access from a background thread"
+        href="guide/articles/threads.html"/>
+    <topic href="guide/articles/server-push.html" label="Server Push">
+    </topic>
+  </topic>
+  <topic label="Building Applications">
     <topic
         label="Choosing an Application Setup"
         href="guide/articles/application-setup.html"/>
@@ -65,9 +78,6 @@
     <topic
         label="Look and Feel"
         href="guide/articles/look-and-feel.html"/>
-    <topic
-        label="Server Push"
-        href="guide/articles/server-push.html"/>
     <topic
         label="Internationalization"
         href="guide/articles/internationalization.html"/>

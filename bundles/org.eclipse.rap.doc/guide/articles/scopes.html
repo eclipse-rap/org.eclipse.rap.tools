@@ -5,62 +5,92 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Multi User Enviroment</title>
+  <title>Scopes and Threads in RAP</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
 
-  <h1>Scopes in RWT</h1>
-
+  <h1>Scopes and Threads in RAP</h1>
   <p>
-    In a desktop environment, an instance of an application normally serves only a single user,
-    runs in its own Java VM instance, and the operating system usually provides a user-specific
-    storage on the file system.
+    While RAP inherits many traits of a desktop application framework from SWT/RCP, it is in fact
+    a multi-user, client-server based web framework. This means there are some significant
+    architectual differences that need to be considered when building RAP applications.
+  </p>
+  <p>
+    In a desktop environment, an instance of an application normally serves only a <b>single user</b>,
+    runs in its <b>own Java VM</b> instance, and the operating system usually provides a user-specific
+    <b>storage on the file system</b>. The <b>UI is rendered on the same machine</b> as
+    the application runs on, and when the user exists the <b>application is terminated</b>.
     For RAP applications, these things work differently.
   </p>
   <p>
-    A RAP application does not own the VM. It runs on a server and shares the VM with the servlet
-    container, other applications, maybe even other RAP applications.
-    There are multiple users accessing the application, each one with a separate UI, but all sharing
+    A RAP application does not own the VM. It runs on a server and <b>shares the VM</b> with the
+    servlet container, other applications, maybe even other RAP applications.
+    There are <b>multiple users</b> accessing the application, each one with a <b>separate UI
+    connected via HTTP</b>, but all sharing
     the same classes.
     Moreover, a RAP application runs for a very long time.
-    When a user logs in, the application is already running, and it continues to run when the user
-    leaves.
-    For that reason, it is necessary to distinguish several scopes when designing RAP applications.
+    When a user logs in, the application is already running, and it may <b>continue to run when
+    the user leaves</b>.
+  </p><p>
+    For these reason, it is necessary to distinguish various scopes and threads in RAP:
   </p>
 
-  <h2>Application Scope</h2>
+  <h2>ApplicationContext</h2>
   <p>
     There can be more than one RAP application running at the same time, e.g. on different network
     ports or different contexts paths.
-    Every application has its own set of entry points, registered resources, and so on.
+    Every application has its own set of entry points, registered resources and service handler.
     All these things have application scope.
     If you have objects that should be accessible from everywhere in the application, they need to
-    have application scope as well.
-    RWT provides an application-scoped store for these objects, called <em>application context</em>,
-    that can be accessed using <code>RWT.getApplicationContext()</code>.
+    have application scope as well. The application scope lives as long as the application runs
+    on the server, even if there are currently no clients connected. When the application is
+    stopped (i.e. the servlet context is destroyed), all data in this scope is lost.
+  </p>
+  <p>
+    The application scope is represented by an <code>ApplicationContext</code> instance, which can
+    be obtained via <code>RWT.getApplicationContext()</code>. It can be used to store any data that is
+    shared between all UI sessions of an application, and to acquire application-scoped instances
+    of framework services such as the resource manager.
+  <p>
+   The application context is <em>thread safe</em>, it can be accessed concurrently from different
+ threads. Background threads can not access it directly however. (See "UI Thread").
   </p>
 
-  <h2>UI Session Scope</h2>
+  <h2>UISession Context and UI Thread</h2>
   <p>
-    UI sessions in RAP are built on top of the servlet container's session management.
-    But in contrast to the underlying HTTP session, a UI session spans exactly one
-    execution of an entrypoint.
-    As an example, when the browser is refreshed (usually by hitting <em>F5</em>) to start over,
+    The UI session context in RAP spans exactly one execution of an entrypoint.
+    It is created when the user connects to the server, and usually ends with a refresh or timeout.
+    While UI sessions are built on top of the servlet container's session management,
+    they are not identical to the underlying HTTP session.
+    For example, when the browser is refreshed (usually by hitting <em>F5</em>) to start over,
     the user still has the same HTTP session, but a fresh UI session.
+    Often, what would be a singleton or static field in a desktop application, has to have
+    UI Session scope in RAP.
+  </p><p>
     A UI session is represented by an <code>UISsession</code> instance, accessible using
     <code>RWT.getUISession()</code>. Similar to <em>application context</em>, it can be used to
-    store session-scoped data.
-    The session store also provides access to the HTTP session.
-    Note that the session store can not be directly accessed via <code>RWT.getUISession()</code>
-    from a background thread (see below). For working with session-unique singletons, see
-    <a href="#singleton">Session Singleton</a>.
+    store session-scoped data. It also provides access to the HTTP session and the client object.
+  </p>
+
+  <h3>UI Thread</h3>
+
+  <p>
+    The UI thread is the thread in which the Display was created.
+    Widgets can only be created and accessed in this thread. In addition, anything in RAP
+    that requires UI Session context (including <code>SingletonUtil</code> and
+    most methods of <code>RWT</code>, like <code>RWT.getUISession()</code> / <code>RWT.getApplicationContext()</code>)
+    by default works only within the UI thread.<br/>
+    Since all event code is triggered from the UI thread, event listener already have full access
+    without any special techniques. However, if an application is forking new threads
+    ("non-UI" or "background" threads), this is not the case. See
+    <a href="threads.html#access">Session access from a background threads</a>.
   </p>
 
   <h3>Session Timeout</h3>
   <p>
 
-    A UI session ends when the execution of an entrypoint is finished
+    A UI session ends when the execution of an entrypoint is finished (display is disposed)
     or when the underlying HTTP session times out.
     The timeout interval must be be configured with the servlet container.
     For web applications, this can be done in the web application's deployment descriptor (web.xml):
@@ -110,141 +140,30 @@ display.disposeExec( new Runnable() {
    </code></pre></div>
    -->
 
-  <h2 id="singleton" >Singletons and Static Fields</h2>
-  <p>
-    The classical singleton pattern suggests that a class has only one instance and keeps the
-    reference to this instance in a static field.
-    In RAP, <strong>this pattern is dangerous</strong>, because static values are kept in the
-    <em>class</em>, which is shared among different user sessions and different applications.
-    As an example, if a copy of the user's shopping cart is kept as a session singleton, this would
-    work on the desktop, but in RAP, all users would share the same shopping cart instance.
-  </p>
-  <p>
-    Instead of using singletons and static fields, all data must be kept in the correct scope in RAP.
-    RAP provides a helper class <code>SingletonUtil</code> that can create session-unique
-    instances of a given class, so called “session singletons”.
-    In the context of one UI session
-    <code>SingletonUtil.getSessionInstance( Class )</code> will always return the same object,
-    but for different user sessions the returned instances will be different.
-    The following code snippet illustrates this pattern:
-  </p>
-  <div dir="ltr" style="text-align: left;"><pre><code>public class MySessionSingleton {
-  private MySessionSingleton() {
-    // prevent instantiation from outside
-  }
 
-  public static MySessionSingleton getInstance() {
-    return SingletonUtil.getSessionInstance( MySessionSingleton.class );
-  }
-
-  // other methods ...
-}
-  </code></pre></div>
-
-  <h2>Session access from a background thread</h2>
+  <h2>User Settings</h2>
   <p>
-    RWT determines the UI session based the current thread. When <em>background</em> threads try to
-    do so, the code will fail with an <code>java.lang.IllegalStateException</code>, saying that
-    there's no context available. The same is true for access to the sessions <code>Client</code>
-    instance.
-  </p>
-  <pre><code>// INCORRECT
-// will throw IllegalStateException: No context available ...
-Runnable runnable = new Runnable() {
-  public void run() {
-    UISession session = RWT.getUISession();
-    // ... or ...
-    Client client = RWT.getClient();
-    // ... or ...
-    MySessionSingleton sessionSingleton = MySessionSingleton.getInstance();
-    // ...
-  }
-};
-new Thread( runnable ).start();
-</code></pre>
-  <p>
-    The solution is to run the code in question with a simulated UI session context.
-    To do so, an <code>UISession</code> instance is needed first. If it is not stored somewhere
-    the thread can access it (in a field or final variable), an instance of <code>Display</code>
-    can be used to obtain it from <code>RWT.getUISession( Display display )</code>. Then,
-    call the method <code>UISession#exec( Runnable runnable )</code>. The code in the runnable
-    will be able to access all data associated with the session.
-  </p>
-  <pre><code>// CORRECT
-final Display display = Display.getCurrent();
-final Runnable runnable = new Runnable() {
-  public void run() {
-    UISession uiSession = RWT.getUISession( display );
-    uiSession.exec( new Runnable() {
-      public void run() {
-        Client client = RWT.getClient();
-        // ... or ...
-        MySessionSingleton sessionSingleton = MySessionSingleton.getInstance();
-        // ...
-      }
-    } );
-  }
-};
-new Thread( runnable ).start();
-  </code></pre>
-
-  <h3>UISession#exec Vs. Display#asyncExec</h3>
-  <p>
-    SWT/RWT widgets can only be accessed from a UI thread. While <code>UISession#exec</code>
-    provides a UI session scope, it does not execute the runnable within the UI thread. To do so,
-    <code>Display#asyncExec</code> has to be used. However, to do so from a background thread, a
-    <a href="server-push.html">ServerPushSession</a>
-    has to be running, and an HTTP request will be triggered when it is called. In contrast,
-    <code>UISession#exec</code> never causes any additional network traffic.
-  </p>
-  <p>
-    In summary, when a thread needs to access session scope
-    (e.g. by using <code>SingletonUtil</code>
-    or <code>RWT.getClient</code>), <code>UISession#exec</code> should be used.
-    Only when the UI needs to be updated <code>Display#asyncExec</code> should be used, which
-    provides session scope <em>and</em> access to the UI. Using one from within the other is
-    pointless.
+    While there is a new UI Session every time a client connects, a returning user may by identified
+    by RAP using a coockie. To associate data with a specific user, the <code>SettingStore</code>
+    may be used.
   </p>
 
-
-
-
-
-  <h2>Persisting User Data</h2>
+  <h2>RAP Client</h2>
   <p>
-    RWT provides a persistent data store called SettingStore, which can be accessed using
-    <code>RWT.getSettingStore()</code>.
-    The settings store uses a cookie to identify a returning user.
-    By default, the cookie expires after 3 months, but may also be deleted by the user before then.
+    Any RAP Client that connects with a RAP server also stores some data, usually for the duration
+    of the UI Session. Most noteably, the client has a complete copy of the UI state, which it
+    presents to the user to interact with. It can only exchange data during HTTP requests,
+    which are triggered by user interacations. That means that if the UI state is changed by a
+    background thread, the client would normally not be updated until the next time the user does
+    someting with the UI. See <a>Server Push</a> for more.
   </p>
 
-  <h2>Data Scopes (Overview)</h2>
-  <table border="1" cellpadding="3" cellspacing="0">
-    <tr>
-      <th align="left">Interface</th>
-      <th align="left">Access</th>
-      <th align="left">Scope</th>
-      <th align="left">cleared</th>
-    </tr>
-    <tr>
-      <td><code>ApplicationContext</code></td>
-      <td><code>RWT.getApplicationContext()</code></td>
-      <td>application</td>
-      <td>when application is stopped/restarted</td>
-    </tr>
-    <tr>
-      <td><code>UISession</code></td>
-      <td><code>RWT.getUISession()</code></td>
-      <td style="white-space:nowrap">session</td>
-      <td>when session expires</td>
-    </tr>
-    <tr>
-      <td><code>SettingsStore</code></td>
-      <td><code>RWT.getSettingStore()</code></td>
-      <td>user (persistent)</td>
-      <td>never, cookie lasts 3 month by default</td>
-    </tr>
-  </table>
+  <h2>HTTP Request</h2>
+  <p>
+    Some data is also associated with the current HTTP request. However, these are almost
+    entirely internals, and should not be of any concern to application developer.
+  </p>
+
 
 </body>
 </html>
