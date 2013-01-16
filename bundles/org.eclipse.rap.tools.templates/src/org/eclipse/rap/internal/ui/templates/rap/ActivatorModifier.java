@@ -12,51 +12,37 @@ package org.eclipse.rap.internal.ui.templates.rap;
 
 import java.io.*;
 
-import org.eclipse.core.resources.*;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.*;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 
-final class ActivatorModifier implements IResourceDeltaVisitor {
+final class ActivatorModifier extends ResourceModifier {
 
-  private static final String NL = "\r\n"; //$NON-NLS-1$
   private static final String TAG_ACTIVATOR_NAME = "${activatorName}"; //$NON-NLS-1$
   private static final String CONTENT =
     // we keep the original package declaration
     NL
-    + "import org.osgi.framework.BundleActivator;" + NL
-    + "import org.osgi.framework.BundleContext;" + NL
+    + "import org.osgi.framework.BundleActivator;" + NL //$NON-NLS-1$
+    + "import org.osgi.framework.BundleContext;" + NL //$NON-NLS-1$
     + NL
-    + "public class ${activatorName} implements BundleActivator {" + NL
+    + "public class ${activatorName} implements BundleActivator {" + NL //$NON-NLS-1$
     + NL
-    + "\tpublic void start( BundleContext context ) throws Exception {" + NL
-    + "\t}" + NL
+    + "\tpublic void start( BundleContext context ) throws Exception {" + NL //$NON-NLS-1$
+    + "\t}" + NL //$NON-NLS-1$
     + NL
-    + "\tpublic void stop( BundleContext context ) throws Exception {" + NL
-    + "\t}" + NL
-    + "}" + NL;
+    + "\tpublic void stop( BundleContext context ) throws Exception {" + NL //$NON-NLS-1$
+    + "\t}" + NL //$NON-NLS-1$
+    + "}" + NL; //$NON-NLS-1$
 
   private final String activatorName;
-  private final String activatorFile;
-  private boolean isDone = false;
 
   public ActivatorModifier( AbstractRAPWizard wizard ) {
+    super( wizard.getActivatorName() + ".java" ); //$NON-NLS-1$
     activatorName = wizard.getActivatorName();
-    activatorFile = activatorName + ".java";
   }
 
-  public boolean visit( IResourceDelta delta ) throws CoreException {
-    String name = delta.getResource().getName();
-    if( !isDone && activatorFile.equals( name ) && IResourceDelta.ADDED == delta.getKind() ) {
-      isDone = true;
-      modifyActivator( delta.getResource() );
-    }
-    return !isDone;
-  }
-
-  private void modifyActivator( IResource resource ) throws CoreException {
+  protected void modifyResource( IResource resource ) throws CoreException {
     final IFile file = ( IFile )resource;
     try {
       BufferedReader reader = new BufferedReader( new InputStreamReader( file.getContents() ) );
@@ -67,7 +53,7 @@ final class ActivatorModifier implements IResourceDeltaVisitor {
           String line = reader.readLine();
           while( line != null ) {
             String result = line + NL;
-            if( result.startsWith( "package" ) ) {
+            if( result.startsWith( "package" ) ) { //$NON-NLS-1$
               writer.write( result );
             }
             line = reader.readLine();
@@ -84,25 +70,10 @@ final class ActivatorModifier implements IResourceDeltaVisitor {
       IStatus status = new Status( IStatus.ERROR,
                                    TemplateUtil.PLUGIN_ID,
                                    IStatus.OK,
-                                   "Could not process " + activatorFile, //$NON-NLS-1$
+                                   "Could not process " + getResourceName(), //$NON-NLS-1$
                                    exception );
       throw new CoreException( status );
     }
-  }
-
-  private void scheduleJob( final IFile file, final ByteArrayOutputStream baos ) {
-    IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
-    ISchedulingRule rule = ruleFactory.createRule( file );
-    String jobName = NLS.bind( Messages.AbstractRAPWizard_Modifying, activatorFile );
-    Job job = new WorkspaceJob( jobName ) {
-      public IStatus runInWorkspace( IProgressMonitor monitor ) throws CoreException {
-        ByteArrayInputStream bais = new ByteArrayInputStream( baos.toByteArray() );
-        file.setContents( bais, true, false, new NullProgressMonitor() );
-        return Status.OK_STATUS;
-      }
-    };
-    job.setRule( rule );
-    job.schedule( 1000 );
   }
 
 }

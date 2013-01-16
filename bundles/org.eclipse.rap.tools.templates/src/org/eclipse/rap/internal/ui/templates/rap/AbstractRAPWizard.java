@@ -146,6 +146,8 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   protected abstract boolean shouldModifyActivator();
 
+  protected abstract boolean shouldModifyBuildProperties();
+
   private String getLaunchTemplete( IProject project ) {
     IFile serviceComponentXml = project.getFile( SERVICE_COMPONENT_FILE );
     return serviceComponentXml.exists() ? BASIC_LAUNCH_TEMPLATE : WORKBENCH_LAUNCH_TEMPLATE;
@@ -246,6 +248,9 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
           delta.accept( new ManifestModifier( wizard ) );
           if( wizard.shouldModifyActivator() && wizard.getActivatorName() != null ) {
             delta.accept( new ActivatorModifier( wizard ) );
+          }
+          if( wizard.shouldModifyBuildProperties() ) {
+            delta.accept( new BuildPropertiesModifier( wizard ) );
           }
         }
       } catch( CoreException cex ) {

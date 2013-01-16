@@ -55,4 +55,9 @@ public class HelloRAPWizard extends AbstractRAPWizard {
     return true;
   }
 
+  @Override
+  protected boolean shouldModifyBuildProperties() {
+    return true;
+  }
+
 }

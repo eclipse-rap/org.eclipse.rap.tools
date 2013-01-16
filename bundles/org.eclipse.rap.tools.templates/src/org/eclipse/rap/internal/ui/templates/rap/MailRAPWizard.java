@@ -55,4 +55,9 @@ public class MailRAPWizard extends AbstractRAPWizard {
     return false;
   }
 
+  @Override
+  protected boolean shouldModifyBuildProperties() {
+    return false;
+  }
+
 }
