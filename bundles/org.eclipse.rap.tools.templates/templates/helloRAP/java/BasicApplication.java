@@ -10,10 +10,10 @@ import org.eclipse.rap.rwt.client.WebClient;
 
 public class BasicApplication implements ApplicationConfiguration {
 
-  public void configure(Application application) {
-    Map<String, String> properties = new HashMap<String, String>();
-    properties.put(WebClient.PAGE_TITLE, "$windowTitle$");
-    application.addEntryPoint("/hello", BasicEntryPoint.class, properties);
-  }
+    public void configure(Application application) {
+        Map<String, String> properties = new HashMap<String, String>();
+        properties.put(WebClient.PAGE_TITLE, "$windowTitle$");
+        application.addEntryPoint("/hello", BasicEntryPoint.class, properties);
+    }
 
 }

@@ -28,11 +28,12 @@ final class ActivatorModifier extends ResourceModifier {
     + NL
     + "public class ${activatorName} implements BundleActivator {" + NL //$NON-NLS-1$
     + NL
-    + "\tpublic void start( BundleContext context ) throws Exception {" + NL //$NON-NLS-1$
-    + "\t}" + NL //$NON-NLS-1$
+    + "    public void start(BundleContext context) throws Exception {" + NL //$NON-NLS-1$
+    + "    }" + NL //$NON-NLS-1$
     + NL
-    + "\tpublic void stop( BundleContext context ) throws Exception {" + NL //$NON-NLS-1$
-    + "\t}" + NL //$NON-NLS-1$
+    + "    public void stop(BundleContext context) throws Exception {" + NL //$NON-NLS-1$
+    + "    }" + NL //$NON-NLS-1$
+    + NL
     + "}" + NL; //$NON-NLS-1$
 
   private final String activatorName;
