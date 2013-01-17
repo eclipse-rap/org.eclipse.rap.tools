@@ -42,7 +42,7 @@ public class MailRAPWizard extends AbstractRAPWizard {
 
   @Override
   protected String getRequireBundles() {
-    return "org.eclipse.rap.ui";
+    return "org.eclipse.rap.ui;bundle-version=\"[2.0.0,3.0.0)\"";
   }
 
   @Override

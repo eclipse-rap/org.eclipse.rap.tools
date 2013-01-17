@@ -20,10 +20,14 @@ import org.eclipse.rap.internal.ui.templates.TemplateUtil;
 final class ManifestModifier extends ResourceModifier {
 
   private String requireBundles;
+  private boolean shouldModifyActivator;
+  private String activatorName;
 
   public ManifestModifier( AbstractRAPWizard wizard ) {
     super( "MANIFEST.MF" ); //$NON-NLS-1$
     requireBundles = wizard.getRequireBundles();
+    shouldModifyActivator = wizard.shouldModifyActivator();
+    activatorName = wizard.getActivatorName();
   }
 
   protected void modifyResource( IResource resource ) throws CoreException {
@@ -52,9 +56,9 @@ final class ManifestModifier extends ResourceModifier {
             line = reader.readLine();
           }
           writer.write( "Require-Bundle: " + requireBundles + NL ); //$NON-NLS-1$
-          writer.write( "Import-Package: javax.servlet;version=\"2.4.0\"," + NL ); //$NON-NLS-1$
-          writer.write( " javax.servlet.http;version=\"2.4.0\"," + NL ); //$NON-NLS-1$
-          writer.write( " org.osgi.framework" + NL ); //$NON-NLS-1$
+          if( shouldModifyActivator && activatorName != null ) {
+            writer.write( "Import-Package: org.osgi.framework" + NL ); //$NON-NLS-1$
+          }
           String fileName = AbstractRAPWizard.SERVICE_COMPONENT_FILE;
           IFile serviceComponentXml = file.getProject().getFile( fileName );
           if( serviceComponentXml.exists() ) {

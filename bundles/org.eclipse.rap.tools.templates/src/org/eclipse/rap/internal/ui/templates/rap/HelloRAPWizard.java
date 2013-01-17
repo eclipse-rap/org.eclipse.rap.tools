@@ -42,7 +42,7 @@ public class HelloRAPWizard extends AbstractRAPWizard {
 
   @Override
   protected String getRequireBundles() {
-    return "org.eclipse.rap.rwt";
+    return "org.eclipse.rap.rwt;bundle-version=\"[2.0.0,3.0.0)\"";
   }
 
   @Override
