@@ -15,4 +15,5 @@ public class BasicApplication implements ApplicationConfiguration {
     properties.put(WebClient.PAGE_TITLE, "$windowTitle$");
     application.addEntryPoint("/hello", BasicEntryPoint.class, properties);
   }
+
 }
