@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Browser Navigation &amp; History</title>
+  <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+  <h1>Browser Navigation &amp; History</h1>
+    <p>
+      As a RAP application usually runs in a browser, the user will expect that it behaves and
+      navigates like a traditional website to a certain degree. It is easy to implement the layout
+      of typical websites and web applications using RAP widgets (like TabFolder, Menu, List, etc.).
+      However, some concepts, like history support, require special API.
+    </p>
+    <h2>Links</h2>
+    <p>There are two kind of links supported in RAP.</p>
+    <p>
+      First, there is the <code>Link</code> widget as implemented by SWT. This widget
+      can display texts that looks like a link, but actually behave like a push button.
+      It's convinient to use this Widget to link between different places within your application.
+      Combined with the URL-Launcher (see below), it can also be used like an actual link
+      to open new websites.
+    </p>
+    <p>
+      Second, it is possible to integrate "real" links in the application using the markup feature.
+      Clicking such a link will <em>not</em> trigger any events, but open the given URL (in the
+      same window, if there is no target attribute set).
+    </p>
+    <h2>Open URLs in an external browser/application</h2>
+    <p>
+      It is possible in RAP to programmatically open any URL without leaving the current
+      page/session. This is done using the URL-Launcher client service. Any
+      URL starting with "http" (or "https") will open in a new browser tab, window, or pop-up,
+      unless it is blocked by a pop-up blocker. (The browser will usually ask the user if he
+      wants to allow the site to open new windows in general, just in this case, or never.)
+      Other protocols like "mailto" or "tel" will not create a browser window, but might trigger
+      another application to open, if one is installed. Examples:
+    </p>
+<pre><code>UrlLauncher launcher = RWT.getClient().getService( UrlLauncher.class );
+launcher.openURL( "http://www.eclipse.org/" );
+launcher.openURL( RWT.getResourceManager().getLocation( "my-doc.pdf" ) );
+launcher.openURL(   "mailto:someone@nowhere.org?cc=other@nowhere.org"
+                  + "&amp;subject=Hello%3F&amp;body=RAP%20is%20awesome!" );
+launcher.openURL( "tel:555-123456" );</code></pre>
+
+    <h2>Exit Confirmation</h2>
+    <p>
+      The <code>ExitConfirmation</code> service can configre a message that can be shown whenever
+      the user tries to close the browser window/tab, or navigates to another URL. Example:
+    </p>
+    <pre><code>ExitConfirmation service
+  = RWT.getClient().getService( ExitConfirmation.class );
+service.setMessage( "Do you really wanna leave the party?" );</code></pre>
+    <p><b>Result:</b></p>
+    <p><img style="padding-top:5px" src="../images/exitConfirmation.png" alt="Exit confirmation dialog"/></p>
+    <p>
+      <strong>NOTE:</strong>
+      Some browser may show additional text in the confirmation dialog, or replace
+      the text completely for security reasons.
+    </p>
+
+    <h2>Deep Links</h2>
+    <p>
+     Deep links in traditional website are links that point not just to a document,
+      but to a specific positon within the document. This is done by adding a <em>fragment id</em>
+      to the URL, separated from the path by a "#". For example "<code>http://eclipse.org/#midcolumn</code>".
+    </p>
+    <p>
+      RAP provides the <code>BrowserNavigation</code> service, which allows the application to
+      access this fragment.
+      After the URL has been entered (or changed - see history support),
+      a <code>BrowserNavigationListener</code> is called, and the fragment is available on the
+      event object via the <code>getState()</code> method.
+      The string can then be used to decide where to navigate in your application.
+      If, for example, you are using a TabFolder as your main navigation element,
+      a complete implementation could look like this:
+    </p>
+    <pre><code>final Map&lt;String, TabItem&gt; navigation
+  = new HashMap&lt;String, TabItem&gt;();
+navigation.put( "employees", employeeTab );
+navigation.put( "companies", companiesTab ); // etc...
+BrowserNavigation service
+  = RWT.getClient().getService( BrowserNavigation.class );
+service.addBrowserNavigationListener( new BrowserNavigationListener() {
+  @Override
+  public void navigated( BrowserNavigationEvent event ) {
+    TabItem item = navigation.get( event.getState() );
+    if( item != null ) {
+      item.getParent().setSelection( item );
+    }
+  }
+} );</code></pre>
+  <p>
+   The application could then be opend directly at a specific tab using the URL
+   "<code>http://myRapApp/#companies</code>".<br/>
+   It it is also possible to specifiy a path within the fragment, pointing to a specific
+   unit of data:
+  </p>
+  <pre><code>  public void navigated( BrowserNavigationEvent event ) {
+    String state = event.getState();
+    if( state.startsWith( "employees/" ) ) {
+      showEmpoyee( state.substring( 10 ) );
+    } </code></pre>
+  <p>
+    Opening "<code>http://myRapApp/#employees/john.doe</code>" could then open the application
+    already displaying the entry for John Doe.
+  </p>
+  <h2>Browser History</h2>
+  <p>
+    Support for browser history means that the user is able to go back to a previous state of the
+    application using the browsers "back" button, without ever leaving the page. He can also
+    use the browsers history dialog to jump multiple entries back or forwards.
+  </p>
+  <p>
+    If a <code>BrowserNavigationListener</code> is already implemented (see above), all that's left to
+    do is to add new entries to the history. To do so, simply call
+    <code>BrowserNavigation#pushState( String state, String title )</code>
+    whenever your application enters a new state that
+    should appear in the history. The state string is the same that will be given in the
+    <code>BrowserNavigationEvent</code> when the user presses "back". The title string
+    is used for the title of the document and will appear in the browsers history tab/dialog.
+  </p>
+  <p>
+    <strong>NOTE:</strong> Some browser have issues supporting history and the
+    <code>Browser</code> widget in the same application. The back button may sometimes go back in
+    the history of the browser widget and in the history of the RAP application simultaneously, or
+    not at all.
+  </p>
+</body>
+</html>
