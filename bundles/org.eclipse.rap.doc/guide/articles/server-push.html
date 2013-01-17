@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Server Push</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -12,12 +12,11 @@
 
   <h1>Server Push</h1>
 
-  <h2>The Challenge</h2>
-
   <p>
     Sometimes it's necessary to “push” UI updates from the RAP server to the RAP client.
     As an example, imagine a chat application that notifies the user of a chat request from a peer.
   </p>
+  <p>
     HTTP is not designed to actively push data to the client.
     An HTTP server can only answer requests from a client, but it cannot actively send any message
     to the client. In RAP the UI is typically updated
@@ -75,7 +74,7 @@ bgThread.start();
   </p>
   <p>
     More technical details of the ServerPush implementation can be found on the
-    <a href="http://wiki.eclipse.org/RAP/UI_Callback" target="blank">RAP Wiki</a>.
+    <a href="http://wiki.eclipse.org/RAP/Server_Push" target="blank">RAP Wiki</a>.
   </p>
 </body>
 </html>

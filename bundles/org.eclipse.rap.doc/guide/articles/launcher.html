@@ -18,10 +18,10 @@
     the <em>RWT Launcher</em>, used for
     <a href="../getting-started/hello-world.html">snippets</a>
     and
-    <a href =../advanced/rwt-standalone.html>stand-alone applications</a>,
+    <a href =rwt-standalone.html>stand-alone applications</a>,
     and the
     <em>RAP Launcher</em>, used for
-    <a href = "../advanced/application-setup.html#osgi">applications based on OSGi</a>.
+    <a href = "application-setup.html#osgi">applications based on OSGi</a>.
     The latter you can also be started without the RAP Tools, using the plain <em>OSGi Launcher</em>.
   </p>
 
@@ -40,9 +40,9 @@
   <p>
     The RWT Launcher is the simplest way to start a RAP application.
     It requires no
-    <a href="../advanced/application-setup.html#osgi">OSGi</a>,
-    <a href="../advanced/application-configuration.html">application configuration</a> or
-    <a href="../advanced/branding.html">Branding</a>, only an
+    <a href="application-setup.html#osgi">OSGi</a>,
+    <a href="application-configuration.html">application configuration</a> or
+    <a href="branding.html">Branding</a>, only an
     <a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">entry point</a>.
   </p>
   <ol>
@@ -156,8 +156,8 @@
   <p>
     The <em class="UILabel">Servlet Path</em> field lets you configure the URL that will be
     opened in the browser. Which path is mapped to which entry point is configured in the
-    <a href="../advanced/application-configuration.html">application configuration</a> or
-    (for Workbench applications) in the <a href="../advanced/branding.html">Branding</a>.
+    <a href="application-configuration.html">application configuration</a> or
+    (for Workbench applications) in the <a href="branding.html">Branding</a>.
   </p>
 
   <h3>Runtime Settings</h3>
@@ -344,7 +344,7 @@
       </p>
       <p>
         The RWT launcher starts applications in the
-        <a href="../advanced/application-setup.html#compat">JEE compatibility mode</a>.
+        <a href="application-setup.html#compat">JEE compatibility mode</a>.
         This mode does not support <code>Display.sleep()</code>, specifically, it does not support
         the SWT main loop. When starting an SWT snippet, this code may not be used:
       </p>
@@ -354,7 +354,7 @@
   }
   display.dispose();</code></pre>
       <p>
-        As of RAP 2.0, it is recommended to extend <a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint<a> instead of
+        As of RAP 2.0, it is recommended to extend <a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a> instead of
         implementing the <a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a>
         interface directly. With AbstractEntryPoint no main loop is required, no matter which operation
         mode is used.

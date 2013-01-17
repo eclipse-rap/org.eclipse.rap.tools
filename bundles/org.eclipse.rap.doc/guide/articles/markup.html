@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Fonts and Markup in RAP</title>
+  <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+
+  <h1>Fonts and Markup in RAP</h1>
+    <h2>Fonts</h2>
+    <p>
+      Using SWT API it is possible to apply any Font (including bold and italic styles)
+      to any Widget, as long as it is installed on the target machine:
+    </p>
+    <pre><code>  Label boldLabel = new Label( parent, SWT.NONE );
+  boldLabel.setFont(
+    new Font( parent.getDisplay(), "Arial", 16, SWT.BOLD )
+  );</code></pre>
+    <p>
+      Note that the font height is measured in pixels in RAP (for historical reasons),
+      while SWT uses points. Usually, you can convert the values using this equation:
+    </p>
+    <pre>1px = 0.75pt</pre>
+    <p>therefore</p>
+    <pre>12pt / 0.75 = 16px</pre>
+    <h3>With CSS Theming</h3>
+    <p>
+      While the SWT API can only modify one widget at a time, the RAP CSS Theming API is
+      designed to change the appearance for <em>all</em> widget of a given class. However,
+      specific instances can still be targeted using custom variants.
+      The Theming API also features some additional properties like <code>text-shadow</code> and
+      <code>text-decoration</code>.
+    </p>
+    <p><b>CSS:</b></p>
+    <pre><code>Label.customLabel {
+  font: bold 16px Arial;
+  text-shadow: 2px 2px #bbbbbb;
+  text-decoration: underline;
+}</code></pre>
+     <p><b>Java:</b></p>
+     <pre><code>  Label customLabel = new Label( parent, SWT.NONE );
+  customLabel.setData( RWT.CUSTOM_VARIANT, "customLabel" );
+  customLabel.setText( "This is funny!" );</code></pre>
+     <p><b>Result:</b></p>
+     <p>
+       <img src="../images/css-label.png"/>
+     </p>
+     <p>
+       The properties <code>font</code>, <code>text-shadow</code> and <code>text-decoration</code>
+       are available on nearly all themeable widgets. Note that <code>text-shadow</code> is not
+       supported in Internet Explorer.
+     </p>
+    <h2>Markup</h2>
+    <p>
+      While SWT and theming API are able to change the font of any widget, they can only change the
+      font for the <em>entire</em> widget. Using the RAP-exclusive (not supported in SWT)
+      markup feature, it is possible to change only parts of the text.
+      This is currently supported on <code>Label</code>, <code>CLabel</code>, <code>List</code>,
+      <code>Tree</code> and <code>Table</code>. Before you can use markup in your widget,
+      you must first enable it explicitly using the <code>RWT.MARKUP_ENABLED</code> constant
+      as shown below, directly after calling the constructor. (It may not possible to enable
+      this feature later on, and it can not be disabled.) Afterwards, a subset of HTML tags
+      can be freely used in the widgets text property:
+    </p>
+    <pre><code>  Label markupLabel = new Label( parent, SWT.NONE );
+  markupLabel.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+  markupLabel.setText( "&lt;i&gt;This&lt;/i&gt; &lt;ins&gt;is&lt;/ins&gt; &lt;b&gt;markup!&lt;/b&gt;" );</code></pre>
+  <p><b>Result:</b></p>
+  <p><img src="../images/markup-label.png"/></p>
+  <p>
+    To achieve similar effects in SWT, the application would have to draw on the widget using a
+    <code>PaintListener</code>, which is not supported in RAP except on Canvas.
+    The markup is validated when the text is set on the widget, and incorrect or unsupported markup
+    will cause an <code>IllegalArgumentException</code>. Using markup without enabling the feature
+    first will not cause an exception, just display the text as is.
+  </p>
+  <h3>Advanced uses of Markup</h3>
+  <p>
+    If the physical and logical tags allowed in the markup are not sufficient for your needs,
+    you may also use a <code>style</code> attribute to specify any CSS code supported by the
+    browser.
+  </p>
+  <pre><code>  Label cssLabel = new Label( parent, SWT.NONE );
+  cssLabel.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+  cssLabel.setText(
+    "&lt;span style='font:bold 16px Arial;'&gt;This is also BOLD&lt;/span&gt;"
+  );</code></pre>
+  <p>
+    Unlike the HTML tags, the style properties are <em>not</em> validated on the server. Invalid
+    syntax within the <code>style</code> attribute will likely be ignored by the browser, as will
+    unsupported properties. Using CSS3 properties is therefore not recommended when targeting
+    older browser.
+  </p>
+  <p>
+    The markup feature may not only be used to change the font of the text, but can also insert
+    elements that are not pure text.
+  </p>
+  <p>
+    Using the <code>&lt;br/&gt;</code> tag, it is possible to add line breaks.
+    While this is also possible without markup on <code>Label</code>, this is a new feature for
+    <code>List</code>, <code>Tree</code> and <code>Table</code>.
+  </p>
+  <p>
+    The <code>&lt;img/&gt;</code> tag can insert images anywhere into your text. You can use any URL as the
+    source, but if you want the RAP application to provide to register it as a resource first.
+    Ideally, this is done during the application start using Application Configuration or
+    the <code>org.eclipse.rap.ui.resources</code> extension point (for workbench applications).
+    If the resource has to be registered at runtime, use the <code>ResourceManager</code> directly.
+    (If you do so, you might also to de-register the resource if it is no longer required.)
+  </p>
+  <pre><code>  Label label = new Label( parent, SWT.NONE );
+  label.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+  String src = RWT.getResourceManager().getLocation( "icon.png" );
+  label.setText(
+    "This is the world &lt;img width='24' height='24' src='" + src + "'/&gt; !"
+  );</code></pre>
+  <p><b>Result:</b></p>
+  <p><img src="../images/image-label.png"/></p>
+  <p><br/>
+    The widget and height attributes are mandetory and do not have to match those
+    of the actual image.
+  </p>
+  <p>
+    Finally, you can use markup to insert normal hyperlinks into your application. If you
+    do not want to close the UI when the user clicks it, make sure to also set the target
+    property. Alternatively, you can integrate the link with the BrowserNavigation by pointing
+    to a fragment id. Examples:
+  </p>
+  <pre><code>  Label linkLabel = new Label( parent, SWT.NONE );
+  linkLabel.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+  linkLabel.setText(
+    "Visit &lt;a href='http://www.eclipse.org/rap' target='_blank'&gt;RAP&lt;/a&gt;!"
+  );
+
+  Label navLabel = new Label( parent, SWT.NONE );
+  navLabel.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+  navLabel.setText( "Go to &lt;a href='#navPoint'&gt;navPoint&lt;/a&gt;!" );</code></pre>
+  <h3>Markup on List, Tree and Table</h3>
+  <p>
+    Combining the markup feature with <code>List</code>, <code>Tree</code> or <code>Table</code>
+    allows you to present your data ina much more informative and appealing way.
+  </p>
+  <p><img src="../images/markup-table.png"/></p>
+  <p>
+    After setting the <code>MARKUP_ENABLED</code> property, markup is enabled for all items of
+    the widget, except for columns. There is, however, one more proprety that might need to be set.
+    Since RAP can not predict how high items with markup are going to be, it will
+    not include it in the layout calculations for the height of the rows. This may result in cut off
+    content, especially if <code>&lt;br/&gt;</code>, <code>&lt;span&gt;</code>
+    or <code>&lt;img/&gt;</code> tags are used. To fix this, you can set the height the rows should
+    have manually using the <code>RWT.CUSTOM_ITEM_HEIGHT</code> constant:
+  </p>
+  <pre><code>  List markupList = new List( parent, SWT.BORDER );
+  markupList.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+  markupList.setData( RWT.CUSTOM_ITEM_HEIGHT, new Integer( 40 ) );
+  markupList.setItems( new String[]{
+    "&lt;big&gt;big&lt;/big&gt;",
+    "&lt;small&gt;small&lt;/small&gt;",
+    "with&lt;br/&gt;break"
+  } );
+  </code></pre>
+  <h3>Editing</h3>
+  <p>
+    While RAP does not include an markup-enabled text field, there is a rich text editor
+    <a href="http://wiki.eclipse.org/RAP/Add-Ons">add-on</a> available called (and based on) "CKEditor".
+  </p>
+</body>
+</html>

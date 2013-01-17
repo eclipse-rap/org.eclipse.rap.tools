@@ -5,75 +5,91 @@
   <topic label="Getting Started">
     <topic
         label="Setting up the Eclipse IDE"
-        href="guide/getting-started/setup-ide.html"/>
+        href="guide/articles/setup-ide.html"/>
     <topic
         label="Installing a RAP Target"
-        href="guide/getting-started/target-install.html"/>
+        href="guide/articles/target-install.html"/>
     <topic
         label="Writing a Hello World with RAP"
-        href="guide/getting-started/hello-world.html"/>
+        href="guide/articles/hello-world.html"/>
     <topic
         label="Launching RAP Applications from the IDE"
-        href="guide/getting-started/launcher.html"/>
+        href="guide/articles/launcher.html"/>
     <topic
         label="RAP Examples"
-        href="guide/getting-started/examples.html"/>
+        href="guide/articles/examples.html"/>
   </topic>
-  <topic label="RAP Widget Toolkit (RWT)">
+  <topic label="RAP Widget Toolkit">
     <topic
         label="Introduction"
-        href="guide/rwt/intro.html">
+        href="guide/articles/rwt.html">
     </topic>
     <topic
-        label="Differences between RWT and SWT"
-        href="guide/rwt/differences.html">
+        label="Important Differences to SWT"
+        href="guide/articles/differences.html">
     </topic>
-    <topic href="guide/rwt/client.html" label="The RAP Client">
-    </topic>
-    <topic
-        label="Scopes and Data Stores in RWT"
-        href="guide/rwt/scopes.html">
+    <topic href="guide/articles/client.html" label="The RAP Client">
     </topic>
     <topic
         label="Key and Mouse Event Handling"
-        href="guide/rwt/key-and-mouse-events.html">
+        href="guide/articles/key-and-mouse-events.html">
+    </topic>
+    <topic href="guide/articles/markup.html" label="Fonts and Markup in RAP">
+    </topic>
+    <topic href="guide/articles/tree-table.html" label="Tree and Table Enhancements">
+    </topic>
+    <topic href="guide/articles/navigation.html" label="Browser Navigation &amp; History">
     </topic>
     <topic
         label="RWT Theming"
-        href="guide/rwt/theming.html"/>
+        href="guide/articles/theming.html"/>
     <topic
         label="Custom Widgets"
-        href="guide/rwt/custom-widget.html"/>
+        href="guide/articles/custom-widget.html"/>
   </topic>
-  <topic label="Application Development">
+  <topic label="Scopes and Threads in RAP">
+    <topic
+        label="Overview"
+        href="guide/articles/scopes.html">
+    </topic>
+    <topic
+        label="Singletons and Static Fields"
+        href="guide/articles/singletons.html">
+    </topic>
+    <topic href="guide/articles/data-stores.html" label="Data Storage">
+    </topic>
+    <topic
+        label="Session access from a background thread"
+        href="guide/articles/threads.html"/>
+    <topic href="guide/articles/server-push.html" label="Server Push">
+    </topic>
+  </topic>
+  <topic label="Building Applications">
     <topic
         label="Choosing an Application Setup"
-        href="guide/advanced/application-setup.html"/>
+        href="guide/articles/application-setup.html"/>
     <topic
         label="Application Configuration"
-        href="guide/advanced/application-configuration.html">
+        href="guide/articles/application-configuration.html">
     </topic>
     <topic
         label="Branding"
-        href="guide/advanced/branding.html"/>
+        href="guide/articles/branding.html"/>
     <topic
         label="RWT Standalone"
-        href="guide/advanced/rwt-standalone.html"/>
+        href="guide/articles/rwt-standalone.html"/>
     <topic
         label="WAR Deployment"
-        href="guide/advanced/deployment.html"/>
+        href="guide/articles/deployment.html"/>
     <topic
         label="Look and Feel"
-        href="guide/advanced/look-and-feel.html"/>
-    <topic
-        label="Server Push"
-        href="guide/advanced/server-push.html"/>
+        href="guide/articles/look-and-feel.html"/>
     <topic
         label="Internationalization"
-        href="guide/advanced/internationalization.html"/>
+        href="guide/articles/internationalization.html"/>
     <topic
         label="Related Technologies"
-        href="guide/advanced/related-technologies.html"/>
+        href="guide/articles/related-technologies.html"/>
   </topic>
 
   <topic label="Reference">

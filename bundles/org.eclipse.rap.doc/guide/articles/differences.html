@@ -92,11 +92,11 @@
       <br/>
       In SWT, the default visual representation of an widget is determined by the operating
       system. In RAP this is done by the
-      <a href="../advanced/theming.html">theming</a>
+      <a href="theming.html">theming</a>
       which can be adjusted by the developer using CSS.
       Since the RAP theming has more options to change the look of an widget than the SWT API
       offers, specific widget instances can also be themed with CSS using
-      <a href="../advanced/theming.html#variants">custom variants</a>.
+      <a href="theming.html#variants">custom variants</a>.
     </li>
 
     <li style="margin-bottom:20px">
@@ -150,7 +150,7 @@
       <code>Dialog</code>, <code>ColorDialog</code>, <code>FontDialog</code>, <code>MessageBox</code>
       <br/>
       When using the
-      <a href="../advanced/application-setup.html#compat">JEE compatibility mode</a>,
+      <a href="application-setup.html#compat">JEE compatibility mode</a>,
       opening a dialog does not block program execution.
       To obtain their return value, a callback must be registered using the RWT-specific class
       <a href="../reference/api/org/eclipse/rwt/widgets/DialogUtil.html"><code>DialogUtil</code></a>.
@@ -167,7 +167,7 @@
       if the <code>setText</code> method is used.
       <br/>
       Also, when using the
-      <a href="../advanced/application-setup.html#compat">JEE compatibility mode</a>,
+      <a href="application-setup.html#compat">JEE compatibility mode</a>,
       the <code>executeScript</code> and <code>evaluate</code> methods will not block program
       execution.
       Like with dialogs, a workaround is possible using the class
@@ -210,7 +210,7 @@
       There is a solution for this provided by the class
       <!-- TODO rename UICallBack to whatever it will be named... --->
       <a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html"><code>ServerPushSession</code></a>.
-      Read more about it <a href="../advanced/server-push.html">here</a>.
+      Read more about it <a href="threads.html">here</a>.
       Note that <code>timerExec</code> does <em>not</em> require a ServerPushSession.
     </li>
 
