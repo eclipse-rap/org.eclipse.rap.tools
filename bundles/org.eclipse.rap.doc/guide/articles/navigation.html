@@ -16,7 +16,7 @@
       of typical websites and web applications using RAP widgets (like TabFolder, Menu, List, etc.).
       However, some concepts, like history support, require special API.
     </p>
-    <h2>Links</h2>
+    <h2 id="links">Links</h2>
     <p>There are two kind of links supported in RAP.</p>
     <p>
       First, there is the <code>Link</code> widget as implemented by SWT. This widget
@@ -30,7 +30,7 @@
       Clicking such a link will <em>not</em> trigger any events, but open the given URL (in the
       same window, if there is no target attribute set).
     </p>
-    <h2>Open URLs in an external browser/application</h2>
+    <h2 id="launcher">Open URLs in an external browser/application</h2>
     <p>
       It is possible in RAP to programmatically open any URL without leaving the current
       page/session. This is done using the URL-Launcher client service. Any
@@ -47,7 +47,7 @@ launcher.openURL(   "mailto:someone@nowhere.org?cc=other@nowhere.org"
                   + "&amp;subject=Hello%3F&amp;body=RAP%20is%20awesome!" );
 launcher.openURL( "tel:555-123456" );</code></pre>
 
-    <h2>Exit Confirmation</h2>
+    <h2 id="exitconfirmation">Exit Confirmation</h2>
     <p>
       The <code>ExitConfirmation</code> service can configre a message that can be shown whenever
       the user tries to close the browser window/tab, or navigates to another URL. Example:
@@ -63,7 +63,7 @@ service.setMessage( "Do you really wanna leave the party?" );</code></pre>
       the text completely for security reasons.
     </p>
 
-    <h2>Deep Links</h2>
+    <h2 id="deeplinks">Deep Links</h2>
     <p>
      Deep links in traditional website are links that point not just to a document,
       but to a specific positon within the document. This is done by adding a <em>fragment id</em>
@@ -109,7 +109,7 @@ service.addBrowserNavigationListener( new BrowserNavigationListener() {
     Opening "<code>http://myRapApp/#employees/john.doe</code>" could then open the application
     already displaying the entry for John Doe.
   </p>
-  <h2>Browser History</h2>
+  <h2 id="history">Browser History</h2>
   <p>
     Support for browser history means that the user is able to go back to a previous state of the
     application using the browsers "back" button, without ever leaving the page. He can also
