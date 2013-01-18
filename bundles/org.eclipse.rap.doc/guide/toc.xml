@@ -21,12 +21,8 @@
   </topic>
   <topic label="RAP Widget Toolkit">
     <topic
-        label="Introduction"
+        label="Introduction and Comparison to SWT"
         href="guide/articles/rwt.html">
-    </topic>
-    <topic
-        label="Important Differences to SWT"
-        href="guide/articles/differences.html">
     </topic>
     <topic href="guide/articles/client.html" label="The RAP Client">
     </topic>

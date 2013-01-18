@@ -19,7 +19,7 @@
    </p>
    <p>The following is a list of hints you might find helpful when working with Tree or Table.</p>
 
-   <h4>JFace support:</h4>
+   <h4 id="jface" >JFace support:</h4>
    <p>
      RAP includes it's own JFace implementation that can be used
      to sort, filter and edit data in Trees and Tables.
@@ -30,7 +30,7 @@
       Example:&nbsp; <code>viewer.getTable().setData( RWT.MARKUP_ENABLED, Boolean.TRUE );</code>
    </p>
 
-    <h4>Fixed Columns:</h4>
+    <h4 id="fixedcolumns">Fixed Columns:</h4>
     <p>
       When a table or tree displays many columns, the user often has to scroll horizontally to see
       specific data.
@@ -41,18 +41,18 @@
       Example:&nbsp; <code>tree.setData( RWT.FIXED_COLUMNS, new Integer( 1 ) );</code>
     </p>
 
-    <h4>Markup Support:</h4>
+    <h4 id="markup">Markup Support:</h4>
     <p>
       You can greatly enhance the look and interactivity
       of any Tree or Table using the RAP markup feature.
     </p>
 
-    <h4>Line breaks in Columns:</h4>
+    <h4 id="break">Line breaks in Columns:</h4>
     <p>
       Unlike SWT, RAP supports line breaks ( "\n" ) in a columns text property.
     </p>
 
-    <h4>Virtual rendering and performance:</h4>
+    <h4 id="virtual">Virtual rendering and performance:</h4>
     <p>
       There are two ways Tree and Table support virtual rendering. <br/> First, any Tree/Table will
       only render HTML for the data that is currently visible on screen. <br/>
@@ -80,7 +80,7 @@
   } );</code></pre>
 
 
-    <h4>Selection/Hover rendering order</h4>
+    <h4 id="rendering">Selection/Hover rendering order</h4>
     <p>
       Any item and every cell of an item may have a custom background to highlight a specific unit
       of data. In SWT (and RAP, by default), hovering or selecting such an item will completely
@@ -125,7 +125,7 @@ TableItem:linesvisible:even:selected:unfocused {
       just as it is done for the overlay-element in the default theme.
     </p>
 
-    <h4>Alternative: Nebula Grid</h4>
+    <h4 id="nebula">Alternative: Nebula Grid</h4>
     <p>
       Available in the <a href="http://eclipse.org/rap/incubator/">RAP Incubator</a>
       is a RAP implementation of the Nebula Grid widget. Based on the same JavaScript

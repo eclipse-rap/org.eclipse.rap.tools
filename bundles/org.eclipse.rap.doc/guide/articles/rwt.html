@@ -5,7 +5,7 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Introduction to the RAP Widget Toolkit</title>
+  <title>Introduction and Comparison to SWT</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
@@ -14,59 +14,202 @@
   <p>
     At the core of RAP operates the RAP Widget Toolkit (RWT), which largely implements the same
     API as the Standard Widget Toolkit (SWT). That is why many projects that build upon SWT
-    (including JFace and Workbench) can run on RWT with little or no modifications. It can
+    (like JFace) can run on RWT with little or no modifications. It can
     also be used with or without the Eclipse 3.x workbench layer.
    </p>
   <p>
-    <small>NOTE: “RWT“ refers to only this toolkit specifically, while “RAP” refers to the
-    project in its entirety, including its ports of JFace, Workbench and Forms, the OSGI
-    integration, Branding and Interaction Design API, tooling, demos and custom themes.</small>
+    <small> NOTE: “RWT“ refers to this toolkit specifically, while “RAP” refers to the
+    project in its entirety, including its ports of JFace, Workbench and Forms, OSGI
+    integration, add-ons, Branding and Interaction Design API, tooling, demos and custom themes.</small>
   </p>
   <p>
-    RWT inherited from SWT:
+    RWT implements most (40+) SWT Widgets, and all the Layout Manager. It also supports SWT-like
+    Key and Mouse Event Handling, Drag and Drop and Painting (on Canvas).
+    If you are not already familiar with SWT, we recommend to learn the SWT basics
+    (almost all valid for RWT) by reading the documentation
+    and snippets provided by the <a href="http://www.eclipse.org/swt">SWT project homepage</a>.
+    A full reference specific to RWT can be found
+    <a href="../reference/api/overview-summary.html">here</a>.
   </p>
-    <ul>
-      <li>40+ Widgets and widget-specific events </li>
-      <li>10 Layout Manager</li>
-      <li>Key and Mouse Event Handling</li>
-      <li>Drag and Drop Support</li>
-      <li>Graphics/Painting Support (Canvas) </li>
-    </ul>
+
+  <h1>Differences between the RAP Widget Toolkit and SWT</h1>
   <p>
-    New features may be added to RWT if there is a strong demand for it, and it's technically
-    feasible. If a feature is already present SWT but not in RWT, it may often (but not always) be
-    because it's hard or impossible to implement in RWT.
-   </p>
-   <p>
-     To learn the SWT basics (which are all valid for RWT), we recommend reading the documentation
-     and snippets provided by the <a href="http://www.eclipse.org/swt">SWT project homepage</a>.
-     A full reference specific to RWT can be found
-     <a href="../reference/api/overview-summary.html">here</a>.
-   </p>
-   <p>
-    SWT was developed for desktop applications, but RWT is used to build web applications. For this
-    reason, there are some features that SWT supports that RWT can not, while RWT adds some features
-    that are tailored to the specific requirements of web application development.
+    RAP generally follows the rule “If it compiles, it works”. That means that all SWT API
+    implemented in RWT is working within the requirements set by SWT.
+    If an SWT feature is not implemented, the corresponding API is also missing.
+    If this is the case, it is likely because it's hard or impossible to implement in RWT.
+    In some cases, SWT classes and methods are implemented as empty stubs to enable single-sourcing,
+    but only where this is a valid according of the SWT documention of the API.
+    Examples are the Accessibility API and some SWT constants that are marked as <em>HINT</em>.
   </p>
+  <p>
+    SWT was developed for desktop applications, but RWT is used to build web applications.
+    For this reason, there are some features that SWT supports that RWT can not,
+    while RWT adds some features that are tailored to the specific requirements of web
+    application development.
+    However, RWT does not add any new API to the classes adopted from SWT.
+    All RWT-specific features are accessible by API in the package <code>org.eclipse.rap.rwt</code>.
+    Many are activated using a
+    widget's <code>setData</code> method with a constant from the <code> RWT</code> class as the
+    key. For example <code>table.setData( RWT.MARKUP_ENABLED, Boolean.TRUE )</code>.
+    Other additional features may be accessed via the <code>Client</code> interface.
+  </p>
+
+  <h2>Notable Additional Features</h2>
   <ul>
-    <li>
-      For a list of all notable additions and limitations of RWT,
-      read <a href="differences.html">Differences between the RWT and SWT</a>.
+
+    <li id = "client" style="margin-bottom:10px">
+      <b>Client Class and  Client Services</b>
+      <br/>
+      All features specific to the RAP client (which is exchangeable as of RAP 2.0)
+      are handled by the client class and the client services.
+      This includes support for browser history, JavaScript execution and retrieving the clients
+      timezone offset.
+      The <code>Client</code> interface and client services are documented in more detail
+      <a href="client.html">here</a>.
     </li>
-    <li>
-      While key and mouse events generally work like in SWT, there are some
-      specifics you should be aware of. The topic has its own chapter,
-      <a href="key-and-mouse-events.html">Key and Mouse Event Handling</a>.
+
+
+    <li style="margin-bottom:10px">
+      <b>HTTP File Upload</b>
+      <br/>
+      Unlike SWT, RWT can not simply access the user's file system and read data from it.
+      As an alternative, the <code>FileUpload</code> widget can be used. The widget looks like a
+      button and will open the filepicker dialog of the user's browser. After a file has been
+      selected, it can programmatically be send to any HTTP server.
+      <br/>
+      <b> Important:</b> The widget only allows <i>sending</i> the file to a given URL, it does
+      not handle <i>receiving</i> it. If you require a complete solution for uploading and
+      opening the file in your application, consider using the
+      <a href="http://wiki.eclipse.org/RAP/Incubator/File_Upload">FileDialog</a>
+      implementation based on the FileUpload widget.
     </li>
-    <li>
-      Also noteworthy is also the topic of the multi-user-environment related features, which
-      are handled in the chapter on <a href="scopes.html">data stores</a>.
+
+    <li style="margin-bottom:10px">
+      <b>Markup in Widgets</b>
+      <br/>
+      Several widgets in RWT support a subset of HTML in their text property.
+      Detailes information can be found <a href="markup.html">here</a>.
     </li>
-    <li>
-      To give your application a modern, web-like look and feel, you can use the
-      <a href="theming.html">RWT Theming</a> mechanism.
+
+    <li style="margin-bottom:10px">
+      <b>Fixed Columns</b>
+      <br/>
+      It is possible in RWT to exclude some columns from Tree or Table from scrolling.
+      Find out more about it <a href="tree-table.html#fixedcolumns">here</a>.
     </li>
+
+    <li style="margin-bottom:10px">
+      <b>Theming</b>
+      <br/>
+      In SWT, the default visual representation of an widget is determined by the operating
+      system. In RAP this is done by the
+      <a href="theming.html">theming</a>
+      which can be adjusted by the developer using CSS.
+    </li>
+
+    <li style="margin-bottom:10px">
+      <b>Multi-User Environment</b><br/>
+      RAP operates in a multi-user environment and provides some additional API that helps
+      dealing with the consequences.
+      An detailed introduction can be found <a href="scopes.html">here</a>.
+    </li>
+
   </ul>
 
+  <h2>Notable Limitations</h2>
+  <ul>
+
+    <li style="margin-bottom:10px">
+      <b>Unimplemented Features</b>
+      <br/>
+      While the API for touch event handling and accessibility configuration is present in RWT,
+      it does not natively support either. This is a valid implementation according to the SWT
+      documentation.
+    </li>
+
+    <li style="margin-bottom:10px">
+      <b>Unimplemented Widgets:</b>
+      <code>StyledText</code>, <code>Tracker</code>, <code>TaskBar</code>, <code>Tray</code>
+      <br/>
+      These widgets are currently not available in RWT.
+    </li>
+
+    <li style="margin-bottom:10px">
+      <b>Painting Limitations</b><br/>
+      SWT can paint on any widget or image, while RAP currently only allows painting on the
+      <code>Canvas</code> widget.
+      In some cases the <code>drawText</code>, <code>drawString</code> and <code>drawImage</code>
+      methods may disregard the drawing order and overlap elements that are drawn later.
+      Some methods are unimplemented, including <code>copyArea</code>, <code>drawPath</code>,
+      <code>setClipping</code>, <code>setTransform</code>, <code>setInterpolation</code>,
+      <code>setLineDash</code> and <code>setXORMode</code>.
+      Performance and results of a drawing operations can differ depending on the browser.
+      See also <a href="custom-widget.html#selfdrawing">"Self-Drawing custom widgets".</a>
+    </li>
+
+    <li style="margin-bottom:10px">
+      <b>Limitations in Dialogs:</b>
+      <code>Dialog</code>, <code>ColorDialog</code>, <code>FontDialog</code>, <code>MessageBox</code>
+      <br/>
+      When using the
+      <a href="application-setup.html#compat">JEE compatibility mode</a>,
+      opening a dialog does not block program execution.
+      To obtain their return value, a callback must be registered using the RWT-specific class
+      <a href="../reference/api/org/eclipse/rwt/widgets/DialogUtil.html"><code>DialogUtil</code></a>.
+    </li>
+
+    <li id="browser" style="margin-bottom:10px">
+      <b>Limitations of the Browser widget</b>: <code>Browser</code>
+      <br/>
+      Since the <code>Browser</code> widget is based on the HTML <em>iframe</em> element,
+      all security restrictions regarding cross-frame-scripting apply. This means for
+      <code>execute()</code>, <code>evaluate()</code> and <code>BrowserFunction</code> to work,
+      the document loaded in the <code>Browser</code> widget has to come from the
+      same domain and port that the RAP application is loaded from. This is automatically given
+      if the <code>setText</code> method is used.
+      <br/>
+      Also, when using the
+      <a href="application-setup.html#compat">JEE compatibility mode</a>,
+      the <code>executeScript</code> and <code>evaluate</code> methods will not block program
+      execution.
+      Like with dialogs, a workaround is possible using the class
+      <a href="../reference/api/org/eclipse/rwt/widgets/BrowserUtil.html"><code>BrowserUtil</code></a>.
+      See also <a href="custom-widget.html#browser">"Browser-based custom widgets".</a>
+    </li>
+
+    <li style="margin-bottom:10px">
+      <b>Limitations in Mouse and Key Events</b>
+      <br/>
+      See <q><a href="key-and-mouse-events.html">Mouse and Key Event Handling in RAP</a></q>.
+    </li>
+
+    <li style="margin-bottom:10px">
+      <b>Limitations in Verify and Modify Events:</b>
+      <br/>
+      Modify and Verify events are not fired instantaneously, but with a small delay, possibly
+      combining a number of changes into one event. Also, the values of the
+      <code>VerifyEvent</code> fields <code>text</code>, <code>start</code> and <code>end</code>
+      currently always report the entire text to have changed.
+      The <a href="http://wiki.eclipse.org/RAP/ClientScripting">ClientScripting</a> project was
+      started specifically to provide an alternative.
+    </li>
+
+    <li style="margin-bottom:10px">
+      <b>Limitations in Drag and Drop</b>
+      <br/>
+      In <code>DragSourceEvent</code>, the fields <code>image</code>, <code>offsetX</code> and
+      <code>offsetY</code> have no effect. <code>DropTargetEvent</code>s may be omitted while the
+      mouse cursor is still in motion.
+    </li>
+
+    <li style="margin-bottom:10px">
+      <b>Limitations when using background threads</b>
+      <br/>
+      See articles <a href="threads.html">Session access from a background thread</a>
+      and <a href="server-push.html">Server Push</a>.
+    </li>
+
+  </ul>
 </body>
 </html>
