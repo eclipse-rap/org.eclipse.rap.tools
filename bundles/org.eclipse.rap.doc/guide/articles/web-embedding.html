@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2007, 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Browser Widget</title>
+  <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+
+  <h1>Embedding Web-Components</h1>
+
+  <p>
+    Using the SWT/RWT Browser Widget, it is possible to embed HTML pages, simple JavaScript
+    Applications, Flash-Objects, Java-Applets or any other web component seamlessly in your
+    RAP (or SWT) application.
+  </p>
+
+  <p>
+    In RAP, any HTML document (including JavaScript) placed in a Browser widget
+    will end up in an IFrame element. You can call JavaScript from Java by using
+    <code>evaluate</code>, and vice versa with the <code>BrowserFunction</code> class.
+    It's recommended
+    to always use <code>evaluate</code> instead of <code>executeScript</code>, since it throws
+    exceptions if the JavaScript execution fails.
+    Before you can use <code>evaluate</code>, you must wait until the document is fully loaded,
+    using either a <code>ProgressListener</code> or a <code>BrowserFunction</code>.
+  </p>
+
+  <h2 id="notes" >RAP-specific notes</h2>
+  <h3>Alternatives</h3>
+  <p>
+    The Browser-Widget is suitable for embedding complete HTML documents and very simple web apps.
+    When you only want to display a few lines of rich/formatted text, use the more lightweight
+    <a>markup</a> feature instead. Also, keep in mind that each call
+    to a <code>BrowserFunction</code> or to <code>evaluate</code> creates an HTTP request.
+    To reduce the resulting traffic you can try combining subsequent call, but if you want to embed
+    a web app/object that requires a lot of client-server communication, consider using
+    the more efficient RAP Remote API.
+    <b>Note</b>, however, that
+    both, markup and the JavaScript Remote API, are features of the RAP WebClient, and are not
+    available in SWT. If SWT-Support is a requirement, use the Brower-Widget in any case.
+
+  <h3>Browser security restrictions</h3>
+  <p>
+    Since the <code>Browser</code> widget is based on the HTML <em>iframe</em> element,
+    all security restrictions regarding cross-frame-scripting apply. This means for
+    <code>execute()</code>, <code>evaluate()</code> and <code>BrowserFunction</code> to work,
+    the document loaded in the <code>Browser</code> widget has to come from the
+    same domain and port that the RAP application is loaded from. This is automatically given
+    if the <code>setText</code> method is used, or the file is registered as a static resource.
+    <br/>
+  </p>
+
+  <h3>Resources</h3>
+  <p>
+    It's important to decide how your resources (HTML, JavaScript, CSS and image files) are
+    provided to the browser widget. If you use only a moderate amount of HTML with inlined
+    JavaScript and/or CSS (and <em>no images</em>), or your non-HTML resources can be loaded from
+    a different HTTP-server, it will suffice to use the <code>setText</code> method of the browser
+    widget. This code would then also run in an SWT application. However, when using
+    <code>setText</code>, the Browser can not cache the loaded document, so each new instance has
+    to load and parse it again.
+    A good example of a custom widget using this strategy is the
+    <code>Browser</code>-based <a href="http://git.eclipse.org/c/rap/incubator/org.eclipse.rap.incubator.google-maps.git/">
+    Google Maps widget</a>.
+    When a not all resources can be inlined in the HTML file (like images), and they are to be
+    provided by the RAP application itself, it is necessary to register them as static resources.
+  </p>
+
+  <h3>Limitations in JEE Mode</h3>
+  <p>
+      When using the
+      <a href="application-setup.html#compat">JEE compatibility</a>
+      <a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#OperationMode">OperationMode</a>
+      (the default for non-workbench based applications), then
+      the <code>executeScript</code> and <code>evaluate</code> methods will not block program
+      execution.
+      Like with dialogs, a workaround is possible using the class
+      <a href="../reference/api/org/eclipse/rwt/widgets/BrowserUtil.html"><code>BrowserUtil</code></a>,
+      which lets you register a callback to recieve the results of the <code>evaluate</code>
+      call. However, this pattern makes implementing a traditional "getter" impossible.
+      In <a href="application-setup.html#compat">SWT compatibility</a> mode you can write:
+    </p>
+    <pre>
+  public String getText() {
+    // assuming the web app is already fully loaded and initialized:
+    return ( String )browser.evaluate( "return myWidget.getData();" );
+  }
+  </pre>
+  <p>
+    In <a href="application-setup.html#compat">JEE compatibility</a> mode you have to write:
+  </p>
+   <pre>
+  public void getText( final MyCallback callback ) {
+    BrowserUtil.evaluate( browser, "return myWidget.getData();" new BrowserCallback() {
+      public void evaluationSucceeded( Object result ) {
+        callback.handleGetText( ( String )result );
+      }
+      public void evaluationFailed( Exception exception ) {
+        throw new RuntimeException( exception );
+      }
+    } );
+  }
+  </pre>
+  <p>
+    If you are writing a custom widget that is supposed to feature getter that need to obtain their
+    value using <code>evaluate</code>, either use the SWT compatibility mode, or consider
+    another type of custom widget.
+  </p>
+
+</body>
+</html>

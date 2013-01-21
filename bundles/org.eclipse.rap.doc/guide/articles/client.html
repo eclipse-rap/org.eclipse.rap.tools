@@ -50,10 +50,12 @@
     The <code>getService</code> method of the client object can be used to obtain an implementation
     of a given service, provided it is supported by the connected client. Wether or not
     a service is supported depends on the RAP client implementation, but may also change
-    depending on the clients runtime enviroment and configuration.
+    depending on the clients runtime enviroment (browser) and configuration.
   </p>
   <p>If a service is not supported, the method returns null. If this is a possibility given the
     used service and targeted RAP client, a null check should be performed before using the service.
+    Currently, all services
+    of the <code>WebClient</code> are supported at all times (i.e. on all browser).
   </p><p>
   Example usage of a service:
   </p>
@@ -106,8 +108,8 @@
     <li style="margin-bottom:10px">
       <b>JavaScriptLoader</b>
       <br/>
-      Can be used to execute entire javascript files on the client. If the file has already been
-      loaded by the client instance, it is not executed again.
+      Can be used to execute entire javascript files on the client. If a file has been
+      executed by the client instance once, it will not be executed again.
       The URL has to be within the same domain as the RAP server.
       The <a href="application-configuration.html">ApplicationConfiguration</a>,
       the org.eclipse.rap.ui.resources extension point (for workbench applications),

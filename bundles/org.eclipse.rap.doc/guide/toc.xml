@@ -30,9 +30,11 @@
         label="Key and Mouse Event Handling"
         href="guide/articles/key-and-mouse-events.html">
     </topic>
+    <topic href="guide/articles/tree-table.html" label="Tree and Table Enhancements">
+    </topic>
     <topic href="guide/articles/markup.html" label="Fonts and Markup in RAP">
     </topic>
-    <topic href="guide/articles/tree-table.html" label="Tree and Table Enhancements">
+    <topic href="guide/articles/web-embedding.html" label="Embedding Web Components">
     </topic>
     <topic href="guide/articles/navigation.html" label="Browser Navigation &amp; History">
     </topic>
@@ -42,6 +44,8 @@
     <topic
         label="Custom Widgets"
         href="guide/articles/custom-widget.html"/>
+    <topic href="guide/articles/resources.html" label="Registering static resources">
+    </topic>
   </topic>
   <topic label="Scopes and Threads in RAP">
     <topic
