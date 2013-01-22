@@ -12,164 +12,88 @@
 
   <h1>RWT Theming</h1>
 
-  <!-- TODO : cover non workbench applications -->
+  <p>Index:</p>
 
-  <h2>Introduction</h2>
+  <ul>
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#primer">Writing Themes</a></li>
+    <li><a href="#rwt">Setting Themes in an Application Configuration</a></li>
+    <li><a href="#workbench">Setting Themes for Workbench Applications</a></li>
+  </ul>
 
   <p>
-    This article describes the theming of RWT, the RAP Widget Toolkit.
-    This theming defines the <em>default</em> look and feel of the RWT widgets.
-    It is not related to Eclipse workbench concepts like the workbench theming
-    or custom stack presentations.
-    Instead, it resembles the theming capabilities commonly provided by desktop
-    systems that allow users to set their custom colors for window title bars,
-    custom fonts, and the like.
+    If you want to go directly to the theming reference, click
+    <a href="../reference/theming/index.html">here</a>.
+  </p>
+
+  <h2 id="intro">Introduction</h2>
+
+  <p>
+    This article describes the CSS theming of RWT, the RAP Widget Toolkit.
+    Like the theming preferences commonly provided by desktop
+    systems, it allows developers to set the widgets default colors, fonts, borders, and more.
   </p>
 
   <p>
-    The theming controls various aspects of the widget's appearance such as
-    colors, fonts, and borders.
-    Even advanced effects as gradients and animations are supported.
     As an example, the following screenshots show the same dialog with the
     default theme and with a custom theme.
     As you can see, a custom theme does not only alter some colors, it also
-    affects the size of widgets by changing dimension properties like paddings,
-    borders, and font sizes.
+    affects the widgets, size, fonts, shadows, and more.
+    Even effects like hover and appear animations are different.
     <br/>
-    <img src="../images/theming-dialog.png" alt="Dialog with theming"/><br/>
-    <img src="../images/theming-dialog-new.png" alt="Dialog with theming"/>
+    <img src="../images/theming-dialog-new.png" style="margin-top:10px"/>
+    <img src="../images/theming-dialog.png" style="margin-top:10px"/>
   </p>
 
   <p>
-    RWT themes are being defined by CSS files that are registered with the
-    extension point <code>org.eclipse.rap.ui.themes</code>.
-    Existing themes can be extended by theme contributions using the same
-    extension point.
-    The CSS files are not directly passed to the client's browser, but parsed
-    and evaluated by RAP on the server side.
-    The reason for this is that RAP executes all layout calculations on the server
-    and thus, the server needs to know the actual sizes of borders, margins and
-    paddings for every widget.
-    After evaluating the CSS theme file, the server passes a pre-processed
-    version of the style definitions to the client.
+    A <q>custom theme</q> is a complete set of rules for all properties of all RAP widgets
+    found in the theming reference (a <q>main theme</q>).
+    It replaces the <q>default</q> theme of RAP, which is used if no custom theme is set.
+    Custom themes are usually created by copying an existing main theme
+    (like the default or RAP example themes) and modifying it. A
+    <q>theme contribution</q> only adds some rules to an existing (default or custom) main theme.
+    This is often useful when only a few properties are to be changed, or when working with
+    <a href="#variants" >custom variants</a>.
+  </p>
+  <p><small><b>Note:</b>
+   The default theme file can be found in the bundle &quot;org.eclipse.rap.rwt&quot;,
+   file &quot;resources/resource/theme/default.css&quot;. The example themes can be found
+   in the bundle &quot;org.eclipse.rap.design.example&quot;, folder &quot;theme&quot;. Both are part
+   of the RAP target platform.
+  </small></p>
+  <h3>What this is not</h3>
+  <p>
+    The RWT theming is not related to any Eclipse workbench concepts like the workbench theming
+    or custom stack presentations. Also, the CSS files are not directly passed to the client's
+    browser, but parsed and processed by RAP on the server side, as they are required for
+    layout calculations.
+    Therefore you can not add any arbitrary rules and expect them to be available in the
+    client document. If you want to do that (e.g. for custom widgets), use the
+    application configuration/branding to add your css to the documents <em>head</em>,
+    or load CSS files dynamically using JavaScriptExecuter or JavaScriptLoader.
   </p>
 
-  <h2>How to Register a Custom RWT Theme</h2>
+  <h2 id="primer">Writing and Extending Themes</h2>
 
-  <h3>1. Create a Theme File (CSS)</h3>
-
-  <p>
-    Create a *.css file as explained above and place it somewhere in your project.
-    Since your theme probably needs image resources as well, an extra theme folder
-    is recommended.
-    Remember to include this folder in the project's <code>build.properties</code>
-    file to make them available in a deployment.
-    If the file contains non-ASCII characters, it has to be UTF-8 encoded.
-  </p>
-
-  <h3>2. Register the Custom Theme</h3>
+  <h3>Creating a Theme File (CSS)</h3>
 
   <p>
-    In order to make your theme available for RAP, you have to register it with
-    the extension point <code>org.eclipse.rap.ui.themes</code>.
-    In the <code>plugin.xml</code> of your application project, add an extension
-    like this:
-  </p>
-
-  <pre><code>  &lt;extension
-      point=&quot;org.eclipse.rap.ui.themes&quot;&gt;
-    &lt;theme
-        id=&quot;my.application.aquablue&quot;
-        name=&quot;Aqua Blue Test Theme&quot;
-        file=&quot;theme/aquablue.css&quot; /&gt;
-  &lt;/extension&gt;
-  </code></pre>
-
-  <p>
-    Now your theme is registered, but your application still doesn't use it.
-  </p>
-
-  <h3>3. Activate the Custom Theme</h3>
-  <p>
-    To make your application use the custom theme you have to register a branding.
-    In short, a branding binds several settings (including the theme to use) to a
-    servlet name.
-    For more details, refer to the article on
-    <a href="./branding.html">RAP Branding</a>.
-    For example, the following extension makes the application available at
-    the URL <code>http://hostname:port/aqua</code>
-  </p>
-
-  <pre><code>  &lt;extension
-      point=&quot;org.eclipse.rap.ui.branding&quot;&gt;
-    &lt;branding
-        id=&quot;my.application.aquabranding&quot;
-        servletName=&quot;aqua&quot;
-        defaultEntrypointId=&quot;my.application.entrypoint1&quot;
-        themeId=&quot;my.application.aquablue&quot;&gt;
-    &lt;/branding&gt;
-  &lt;/extension&gt;
-  </code></pre>
-
-  <h2>How to Extend an Existing RWT Theme</h2>
-
-  <h3>1. Create a Theme File (CSS)</h3>
-
-  <p>
-    Create a *.css file that extends an existing theme.
-    The theme file can be placed anywhere in your project.
-    The extension theme file can also refer to images kept in the project.
-    Don't forget to include everything in the project's
-    <code>build.properties</code> file.
-    If the file contains non-ASCII characters, it has to be UTF-8 encoded.
-  </p>
-
-  <h3>2. Register the Theme Contribution</h3>
-
-  <p>
-    Register the contribution with the extension point
-    <code>org.eclipse.rap.ui.themes</code>, using a <code>themeContribution</code>
-    element.
-    In the <code>plugin.xml</code> of your application project, the extension
-    will look like this:
-  </p>
-
-  <pre><code>  &lt;extension
-      point=&quot;org.eclipse.rap.ui.themes&quot;&gt;
-    &lt;themeContribution
-        themeId=&quot;my.application.aquablue&quot;
-        file=&quot;aqua-extensions.css&quot; /&gt;
-  &lt;/extension&gt;
-  </code></pre>
-
-  <p>
-    Now your theme contribution is registered and will automatically added to the
-    existing theme.
-  </p>
-
-  <p>
-    Note that many contributions can be added to a theme and the order in which
-    those contributions are appended is undefined.
-    Therefore, you should only add rules to the extension CSS file that will not
-    be overridden by other contributions.
-    As an example, rules for custom variants (see below) that are defined in the
-    same plug-in will be safe as long as other theme contributions do not
-    reference the same variants.
-  </p>
-
-  <h2>CSS Primer</h2>
-
-  <p>
-    The theme files for RAP are written in CSS using widget types as element
-    names.
+    This section explains the basic rules for writing CSS theme files.
+    Themes are written in CSS using widget types as element names.
     The syntax must be valid
     <a href="http://www.w3.org/TR/CSS21/">CSS 2.1</a>,
     although RAP does not support the complete CSS syntax.
     Some advanced concepts like &quot;@&quot;-rules and certain selector types are
     not supported.
-    This section explains the basic rules for writing CSS theme files.
-    The CSS file contained in the demo project
-    (<code>org.eclipse.rap.demo</code>) can serve as a more complex example.
+  </p>
+
+  <p>
+    Create a new .css file and place it anywhere in your project.
+    Since the theme file can refer to images kept in the same project,
+    so an extra theme folder is recommended.
+    If the file contains non-ASCII characters, it has to be UTF-8 encoded.
+    Don't forget to include everything in the project's
+    <code>build.properties</code> file to make them available in a deployment.
   </p>
 
   <h3>Structure</h3>
@@ -180,11 +104,14 @@
     a block of declarations enclosed in braces.
     Declarations start with a property name, followed by a colon, followed by a
     value and end with a semicolon.
+    There is no inherent difference between the structure of a custom theme and
+    a theme contribution. A custom theme simply needs to cover all widgets, while a theme
+    contribution may consist of a single rule.
     The following is an example of a simple theme file, consisting of two style
     rules:
   </p>
 
-  <pre><code>  Button[PUSH], Button[TOGGLE] {
+  <pre>  Button[PUSH], Button[TOGGLE] {
     border: 2px solid blue;
     color: rgb( 17, 23, 103 );
     background-color: #f9f9f9;
@@ -193,7 +120,7 @@
   Button[PUSH]:hover, Button[TOGGLE]:hover {
     background-color: white;
   }
-  </code></pre>
+  </pre>
 
   <h3>Selectors</h3>
 
@@ -246,11 +173,11 @@
     also listed in the <a href="../reference/theming/index.html">theming reference</a>.
   </p>
 
-  <h4 id = "variants" >Widget Variants</h4>
+  <h4 id="variants" >Custom Variants</h4>
 
   <p>
     Normally, a theme setting affects all widgets of a given type equally.
-    By defining widget variants it is possible to apply an individual presentation
+    By defining custom variants it is possible to apply an individual presentation
     to particular widgets without affecting all widgets of that type.
     As an example, imagine an application that uses buttons in a special banner bar.
     These buttons should have a different font and text color than normal buttons.
@@ -280,8 +207,8 @@
 
   <p>
     The themeable properties are also widget specific.
-    Not all RWT widgets are equally customizable, some already provide a large
-    set of themeable properties, others are still more hard-wired.
+    Not all RWT widgets are equally customizable, some provide a large
+    set of themeable properties, others less.
     An overview of all available elements and their themeable CSS properties can
     be found in the
     <a href="../reference/theming/index.html">theming reference</a>.
@@ -303,6 +230,18 @@
     for a detailed description.
   </p>
 
+  <p>
+    When making theme contributions, they are simply concatenate to the
+    main theme file, thereby overwriting the rules from the theme they contribute to.
+    However, many contributions can be added to the same theme, and the order in which
+    they are appended is undefined.
+    Therefore, you should only add rules to the extension CSS file that will not
+    be overridden by other contributions.
+    As an example, rules for custom variants (see above) that are defined in the
+    same theme will be safe as long as other theme contributions do not
+    reference the same variants.
+  </p>
+
   <h3>Setting SWT Defaults</h3>
 
   <p>
@@ -311,6 +250,134 @@
     In RAP, these defaults are also controlled by the theme.
     For details, see the theme reference of the Display element.
   </p>
+
+
+  <h2 id="rwt">Setting Themes in an Application Configuration</h2>
+
+  <p><b>Note:</b> For workbench applications, please read
+  <q><a href="#workbench">Setting Themes for Workbench Applications</a></q> instead.
+  </p>
+
+  <h3>Register a Custom Theme</h3>
+
+  <p>
+    In order to make your theme available for a RAP application, you have to register it
+    in the application configuration first. This is done using the method
+    <em>Application#addStyleSheet</em>. Example:
+  </p>
+
+  <pre>
+application.addStyleSheet( "my.application.aquablue", "theme/aquablue.css" );
+  </pre>
+
+  <p>
+    Now your theme is registered with the id &quot;my.application.aquablue&quot;,
+    but it still needs to be activated.
+  </p>
+
+  <h3>Activate a Custom Theme</h3>
+  <p>
+    To make your application use the custom theme, you need to configure your entry point
+    accordingly using the same theme id. Example:
+  </p>
+
+  <pre>
+Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();
+properties.put( WebClient.THEME_ID, "my.application.aquablue" );
+application.addEntryPoint( "/example", Example.class, properties );
+  </pre>
+
+  <p>
+    Different entry points can of course use different themes.
+  </p>
+
+  <h3>Register a Theme Contribution</h3>
+
+  <p>
+    Registering contribution file is done the same way a main theme file is registered,
+    only the order defines which is which.
+  </p>
+
+  <pre>
+application.addStyleSheet( "my.application.aquablue", "theme/aquablue.css" );
+application.addStyleSheet( "my.application.aquablue", "aqua-extensions.css" );
+  </pre>
+
+  <p>
+    The theme contribution &quot;aqua-extensions.css&quot; will now be added to the
+    existing theme &quot;my.application.aquablue&quot;.
+    To contribute to the default theme, use the constant
+    <em>RWT.DEFAULT_THEME_ID</em>:
+  </p>
+
+  <pre>
+application.addStyleSheet( RWT.DEFAULT_THEME_ID, "default-theme-extension.css" );
+  </pre>
+
+  <p>
+    In that case it is not necessary to register or activate a main theme.
+  </p>
+
+  <h2 id="workbench">Setting Themes for Workbench Applications</h2>
+
+  <h3>Register a Custom Theme</h3>
+
+  <p>
+    In order to make your theme available for workbench applications, you have to register it with
+    the extension point <code>org.eclipse.rap.ui.themes</code>.
+    In the <code>plugin.xml</code> of your application project, add an extension
+    like this:
+  </p>
+
+  <pre><code>  &lt;extension
+      point=&quot;org.eclipse.rap.ui.themes&quot;&gt;
+    &lt;theme
+        id=&quot;my.application.aquablue&quot;
+        name=&quot;Aqua Blue Test Theme&quot;
+        file=&quot;theme/aquablue.css&quot; /&gt;
+  &lt;/extension&gt;
+  </code></pre>
+
+  <p>
+    Now your theme is registered with the id &quot;my.application.aquablue&quot;,
+    but it still needs to be activated.
+  </p>
+
+  <h3>Activate a Custom Theme</h3>
+  <p>
+    To make your application use the custom theme you have to register a branding.
+    In short, a branding defines several settings, that
+    may then be bound to a registerd entry point. To assign a theme, simply
+    put the id used in the theme registration in the extensions &quot;themeId&quot; property.
+    For more details, refer to the article on
+    <a href="./branding.html">RAP Branding</a>.
+  </p>
+
+  <h3>Register a Theme Contribution</h3>
+
+  <p>
+    Register the contribution file with the extension point
+    <code>org.eclipse.rap.ui.themes</code>, using a <code>themeContribution</code>
+    element.
+    In the <code>plugin.xml</code> of your application project, the extension
+    will look like this:
+  </p>
+
+  <pre><code>  &lt;extension
+      point=&quot;org.eclipse.rap.ui.themes&quot;&gt;
+    &lt;themeContribution
+        themeId=&quot;my.application.aquablue&quot;
+        file=&quot;aqua-extensions.css&quot; /&gt;
+  &lt;/extension&gt;
+  </code></pre>
+
+  <p>
+    Now your theme contribution is registered and will automatically added to the
+    existing theme. To contribute to the default theme, use
+    &quot;org.eclipse.rap.rwt.theme.Default&quot; in the  &quot;themeId&quot; property;
+    In that case it is not necessary to register or activate a main theme.
+  </p>
+
 
 </body>
 </html>
