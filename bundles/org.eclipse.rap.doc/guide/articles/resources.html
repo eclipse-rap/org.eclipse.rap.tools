@@ -71,7 +71,9 @@ if( !resourceManager.isRegistered( "foo/icon.png" ) ) {
   </ul>
 
   <p>
-    To use the resource on the client, is it necessary to know its public URL.
+    To use the resource on the client (e.g. in a browser widget or the <em>JavaScriptLoader</em>),
+    is it necessary to know its public URL. (For the favicon the path used in the registration
+    can be used).
     This information is in all cases provided by the ResourceManager:
   </p>
     <pre>
