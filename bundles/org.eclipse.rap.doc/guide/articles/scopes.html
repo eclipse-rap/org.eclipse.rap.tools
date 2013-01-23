@@ -36,7 +36,7 @@
     For these reason, it is necessary to distinguish various scopes and threads in RAP:
   </p>
 
-  <h2>ApplicationContext</h2>
+  <h2 id="application">ApplicationContext</h2>
   <p>
     There can be more than one RAP application running at the same time, e.g. on different network
     ports or different contexts paths.
@@ -57,7 +57,7 @@
  threads. Background threads can not access it directly however. (See "UI Thread").
   </p>
 
-  <h2>UISession Context and UI Thread</h2>
+  <h2 id="uisession">UISession Context and UI Thread</h2>
   <p>
     The UI session context in RAP spans exactly one execution of an entrypoint.
     It is created when the user connects to the server, and usually ends with a refresh or timeout.
@@ -73,7 +73,7 @@
     store session-scoped data. It also provides access to the HTTP session and the client object.
   </p>
 
-  <h3>UI Thread</h3>
+  <h3 id="uithread">UI Thread</h3>
 
   <p>
     The UI thread is the thread in which the Display was created.
@@ -141,14 +141,14 @@ display.disposeExec( new Runnable() {
    -->
 
 
-  <h2>User Settings</h2>
+  <h2 id="user">User Settings</h2>
   <p>
     While there is a new UI Session every time a client connects, a returning user may by identified
     by RAP using a coockie. To associate data with a specific user, the <code>SettingStore</code>
     may be used.
   </p>
 
-  <h2>RAP Client</h2>
+  <h2 id="client">RAP Client</h2>
   <p>
     Any RAP Client that connects with a RAP server also stores some data, usually for the duration
     of the UI Session. Most noteably, the client has a complete copy of the UI state, which it

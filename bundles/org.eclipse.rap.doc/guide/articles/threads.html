@@ -15,7 +15,7 @@
   <p>
     RWT determines the UI session context based on the current thread. When <em>background</em>
     threads try to do so, the code will fail with an <code>java.lang.IllegalStateException</code>,
-    saying that thiss thread has no access. This may happen when using any method of <code>RWT</code>
+    saying that this thread has no access. This may happen when using any method of <code>RWT</code>
     or <code>SingletonUtil</code>. Example:
   </p>
   <pre><code>// INCORRECT

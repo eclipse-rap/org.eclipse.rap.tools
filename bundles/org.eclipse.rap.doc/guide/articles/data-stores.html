@@ -5,7 +5,6 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Multi User Enviroment</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
@@ -15,7 +14,7 @@
   <p>
     When storing data in RAP, it's important to take into account that multiple users and
     RAP applications may share the same Java VM and the same file system. To address this, RAP provides
-    basic, out-of-the box storage solutions for three commen cases. Of course, these
+    basic, out-of-the box storage solutions for three common cases. Of course, these
     are not suited for the permanent storage of huge or sensitive data structures.
   </p>
 
@@ -28,37 +27,48 @@
       <th align="left">cleared</th>
     </tr>
     <tr>
-      <td><code>ApplicationContext</code></td>
-      <td><code>RWT.getApplicationContext()</code>,<br/>from any thread</td>
-      <td>application</td>
+      <td><em><a href="../reference/api/org/eclipse/rap/rwt/service/ApplicationContext.html">ApplicationContext</a></em></td>
+      <td>
+        <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getApplicationContext()">RWT.getApplicationContext()</a></em>,
+        <br/>from any thread
+      </td>
+      <td><a href="scopes.html#application">application</a></td>
       <td>any object</td>
       <td>when application is stopped/restarted</td>
     </tr>
     <tr>
-      <td><code>UISession</code></td>
-      <td><code>RWT.getUISession()</code>, <br/>requires session context</td>
-      <td style="white-space:nowrap">UI Session</td>
+      <td><em><a href="../reference/api/org/eclipse/rap/rwt/service/UISession.html">UISession</a></em></td>
+      <td>
+        <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getUISession()">RWT.getUISession()</a></em>, 
+        <br/>requires <a href="threads.html">session context</a>
+      </td>
+      <td style="white-space:nowrap"><a href="scopes.html#uisession">UI Session</a></td>
       <td>any object</td>
       <td>when session expires</td>
     </tr>
     <tr>
-      <td><code>SettingStore</code></td>
-      <td><code>RWT.getSettingStore()</code>, <br/>requires session context</td>
-      <td>user (persistent)</td>
+      <td><em><a href="../reference/api/org/eclipse/rap/rwt/service/SettingStore.html">SettingStore</a></em></td>
+      <td>
+        <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getSettingStore()">RWT.getSettingStore()</a></em>, 
+        <br/>requires <a href="threads.html">session context</a>
+      </td>
+      <td><a href="scopes.html#user">user (persistent)</a></td>
       <td>strings</td>
       <td>never, cookie lasts 3 month by default</td>
     </tr>
   </table>
 
   <p>
-    All these Data Stores have at least the three methods <code>setAttribute</code>,
-    <code>getAttribute</code> and <code>removeAttribute</code>. Note that the settings store
+    All these Data Stores have at least the three methods <em>setAttribute</em>,
+    <em>getAttribute</em> and <em>removeAttribute</em>. Note that the settings store
     relies on cookies, which may be deleted or disabled by the user. It is also possible
-    to identify the user by any other means and use the method <code>loadById</code> to
+    to identify the user by any other means and use the method 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/SettingStore.html#loadById(java.lang.String)">loadById</a></em> to
     initialize the SettingStore. <!-- TODO : does it survive a application shutdown? -->
   </p><p>
-    If you need to use the <code>UISession</code>
-    or <code>SettingStore</code> from from a background thread, read Session Access from background thread.
+    If you need to use the <em>UISession</em>
+    or <em>SettingStore</em> from from a background thread, 
+    read <q><a href="threads.html">Session Access from background thread</a></q>.
   </p>
 
 
