@@ -22,9 +22,9 @@
     Implementing an ApplicationConfiguration
   </h2>
   <p>
-    A RAP application consists of various parts, such as entrypoints, URL mappings, themes,
+    A RAP application consists of various parts, such as entry points, URL mappings, themes,
     service handlers, etc.
-    All these parts constitute an <em>ApplicationConfiguration</em>,
+    All these parts constitute an <em>application configuration</em>,
     which the framework can use to create and start an application instance.
     There can be more than one application instance at runtime, e.g. running on different network
     ports or different servlet contexts.
@@ -32,9 +32,9 @@
   <p>
     RAP uses a callback approach to configure applications before they are started.
     For that, an implementation of the interface
-    <code><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html">ApplicationConfiguration</a></code>
-    is required. Here, the method <code>configure( Application )</code> is invoked with
-    a reference to the created <code>Application</code>
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html">ApplicationConfiguration</a></em>
+    is required. There, the method <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html#configure(org.eclipse.rap.rwt.application.Application)">configure( Application )</a></em> is invoked with
+    a reference to the created <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html">Application</a></em>
     as the sole argument. A minimal implementation registers at least one entry point for
     the application:
   </p>
@@ -47,17 +47,23 @@
 }
 </code></pre>
   <p>
-    An any application may have any number of entry points, as long as they are mapped
+    Any application may have any number of entry points, as long as they are mapped
     to different paths. In this case the entry point would be executed when the URL
     <code>http://&lt;rapserver&gt;:&lt;port&gt;/simple</code> is typed into the browser.
   </p>
   <p>
-    The third argument can be a map that configures visual aspects of the entry point.
-    These may be client-specific, and therefore the client class (i.e. <em>WebClient</em>)
-    provides constats to be used with the map. It's possible to specify which theme to use,
-    and which icon and name should be displayed in the browser title bar. It's also possible
-    to add static HTML to the client documents <em>head</em> or <em>body</em>. That way a simple
-    splash screen can be implemented.
+    The third argument of <em>addEntryPoint</em>can be a map that configures visual aspects of the entry point.
+    These may be client-specific, and therefore the 
+    <a href="client.html">client class</a> (i.e. <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html">WebClient</a></em>)
+    provides constants to be used with the map. It's possible to specify 
+    <a href="theming.html#rwt">which theme to use</a>,
+    and which <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#FAVICON">icon</a> 
+    and <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#PAGE_TITLE">name</a>
+    should be displayed in the browser title bar. It's also possible
+    to add static HTML to the client documents 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#HEAD_HTML">head</a></em> 
+    or <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#BODY_HTML">body</a></em>. 
+    That way a simple splash screen can be implemented.
   </p>
   <pre>
 Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();
@@ -68,30 +74,32 @@ properties.put( WebClient.THEME_ID, "MyCustomTheme" );
 application.addEntryPoint( "/example", Example.class, properties );
   </pre>
   <p>
-    Note that the favicon and any images you might use in the additonal HTML must be registered
+    Note that the favicon and any images you might use in the additional HTML must be registered
     as a static resource. This can also be done in the application configuration with the
-    method <em>Application#addResource</em>. Learn more about static resources
-    <a href="resources.html">here</a>.
+    method <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addResource(java.lang.String, org.eclipse.rap.rwt.service.ResourceLoader)">Application#addResource</a></em>. 
+    Learn more about static resources <a href="resources.html">here</a>.
   </p>
   <p>
-    The theme-id (<em>WebClient.THEME_ID</em>) is the same that is used in the method
-    <em>Application#addStyleSheet</em>. Learn more about custom themes and theme contributions
-    <a href="theming.html">here</a>.
+    The theme-id (<em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#THEME_ID">WebClient.THEME_ID</a></em>) 
+    is the same that is used in the method <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addStyleSheet(java.lang.String, java.lang.String, org.eclipse.rap.rwt.service.ResourceLoader)">Application#addStyleSheet</a></em>. 
+    Learn more about custom themes and theme contributions <a href="theming.html">here</a>.
   </p>
   <p>
-    The application instance also has methods to
-    <a href="application-setup.html">set the operation mode</a> and
-    register service handler.
+    The application instance also a method 
+    (<em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#setOperationMode(org.eclipse.rap.rwt.application.Application.OperationMode)">setOperationMode</a></em>)
+    to <a href="application-setup.html#compat">set the operation mode</a> and 
+    <a  href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addServiceHandler(java.lang.String, org.eclipse.rap.rwt.service.ServiceHandler)">one to
+    register service handler</a>.
   </p>
 
-  <h2>Registering the ApplicationConfiguration</h2>
+  <h2>Registering the Application Configuration</h2>
   <p>
-    When using OSGi, the ApplicationConfiguration can be registered as a service.
+    When using OSGi, the application configuration can be registered as a service.
     We recommend using OSGi declarative services (DS).
     You can create a service component definition with Eclipse
     (<em class="UILabel">New &gt; Plug-in Development &gt; Component Definition</em>).
     The service component definition is an XML file, usually contained in a directory
-    named <code>OSGI-INF</code>. Edit it to point to your configuration implementation as shown below:
+    named <em>OSGI-INF</em>. Edit it to point to your configuration implementation as shown below:
   </p>
   <pre><code>&lt;scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0"&gt;
   &lt;implementation class="com.example.SimpleConfiguration"/&gt;
@@ -102,7 +110,7 @@ application.addEntryPoint( "/example", Example.class, properties );
 </code></pre>
   <p>
     When manually creating this file, it also has to be registered in the bundle manifest.
-    Add a line like the following to the MANIFEST.MF:
+    Add a line like the following to the <em>MANIFEST.MF</em>:
   </p>
   <pre><code>Service-Component: OSGI-INF/configuration.xml
 </code></pre>
@@ -116,14 +124,14 @@ application.addEntryPoint( "/example", Example.class, properties );
   <pre><code>  &lt;property name=&quot;contextName&quot; type=&quot;String&quot; value=&quot;example&quot;/&gt;
 </code></pre>
   <p>
-    With this configuration, the entrypoint <em>simple</em> defined above will be available at
-    <code>http://host:port/example/simple</code>.
+    With this configuration, the entry point <em>simple</em> defined above will be available at
+    <code>http://&lt;host&gt;:&lt;port&gt;/example/simple</code>.
   </p>
 
   <h3>RWT stand-alone</h3>
   <p>
     When using <a href="rwt-standalone.html">RWT as a library</a> in a traditional web application,
-    i.e. without OSGi, the ApplicationConfiguration can be registered in the deployment descriptor
+    i.e. without OSGi, the application configuration can be registered in the deployment descriptor
     (web.xml) by adding a
     <code>context-param</code> with the fully qualified class name of the implementation:
   </p>
@@ -134,28 +142,28 @@ application.addEntryPoint( "/example", Example.class, properties );
 &lt;/context-param&gt;
 </pre>
   <p>
-    You can always look up the param-name in the constant
-    <code>ApplicationConfiguration#CONFIGURATION_PARAM</code>.
+    You can always look up the <em>param-name</em> in the constant
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html#CONFIGURATION_PARAM">ApplicationConfiguration#CONFIGURATION_PARAM</a></em>.
   </p>
 
   <h2>
     Starting an Application
   </h2>
   <p>
-    When an ApplicationConfiguration has been registered as described above, the bundle
-    <code>org.eclipse.rap.rwt.osgi</code> will automatically start this application on
+    When an application configuration has been registered as described above, the bundle
+    <em>org.eclipse.rap.rwt.osgi</em> will automatically start this application on
     every available HttpService.
-    When using Equinox, don’t forget to also include the <code>org.eclipse.equinox.ds</code> bundle.
+    When using Equinox, don’t forget to also include the <em>org.eclipse.equinox.ds</em> bundle.
   </p>
   <p>
-    Please also ensure that the bundle <code>org.eclipse.rap.ui.workbench</code> is
+    Please also ensure that the bundle <em>org.eclipse.rap.ui.workbench</em> is
     <strong>not</strong> included in your configuration. The workbench bundle automatically starts
     an application in the default context that clashes with the registered application unless the
     application is registered with a custom context.
   </p>
   <p>
     As an alternative to letting the framework start the application automatically, applications
-    can also be started explicitly using an <code>ApplicationRunner</code>:
+    can also be started explicitly using an <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationRunner.html">ApplicationRunner</a></em>:
   </p>
   <pre>
 ApplicationConfiguration configuration = new SimpleConfiguration();

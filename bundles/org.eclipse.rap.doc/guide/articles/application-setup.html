@@ -56,24 +56,23 @@
 
   <h2 id="compat">JEE or SWT compatibility?</h2>
   <p>
-    RWT has two different
-    <a href="../reference/api/org/eclipse/rwt/application/Application.html#OperationMode"> modes of
-    operation</a>.
-    The default one is fully <em>compatible with JEE</em>, lightweight, and supports transparent
+    RWT has two different modes of operation, which can be configured in the 
+    <a href="application-configuration.html">application configuration</a>.
+    The default one is <strong>fully compatible with JEE</strong>, lightweight, and supports transparent
     session failover in
     <a href="http://wiki.eclipse.org/RAP/RWT_Cluster">clustering environments</a>
     (clustering currently requires an RWT standalone setup).
-    This is the recommended mode in most cases.
+    This is the recommended operation mode in most cases.
   </p>
   <p>
-    As an alternative, the <em>SWT compatibility mode</em> exactly emulates the SWT threading model.
+    As an alternative, the <strong>SWT compatibility mode</strong> exactly emulates the SWT threading model.
     To make this possible, a separate UI thread has to be started for every user session.
     As a consequence, the code running in the UI thread cannot directly access JEE transaction
     or security contexts.
   </p>
   <p>
     The SWT compatibility mode is only required for code that uses SWT's few blocking APIs.
-    The most obvious case are blocking dialogs (i.e. calling dialog.open() will suspend code
+    The most obvious case are blocking dialogs (i.e. calling <code>dialog.open()</code> will suspend code
     execution until the dialog is closed by the user, and then return a value).
     In JEE mode, code execution will continue after opening the dialog, but any operations reacting
     to closing the dialog must be done in a callback.
@@ -83,7 +82,7 @@
     This mechanism does not exist in SWT.
   </p>
   <p>
-    Another blocking API in SWT are the <code>Browser</code>-widget's execute and evaluate
+    Another blocking API in SWT are the <em>Browser</em>-widget's execute and evaluate
     methods. Their return value can also be obtained with
     <a href="../reference/api/org/eclipse/rwt/widgets/BrowserUtil.html">callback implementation</a>,
     but this may be problematic when developing
@@ -170,9 +169,9 @@
     </tr>
     <tr>
       <th align="left">Launch from IDE</th>
-      <td><a href="../getting-started/launcher.html#rap">RAP Launcher</a></td>
-      <td><a href="../getting-started/launcher.html#rap">RAP Launcher</a></td>
-      <td><a href="../getting-started/launcher.html#rwt">RWT Launcher</a></td>
+      <td><a href="launcher.html#rap-launcher">RAP Launcher</a></td>
+      <td><a href="launcher.html#rap-launcher">RAP Launcher</a></td>
+      <td><a href="launcher.html#rwt-launcher">RWT Launcher</a></td>
     </tr>
   </table>
 </body>
