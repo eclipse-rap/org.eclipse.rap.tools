@@ -25,7 +25,7 @@
     with a client-server architecture like RAP. While RWT provides a SWT-like API for key
     and mouse events, some specifics should be noted.
   </p>
-  <h2>Mouse Events</h2>
+  <h2 id="mouse">Mouse Events</h2>
    <p>
     All mouse events types using in the <code>MouseListener</code> interface are almost
     fully supported. (They can only detect the first 3 mouse buttons.) They are:
@@ -60,7 +60,7 @@
        This would catch all mouse events in SWT, but in RWT it will only receive those which
        targets already have a mouse listener.
     </p>
-  <h2>Traverse Events</h2>
+  <h2 id="traverse">Traverse Events</h2>
   <p>
     Before we discuss key events, it is important to note that there are also "traverse" events,
     which are related. Traverse events are fired <em>before</em> a key event, and only for keys
@@ -68,7 +68,7 @@
     prevent or manipulate the focus change, but that is not supported in RWT. (See
     <a href = "#prevent">"Prevent Default Operation"</a> for a workaround.)
   </p>
-  <h2>Key Events</h2>
+  <h2 id="key">Key Events</h2>
   <h3>Event Order and Latency</h3>
   <p>
     There are two type of key events, <code>KeyDown</code> and <code>KeyUp</code>.
