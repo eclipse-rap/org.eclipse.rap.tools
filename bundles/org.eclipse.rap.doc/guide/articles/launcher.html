@@ -18,7 +18,7 @@
     the <em>RWT Launcher</em>, used for
     <a href="../getting-started/hello-world.html">snippets</a>
     and
-    <a href =rwt-standalone.html>stand-alone applications</a>,
+    <a href=rwt-standalone.html>stand-alone applications</a>,
     and the
     <em>RAP Launcher</em>, used for
     <a href = "application-setup.html#osgi">applications based on OSGi</a>.
@@ -43,7 +43,7 @@
     <a href="application-setup.html#osgi">OSGi</a>,
     <a href="application-configuration.html">application configuration</a> or
     <a href="branding.html">Branding</a>, only an
-    <a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">entry point</a>.
+    <a href="hello-world.html#entrypoint">entry point</a>.
   </p>
   <ol>
     <li>
@@ -99,7 +99,8 @@
     <li>
       The <em class="UILabel">Application entry point</em> lets you specify what should be launched.
       For simple use cases, choose <em class="UILabel">Run entry point class</em> and specify the
-      class that implements the <code>EntryPoint</code> interface in the class name field.
+      class that implements the <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em> 
+      interface in the class name field.
       <br/>
       If you need more control or even would like to run an arbitrary web application,
       select <em class="UILabel">Run from web.xml</em> and enter the path to the web.xml in the
@@ -157,7 +158,7 @@
     The <em class="UILabel">Servlet Path</em> field lets you configure the URL that will be
     opened in the browser. Which path is mapped to which entry point is configured in the
     <a href="application-configuration.html">application configuration</a> or
-    (for Workbench applications) in the <a href="branding.html">Branding</a>.
+    (for workbench applications) in the <a href="branding.html">Branding</a>.
   </p>
 
   <h3>Runtime Settings</h3>
@@ -179,7 +180,7 @@
   <p>
     <em class="UILabel">Context Path</em> selects an optional context path for the web application.
     The context path is part of a web application's URL, e.g.
-    <em>http://server:port/contextPath/servletPath</em>.
+    <code>http://&lt;server&gt;:&lt;port&gt;/contextPath/servletPath</code>.
     In a servlet container, every webapp is available at its own context path.
     This setting lets you simulate the same context path that your application will be accessible
     at in the production environment.
@@ -196,8 +197,8 @@
   <h3>Instance Area</h3>
   <p>
     The instance area location sets the Program Arguments to define the
-    <code><a href="/help/topic/org.eclipse.platform.doc.isv/reference/misc/runtime-options.html">
-    osgi.instance.area</a></code>. Bundles use this location to store their state location
+    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/misc/runtime-options.html">
+    osgi.instance.area</a></em>. Bundles use this location to store their state location
     data.</p>
 
   <h3>Required plug-ins</h3>
@@ -206,87 +207,90 @@
   </p>
 
   <p>
-    <em>Basic RAP bundles</em>
+    <b>Basic RAP bundles</b>
   </p>
   <ul>
-    <li>org.eclipse.rap.rwt</li>
-    <li>org.eclipse.rap.rwt.osgi</li>
+    <li><em>org.eclipse.rap.rwt</em></li>
+    <li>
+      <em>org.eclipse.rap.rwt.osgi</em></li>
   </ul>
 
   <p>
-    <em>Basic Equinox OSGi platform</em>
+    <b>Basic Equinox OSGi platform</b>
   </p>
   <ul>
-    <li>org.eclipse.osgi</li>
-    <li>org.eclipse.osgi.services</li>
-    <li>org.eclipse.equinox.console (the OSGi console)
+    <li><em>org.eclipse.osgi</em></li>
+    <li><em>org.eclipse.osgi.services</em></li>
+    <li><em>org.eclipse.equinox.console</em> (the OSGi console)
       <ul>
-        <li>org.apache.felix.gogo.command (required by equinox.console)</li>
-        <li>org.apache.felix.gogo.shell (required by equinox.console)</li>
-        <li>org.apache.felix.gogo.runtime (required by equinox.console)</li>
+        <li><em>org.apache.felix.gogo.command</em> (required by equinox.console)</li>
+        <li><em>org.apache.felix.gogo.shell</em> (required by equinox.console)</li>
+        <li><em>org.apache.felix.gogo.runtime</em> (required by equinox.console)</li>
       </ul>
     </li>
-    <li>org.eclipse.equinox.http.jetty</li>
-    <li>org.eclipse.equinox.http.servlet</li>
-    <li>org.eclipse.equinox.ds (to enable declarative services)
+    <li><em>org.eclipse.equinox.http.jetty</em></li>
+    <li><em>org.eclipse.equinox.http.servlet</em></li>
+    <li><em>org.eclipse.equinox.ds</em> (to enable declarative services)
       <ul>
-        <li>org.eclipse.equinox.util (required by equinox.ds)</li>
+        <li><em>org.eclipse.equinox.util</em> (required by equinox.ds)</li>
       </ul>
     </li>
   </ul>
 
   <p>
-    <em>The Jetty servlet container</em>
+    <b>The Jetty servlet container</b>
   </p>
   <ul>
-    <li>org.eclipse.jetty.continuation</li>
-    <li>org.eclipse.jetty.http</li>
-    <li>org.eclipse.jetty.io</li>
-    <li>org.eclipse.jetty.security</li>
-    <li>org.eclipse.jetty.server</li>
-    <li>org.eclipse.jetty.servlet</li>
-    <li>org.eclipse.jetty.util</li>
+    <li><em>org.eclipse.jetty.continuation</em></li>
+    <li><em>org.eclipse.jetty.http</em></li>
+    <li><em>org.eclipse.jetty.io</em></li>
+    <li><em>org.eclipse.jetty.security</em></li>
+    <li><em>org.eclipse.jetty.server</em></li>
+    <li><em>org.eclipse.jetty.servlet</em></li>
+    <li><em>org.eclipse.jetty.util</em></li>
   </ul>
 
   <p>
-    <em>Servlet API (remove when deploying to a servlet container)</em>
+    <b>Servlet API</b>
+    (remove when deploying to a servlet container)
   </p>
   <ul>
-    <li>javax.servlet</li>
+    <li><em>javax.servlet</em></li>
   </ul>
 
   <p>
-    <em>Optional RAP bundles (require additional platform bundles - see below)</em>
+    <b>Optional RAP bundles</b> (require additional platform bundles - see below)
   </p>
   <ul>
-    <li>org.eclipse.rap.jface</li>
-    <li>org.eclipse.rap.jface.databinding</li>
-    <li>org.eclipse.rap.ui</li>
-    <li>org.eclipse.rap.ui.forms</li>
-    <li>org.eclipse.rap.ui.views</li>
-    <li>org.eclipse.rap.ui.workbench</li>
+    <li><em>org.eclipse.rap.jface</em></li>
+    <li><em>org.eclipse.rap.jface.databinding</em></li>
+    <li><em>org.eclipse.rap.ui</em></li>
+    <li><em>org.eclipse.rap.ui.forms</em></li>
+    <li><em>org.eclipse.rap.ui.views</em></li>
+    <li><em>org.eclipse.rap.ui.workbench</em></li>
   </ul>
 
   <p>
-    <em>Eclipse platform bundles required by applications using JFace or the Workbench
-   (only a subset may be required, please check for the actual dependencies)</em>
+    <b>Eclipse platform bundles</b>
+    required by applications using JFace or the Workbench (only a subset
+    may be required, please check for the actual dependencies)
   </p>
   <ul>
-    <li>com.ibm.icu.base</li>
-    <li>org.eclipse.core.commands</li>
-    <li>org.eclipse.core.contenttype</li>
-    <li>org.eclipse.core.databinding</li>
-    <li>org.eclipse.core.databinding.beans</li>
-    <li>org.eclipse.core.databinding.observable</li>
-    <li>org.eclipse.core.databinding.property</li>
-    <li>org.eclipse.core.expressions</li>
-    <li>org.eclipse.core.jobs</li>
-    <li>org.eclipse.core.runtime</li>
-    <li>org.eclipse.equinox.app</li>
-    <li>org.eclipse.equinox.common</li>
-    <li>org.eclipse.equinox.registry</li>
-    <li>org.eclipse.equinox.preferences</li>
-    <li>org.eclipse.equinox.http.registry</li>
+    <li><em>com.ibm.icu.base</em></li>
+    <li><em>org.eclipse.core.commands</em></li>
+    <li><em>org.eclipse.core.contenttype</em></li>
+    <li><em>org.eclipse.core.databinding</em></li>
+    <li><em>org.eclipse.core.databinding.beans</em></li>
+    <li><em>org.eclipse.core.databinding.observable</em></li>
+    <li><em>org.eclipse.core.databinding.property</em></li>
+    <li><em>org.eclipse.core.expressions</em></li>
+    <li><em>org.eclipse.core.jobs</em></li>
+    <li><em>org.eclipse.core.runtime</em></li>
+    <li><em>org.eclipse.equinox.app</em></li>
+    <li><em>org.eclipse.equinox.common</em></li>
+    <li><em>org.eclipse.equinox.registry</em></li>
+    <li><em>org.eclipse.equinox.preferences</em></li>
+    <li><em>org.eclipse.equinox.http.registry</em></li>
   </ul>
 
   <p>
@@ -299,22 +303,24 @@
   <p>
     Alternatively, you can also use the plain OSGi Launcher to start RAP applications.
     In this case, you have to set the necessary system properties and program arguments on your own.
-    At minimum, you have to specify the HTTP port for the server with the VM argument
+    At minimum, you have to specify the HTTP port for the server with this VM argument:
   </p>
-  <pre><code>-Dorg.osgi.service.http.port=&lt;PORT&gt;</code></pre>
+  <pre>-Dorg.osgi.service.http.port=&lt;PORT&gt;</pre>
   <p>
-    Tu run RAP in development mode, add this system property, too:
+    To run RAP in development mode, add this system property, too:
   </p>
-  <pre><code>-Dorg.eclipse.rap.rwt.developmentMode=true</code></pre>
+  <pre>-Dorg.eclipse.rap.rwt.developmentMode=true</pre>
 
   <h3>Servlet engine log</h3>
   <p>
     By default the servlet engine (namely Jetty) is configured to suppress most logging
-    information. This can be changed by adding the VM argument
-    <code>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</code>
-    to the launch configuration. Valid log levels are <code>debug</code>,
-    <code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.
-    The default value is <code>warn</code>.
+    information. This can be changed by adding this VM argument to the launch configuration:
+  </p>
+    <pre>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</pre>
+  <p>
+    Valid log levels are <em>debug</em>,
+    <em>info</em>, <em>warn</em>, <em>error</em>, and <em>off</em>.
+    The default value is <em>warn</em>.
   </p>
 
   <h2><a name="troubleshooting"></a>TroubleShooting</h2>
@@ -348,11 +354,11 @@
         This mode does not support <code>Display.sleep()</code>, specifically, it does not support
         the SWT main loop. When starting an SWT snippet, this code may not be used:
       </p>
-      <pre><code>  while( !shell.isDisposed() ) {
-    if( !display.readAndDispatch() )
-      display.sleep();
-  }
-  display.dispose();</code></pre>
+      <pre>while( !shell.isDisposed() ) {
+  if( !display.readAndDispatch() )
+    display.sleep();
+}
+display.dispose();</pre>
       <p>
         As of RAP 2.0, it is recommended to extend <a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a> instead of
         implementing the <a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a>
@@ -366,7 +372,7 @@
       </p>
       <p>
         There are two reasons a 404 page may be displayed in the browser. Either the URL is
-        incorrect (check the servlet path), or the browser opend faster than the application
+        incorrect (check the servlet path), or the browser opened faster than the application
         could start. In that case, simply hit F5 (refresh).
       </p>
     </li>
