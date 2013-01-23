@@ -10,11 +10,11 @@
 </head>
 <body>
 
-  <h1>Deploying a RAP Application to a Servlet Container?</h1>
+  <h1>Deploying a RAP Application to a Servlet Container</h1>
 
   <p>
-    The following tutorial shows how to create a <code>WAR</code> file that contains the
-    <code>org.eclipse.rap.demo</code> project as RAP application.
+    The following tutorial shows how to create a <em>WAR</em> file that contains the
+    <em>org.eclipse.rap.demo</em> project as a RAP application.
   </p>
 
   <p>
@@ -42,72 +42,72 @@
     </li>
   </ul>
 
-  <h3>Import <code>org.eclipse.rap.demo</code> into your workspace</h3>
+  <h3>Import org.eclipse.rap.demo into your workspace</h3>
   <ul>
     <li>
-      Open the <code>plug-ins</code> view.
+      Open the <em class="UILabel">Plug-ins</em> view.
     </li>
     <li>
-      Select the <code>org.eclipse.rap.demo</code> plug-in and use the command
-      <b>Import As</b> > <b>Source Project</b> from the context menu to import
-      <code>org.eclipse.rap.demo</code> as project in your workspace.
+      Select the <em>org.eclipse.rap.demo</em> plug-in and use the command
+      <em class="UILabel">Import As</em> &gt; <em class="UILabel">Source Project</em> from the context menu to import
+      <em>org.eclipse.rap.demo</em> as a project in your workspace.
     </li>
   </ul>
   <img src="../images/import_rap_demo.png" alt="Import RAP demo project"/>
 
-  <h3>Create a <code>.warproduct</code> configuration</h3>
+  <h3>Create a .warproduct configuration</h3>
   <p>
-    Building a <code>WAR</code> file using the WAR Products tooling is centered around
-    a <code>.warproduct</code> configuration. The <code>.warproduct</code> configuration is
+    Building a <em>WAR</em> file using the WAR Products tooling is centered around
+    a <em>.warproduct</em> configuration. The <em>.warproduct</em> configuration is
     entirely managed by the WAR Products tooling to simplify war deployment. It's format
     is internal and is not intended to be read by tools other than the WAR Products tooling.
-    To create a <code>.warproduct</code> configuration you can use a working launch
-    configuration. Follow these steps to create a <code>rapdemo.warproduct</code>
+    To create a <em>.warproduct</em> configuration you can use a working launch
+    configuration. Follow these steps to create a <em>rapdemo.warproduct</em>
     configuration for the RAP demo application:
   </p>
   <ul>
     <li>
-      Open the <code>New WAR Product Configuration</code> wizard.<br/>
+      Open the <em class="UILabel">New WAR Product Configuration</em> wizard.<br/>
       <img src="../images/war_product_wizard.png" alt="WAR product wizard"/>
     </li>
     <li>
       Enter a name for the  war configuration file and select the
-      <code>RAP Workbench Demo</code> from the available launch configurations.<br/>
+      <em>RAP Workbench Demo</em> from the available launch configurations.<br/>
       <img src="../images/war_product_configuration.png" alt="WAR product configuration"/>
     </li>
   </ul>
 
-  <h3>The <code>rapdemo.warproduct</code> configuration</h3>
+  <h3>The rapdemo.warproduct configuration</h3>
   <p>
     WAR Products tooling provides a form-based multi-page editor to manage a
-    <code>.warproduct</code> configuration. The editor has the following pages:
+    <em>.warproduct</em> configuration. The editor has the following pages:
   </p>
   <ul>
     <li>
-      <code>Overview</code>: on this page you can enter additional information
-      like <code>ID</code>, <code>Name</code>, <code>Version</code> but they are not
-      needed to export a war archive. Also the <code>WAR Product export</code> wizard
-      can be started from the <code>Overview page</code>.<br/>
+      <em class="UILabel">Overview</em>: on this page you can enter additional information
+      like <em>ID</em>, <em>Name</em>, <em>Version</em> but they are not
+      needed to export a war archive. Also the <em class="UILabel">WAR Product export</em> wizard
+      can be started from the <em class="UILabel">Overview page</em>.<br/>
       <img src="../images/war_product_editor.png" alt="WAR Product editor"/>
     </li>
     <li>
-      <code>Configuration</code>: Here you can manage which plug-ins and libraries
+      <em class="UILabel">Configuration</em>: Here you can manage which plug-ins and libraries
       to be included into the war archive.<br/>
       <img src="../images/war_product_editor_configuration.png" alt="WAR Product editor configuration"/>
     </li>
     <li>
-      <code>Web.xml</code>: On this page the web.xml of the war archive can be edited.<br/>
+      <em class="UILabel">web.xml</em>: On this page the web.xml of the war archive can be edited.<br/>
       <img src="../images/war_product_editor_webxml.png" alt="WAR Product editor web.xml"/>
     </li>
   </ul>
 
-  <h3>Create the <code>war</code> archive</h3>
+  <h3>Create the WAR archive</h3>
   <p>
-    From the <code>Overview</code> page of the <code>.warproduct</code> configuration
-    editor start the <code>WAR Product export</code> wizard (this can also be reached by launching
+    From the <em class="UILabel">Overview</em> page of the <em>.warproduct</em> configuration
+    editor start the <em class="UILabel">WAR Product export</em> wizard (this can also be reached by launching
     the general Export Wizard), enter the location for the war
-    archive and press <b>Finish</b> if no validation errors exist. After that you can deploy
-    the <code>WAR</code> file to a servlet container. See the uncommented sections in the web.xml
+    archive and press <em class="UILabel">Finish</em> if no validation errors exist. After that you can deploy
+    the <em>WAR</em> file to a servlet container. See the uncommented sections in the <em>web.xml</em>
     for more information on how to activate the OSGi-console. This is useful if you run into troubles
     while deploying the generated WAR file.
   </p>
@@ -116,12 +116,12 @@
 
   <p>
     To deploy your own application like described above you will have
-    to create your own <code>.warproduct</code> configuration. The configuration
-    should contain the same plug-in references as the <code>rapdemo.configuration</code>
+    to create your own <em>.warproduct</em> configuration. The configuration
+    should contain the same plug-in references as the <em>rapdemo.configuration</em>
     (except the demo-plug-in of course!) plus the plug-ins that make up your application.
     It is important that your plug-ins reference the Servlet API by using the
-    <code>Import-Package</code> directive instead of the <code>Require-Bundle</code>
-    directive. See the <code>MANIFEST.MF</code> of the demo project for an example.
+    <em>Import-Package</em> directive instead of the <em>Require-Bundle</em>
+    directive. See the <em>MANIFEST.MF</em> of the demo project for an example.
   </p>
 
   <p>
@@ -129,15 +129,17 @@
     there also exists an Equinox framework log that can be found under the webapp's
     work directory, e.g. on Tomcat:
   </p>
-  <pre><code>  &lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/workspace/.metadata/.log
-  </code></pre>
+  <pre>
+&lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/workspace/.metadata/.log
+  </pre>
 
   <p>
   In case Equinox isn't able to start at all, you may also look for log files
   at:
   </p>
-  <pre><code>  &lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/configuration
-  </code></pre>
+  <pre>
+  &lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/configuration
+  </pre>
 
   <h2>Troubleshooting</h2>
 
@@ -146,10 +148,10 @@
   </p>
 
   <ul>
-    <li>Check your <code>build.properties</code> file
+    <li>Check your <em>build.properties</em> file
       <ul>
-        <li>Are you exporting the <code>plugin.xml</code>?</li>
-        <li>If you are using <code>plugin.properties</code> files, make sure
+        <li>Are you exporting the <em>plugin.xml</em>?</li>
+        <li>If you are using <em>plugin.properties</em> files, make sure
           they are exported.</li>
         <li>Are all libraries you are using listed on the plug-ins class path?</li>
         <li>Tip: As PDE build sometimes swallows error messages try exporting
@@ -158,32 +160,32 @@
       </ul>
     </li>
     <li>
-      Enable the OSGi console by adding this init-param to the <code>web.xml</code>:
+      Enable the OSGi console by adding this init-param to the <em>web.xml</em>:
       <pre>&lt;init-param&gt;
   &lt;param-name&gt;commandline&lt;/param-name&gt;
   &lt;param-value&gt;-console&lt;/param-value&gt;
 &lt;/init-param&gt;</pre>
       <ul>
-        <li>You can add a port after <code>-console</code> and then telnet to
-          the OSGi console: <code>telnet localhost &lt;port&gt;</code>.</li>
+        <li>You can add a port after <em>-console</em> and then telnet to
+          the OSGi console: <br/><code>telnet localhost &lt;port&gt;</code>.</li>
         <li>Type <code>ss</code> in the console and see if all bundles are
           started. If not try starting them with
           <code>start &lt;bundle-id&gt;</code>.
           The stack traces may hint to what is missing.</li>
         <li>Make sure that there is a
-        <code>org.eclipse.equinox.servletbridge.extensionbundle</code> in
+        <em>org.eclipse.equinox.servletbridge.extensionbundle</em> in
         the <code>ss</code>-listing who's state is <code>RESOVLED</code>.</li>
       </ul>
     </li>
     <li>
       Make sure that the WAR does <b>not</b> contain the
-      <code>javax.servlet</code> bundle.
-      In the plug-in manifest the <code>javax.servlet</code> <b>must</b> be
-      listed in the <code>Import-Package</code> section, not in
-      <code>Require-Bundle</code>.</li>
+      <em>javax.servlet</em> bundle.
+      In the plug-in manifest the <em>javax.servlet</em> <b>must</b> be
+      listed in the <em class="UILabel">Import-Package</em> section, not in
+      <em class="UILabel">Require-Bundle</em>.</li>
     <li>
       Make sure that the WAR does <b>not</b> contain the
-      <code>org.eclipse.update.configurator</code> bundle.</li>
+      <em>org.eclipse.update.configurator</em> bundle.</li>
     <li>
       Does the WAR contain compile errors?
       If so, you will probably find a zip archive somewhere in your output
@@ -191,7 +193,7 @@
     <li>
       Start with a working example:
       Download
-      <a href="http://rap.eclipsesource.com/download/rapdemo.war">rapdemo.war</a>
+      <a href="http://rap.eclipsesource.com/download/rapdemo.war"><em>rapdemo.war</em></a>
       and integrate your plug-ins.</li>
     <li>
       Use the product export to validate your feature:
@@ -208,7 +210,7 @@
         </li>
         <li>
           Press the <em>Validate</em> button in the top-left corner of the editor.
-          Ignore complaints about missing <code>javax.servlet</code> packages.
+          Ignore complaints about missing <em>javax.servlet</em> packages.
           Be aware that unresolved optional dependencies aren't reported as errors.
         </li>
       </ul>
