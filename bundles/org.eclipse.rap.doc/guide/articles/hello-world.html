@@ -30,9 +30,9 @@
     First we need to create a project for your application.
     It is recommended to use a <em>Plug-in Project</em>,
     unless you want to write an <a href = "rwt-standalone">RAP applications
-    without OSGi<a>. In the latter case, you can also create a plain <em>Java Project</em> here.
+    without OSGi</a>. In the latter case, you can also create a plain <em>Java Project</em> here.
     (If you do so, the project setup will differ slightly from this tutorial. Most notably, you
-    will have to add <code>org.eclipse.rap.rwt</code> to the Java Build Path/"Required Projects"
+    will have to add <em>org.eclipse.rap.rwt</em> to the java build path/<em class="UILabel">Required Projects</em>
     in the next step.)
   </p><p>
     From the menu, select <em class="UILabel">File &gt; New &gt; Plug-in Project</em>.
@@ -54,27 +54,28 @@
   <p>
     To display widgets, we need a dependency to the RAP widget toolkit (RWT), which is RAP's
     implementation of SWT.
-    It is contained in the plug-in <code>org.eclipse.rap.rwt</code>.
-    To add this dependency, open the bundle manifest file <code>META-INF/MANIFEST.MF</code> with
-    the <em>Plug-in Manifest Editor</em> (the default for this file type). Go to the
-    <em class="UILabel">Dependencies</em> page and add <code>org.eclipse.rap.rwt</code> to the
+    It is contained in the plug-in <em>org.eclipse.rap.rwt</em>.
+    To add this dependency, open the bundle manifest file <em>META-INF/MANIFEST.MF</em> with
+    the <em class="UILabel">Plug-in Manifest Editor</em> (the default for this file type). Go to the
+    <em class="UILabel">Dependencies</em> page and add <em>org.eclipse.rap.rwt</em> to the
     list of <em class="UILabel">Required Plug-ins</em> and save.
   </p>
 
-  <h2>Create an entrypoint</h2>
+  <h2 id="entrypoint">Create an Entry Point</h2>
   <p>
-    Every RAP application needs an entrypoint class that creates the initial UI of the application.
+    Every RAP application needs an entry point class that creates the initial UI of the application.
   </p>
   <p>
-    Before we can create the entrypoint, we need a package.
+    Before we can create the entry point, we need a package.
     A good name for the main package in a bundle is the bundle id,
-    so we name the package <code>org.example.rap.helloworld</code>.
-    In this package, we create a class named <code>HelloWorldEntryPoint</code> that extends
-    <code>AbstractEntryPoint</code>.
-    In the method <code>createContents</code>, we add some SWT code.
-    In the example below, we added a Button with the text “Hello world!”:
+    so we name the package <em>org.example.rap.helloworld</em>.
+    In this package, we create a class named <em>HelloWorldEntryPoint</em> that extends
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>.
+    In the method <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html#createContents(org.eclipse.swt.widgets.Composite)">createContents</a></em>, 
+    we add some SWT code. In the example below, we added a Button with the text “Hello world!”:
   </p>
-  <pre><code>  public class HelloWorldEntryPoint extends AbstractEntryPoint {
+  <pre>
+  public class HelloWorldEntryPoint extends AbstractEntryPoint {
 
     @Override
     protected void createContents( Composite parent ) {
@@ -83,17 +84,17 @@
     }
 
   }
-</code></pre>
+</pre>
   <p>
-    <strong>Note:</strong> RAP 1.x also required the SWT <em>main loop</em> here.
-    This is no longer needed if <code>AbstractEntryPoint</code> is used.
+    <strong>Note:</strong> RAP 1.x also required the SWT <i>main loop</i> here.
+    This is no longer needed if <em>AbstractEntryPoint</em> is used.
   </p>
 
-  <h2>Launch the entrypoint</h2>
+  <h2>Launch the entry point</h2>
   <p>
-    Now we can already launch this entrypoint using the RWT launcher.
+    Now we can already launch this entry point using the RWT launcher.
     Select <em class="UILabel">Run As &gt; RWT Application</em> from the context menu of the
-    entrypoint class.
+    entry point class.
     A browser view should open up soon afterwards and show your running application.
     More on launching RAP applications in the chapter
     <a href="./launcher.html">Launching RAP Applications</a>.
@@ -101,14 +102,12 @@
 
   <h2>Complete the application</h2>
   <p>
-    Until now, we only have a project with an entrypoint.
-    To turn this into a complete application, the entrypoint must be registered so that the
+    Until now, we only have a project with an entry point.
+    To turn this into a complete application, the entry point must be registered so that the
     framework can find it.
-    For a workbench application, this would be done using an extension.
-    Leightweight OSGi applications register the entrypoint in their
+    Lightweight OSGi applications register the entry point in their
     <a href="application-configuration.html">application configuration</a>.
-    These topics are covered in the part on application development.
-    <!-- TODO update after renamings --->
+    For a workbench application, this would be done <a href="branding.html#entrypoint">using an entry point extension</a>.
   </p>
 
 </body>
