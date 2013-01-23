@@ -11,17 +11,16 @@
 <body>
 
   <h1>The RAP Client</h1>
-  <!-- TODO : add links to API reference -->
   <p>
     The term "RAP client" is used to identify the software that displays the actual UI of a
     RAP application, and communicates with the RAP server using the
     <a href="http://wiki.eclipse.org/RAP/Protocol">RAP Protocol</a>.
-    The term does not include the enviroment an instance of
+    The term does not include the environment an instance of
     the client runs in (browser and/or OS), or the hardware ("device") itself.
   </p>
   <p>
     The RAP project includes the default RAP client, written in JavaScript. It it will be referred
-    to simply as the "web client" from here on. The web client is downloaded and started
+    to simply as the "web client" from here on. The web client is downloaded  and started
     automatically when the URL of a RAP application is entered into a browser. In-depth
     technical information about this client can be found in the
     <a href="http://wiki.eclipse.org/RAP/WebClient">RAP Wiki</a>.
@@ -30,52 +29,60 @@
   </p>
   <h2>The Client Interface</h2>
   <p>
-    Every client implementation is represented by a class implementing the <code>Client</code>
-    interface, e.g. <code>WebClient</code>. An instance of such a class can be obtained
-    from <code>RWT.getClient()</code>. It represents the client instance connected to the current
-    RAP session. By using the <code>instanceof</code> operator, the instance can be used to
+    Every client implementation is represented by a class implementing the 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html">Client</a></em>
+    interface, e.g. <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html">WebClient</a></em>.
+    An instance of such a class can be obtained
+    from <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getClient()">RWT.getClient()</a></em>. 
+    It represents the client instance connected to the current
+    RAP session. By using the <em>instanceof</em> operator, the instance can be used to
     identify the client.
   </p>
-<pre><code>  if( RWT.getClient() instanceof WebClient ) {
+<pre>  if( RWT.getClient() instanceof WebClient ) {
   ...
-  }</code></pre>
+  }</pre>
   <p>
-  The client <i>interface</i> mainly specifies the <code>getService()</code> method (described below),
-  while the client <i>class</i> (e.g. <code>WebClient</code>) adds the constants to be used in the
+  The client <i><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html">interface</a></i> 
+  mainly specifies the <em><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html#getService(java.lang.Class)">getService()</a></em> 
+  method (described below),
+  while the client <i>class</i> may add some constants to be used in the
   <a href = "application-configuration.html">application configuration</a>.
   </p>
   <h2>Client Services</h2>
   <p>
     Client services are interfaces that can provide client-specific features.
-    The <code>getService</code> method of the client object can be used to obtain an implementation
-    of a given service, provided it is supported by the connected client. Wether or not
+    The <em><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html#getService(java.lang.Class)">getService()</a></em>
+    method of the client object can be used to obtain an implementation
+    of a given service, provided it is supported by the connected client. Whether or not
     a service is supported depends on the RAP client implementation, but may also change
-    depending on the clients runtime enviroment (browser) and configuration.
+    depending on the clients runtime environment (browser) and configuration.
   </p>
   <p>If a service is not supported, the method returns null. If this is a possibility given the
     used service and targeted RAP client, a null check should be performed before using the service.
     Currently, all services
-    of the <code>WebClient</code> are supported at all times (i.e. on all browser).
+    of the <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html">WebClient</a></em>
+    are supported at all times (i.e. on all browser).
   </p><p>
   Example usage of a service:
   </p>
-<pre><code>  BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
+<pre>  BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
   if( navigation != null ) {
     ...
   }
-</code></pre>
+</pre>
   <h3>
     Services of the web client
   </h3>
   <p>These services are all supported by the web client and can be found in the package
-  <code>org.eclipse.rap.rwt.client.service</code>.</p>
+  <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/package-summary.html">org.eclipse.rap.rwt.client.service</a></em>.</p>
   <ul>
 
     <li style="margin-bottom:10px">
       <b>ClientInfo</b>
       <br/>
       Provides the clients locale and timezone offset (in minutes). The locale may
-      be null if the client does not specify a locale. In contrast, <code>RWT.getLocale()</code>
+      be null if the client does not specify a locale. In contrast,
+       <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getLocale()">RWT.getLocale()</a></em>
       will return the sessions locale which can also be changed programmatically and will never
       be null.
     </li>
@@ -100,7 +107,7 @@
       This is usually not necessary, but may be useful to work around minor limitations in RAP or
       implement very simple features.
       <strong>NOTE:</strong>
-      This feature allows manipulating to the html DOM or accessing internals of the web client.
+      This feature allows manipulating to the HTML DOM or accessing internals of the web client.
       Doing so is <b>not</b> recommended and may have unintended consequences, including
       crashing the client.
     </li>
@@ -108,13 +115,11 @@
     <li style="margin-bottom:10px">
       <b>JavaScriptLoader</b>
       <br/>
-      Can be used to execute entire javascript files on the client. If a file has been
+      Can be used to execute entire JavaScript files on the client. If a file has been
       executed by the client instance once, it will not be executed again.
-      The URL has to be within the same domain as the RAP server.
-      The <a href="application-configuration.html">ApplicationConfiguration</a>,
-      the org.eclipse.rap.ui.resources extension point (for workbench applications),
-      or the <a>ResourceManager</a> can be used to register
-      a file that can be loaded by the JavaScriptLoader. Especially useful for
+      The URL has to point to the same domain the RAP server is in. This can be achieved
+      by registering the file as <a href="resources.html">static resource</a>.
+      Especially useful for
       <a href="custom-widget.html">custom widget</a> / custom component development.
       <strong>NOTE:</strong>
       The warnings from <em>JavaScriptExecuter</em> also apply for <em>JavaScriptLoader</em>.
