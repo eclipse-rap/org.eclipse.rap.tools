@@ -24,25 +24,58 @@
     browser or the theme to be used for the application.
   </p>
   
-  <h3>Creating an Entry Point and Branding</h3>
+  <h3>Creating an Entry Point</h3>
   <p>
     If you haven't done so already, define an
     <em><a href="../reference/extension-points/org_eclipse_rap_ui_entrypoint.html">org.eclipse.rap.ui.entrypoint</a></em>
-    or
-    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_core_runtime_applications.html">org.eclipse.core.runtime.applications</a></em> 
-    extension and point it to your
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em> / 
-    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/equinox/app/IApplication.html">IApplication</a></em> implementation. (It is recommended to extend 
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>.) 
-    Then you can define a new branding by creating an extension for the
-    <em>org.eclipse.rap.ui.branding</em>
-    extension point and enter an id in the <em>brandingId</em> field.
-  </p>
-  
-
-  <h3>Capabilities of the Branding</h3>
+    extension. Use the attibute <em>path</em> to specify the URL path for the
+    entrypoint.
+<pre>
+&lt;extension point="org.eclipse.rap.ui.entrypoint"&gt;
+  &lt;entrypoint id="example.entrypoint"
+      class="example.MyEntryPoint"
+      path="/example" /&gt;
+  &lt;/entrypoint&gt;
+&lt;/extension&gt;
+</pre>
   <p>
-    A typical branding may look like this in the Extension point editor:
+    Unless you want to use the 
+    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/equinox/app/IApplication.html">IApplication</a></em>
+    interface (see below), let the <em>class</em> attribute point to your implementation of the 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em> 
+    interface. (It is recommended to extend
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>.) 
+  </p>
+
+  <h3>Using IApplication</h3>
+  <p>
+    If you want to use the <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/equinox/app/IApplication.html">IApplication</a></em>
+    interface, leave the <em>class</em> attribute of your entry point extension empty and create an 
+    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_core_runtime_applications.html">org.eclipse.core.runtime.applications</a></em> 
+    extension (in <i>addition</i> to the <em>entrypoint</em> extension).
+    Set your 
+    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/equinox/app/IApplication.html">IApplication</a></em> implementation
+    in the <em>class</em> attribute, then specify the <em>id</em> of the application extension in your entry point extensions <em>applicationId</em>:
+  </p>
+  <pre>
+&lt;extension point="org.eclipse.rap.ui.entrypoint"&gt;
+  &lt;entrypoint id="example.application.entrypoint"
+      path="/example"
+      applicationId="example.application" /&gt;
+  &lt;/entrypoint>
+&lt;/extension&gt;
+  </pre>
+
+  <h3>Create the Branding</h3>
+  <p>
+    Now you can define a new branding by creating an extension for the
+    <em><a href="../reference/extension-points/org_eclipse_rap_ui_branding.html">
+    org.eclipse.rap.ui.branding</a></em>
+    extension point. Give the branding an id, then set the same id 
+    in your entry point extension's <em>brandingId</em> attribute.
+    The branding is now associated with your <em>EntryPoint</em> or
+    <em>IApplication</em> implementation.
+    A typical branding may look like this in the extension point editor:
   </p>
   <img src="../images/extension.png" alt="Extension point editor"/>
   <p>
