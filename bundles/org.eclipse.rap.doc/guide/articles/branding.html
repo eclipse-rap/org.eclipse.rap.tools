@@ -23,20 +23,32 @@
     RAP application. This includes for example the page title which is shown in the
     browser or the theme to be used for the application.
   </p>
+  
+  <h3>Creating an Entry Point and Branding</h3>
+  <p>
+    If you haven't done so already, define an
+    <em><a href="../reference/extension-points/org_eclipse_rap_ui_entrypoint.html">org.eclipse.rap.ui.entrypoint</a></em>
+    or
+    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_core_runtime_applications.html">org.eclipse.core.runtime.applications</a></em> 
+    extension and point it to your
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em> / 
+    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/equinox/app/IApplication.html">IApplication</a></em> implementation. (It is recommended to extend 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>.) 
+    Then you can define a new branding by creating an extension for the
+    <em>org.eclipse.rap.ui.branding</em>
+    extension point and enter an id in the <em>brandingId</em> field.
+  </p>
+  
 
   <h3>Capabilities of the Branding</h3>
   <p>
-    You can define a new branding by creating an extension for the
-    <code>org.eclipse.rap.ui.branding</code>
-    extension point. To use it in your application, create a
-    <code>org.eclipse.rap.ui.entrypoint</code> extension (if you haven't done so already) and enter
-    the brandings id in the <code>brandingId</code> field.
+    A typical branding may look like this in the Extension point editor:
   </p>
   <img src="../images/extension.png" alt="Extension point editor"/>
   <p>
-    And here the same as it appears in the <code>plugin.xml</code>:
+    And here the same as it appears in the <em>plugin.xml</em>:
   </p>
-  <pre><code>
+  <pre>
   &lt;extension
       point=&quot;org.eclipse.rap.ui.branding&quot;&gt;
     &lt;branding
@@ -47,17 +59,17 @@
         themeId=&quot;org.eclipse.rap.design.example.business.theme&quot;
     &lt;/branding&gt;
   &lt;/extension&gt;
-  </code></pre>
+  </pre>
 
   <h4>id</h4>
   <p>
-    The id is used to reference the branding in a <code>org.eclipse.rap.ui.entrypoint</code> extension.
+    The id is used to reference the branding in a <em><a href="../reference/extension-points/org_eclipse_rap_ui_entrypoint.html">org.eclipse.rap.ui.entrypoint</a></em> extension.
   </p>
 
   <h4>themeId</h4>
   <p>
     The id of the theme to be used for this branding.
-    The theme must be defined by an extension of <code>org.eclipse.rap.ui.themes</code>.
+    The theme must be defined by an extension of <em><a href="../reference/extension-points/org_eclipse_rap_ui_themes.html">org.eclipse.rap.ui.themes</a></em>.
     Without this parameter, the RAP default theme will be used.
     See also <a href="theming.html">RWT Theming</a>.
   </p>
@@ -79,7 +91,8 @@
   <h4>body</h4>
   <p>
     An optional file containing an HTML snippet to be included in the RAP index page.
-    This snippet will be included in the <code>body</code> element of the generated index page.
+    This snippet will be included in the <em>body</em> element of the generated index page.
+    That way a simple splash screen can be implemented.
     Please note that the preferred way of styling the application background is to add a theming
     for the Display background property.
   </p>
@@ -87,8 +100,8 @@
   <h4>Element additionalHeaders</h4>
   <p>
     An optional sub-element of a branding extension, that allows to add
-    <code>&lt;meta&gt;</code> or <code>&lt;link&gt;</code> tags
-    to the <code>&lt;head&gt;</code> of the generated index page.
+    <em>&lt;meta&gt;</em> or <em>&lt;link&gt;</em> tags
+    to the <em>&lt;head&gt;</em> of the generated index page.
     Here's an example:
   </p>
   <pre><code>
@@ -98,8 +111,8 @@
   &lt;/additionalHeaders&gt;
   </code></pre>
   <p>
-    Available tags are <code>&lt;meta&gt;</code> and <code>&lt;link&gt;</code>.
-    You can add more additional attributes to each tag with the <code>attribute</code> element.
+    Available tags are <em>&lt;meta&gt;</em> and <em>&lt;link&gt;</em>.
+    You can add more additional attributes to each tag with the <em>attribute</em> element.
   </p>
 
 </body>
