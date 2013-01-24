@@ -14,9 +14,14 @@
 
   <p>
     Every RAP application can host it's own static resources, like documents, scripts, images,
-    or CSS-files. These can then be used for favicon and splash-screen, for images in markup,
-    within a browser widget, with the JavaScriptLoader or any JavaScript-based custom widget.
-    It is <em>not</em> necessary to register images used by css theming.
+    or CSS-files. These can then be used for 
+    <a href="application-configuration.html#entrypointconfig">favicon, splash-screen</a>, 
+    <a href="markup.html#img">images in markup</a>,
+    <a href="web-embedding.html">within a browser widget</a>, 
+    <a href="client.html#jsloader">with the JavaScriptLoader</a> or 
+    <a href="custom-widget.html#native">in any JavaScript-based custom widget</a>.
+    It is <i>not</i> necessary to register images used by 
+    <a href="theming.html">CSS theming</a>.
   </p>
   <p>
     There are multiple ways to register a resource, with the main difference beeing the time
@@ -25,7 +30,7 @@
 
   <ul>
     <li>
-      The <b><a href="application-configuration.html">ApplicationConfiguration</a></b> is a good place
+      The <em><a href="application-configuration.html">ApplicationConfiguration</a></em> is a good place
       to register resources that you know will be required throughout your applications lifecycle.
       Example:
       <pre>
@@ -34,51 +39,59 @@
     public InputStream getResourceAsStream( String resourceName ) throws IOException {
       return this.getClass().getClassLoader().getResourceAsStream( "resources/icon.png" );
     }
-  } );
-      </pre>
+  } );</pre>
     </li>
     <li>
-      For <a>workbench applications</a>, the <b><code>org.eclipse.rap.ui.resources</code></b> extension
-      point (together with the <code>IResource</code> interface)
-      provides the same service as the application configuration. One noteable difference
-      is that this method also allows other bundles other than the RAP application to
-      register resources. Also, any registered JavaScript file will automatically
-      be executed when the web client is loaded. The JavaScriptLoader is not required
-      in that case. Example for plugin.xml:
+      For 
+      <a href="branding.html">workbench applications</a>, 
+      the 
+      <em><a href="../reference/extension-points/org_eclipse_rap_ui_resources.html">org.eclipse.rap.ui.resources</a></em>
+      extension point and 
+      <em>IResource</em><!-- link not possible, not in API reference --> 
+      interface provide the same service as the application configuration above. One notable difference
+      is that the extension also makes it simple for other bundles other than the RAP application 
+      itself to register resources.
+      Also, any registered JavaScript file will automatically
+      be executed when the web client is loaded. The 
+      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/JavaScriptLoader.html">JavaScriptLoader</a></em> 
+      is not required in that case. Example for plugin.xml:
     <pre>
 &lt;extension point="org.eclipse.rap.ui.resources"&gt;
   &lt;resource class="my.project.resources.IconResource"&gt;
   &lt;/resource&gt;
-&lt;/extension&gt;
-    </pre>
+&lt;/extension&gt;</pre>
     </li>
     <li>
-      The most universal approach is using the <b><code>ResourceManager</code></b> directly,
-      which allows registering and de-registering any resource at any time.
+      The most universal approach is using the 
+      <em><a href="../reference/api/org/eclipse/rap/rwt/service/ResourceManager.html">ResourceManager</a></em> 
+      directly,
+      which allows 
+      <em><a href="../reference/api/org/eclipse/rap/rwt/service/ResourceManager.html#register(java.lang.String, java.io.InputStream)">registering</a></em> 
+      and 
+      <em><a href="../reference/api/org/eclipse/rap/rwt/service/ResourceManager.html#unregister(java.lang.String)">de-registering</a></em>
+      any resource at any time.
       <pre>
 ResourceManager resourceManager = RWT.getResourceManager();
 if( !resourceManager.isRegistered( "foo/icon.png" ) ) {
-  InputStream inputStream
-    = this.getClass().getClassLoader().getResourceAsStream( "resources/icon.png" );
+  InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream( "resources/icon.png" );
   try {
     resourceManager.register( resourceName, inputStream );
   } finally {
     inputStream.close();
   }
-}
-      </pre>
+}</pre>
     </li>
   </ul>
 
   <p>
-    To use the resource on the client (e.g. in a browser widget or the <em>JavaScriptLoader</em>),
-    is it necessary to know its public URL. (For the favicon the path used in the registration
-    can be used).
-    This information is in all cases provided by the ResourceManager:
+    <strong>Important:</strong> To use the resource on the client (e.g. in a browser widget or the <em>JavaScriptLoader</em>),
+    is it necessary to know it's public URL from the clients point of view.
+    (The favicon in the application configuration/branding is an 
+    exception, here the path from the registration can be used).
+    This information is in all cases provided by the <em>ResourceManager</em>:
   </p>
     <pre>
-  String src = RWT.getResourceManager().getLocation( "foo/icon.png" );
-    </pre>
+String src = RWT.getResourceManager().getLocation( "foo/icon.png" ); </pre>
 
 </body>
 </html>
