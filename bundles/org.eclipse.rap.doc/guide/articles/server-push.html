@@ -18,30 +18,35 @@
   </p>
   <p>
     HTTP is not designed to actively push data to the client.
-    An HTTP server can only answer requests from a client, but it cannot actively send any message
+    A RAP server can only answer requests from a 
+    <a href="client.html">client</a>, but it cannot actively send any message
     to the client. In RAP the UI is typically updated
     within a request caused by a user interaction, in which case this restriction is not an issue.
-    However, when the UI is updated from a background thread using <code>Display.asyncExec()</code>,
+    However, when the UI is <a href="threads.html#asyncexec">updated from a background thread</a>, 
     there's usually no request that could fetch the UI updates from the server.
     In this case the UI changes would not be rendered until the next HTTP request is triggered.
   </p>
-  <p>
 
   <h2>The Solution</h2>
 
   <p>
-    With the so-called Comet ("long polling") approach, the server is able to notify the client
+    Using the so-called Comet ("long polling") approach, the server is able to notify the client
     <em>immediately</em>. The basic idea is that the client sends a request to the server that is
     not answered until the server needs to notify the client of a change.
   </p>
   <p>
     RAP provides an implementation of this mechanism which can be used via the
-    ServerPushSession API.
-    <em>Before</em> starting a background task, create an instance of <code>ServerPushSession</code>
-    and call <code>start</code>. When the background task completes and no longer needs the
-    ServerPush mechanism, call <code>stop</code>. Example:
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html">ServerPushSession</a></em>
+    API.
+    <strong>Before</strong> starting a background task, create an instance of <em>ServerPushSession</em>
+    and call 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html#start()">start</a></em>
+    When the background task completes and no longer needs the
+    server push mechanism, call  
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html#stop()">stop</a></em>.
+    Example:
   </p>
-  <pre><code>
+  <pre>
 final ServerPushSession pushSession = new ServerPushSession();
 Runnable bgRunnable = new Runnable() {
   public void run() {
@@ -62,15 +67,17 @@ pushSession.start();
 Thread bgThread = new Thread( bgRunnable );
 bgThread.setDaemon( true );
 bgThread.start();
-</code></pre>
+</pre>
   <p>
-    One UI session may have any number of instances of ServerPushSession at the same time.
-    The underlying mechanism will be activated once the first ServerPushSession calls <code>start</code>,
-    and deactivated when the last instance has called <code>stop</code>.
+    One UI session may have any number of instances of <em>ServerPushSession</em> at the same time.
+    The underlying mechanism will be activated once the first <em>ServerPushSession</em> calls <em>start</em>,
+    and deactivated when the last instance has called <em>stop</em>.
   </p>
   <p>
-    Note that unlike <code>Display.asyncExec()</code>, <code>Display.timerExec()</code>
-    does <em>not</em> require a ServerPushSession, as RAP creates one automatically in this case.
+    Note that unlike 
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#asyncExec(java.lang.Runnable)">Display#asyncExec()</a></em>, 
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#timerExec(int, java.lang.Runnable)">Display#timerExec()</a></em>, 
+    does <i>not</i> require a <em>ServerPushSession</em>, as RAP creates one automatically in this case.
   </p>
   <p>
     More technical details of the ServerPush implementation can be found on the
