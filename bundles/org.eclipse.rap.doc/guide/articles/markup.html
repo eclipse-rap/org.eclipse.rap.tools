@@ -64,7 +64,7 @@ customLabel.setText( "This is funny!" );</pre>
        are available on nearly all themeable widgets. Note that <em>text-shadow</em> is not
        supported in Internet Explorer.
      </p>
-    <h2>Markup</h2>
+    <h2 id="markup">Markup</h2>
     <p>
       While SWT and theming API are able to change the font of any widget, they can only change the
       font for the <i>entire</i> widget. Using the RAP-exclusive (not supported in SWT)
@@ -145,7 +145,7 @@ label.setText( "This is the world &lt;img width='24' height='24' src='" + src + 
     The widget and height attributes are mandatory and do not have to match those
     of the actual image.
   </p>
-  <p>
+  <p id="link">
     Finally, you can use markup to insert real hyperlinks (<q><em>&lt;a&gt;</em></q>)into your application. 
     If you do not want to close the UI when the user clicks it, make sure to also set the target
     property. Alternatively, you can integrate the link with the 
