@@ -5,7 +5,6 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Multi User Enviroment</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
@@ -16,20 +15,23 @@
     The classical singleton pattern suggests that a class has only one instance and keeps the
     reference to this instance in a static field.
     In RAP, <strong>this pattern is dangerous</strong>, because static values are kept in the
-    <em>class</em>, which is shared among different user sessions and different applications.
+    <i>class</i>, which is shared among different user sessions and different applications.
     As an example, if a copy of the user's shopping cart is kept as a singleton, this would
     work on the desktop, but in RAP, all users would share the same shopping cart instance.
   </p>
   <p>
     Instead of using singletons and static fields, all data must be kept in the correct scope in RAP.
-    RAP provides a helper class <code>SingletonUtil</code> that can create session-unique
-    instances of a given class, so called “session singletons”.
+    RAP provides a helper class 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/SingletonUtil.html">SingletonUtil</a></em> 
+    that can create session-unique instances of a given class, so called <q>session singletons</q>. 
     In the context of one UI session
-    <code>SingletonUtil.getSessionInstance( Class )</code> will always return the same object,
+    <em><a href="../reference/api/org/eclipse/rap/rwt/SingletonUtil.html#getSessionInstance(java.lang.Class)">SingletonUtil.getSessionInstance( Class )</a></em> 
+    will always return the same object,
     but for different user sessions the returned instances will be different.
     The following code snippet illustrates this pattern:
   </p>
-  <div dir="ltr" style="text-align: left;"><pre><code>public class MySessionSingleton {
+  <pre>
+public class MySessionSingleton {
   private MySessionSingleton() {
     // prevent instantiation from outside
   }
@@ -39,15 +41,14 @@
   }
 
   // other methods ...
-}
-  </code></pre></div>
+}</pre>
   <p>
-   <em>Note</em> that <code>SingletonUtil</code> can not be used outside a UI session context.
+   <strong>Note</strong> that <em>SingletonUtil</em> can not be used outside a 
+   <a href="threads.html">UI session context</a>.
   </p>
   <p>
-    Another way to replace <b>static fields</b> is to use the
-    <code>UISession</code> or <code>ApplicationContext</code> to
-    <a href="scopes.html">store data</a>.
+    Another way to replace static fields is to use a 
+    <a href="data-stores.html">store data</a>.
   </p>
 
 
