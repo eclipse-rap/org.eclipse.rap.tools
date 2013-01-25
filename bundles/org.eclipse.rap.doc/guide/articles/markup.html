@@ -66,8 +66,9 @@ customLabel.setText( "This is funny!" );</pre>
      </p>
     <h2 id="markup">Markup</h2>
     <p>
-      While SWT and theming API are able to change the font of any widget, they can only change the
-      font for the <i>entire</i> widget. Using the RAP-exclusive (not supported in SWT)
+      While SWT and theming API are able to change the font of any widget, they can usually only change the
+      font for the <i>entire</i> widget. (Tree and table items can change single cells.) 
+      Using the RAP-exclusive (not supported in SWT)
       <i>markup</i> feature, it is possible to change only parts of the text.
       This is currently supported on 
       <em><a href="../reference/api/org/eclipse/swt/widgets/Label.html">Label</a></em>, 
