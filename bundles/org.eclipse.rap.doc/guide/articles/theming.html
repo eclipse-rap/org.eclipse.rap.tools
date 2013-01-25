@@ -69,14 +69,14 @@
     browser, but parsed and processed by RAP on the server side, as they are required for
     layout calculations.
     Therefore you can not add any arbitrary rules and expect them to be available in the
-    client document. If you want to do that (e.g. for 
+    client document. If you want to do that (e.g. for
     <a href="custom-widget.html">custom widgets</a>), use the
-    <a href="application-configuration.html">application configuration</a> / 
+    <a href="application-configuration.html">application configuration</a> /
     <a href="branding.html">branding</a> API to add your CSS to the documents <em>head</em>,
-    or load CSS files dynamically using 
-    <em><a href="client.html#jsexec">JavaScriptExecuter</a></em> 
-    or 
-    <em><a href="client.html#jsloader">JavaScriptLoader</a></em>. 
+    or load CSS files dynamically using
+    <em><a href="client.html#jsexec">JavaScriptExecuter</a></em>
+    or
+    <em><a href="client.html#jsloader">JavaScriptLoader</a></em>.
   </p>
 
   <h2 id="primer">Writing and Extending Themes</h2>
@@ -117,7 +117,7 @@
     rules:
   </p>
 
-  <pre>  Button[PUSH], Button[TOGGLE] {
+  <pre class="lang-css">  Button[PUSH], Button[TOGGLE] {
     border: 2px solid blue;
     color: rgb( 17, 23, 103 );
     background-color: #f9f9f9;
@@ -134,11 +134,11 @@
     A selector defines to which widgets or components of a widget a rule applies.
     Selectors can refer to SWT style flags and also to certain widget states.
     The element names to be used are either simple widget type names,
-    such as 
-    <em><a href="../reference/theming/Button.html">Button</a></em> 
-    and 
-    <em><a href="../reference/theming/Table.html">Table</a></em>, 
-    or names of sub-components of a widget like 
+    such as
+    <em><a href="../reference/theming/Button.html">Button</a></em>
+    and
+    <em><a href="../reference/theming/Table.html">Table</a></em>,
+    or names of sub-components of a widget like
     <em><a href="../reference/theming/ProgressBar.html#ProgressBar-Indicator">ProgressBar-Indicator</a></em>.
     A complete list of themeable widgets and their element names can be found in
     the <a href="../reference/theming/index.html">theming reference</a>.
@@ -152,7 +152,7 @@
     For style flags, the attribute syntax from CSS must be used:
   </p>
 
-  <pre>
+  <pre class="lang-css">
 Button[BORDER] {
   ...
 } </pre>
@@ -163,20 +163,20 @@ Button[BORDER] {
     To do so, use the CSS attribute syntax:
   </p>
 
-  <pre>
+  <pre class="lang-css">
 Button:hover {
   ...
 } </pre>
   <p>
   Attributes and states can be mixed freely. For example, the following selector
-  applies only to buttons that have the style flags 
-  <em><a href="../reference/api/org/eclipse/swt/SWT.html#PUSH">SWT.PUSH</a></em> 
-  <i>and</i> 
-  <em><a href="../reference/api/org/eclipse/swt/SWT.html#BORDER">SWT.BORDER</a></em> 
-  <i>and</i> are currently in state 
+  applies only to buttons that have the style flags
+  <em><a href="../reference/api/org/eclipse/swt/SWT.html#PUSH">SWT.PUSH</a></em>
+  <i>and</i>
+  <em><a href="../reference/api/org/eclipse/swt/SWT.html#BORDER">SWT.BORDER</a></em>
+  <i>and</i> are currently in state
   <em>hover</em>:
   </p>
-  <pre>
+  <pre class="lang-css">
 Button[PUSH][BORDER]:hover {
   ...
 }</pre>
@@ -200,12 +200,12 @@ Button[PUSH][BORDER]:hover {
 
   <p>
     To implement this, the buttons in the banner bar are marked as belonging to a
-    custom variant (e.g. &quot;mybutton&quot;) in the Java code using 
+    custom variant (e.g. &quot;mybutton&quot;) in the Java code using
     <a href="../reference/api/org/eclipse/swt/widgets/Widget.html#setData(java.lang.String, java.lang.Object)">SWT widget data</a>
     with the constant <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#CUSTOM_VARIANT">RWT.CUSTOM_VARIANT</a></em>:
   </p>
 
-  <pre>
+  <pre class="lang-java">
 button.setData( RWT.CUSTOM_VARIANT, &quot;mybutton&quot; );</pre>
 
   <p>
@@ -213,7 +213,7 @@ button.setData( RWT.CUSTOM_VARIANT, &quot;mybutton&quot; );</pre>
     <q>class</q> notation known from CSS used for HTML:
   </p>
 
-  <pre>
+  <pre class="lang-css">
 Button.mybutton {
   ...
 }</pre>
@@ -252,7 +252,7 @@ Button.mybutton {
     they are appended is undefined.
     Therefore, you should only add rules to the extension CSS file that will not
     be overridden by other contributions.
-    As an example, rules for custom variants (see <a href="#variants">above</a>) 
+    As an example, rules for custom variants (see <a href="#variants">above</a>)
     that are defined in the same theme will be safe as long as other theme contributions do not
     reference the same variants.
   </p>
@@ -263,7 +263,7 @@ Button.mybutton {
     The SWT classes Display and Device contain methods that return default system
     colors, a system font, and system images.
     In RAP, these defaults are also controlled by the theme.
-    For details, see the theme reference of the 
+    For details, see the theme reference of the
     <a href="../reference/theming/Widget.html">Display element</a>.
   </p>
 
@@ -279,11 +279,11 @@ Button.mybutton {
   <p>
     In order to make your theme available for a RAP application, you have to register it
     in the application configuration first. This is done using the method
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addStyleSheet(java.lang.String, java.lang.String)">Application#addStyleSheet</a></em>. 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addStyleSheet(java.lang.String, java.lang.String)">Application#addStyleSheet</a></em>.
     Example:
   </p>
 
-  <pre>
+  <pre class="lang-java">
 application.addStyleSheet( "my.application.aquablue", "theme/aquablue.css" );</pre>
 
   <p>
@@ -297,7 +297,7 @@ application.addStyleSheet( "my.application.aquablue", "theme/aquablue.css" );</p
     accordingly using the same theme id. Example:
   </p>
 
-  <pre>
+  <pre class="lang-java">
 Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();
 properties.put( WebClient.THEME_ID, "my.application.aquablue" );
 application.addEntryPoint( "/example", Example.class, properties );</pre>
@@ -313,7 +313,7 @@ application.addEntryPoint( "/example", Example.class, properties );</pre>
     only the order defines which is which.
   </p>
 
-  <pre>
+  <pre class="lang-java">
 application.addStyleSheet( "my.application.aquablue", "theme/aquablue.css" );
 application.addStyleSheet( "my.application.aquablue", "aqua-extensions.css" );</pre>
 
@@ -324,7 +324,7 @@ application.addStyleSheet( "my.application.aquablue", "aqua-extensions.css" );</
     <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#DEFAULT_THEME_ID">RWT.DEFAULT_THEME_ID</a></em>:
   </p>
 
-  <pre>
+  <pre class="lang-java">
 application.addStyleSheet( RWT.DEFAULT_THEME_ID, "default-theme-extension.css" );</pre>
 
   <p>
@@ -338,13 +338,13 @@ application.addStyleSheet( RWT.DEFAULT_THEME_ID, "default-theme-extension.css" )
 
   <p>
     In order to make your theme available for workbench applications, you have to register it with
-    the extension point 
+    the extension point
     <em><a href="../reference/extension-points/org_eclipse_rap_ui_themes.html">org.eclipse.rap.ui.themes</a></em>.
     In the <em>plugin.xml</em> of your application project, add an extension
     like this:
   </p>
 
-  <pre>
+  <pre class="lang-xml">
 &lt;extension
    point=&quot;org.eclipse.rap.ui.themes&quot;&gt;
  &lt;theme
@@ -373,14 +373,14 @@ application.addStyleSheet( RWT.DEFAULT_THEME_ID, "default-theme-extension.css" )
   <p>
     Register the contribution file with the extension point
     <em><a href="../reference/extension-points/org_eclipse_rap_ui_themes.html">org.eclipse.rap.ui.themes</a></em>,
-    using a 
+    using a
     <em><a href="../reference/extension-points/org_eclipse_rap_ui_themes.html#e.themeContribution">themeContribution</a></em>
     element.
     In the <em>plugin.xml</em> of your application project, the extension
     will look like this:
   </p>
 
-  <pre>
+  <pre class="lang-xml">
 &lt;extension
     point=&quot;org.eclipse.rap.ui.themes&quot;&gt;
   &lt;themeContribution

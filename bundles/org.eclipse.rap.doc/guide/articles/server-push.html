@@ -18,11 +18,11 @@
   </p>
   <p>
     HTTP is not designed to actively push data to the client.
-    A RAP server can only answer requests from a 
+    A RAP server can only answer requests from a
     <a href="client.html">client</a>, but it cannot actively send any message
     to the client. In RAP the UI is typically updated
     within a request caused by a user interaction, in which case this restriction is not an issue.
-    However, when the UI is <a href="threads.html#asyncexec">updated from a background thread</a>, 
+    However, when the UI is <a href="threads.html#asyncexec">updated from a background thread</a>,
     there's usually no request that could fetch the UI updates from the server.
     In this case the UI changes would not be rendered until the next HTTP request is triggered.
   </p>
@@ -39,14 +39,14 @@
     <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html">ServerPushSession</a></em>
     API.
     <strong>Before</strong> starting a background task, create an instance of <em>ServerPushSession</em>
-    and call 
+    and call
     <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html#start()">start</a></em>
     When the background task completes and no longer needs the
-    server push mechanism, call  
+    server push mechanism, call
     <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html#stop()">stop</a></em>.
     Example:
   </p>
-  <pre>
+  <pre class="lang-java">
 final ServerPushSession pushSession = new ServerPushSession();
 Runnable bgRunnable = new Runnable() {
   public void run() {
@@ -74,9 +74,9 @@ bgThread.start();
     and deactivated when the last instance has called <em>stop</em>.
   </p>
   <p>
-    Note that unlike 
-    <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#asyncExec(java.lang.Runnable)">Display#asyncExec()</a></em>, 
-    <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#timerExec(int, java.lang.Runnable)">Display#timerExec()</a></em>, 
+    Note that unlike
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#asyncExec(java.lang.Runnable)">Display#asyncExec()</a></em>,
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#timerExec(int, java.lang.Runnable)">Display#timerExec()</a></em>,
     does <i>not</i> require a <em>ServerPushSession</em>, as RAP creates one automatically in this case.
   </p>
   <p>

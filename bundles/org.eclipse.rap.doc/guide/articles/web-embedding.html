@@ -12,9 +12,11 @@
 
   <h1>Embedding Web-Components</h1>
 
+  <h2>Browser Widget Overview</h2>
+
   <p>
-    Using the SWT/RWT 
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html">Browser</a></em> 
+    Using the SWT/RWT
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html">Browser</a></em>
     widget, it is possible to embed HTML pages, simple JavaScript
     Applications, Flash-Objects, Java-Applets or any other web component seamlessly into your
     RAP (or SWT) application.
@@ -24,17 +26,17 @@
     In RAP, any HTML document (including JavaScript) placed in a <em>Browser</em> widget
     will end up in an <em>iframe</em> element. You can call JavaScript from Java by using
     <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#evaluate(java.lang.String)">evaluate</a></em>,
-    and vice versa using the 
-    <code>BrowserFunction</code> 
+    and vice versa using the
+    <code>BrowserFunction</code>
     <em><a href="../reference/api/org/eclipse/swt/browser/BrowserFunction.html">BrowserFunction</a></em>
     class.
     It's recommended
-    to always use <em>evaluate</em> instead of 
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#execute(java.lang.String)">execute</a></em>, 
+    to always use <em>evaluate</em> instead of
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#execute(java.lang.String)">execute</a></em>,
     since it throws an exception if the JavaScript execution fails.
     Before you can use <em>evaluate</em>, you must wait until the document is fully loaded,
-    using either a 
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#addProgressListener(org.eclipse.swt.browser.ProgressListener)">ProgressListener</a></em> 
+    using either a
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#addProgressListener(org.eclipse.swt.browser.ProgressListener)">ProgressListener</a></em>
     or a <em>BrowserFunction</em>.
   </p>
 
@@ -47,14 +49,14 @@
     to a <em>BrowserFunction</em> or to <em>evaluate</em> creates an HTTP request.
     To reduce the resulting traffic you can try combining subsequent call, but if you want to embed
     a web app/object that requires a lot of client-server communication, consider using
-    the more efficient 
+    the more efficient
     <a href="custom-widget.html#native">RAP Remote API</a>.
     <b>Note</b>, however, that
-    both, markup and the JavaScript Remote API, are features of the RAP <a href="client.html">web client</a>, 
-    and are not available in SWT or on other clients. 
+    both, markup and the JavaScript Remote API, are features of the RAP <a href="client.html">web client</a>,
+    and are not available in SWT or on other clients.
     If SWT-Support is a requirement, use the <em>Brower</em> widget in any case.
   </p>
-  
+
   <h3 id="security">Browser security restrictions</h3>
   <p>
     Since the browser widget is based on the HTML <em>iframe</em> element,
@@ -62,8 +64,8 @@
     <em>execute</em>, <em>evaluate</em> and <em>BrowserFunction</em> to work,
     the document loaded in the browser widget has to come from the
     same domain and port that the RAP application is loaded from. This is automatically given
-    if the 
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#setText(java.lang.String)">setText</a></em> 
+    if the
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#setText(java.lang.String)">setText</a></em>
     method is used, or the file is registered as a <a href="#resources">static resource</a>.
     <br/>
   </p>
@@ -73,7 +75,7 @@
     It's important to decide how your resources (HTML, JavaScript, CSS and image files) are
     provided to the browser widget. If you use only a moderate amount of HTML with inlined
     JavaScript and/or CSS (and <i>no images</i>), or your non-HTML resources can be loaded from
-    a different HTTP-server, it will suffice to use the 
+    a different HTTP-server, it will suffice to use the
     <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#setText(java.lang.String)">setText</a></em>
     method of the browser
     widget. This code would then also run in an SWT application. However, when using
@@ -83,7 +85,7 @@
     <em>Browser</em>-based <a href="https://github.com/eclipsesource/rap-gmap">
     Google Maps widget</a>. It runs in SWT and in RAP.
     When a not all resources can be inlined in the HTML file (like images), and they are to be
-    provided by the RAP application itself, it is necessary to register them as 
+    provided by the RAP application itself, it is necessary to register them as
     <a href="resources.html">static resources</a>.
   </p>
 
@@ -101,7 +103,7 @@
       call. However, this pattern makes implementing a traditional "getter" impossible.
       In <a href="application-setup.html#compat">SWT compatibility</a> mode you can write:
     </p>
-    <pre>
+    <pre  class="lang-java">
 public String getText() {
   // assuming the web app is already fully loaded and initialized:
   return ( String )browser.evaluate( "return myWidget.getData();" );
@@ -110,7 +112,7 @@ public String getText() {
     In JEE compatibility mode you would have to write
     something like this:
   </p>
-   <pre>
+   <pre class="lang-java">
 public void getText( final MyCallback callback ) {
   BrowserUtil.evaluate( browser, "return myWidget.getData();", new BrowserCallback() {
     public void evaluationSucceeded( Object result ) {

@@ -99,7 +99,7 @@
     <li>
       The <em class="UILabel">Application entry point</em> lets you specify what should be launched.
       For simple use cases, choose <em class="UILabel">Run entry point class</em> and specify the
-      class that implements the <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em> 
+      class that implements the <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em>
       interface in the class name field.
       <br/>
       If you need more control or even would like to run an arbitrary web application,
@@ -354,7 +354,8 @@
         This mode does not support <code>Display.sleep()</code>, specifically, it does not support
         the SWT main loop. When starting an SWT snippet, this code may not be used:
       </p>
-      <pre>while( !shell.isDisposed() ) {
+      <pre class="lang-java">
+while( !shell.isDisposed() ) {
   if( !display.readAndDispatch() )
     display.sleep();
 }

@@ -13,9 +13,9 @@
   <h1>Tree and Table Enhancements</h1>
 
    <p>
-     <em><a href="../reference/api/org/eclipse/swt/widgets/Tree.html">Tree</a></em> 
-     and 
-     <em><a href="../reference/api/org/eclipse/swt/widgets/Table.html">Table</a></em> 
+     <em><a href="../reference/api/org/eclipse/swt/widgets/Tree.html">Tree</a></em>
+     and
+     <em><a href="../reference/api/org/eclipse/swt/widgets/Table.html">Table</a></em>
      are the most powerful widgets in RAP. Not only can they easily display
      vast amounts of data (thanks to JFace and virtual rendering) in various ways, they also feature
      some additional functionality in RAP compared to their SWT counterparts.
@@ -29,10 +29,10 @@
      Simply create Tree/Table
      <a href="/help/topic/org.eclipse.platform.doc.isv/guide/jface_viewers.htm">viewers</a>
      instead of the widget itself. RAP-specific features can still be enabled by accessing the widget
-     within the viewer directly. 
+     within the viewer directly.
       Example:
    </p>
-   <pre>viewer.getTable().setData( RWT.MARKUP_ENABLED, Boolean.TRUE );</pre>
+   <pre class="lang-java">viewer.getTable().setData( RWT.MARKUP_ENABLED, Boolean.TRUE );</pre>
 
     <h3 id="fixedcolumns">Fixed Columns:</h3>
     <p>
@@ -40,18 +40,18 @@
       specific data.
       Doing so means losing sight of the first columns, which may contain vital information that
       should be visible at all times.
-      Using 
-      <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#FIXED_COLUMNS">RWT.FIXED_COLUMNS</a></em>, 
+      Using
+      <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#FIXED_COLUMNS">RWT.FIXED_COLUMNS</a></em>,
       it is possible to exclude any number of leftmost
       columns from scrolling, so that they always stick on the left border of the tree or table.<br/>
       Example:
     </p>
-    <pre>tree.setData( RWT.FIXED_COLUMNS, new Integer( 1 ) );</pre>
+    <pre class="lang-java">tree.setData( RWT.FIXED_COLUMNS, new Integer( 1 ) );</pre>
 
     <h3 id="markup">Markup Support:</h3>
     <p>
       You can greatly enhance the look and interactivity
-      of any Tree or Table using the RAP 
+      of any Tree or Table using the RAP
       <a href="markup.html#markup">markup feature</a>.
     </p>
 
@@ -65,8 +65,8 @@
       There are two ways Tree and Table support virtual rendering. First, any tree/table will
       only render HTML for the data that is currently visible on screen. (Unlike <em>List</em>,
       which always renders it's entire content.)
-      Second, if the widget (or viewer) is created with a 
-      <em><a href="../reference/api/org/eclipse/swt/SWT.html#VIRTUAL">VIRTUAL</a></em> 
+      Second, if the widget (or viewer) is created with a
+      <em><a href="../reference/api/org/eclipse/swt/SWT.html#VIRTUAL">VIRTUAL</a></em>
       flag, items can be created lazily. As a result, data that is not visible will also
       not be transferred to the client, saving even more memory and initial rendering time.
      </p>
@@ -78,7 +78,7 @@
       You can reduce this effect by pre-caching data you assume will be displayed in the near future.
       A very basic implementation of such a feature could look like this:
     </p>
-    <pre>
+    <pre class="lang-java">
 ScrollBar bar = viewer.getTable().getVerticalBar();
 bar.addListener( SWT.Selection, new Listener(){
   public void handleEvent( Event event ) {
@@ -103,11 +103,11 @@ bar.addListener( SWT.Selection, new Listener(){
     </p>
     <p>
      In addition to the
-     <em><a href="../reference/theming/Table.html#TableItem">TableItem</a></em> / 
-     <em><a href="../reference/theming/Tree.html#TreeItem">TreeItem</a></em> 
+     <em><a href="../reference/theming/Table.html#TableItem">TableItem</a></em> /
+     <em><a href="../reference/theming/Tree.html#TreeItem">TreeItem</a></em>
      theming elements, there are also
-     <em style="white-space:nowrap;"><a href="../reference/theming/Table.html#Table-RowOverlay">Table-RowOverlay</a></em> / 
-     <em style="white-space:nowrap;"><a href="../reference/theming/Tree.html#Tree-RowOverlay">Tree-RowOverlay</a></em> 
+     <em style="white-space:nowrap;"><a href="../reference/theming/Table.html#Table-RowOverlay">Table-RowOverlay</a></em> /
+     <em style="white-space:nowrap;"><a href="../reference/theming/Tree.html#Tree-RowOverlay">Tree-RowOverlay</a></em>
      elements. In the default theme,
      these overlay elements are used to define the hover and selection behavior. If you wish
      for the item backgrounds to paint over the selection/hover effects, you will have to use
@@ -115,24 +115,24 @@ bar.addListener( SWT.Selection, new Listener(){
      paints over the backgrounds, but not the other.)
     </p>
     <p>
-      Assuming you implement a 
-      <a href="theming.html#custom">complete custom theme</a>, 
+      Assuming you implement a
+      <a href="theming.html#custom">complete custom theme</a>,
       this is easy. Simply use <i>only</i> the item element
       to define the effect and define the overlay element as below:
     </p>
-    <pre>
+    <pre class="lang-css">
 Table-RowOverlay {
   background-color: transparent;
   color: inherit;
   background-image: none;
 }</pre>
     <p>
-      If you wish to only make a 
-      <a href="theming.html#contribution">theme contribution</a>, 
+      If you wish to only make a
+      <a href="theming.html#contribution">theme contribution</a>,
       you also need to overwrite every possible
       combination for the overlay element that may be defined in the main/default theme:
     </p>
-    <pre>Table-RowOverlay,
+    <pre class="lang-css">Table-RowOverlay,
 Table-RowOverlay:hover,
 Table-RowOverlay:selected,
 Table-RowOverlay:linesvisible:even:hover,
@@ -143,15 +143,15 @@ TableItem:linesvisible:even:selected:unfocused {
   background-image: none;
 }</pre>
     <p>
-      To create the new hover/selection effect you then have to define all these combinations for the 
+      To create the new hover/selection effect you then have to define all these combinations for the
       item element, just as it is done for the overlay element in the default theme.
     </p>
 
     <h3 id="nebula">Alternative: Nebula Grid</h3>
     <p>
       Available in the <a href="http://eclipse.org/rap/incubator/">RAP Incubator</a>
-      is a RAP implementation of the 
-      <a href="http://www.eclipse.org/nebula/widgets/grid/grid.php">Nebula Grid</a> 
+      is a RAP implementation of the
+      <a href="http://www.eclipse.org/nebula/widgets/grid/grid.php">Nebula Grid</a>
       widget. Based on the same JavaScript
       code as tree and table, it adds features like column grouping,
       checkboxes on multiple columns, variable item height and column footer. (It does not

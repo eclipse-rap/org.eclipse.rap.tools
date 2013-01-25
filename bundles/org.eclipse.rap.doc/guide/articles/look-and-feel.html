@@ -80,15 +80,14 @@
   <p>
     Here is the same as it appears in the plugin.xml.
   </p>
-  <pre>
+  <pre class="lang-xml">
 &lt;extension point="org.eclipse.ui.presentationFactories"&gt;
   &lt;factory
     class="org.eclipse.rap.presentation.example.PresentationFactoryImpl"
     id="org.eclipse.rap.presentation"
     name="RAP Presentation"&gt;
   &lt;/factory&gt;
-&lt;/extension&gt;
-  </pre>
+&lt;/extension&gt;</pre>
 
   <p>
     The presentationFactory contains the following attributes:
@@ -135,7 +134,7 @@
   <p>
     Here is the same as it appears in the plugin.xml.
   </p>
-  <pre>
+  <pre class="lang-xml">
 &lt;extension point="org.eclipse.rap.ui.stackPresentations"&gt;
   &lt;stackPresentation
     id="org.eclipse.rap.presentation.macBarStackPresentation"
@@ -228,7 +227,7 @@
   <p>
     And here is the same as it appears in the plugin.xml.
   </p>
-<pre>
+<pre class="lang-xml">
 &lt;extension point="org.eclipse.rap.ui.layouts"&gt;
   &lt;layout
     id="org.eclipse.presentation.example.layout"
@@ -295,7 +294,7 @@
     IlayoutSetInitializer implementation. We use "fontKey" as the key value. Here
     is the source code for this font definition:
   </p>
-  <pre>
+  <pre class="lang-java">
 Button button = new Button( composite, SWT.NONE );
 LayoutRegistry registry = LayoutRegistry.getInstance();
 registry.setActiveLayout( "org.eclipse.layout" );
@@ -333,7 +332,7 @@ button.setFont( set.getFont( "fontKey" );</pre>
   <p>
     And here is the same as it appears in the plugin.xml.
   </p>
-  <pre>
+  <pre class="lang-xml">
 &lt;extension point="org.eclipse.rap.ui.branding"&gt;
   &lt;branding
     defaultEntrypointId="org.eclipse.rap.demo.entrypoint1"
@@ -428,7 +427,7 @@ button.setFont( set.getFont( "fontKey" );</pre>
     <li>
       The second step is to instantiate an ElementBuilder.  As an example, YourBuilder
       is instantiated by the following snippet:
-      <pre>
+      <pre class="lang-java">
 Composite parent = new Composite( aShell, SWT.NONE );
 ElementBuilder builder = new YourBuilder( parent, "org.eclipse.layoutSet" );</pre>
       Be sure that your ElementBuilder implementation is initialized with a layoutSet

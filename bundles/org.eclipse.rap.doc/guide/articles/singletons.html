@@ -21,16 +21,16 @@
   </p>
   <p>
     Instead of using singletons and static fields, all data must be kept in the correct scope in RAP.
-    RAP provides a helper class 
-    <em><a href="../reference/api/org/eclipse/rap/rwt/SingletonUtil.html">SingletonUtil</a></em> 
-    that can create session-unique instances of a given class, so called <q>session singletons</q>. 
+    RAP provides a helper class
+    <em><a href="../reference/api/org/eclipse/rap/rwt/SingletonUtil.html">SingletonUtil</a></em>
+    that can create session-unique instances of a given class, so called <q>session singletons</q>.
     In the context of one UI session
-    <em><a href="../reference/api/org/eclipse/rap/rwt/SingletonUtil.html#getSessionInstance(java.lang.Class)">SingletonUtil.getSessionInstance( Class )</a></em> 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/SingletonUtil.html#getSessionInstance(java.lang.Class)">SingletonUtil.getSessionInstance( Class )</a></em>
     will always return the same object,
     but for different user sessions the returned instances will be different.
     The following code snippet illustrates this pattern:
   </p>
-  <pre>
+  <pre class="lang-java">
 public class MySessionSingleton {
   private MySessionSingleton() {
     // prevent instantiation from outside
@@ -43,12 +43,12 @@ public class MySessionSingleton {
   // other methods ...
 }</pre>
   <p>
-   <strong>Note</strong> that <em>SingletonUtil</em> can not be used outside a 
+   <strong>Note</strong> that <em>SingletonUtil</em> can not be used outside a
    <a href="threads.html">UI session context</a>.
   </p>
   <p>
-    Another way to replace static fields is to use a 
-    <a href="data-stores.html">store data</a>.
+    Another way to replace static fields is to use a
+    <a href="data-stores.html">data store</a>.
   </p>
 
 

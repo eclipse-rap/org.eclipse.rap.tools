@@ -27,9 +27,9 @@
   </p>
   <h2 id="mouse">Mouse Events</h2>
    <p>
-    All mouse event types using in the 
-    <em><a href="../reference/api/org/eclipse/swt/events/MouseListener.html">MouseListener</a></em> 
-    interface are almost fully supported. (They can only detect the first three mouse buttons.) 
+    All mouse event types using in the
+    <em><a href="../reference/api/org/eclipse/swt/events/MouseListener.html">MouseListener</a></em>
+    interface are almost fully supported. (They can only detect the first three mouse buttons.)
     They are:
    </p>
     <ul>
@@ -39,7 +39,7 @@
     </ul>
     <p>
     However, all other event mouse event types, used in
-    <em><a href="../reference/api/org/eclipse/swt/events/MouseTrackListener.html">MouseTrackListener</a></em> 
+    <em><a href="../reference/api/org/eclipse/swt/events/MouseTrackListener.html">MouseTrackListener</a></em>
     and <em>MouseWheelListener</em>, are unsupported/missing. Namely:
     </p>
     <ul>
@@ -54,23 +54,23 @@
     </p>
     <p id ="mouse_filter">
       Mouse events are only sent to the server (and only cause traffic) if they are fired on
-      widgets that have a <em><a href="../reference/api/org/eclipse/swt/events/MouseListener.html">MouseListener</a></em> 
-      or 
-      <a href="../reference/api/org/eclipse/swt/widgets/Listener.html">untyped listener</a> 
+      widgets that have a <em><a href="../reference/api/org/eclipse/swt/events/MouseListener.html">MouseListener</a></em>
+      or
+      <a href="../reference/api/org/eclipse/swt/widgets/Listener.html">untyped listener</a>
       for a mouse event attached.
-      As a side-effect, using a 
+      As a side-effect, using a
       <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter(int, org.eclipse.swt.widgets.Listener)">display filter</a>
       does not work like in SWT.
       Example:
     </p>
-    <pre> display.addFilter( SWT.MouseDown, new Listener() { ... } );</pre>
+    <pre class="lang-java">display.addFilter( SWT.MouseDown, new Listener() { ... } );</pre>
     <p>
        This would catch all mouse events in SWT, but in RWT it will only receive those which
        targets already have a mouse listener.
     </p>
   <h2 id="traverse">Traverse Events</h2>
   <p>
-    Before we discuss key events, it is important to note that there are also 
+    Before we discuss key events, it is important to note that there are also
     <q><a href="../reference/api/org/eclipse/swt/events/TraverseEvent.html">traverse events</a></q>,
     which are related. Traverse events are fired <em>before</em> a key event, and only for keys
     that can change the focus. (For example Escape, Tab, Arrows.) The idea is that you can
@@ -80,9 +80,9 @@
   <h2 id="key">Key Events</h2>
   <h3>Event Order and Latency</h3>
   <p>
-    There are two type of key events, 
-    <em><a href="../reference/api/org/eclipse/swt/SWT.html#KeyDown">KeyDown</a></em> 
-    and 
+    There are two type of key events,
+    <em><a href="../reference/api/org/eclipse/swt/SWT.html#KeyDown">KeyDown</a></em>
+    and
     <em><a href="../reference/api/org/eclipse/swt/SWT.html#KeyUp">KeyUp</a></em>.
     In SWT, <em>KeyDown</em> is fired after pressing the key, then after a short delay
     fired repeatedly until the key is released. Then <em>KeyUp</em> is fired. <br/>
@@ -119,14 +119,14 @@
   </p>
   <h3 id="prevent">Prevent Default Operation (CANCEL_KEYS)</h3>
   <p>
-    The <em>KeyEvent</em> object has a 
-    <em><a href="../reference/api/org/eclipse/swt/events/KeyEvent.html#doit">doit</a></em> 
+    The <em>KeyEvent</em> object has a
+    <em><a href="../reference/api/org/eclipse/swt/events/KeyEvent.html#doit">doit</a></em>
     field (as do
-    <a href="../reference/api/org/eclipse/swt/widgets/Event.html#doit">untyped events</a>), 
+    <a href="../reference/api/org/eclipse/swt/widgets/Event.html#doit">untyped events</a>),
     which is true by default.
     In SWT, this field can be set to false to prevent the default operation associated with
-    pressing or releasing this key, like inserting a character in a 
-    <em><a href="../reference/api/org/eclipse/swt/widgets/Text.html">Text</a></em> 
+    pressing or releasing this key, like inserting a character in a
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Text.html">Text</a></em>
     widget.
     RAP supported this in a limited capacity until 1.4, but support was discontinued in 1.5. The
     reason for this was that it worked unreliably and prevented a number of bugs from being fixed.
@@ -138,9 +138,9 @@
     <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#CANCEL_KEYS">
     RWT.CANCEL_KEYS</a></em> constant:
    </p>
-   <pre>
- widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2&quot; } ); </pre>
-   <p> 
+   <pre class="lang-java">
+widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2&quot; } ); </pre>
+   <p>
     When the given key-combination is pressed while
     the widget is focused, the operation is canceled. It also cancels operations that could only
     be prevented on traverse events in SWT. Event more importantly, it is possible to
@@ -160,7 +160,7 @@
       <li>The Cancel Keys do not influence the key event handling. That means it works whether a
     listener is attached or not, and canceled keys are still fired as an SWT key event.</li>
       <li>This approach is single-sourcing capable. Since the <em>doit</em> field still
-      exists in RWT, and the list is attached using only 
+      exists in RWT, and the list is attached using only
       <em><a href="../reference/api/org/eclipse/swt/widgets/Widget.html#setData(java.lang.String, java.lang.Object)">setData</a></em>, both mechanisms
       can be used in parallel.</li>
       <li>An alternative to Cancel Keys is <a href = "http://wiki.eclipse.org/RAP/ClientScripting">ClientScripting</a>, which can take the state
@@ -171,7 +171,7 @@
     As explained above, each keystroke creates at least one HTTP-request. Obviously this can
     create a lot of traffic. If this is a concern, the <q>Active Keys</q> feature can help you.
     Exactly like with <a href="#prevent">cancel keys</a>, active keys lets you attach a list of keys or key-combinations to a
-    widget (using <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#ACTIVE_KEYS">RWT.ACTIVE_KEYS</a></em>). 
+    widget (using <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#ACTIVE_KEYS">RWT.ACTIVE_KEYS</a></em>).
     As result, only key events that match
     a combination on this list will be issued, drastically reducing traffic.
   </p>
@@ -189,13 +189,13 @@
     </ul>
   <h3>Global Key Event Handling (Keybindings)</h3>
   <p>
-    Both <q>Active Keys</q> and <q>Cancel Keys</q> can also be used on an instance of 
+    Both <q>Active Keys</q> and <q>Cancel Keys</q> can also be used on an instance of
     <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html">Display</a></em>,
     which is useful to allow keybindings ("shortcuts"). Active Keys work slightly different in
-    that case. Like with mouse events (see <a href="#mouse_filter">above</a>), a 
+    that case. Like with mouse events (see <a href="#mouse_filter">above</a>), a
     <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter(int, org.eclipse.swt.widgets.Listener)">display filter</a>
     usually catches
-    only key events when their target has a listener attached. 
+    only key events when their target has a listener attached.
     However, attaching a list of Active Keys to display
     will result in <i>all</i> key events that match a list entry to be fired, regardless
     of the focused widget. Likewise, a list of Cancel Keys attached to the display is always
@@ -204,18 +204,18 @@
   <p>
     To implement global shortcuts, one would first attach a list of all shortcuts as Active Keys
     to display. The same list can then be used again for Cancel Keys to prevent any undesired
-    operations to be triggered by any of the keys. Then a filter for 
-    <em><a href="../reference/api/org/eclipse/swt/SWT.html#KeyDown">SWT.KeyDown</a></em> 
-    has to be <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter(int, org.eclipse.swt.widgets.Listener)">added</a>, 
+    operations to be triggered by any of the keys. Then a filter for
+    <em><a href="../reference/api/org/eclipse/swt/SWT.html#KeyDown">SWT.KeyDown</a></em>
+    has to be <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter(int, org.eclipse.swt.widgets.Listener)">added</a>,
     where the pressed key combination has to be determined and handled.
    </p>
    <p>
      The combinations for global shortcuts should be carefully chosen, so they
       do not to interfere any of the core functionality of a widget or the browser. For example,
       <q><code>SHIFT+[arrow key]</code></q> is not a good choice, since this is used by many widgets for selection.
-      Similarly, many users might be accustomed to use F5 to reload the page. The combinations 
+      Similarly, many users might be accustomed to use F5 to reload the page. The combinations
       <q><code>CTRL+TAB</code></q>
-      and <q><code>ALT+TAB</code></q> <strong>can not be used</strong>. 
+      and <q><code>ALT+TAB</code></q> <strong>can not be used</strong>.
       They will never be fired and can not be canceled.
   </p>
   <h3>Summary:</h3>

@@ -29,21 +29,22 @@
   </p>
   <h2>The Client Interface</h2>
   <p>
-    Every client implementation is represented by a class implementing the 
+    Every client implementation is represented by a class implementing the
     <em><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html">Client</a></em>
     interface, e.g. <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html">WebClient</a></em>.
     An instance of such a class can be obtained
-    from <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getClient()">RWT.getClient()</a></em>. 
+    from <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getClient()">RWT.getClient()</a></em>.
     It represents the client instance connected to the current
     RAP session. By using the <em>instanceof</em> operator, the instance can be used to
     identify the client.
   </p>
-<pre>  if( RWT.getClient() instanceof WebClient ) {
+<pre class="lang-java">
+if( RWT.getClient() instanceof WebClient ) {
   ...
-  }</pre>
+}</pre>
   <p>
-  The client <i><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html">interface</a></i> 
-  mainly specifies the <em><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html#getService(java.lang.Class)">getService()</a></em> 
+  The client <i><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html">interface</a></i>
+  mainly specifies the <em><a href="../reference/api/org/eclipse/rap/rwt/client/Client.html#getService(java.lang.Class)">getService()</a></em>
   method (described below),
   while the client <i>class</i> may add some constants to be used in the
   <a href = "application-configuration.html">application configuration</a>.
@@ -65,11 +66,11 @@
   </p><p>
   Example usage of a service:
   </p>
-<pre>  BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
-  if( navigation != null ) {
-    ...
-  }
-</pre>
+<pre class="lang-java">
+BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
+if( navigation != null ) {
+  ...
+}</pre>
   <h3>
     Services of the web client
   </h3>
@@ -103,8 +104,8 @@
     <li id="jsexec"  style="margin-bottom:10px">
       <b>JavaScriptExecuter</b>
       <br/>
-      Allows 
-      <a href="../reference/api/org/eclipse/rap/rwt/client/service/JavaScriptExecutor.html#execute(java.lang.String)">executing arbitrary JavaScript code</a> 
+      Allows
+      <a href="../reference/api/org/eclipse/rap/rwt/client/service/JavaScriptExecutor.html#execute(java.lang.String)">executing arbitrary JavaScript code</a>
       in the window the RAP client runs in.
       This is usually not necessary, but may be useful to work around minor limitations in RAP or
       implement very simple features.
@@ -117,7 +118,7 @@
     <li id="jsloader" style="margin-bottom:10px">
       <b>JavaScriptLoader</b>
       <br/>
-      Can be used to 
+      Can be used to
       <a href="../reference/api/org/eclipse/rap/rwt/client/service/JavaScriptLoader.html#require(java.lang.String)">execute entire JavaScript files</a>
       on the client. If a file has been
       executed by the client instance once, it will not be executed again.

@@ -23,7 +23,7 @@
     RAP application. This includes for example the page title which is shown in the
     browser or the theme to be used for the application.
   </p>
-  
+
   <h3 id="entrypoint">Creating an Entry Point</h3>
   <p>
     If you haven't done so already, define an
@@ -31,7 +31,7 @@
     extension. Use the attribute <em>path</em> to specify the URL path for the
     entry point.
   </p>
-<pre>
+<pre class="lang-xml">
 &lt;extension point="org.eclipse.rap.ui.entrypoint"&gt;
   &lt;entrypoint id="example.entrypoint"
       class="example.MyEntryPoint"
@@ -40,39 +40,38 @@
 &lt;/extension&gt;
 </pre>
   <p>
-    Unless you want to use the 
+    Unless you want to use the
     <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/equinox/app/IApplication.html">IApplication</a></em>
-    interface (see below), let the <em>class</em> attribute point to your implementation of the 
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em> 
+    interface (see below), let the <em>class</em> attribute point to your implementation of the
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em>
     interface. (If the workbench is not used for the UI, <a href="hello-world.html#entrypoint">it is recommended</a> to extend
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>.) 
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>.)
   </p>
 
   <h3 id="iapplication">Using IApplication</h3>
   <p>
     If you want to use the <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/equinox/app/IApplication.html">IApplication</a></em>
-    interface, leave the <em>class</em> attribute of your entry point extension empty and create an 
-    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_core_runtime_applications.html">org.eclipse.core.runtime.applications</a></em> 
+    interface, leave the <em>class</em> attribute of your entry point extension empty and create an
+    <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_core_runtime_applications.html">org.eclipse.core.runtime.applications</a></em>
     extension (in <i>addition</i> to the <em>entrypoint</em> extension).
-    Set your 
+    Set your
     <em><a href="/help/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/equinox/app/IApplication.html">IApplication</a></em> implementation
     in the <em>class</em> attribute, then specify the <em>id</em> of the application extension in your entry point extensions <em>applicationId</em>:
   </p>
-  <pre>
+  <pre class="lang-xml">
 &lt;extension point="org.eclipse.rap.ui.entrypoint"&gt;
   &lt;entrypoint id="example.application.entrypoint"
       path="/example"
       applicationId="example.application" /&gt;
   &lt;/entrypoint&gt;
-&lt;/extension&gt;
-  </pre>
+&lt;/extension&gt;</pre>
 
   <h3 id="branding">Create the Branding</h3>
   <p>
     Now you can define a new branding by creating an extension for the
     <em><a href="../reference/extension-points/org_eclipse_rap_ui_branding.html">
     org.eclipse.rap.ui.branding</a></em>
-    extension point. Give the branding an id, then set the same id 
+    extension point. Give the branding an id, then set the same id
     in your entry point extension's <em>brandingId</em> attribute.
     The branding is now associated with your <em>EntryPoint</em> or
     <em>IApplication</em> implementation.
@@ -82,18 +81,17 @@
   <p>
     And here the same as it appears in the <em>plugin.xml</em>:
   </p>
-  <pre>
-  &lt;extension
-      point=&quot;org.eclipse.rap.ui.branding&quot;&gt;
-    &lt;branding
-        id=&quot;my.project.branding1&quot;
-        title=&quot;My Custom Title&quot;
-        favicon=&quot;icons/favicon.png&quot;
-        body=&quot;body.html&quot;
-        themeId=&quot;org.eclipse.rap.design.example.business.theme&quot;
-    &lt;/branding&gt;
-  &lt;/extension&gt;
-  </pre>
+  <pre class="lang-xml">
+&lt;extension
+    point=&quot;org.eclipse.rap.ui.branding&quot;&gt;
+  &lt;branding
+      id=&quot;my.project.branding1&quot;
+      title=&quot;My Custom Title&quot;
+      favicon=&quot;icons/favicon.png&quot;
+      body=&quot;body.html&quot;
+      themeId=&quot;org.eclipse.rap.design.example.business.theme&quot;&gt;
+  &lt;/branding&gt;
+&lt;/extension&gt;</pre>
 
   <h4>id</h4>
   <p>
@@ -138,12 +136,11 @@
     to the <em>&lt;head&gt;</em> of the generated index page.
     Here's an example:
   </p>
-  <pre><code>
-  &lt;additionalHeaders&gt;
-    &lt;meta name=&quot;author&quot; content=&quot;Arthur Dent&quot;&gt;
-    &lt;/meta&gt;
-  &lt;/additionalHeaders&gt;
-  </code></pre>
+  <pre class="lang-xml">
+&lt;additionalHeaders&gt;
+  &lt;meta name=&quot;author&quot; content=&quot;Arthur Dent&quot;&gt;
+  &lt;/meta&gt;
+&lt;/additionalHeaders&gt;</pre>
   <p>
     Available tags are <em>&lt;meta&gt;</em> and <em>&lt;link&gt;</em>.
     You can add more additional attributes to each tag with the <em>attribute</em> element.

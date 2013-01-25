@@ -50,10 +50,10 @@
         Source Attachment
       </a></em>
     </li>
-    <li> Implement an 
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em> 
+    <li> Implement an
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em>
     like below:
-<pre dir="ltr" style="text-align: left;">
+<pre class="lang-java">
 public class HelloWorld extends AbstractEntryPoint {
   public void createContents( Composite parent ) {
     Label label = new Label( parent, SWT.NONE );
@@ -64,8 +64,8 @@ public class HelloWorld extends AbstractEntryPoint {
   </ul>
   <p>
     With the RAP Tooling installed, you can already launch your HelloWorld application.
-    To do so, select the <em>HelloWorld</em> class (i.e. in the 
-    <em class="UiLabel">Package Explorer</em>) and choose 
+    To do so, select the <em>HelloWorld</em> class (i.e. in the
+    <em class="UiLabel">Package Explorer</em>) and choose
     <em class="UiLabel">Run As</em> &gt; <em class="UiLabel">RWT Application</em> from the context menu.
   </p>
 
@@ -78,7 +78,7 @@ public class HelloWorld extends AbstractEntryPoint {
   <ul>
     <li> Place a deployment descriptor (<em>web.xml</em>) in the <em>WEB-INF</em> folder
     with the content below:
-<pre dir="ltr" style="text-align: left;">
+<pre  class="lang-xml">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;web-app xmlns="http://java.sun.com/xml/ns/j2ee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -108,7 +108,7 @@ public class HelloWorld extends AbstractEntryPoint {
     <li>
       Provide an <a href="application-configuration.html">application configuration</a>
       to configure your application like shown below:
-  <pre dir="ltr" style="text-align: left;">
+  <pre  class="lang-java">
 public class HelloWorldConfiguration implements ApplicationConfiguration {
   public void configure( Application application ) {
     application.addEntryPoint( "/hello", HelloWorld.class, null );
@@ -117,8 +117,8 @@ public class HelloWorldConfiguration implements ApplicationConfiguration {
     </li>
     <li>
       Again you can use the RAP Tooling to launch the application from the just created
-      <em>web.xml</em>. To do so, create a new <em class="UiLabel">RWT Launch Configuration</em> 
-      and select <q><em class="UiLabel">Run from web.xml</em></q>. 
+      <em>web.xml</em>. To do so, create a new <em class="UiLabel">RWT Launch Configuration</em>
+      and select <q><em class="UiLabel">Run from web.xml</em></q>.
       Enter the location of the <em>web.xml</em> file and specify <q><em>hello</em></q> as the
       servlet path.
     </li>

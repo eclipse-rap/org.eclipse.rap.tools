@@ -14,28 +14,28 @@
       As a RAP application usually runs in a browser, the user will expect that it behaves and
       navigates like a traditional website to a certain degree. It is easy to implement the layout
       of typical websites and web applications using RAP widgets (like
-      <em><a href="../reference/api/org/eclipse/swt/widgets/TabFolder.html">TabFolder</a></em>, 
-      <em><a href="../reference/api/org/eclipse/swt/widgets/List.html">List</a></em>, 
-      <em><a href="../reference/api/org/eclipse/swt/widgets/Menu.html">Menu</a></em>, 
+      <em><a href="../reference/api/org/eclipse/swt/widgets/TabFolder.html">TabFolder</a></em>,
+      <em><a href="../reference/api/org/eclipse/swt/widgets/List.html">List</a></em>,
+      <em><a href="../reference/api/org/eclipse/swt/widgets/Menu.html">Menu</a></em>,
       etc.).
       However, some concepts, like history support, require special API.
     </p>
     <h2 id="links">Links</h2>
     <p>There are two kind of links supported in RAP.</p>
     <p>
-      First, there is the 
-      <em><a href="../reference/api/org/eclipse/swt/widgets/Link.html">Link</a></em> 
+      First, there is the
+      <em><a href="../reference/api/org/eclipse/swt/widgets/Link.html">Link</a></em>
       widget as implemented by SWT. This widget
-      can display text that looks like it contains a link, but actually behaves like a  
+      can display text that looks like it contains a link, but actually behaves like a
       <a href="../reference/api/org/eclipse/swt/widgets/Button.html">push button</a>.
       It's convenient to use this Widget to link between different places within your application.
-      Combined with the URL-Launcher (<a href="#launcher">see below</a>), 
+      Combined with the URL-Launcher (<a href="#launcher">see below</a>),
       it can also be used like an actual link to open new websites.
     </p>
     <p>
-      Second, it is possible to integrate 
-      <a href="markup.html#link"><q>real</q> links</a> 
-      in the application using the 
+      Second, it is possible to integrate
+      <a href="markup.html#link"><q>real</q> links</a>
+      in the application using the
       <a href="markup.html#markup">markup feature</a>.
       Clicking such a link will <em>not</em> trigger any events, but open the given URL (in the
       same window, if there is no target attribute set).
@@ -43,18 +43,18 @@
     <h2 id="launcher">Open URLs in an external browser/application</h2>
     <p>
       It is possible in RAP to programmatically open any URL without leaving the current
-      page/session. This is done using the 
-      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/UrlLauncher.html">UrlLauncher</a></em> 
+      page/session. This is done using the
+      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/UrlLauncher.html">UrlLauncher</a></em>
       <a href="client.html#service">client service</a>. Any
-      URL starting with <q><code>http</code></q> (or <q><code>https</code></q>) will open in a 
-      new browser tab, window, or pop-up, unless it is blocked by a pop-up blocker. 
+      URL starting with <q><code>http</code></q> (or <q><code>https</code></q>) will open in a
+      new browser tab, window, or pop-up, unless it is blocked by a pop-up blocker.
       (The browser will usually ask the user if he
       wants to allow the site to open new windows in general, just in this case, or never.)
-      Other protocols like <q><code>mailto</code></q> or <q><code>tel</code></q> will 
+      Other protocols like <q><code>mailto</code></q> or <q><code>tel</code></q> will
       <i>not</i> create a browser window, but might trigger
       another application to open, if one is installed. Examples:
     </p>
-    <pre>
+    <pre class="lang-java">
 UrlLauncher launcher = RWT.getClient().getService( UrlLauncher.class );
 launcher.openURL( "http://www.eclipse.org/" );
 launcher.openURL( RWT.getResourceManager().getLocation( "my-doc.pdf" ) );
@@ -64,12 +64,12 @@ launcher.openURL( "tel:555-123456" );</pre>
 
     <h2 id="exitconfirmation">Exit Confirmation</h2>
     <p>
-      The 
-      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/ExitConfirmation.html">ExitConfirmation</a></em> 
+      The
+      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/ExitConfirmation.html">ExitConfirmation</a></em>
       service can configure a message that can be shown whenever
       the user tries to close the browser window/tab, or navigates to another URL. Example:
     </p>
-    <pre>
+    <pre class="lang-java">
 ExitConfirmation service = RWT.getClient().getService( ExitConfirmation.class );
 service.setMessage( "Do you really wanna leave the party?" );</pre>
     <p><b>Result:</b></p>
@@ -84,26 +84,26 @@ service.setMessage( "Do you really wanna leave the party?" );</pre>
     <p>
       Deep links, in traditional websites, are links that point not just to a document,
       but to a specific position within the document. This is done by adding a <q>fragment id</q>
-      to the URL, separated from the path by a <q>#</q>. 
+      to the URL, separated from the path by a <q>#</q>.
       For example "<code>http://eclipse.org/#midcolumn</code>".
     </p>
     <p>
-      RAP provides the 
-      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigation.html">BrowserNavigation</a></em> 
+      RAP provides the
+      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigation.html">BrowserNavigation</a></em>
       service, which allows the application to
       access this fragment.
       After the URL has been entered (or changed - see <a id="listener" href="#history">history support</a>),
-      a 
-      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigationListener.html">BrowserNavigationListener</a></em> 
+      a
+      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigationListener.html">BrowserNavigationListener</a></em>
       is called, and the fragment is available on the
-      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigationEvent.html">BrowserNavigationEvent</a></em> 
-      via the 
+      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigationEvent.html">BrowserNavigationEvent</a></em>
+      via the
       <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigationEvent.html#getState()">getState()</a></em>.
       The string can then be used to decide where to navigate in your application.
       If, for example, you are using a TabFolder as your main navigation element,
       a simple but complete implementation could look like this:
     </p>
-    <pre>
+    <pre class="lang-java">
 final Map&lt;String, TabItem&gt; navigation = new HashMap&lt;String, TabItem&gt;();
 navigation.put( "employees", employeeTab );
 navigation.put( "companies", companiesTab ); // etc...
@@ -123,12 +123,12 @@ service.addBrowserNavigationListener( new BrowserNavigationListener() {
    You could also encode a path within the fragment, pointing to a specific
    unit of data:
   </p>
-  <pre>
+  <pre class="lang-java">
 public void navigated( BrowserNavigationEvent event ) {
   String state = event.getState();
   if( state.startsWith( "employees/" ) ) {
     showEmpoyee( state.substring( 10 ) );
-  } 
+  }
 }</pre>
   <p>
     Opening <q><code>http://myRapApp/#employees/john.doe</code></q> could then open the application
@@ -137,24 +137,24 @@ public void navigated( BrowserNavigationEvent event ) {
   <h2 id="history">Browser History</h2>
   <p>
     Support for browser history means that the user is able to go back to a previous state of the
-    application using the browsers <q>back</q> button, without leaving the RAP application itself. 
+    application using the browsers <q>back</q> button, without leaving the RAP application itself.
     He can also use the browsers history dialog to jump multiple entries back or forwards.
   </p>
   <p>
-    If a <em>BrowserNavigationListener</em> is already implemented 
-    (<a href="#deeplinks">see above</a>), 
+    If a <em>BrowserNavigationListener</em> is already implemented
+    (<a href="#deeplinks">see above</a>),
     all that is left to
     do is to add new entries to the history. To do so, simply call
-    <em style="white-space:nowrap;"><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigation.html#pushState(java.lang.String, java.lang.String)">pushState( state, title )</a></em> 
+    <em style="white-space:nowrap;"><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigation.html#pushState(java.lang.String, java.lang.String)">pushState( state, title )</a></em>
     whenever your application enters a new state that
     should appear in the history. The <q>state</q> string will then be given in the
-    <em>BrowserNavigationEvent</em> 
+    <em>BrowserNavigationEvent</em>
     when the user presses the <q>back</q> button. The title string
     is used for the title of the document and will appear in the browsers history tab/dialog.
   </p>
   <p>
     <strong>NOTE:</strong> Some browser have issues supporting history and the
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html">Browser</a></em> 
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html">Browser</a></em>
     widget in the same application. The back button may sometimes go back in
     the history of the browser widget and in the history of the RAP application simultaneously, or
     not at all.

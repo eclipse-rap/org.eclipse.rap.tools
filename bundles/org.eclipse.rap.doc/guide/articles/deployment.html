@@ -130,16 +130,14 @@
     work directory, e.g. on Tomcat:
   </p>
   <pre>
-&lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/workspace/.metadata/.log
-  </pre>
+&lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/workspace/.metadata/.log </pre>
 
   <p>
   In case Equinox isn't able to start at all, you may also look for log files
   at:
   </p>
   <pre>
-  &lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/configuration
-  </pre>
+&lt;tomcat-installation&gt;/work/Catalina/localhost/demo/eclipse/configuration </pre>
 
   <h2>Troubleshooting</h2>
 
@@ -161,7 +159,8 @@
     </li>
     <li>
       Enable the OSGi console by adding this init-param to the <em>web.xml</em>:
-      <pre>&lt;init-param&gt;
+      <pre class="lang-xml">
+&lt;init-param&gt;
   &lt;param-name&gt;commandline&lt;/param-name&gt;
   &lt;param-value&gt;-console&lt;/param-value&gt;
 &lt;/init-param&gt;</pre>
