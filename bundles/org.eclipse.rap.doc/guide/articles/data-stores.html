@@ -5,6 +5,7 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Storing Data</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
@@ -12,65 +13,171 @@
   <h1>Storing Data</h1>
 
   <p>
-    When storing data in RAP, it's important to take into account that multiple users and
-    RAP applications may share the same Java VM and the same file system. To address this, RAP provides
-    basic, out-of-the box storage solutions for three common cases. Of course, these
-    are not suited for the permanent storage of huge or sensitive data structures.
+    There are cases where an object must be stored in a place that can be
+    accessed by different parts of an application.
+    For example, an application may store information about the user that is currently logged in,
+    or a selection that the user has made and that affects different parts of the application.
+    But there are also instances that should be shared between all users,
+    for example actual whether data in a flight control system, or a cache for results of frequent calculations.
+  </p>
+  <p>
+    When storing those data in RAP, it's important to take into account that the Java VM and the
+    file system are shared by multiple users and perhaps even different RAP applications.
+    Thus, the classical <em>Singleton</em> approach <a href="singletons.html">should not be used in RAP</a>.
+    <!-- Also data kept in temporary files might not be a good idea.-->
+    When there are multiple users and applications, data must be stored in a place that is suitable
+    for its <a href="scopes.html">scope</a>.
+    RAP provides basic data stores for the different scopes.
   </p>
 
+  <h3>Application-wide (shared) data</h3>
+  <p>
+    Especially when an application must handle a lot of parallel user sessions, it's crucial to
+    limit the memory and CPU cycles consumed by a single UI session.
+    Depending on the application, it may be a good idea to <em>share</em> instances of objects that are not user-specific
+    between all users instead of creating an equivalent instance for every single UI session.
+  </p>
+  <p>
+    An application can store those shared objects as attributes in the
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/ApplicationContext.html">ApplicationContext</a></em>.
+    This makes them accessible for all UI sessions within the application.
+    But in contrast to singletons, the objects won't be available in a different application.
+    When the application is stopped, the application context is cleared and the shared instances
+    can be cleaned up by the garbage collector.
+  </p>
+
+  <h3>UI-specific data</h3>
+  <p>
+    Some shared information are only valid for the current instance of the entrypoint,
+    i.e. the current UI session.
+    As an example, in a call center application, the customer record that is currently selected
+    is only valid for the current UI session.
+    At the same time, another agent is talking to another customer.
+  </p>
+  <p>
+    Those objects can be stored as attributes in the
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/UISession.html">UISession</a></em>.
+    The attributes of a UI session will be cleaned up when the UISession ends.
+  </p>
+
+  <h3>User-specific data</h3>
+  <p>
+    When a user reloads the page in the browser or switches to another entrypoint, a new UI session
+    is created.
+    All information that was stored in the previous UISession is lost.
+    But it's still the same user.
+    Most applications will remember the user and not ask for a login again.
+  </p>
+  <p>
+    As usual in web applications, information about the current user should be stored in the
+    <em>HttpSession</em>.
+    RAP applications can access the HttpSession using <em>UISession#getHttpSession()</em>.
+  </p>
+
+  <h3>Persistent User Settings</h3>
+  <p>
+    Some applications allow their users to do certain customizations such as choosing between metric vs. imperial units.
+    Those user settings should be preserved for a longer period of time.
+    RAP provides a simple persistent store for this kind of settings, the
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/SettingStore.html">SettingStore</a></em>.
+    The setting store identifies a returning user by means of a cookie.
+    The default implementation stores settings in Java .properties files on disk.
+    But the mechanism also allows for custom implementations.
+    An instance can be obtained from <em>RWT.getSettingStore()</em>.
+    In contrast to the other stores, the setting store can only keep strings, not arbitrary objects.
+  </p>
+  <p>
+    Note that the settings store relies on cookies, which may be deleted or disabled by the user.
+    It is also possible to identify the user by any other means and use the method
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/SettingStore.html#loadById(java.lang.String)">loadById</a></em>
+    to initialize the setting store from preserved data.
+  </p>
+
+  <h3>Overview</h3>
   <table border="1" cellpadding="3" cellspacing="0">
     <tr>
-      <th align="left">Interface</th>
-      <th align="left">Access</th>
+      <th align="left">Interface / Instance</th>
       <th align="left">Scope</th>
-      <th align="left">stores</th>
-      <th align="left">cleared</th>
+      <th align="left">used for</th>
+      <th align="left">life span</th>
     </tr>
     <tr>
-      <td><em><a href="../reference/api/org/eclipse/rap/rwt/service/ApplicationContext.html">ApplicationContext</a></em></td>
       <td>
-        <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getApplicationContext()">RWT.getApplicationContext()</a></em>,
-        <br/>from any thread
+        <em><strong><a href="../reference/api/org/eclipse/rap/rwt/service/ApplicationContext.html">ApplicationContext</a></strong></em><br/><br/>
+        <em>RWT.getApplicationContext()</em>
       </td>
-      <td><a href="scopes.html#application">application</a></td>
-      <td>any object</td>
-      <td>when application is stopped/restarted</td>
+      <td>
+        application
+      </td>
+      <td>
+        instances shared between all users of an application
+      </td>
+      <td>
+        entire lifetime of the application,
+        cleared when application is stopped
+      </td>
     </tr>
     <tr>
-      <td><em><a href="../reference/api/org/eclipse/rap/rwt/service/UISession.html">UISession</a></em></td>
       <td>
-        <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getUISession()">RWT.getUISession()</a></em>, 
-        <br/>requires <a href="threads.html">session context</a>
+        <em><strong><a href="../reference/api/org/eclipse/rap/rwt/service/UISession.html">UISession</a></strong></em><br/><br/>
+        RWT.getUISession()
       </td>
-      <td style="white-space:nowrap"><a href="scopes.html#uisession">UI Session</a></td>
-      <td>any object</td>
-      <td>when session expires</td>
+      <td>
+        UI session
+      </td>
+      <td>
+        instances specific to the current UI session
+      </td>
+      <td>
+        execution of a single entrypoint instance,
+        cleared when UI session expires
+      </td>
     </tr>
     <tr>
-      <td><em><a href="../reference/api/org/eclipse/rap/rwt/service/SettingStore.html">SettingStore</a></em></td>
       <td>
-        <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getSettingStore()">RWT.getSettingStore()</a></em>, 
-        <br/>requires <a href="threads.html">session context</a>
+        <em><strong>HttpSession</em></strong> (Servlet API)</strong></em><br/><br/>
+        <em>RWT.getUISession()<wbr/>.getHttpSession()</em>
       </td>
-      <td><a href="scopes.html#user">user (persistent)</a></td>
-      <td>strings</td>
-      <td>never, cookie lasts 3 month by default</td>
+      <td>
+        user
+      </td>
+      <td>
+        user-specific information
+      </td>
+      <td>
+        Http session, cleared on session timeout
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <em><strong><a href="../reference/api/org/eclipse/rap/rwt/service/SettingStore.html">SettingStore</a></strong></em><br/><br/>
+        <em>RWT.getSettingStore()</em>
+      </td>
+      <td>
+        user (persistent)
+      </td>
+      <td>
+        Persistent user settings (Strings)
+      </td>
+      <td>
+        never, cookie lasts 3 month by default
+      </td>
     </tr>
   </table>
 
   <p>
-    All these Data Stores have at least the three methods <em>setAttribute</em>,
-    <em>getAttribute</em> and <em>removeAttribute</em>. Note that the settings store
-    relies on cookies, which may be deleted or disabled by the user. It is also possible
-    to identify the user by any other means and use the method 
-    <em><a href="../reference/api/org/eclipse/rap/rwt/service/SettingStore.html#loadById(java.lang.String)">loadById</a></em> to
-    initialize the SettingStore. <!-- TODO : does it survive a application shutdown? -->
-  </p><p>
-    If you need to use the <em>UISession</em>
-    or <em>SettingStore</em> from from a background thread, 
-    read <q><a href="threads.html">Session Access from background thread</a></q>.
+    All these data stores have at least the three methods <em>setAttribute</em>,
+    <em>getAttribute</em> and <em>removeAttribute</em>.
   </p>
-
+  <p>
+    Please keep in mind that these data stores keep data in memory and are not suited for large or
+    sensitive data structures.
+  </p>
+  <p>
+    A reference to any of these data stores can only be obtained in the the context of a UISession.
+    That is, they are directly accessible from a UI thread, but background threads need to execute
+    code in the context of a UI session (see <a href="threads.html">Threads in RAP</a>).
+  </p>
 
 </body>
 </html>

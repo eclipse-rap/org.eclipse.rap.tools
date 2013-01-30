@@ -36,7 +36,7 @@
     </topic>
     <topic href="guide/articles/web-embedding.html" label="Embedding Web Components">
     </topic>
-    <topic href="guide/articles/navigation.html" label="Browser Navigation &amp; History">
+    <topic href="guide/articles/navigation.html" label="Browser Navigation and History">
     </topic>
     <topic
         label="RWT Theming"
@@ -44,22 +44,22 @@
     <topic
         label="Custom Widgets"
         href="guide/articles/custom-widget.html"/>
-    <topic href="guide/articles/resources.html" label="Registering static resources">
+    <topic href="guide/articles/resources.html" label="Registering Static Resources">
     </topic>
   </topic>
   <topic label="Scopes and Threads in RAP">
     <topic
-        label="Overview"
+        label="Scopes in RAP"
         href="guide/articles/scopes.html">
     </topic>
     <topic
         label="Singletons and Static Fields"
         href="guide/articles/singletons.html">
     </topic>
-    <topic href="guide/articles/data-stores.html" label="Data Storage">
+    <topic href="guide/articles/data-stores.html" label="Storing Data">
     </topic>
     <topic
-        label="Session access from a background thread"
+        label="Threads in RAP"
         href="guide/articles/threads.html"/>
     <topic href="guide/articles/server-push.html" label="Server Push">
     </topic>

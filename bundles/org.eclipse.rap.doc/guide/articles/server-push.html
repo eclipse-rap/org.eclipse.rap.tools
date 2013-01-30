@@ -30,7 +30,7 @@
   <h2>The Solution</h2>
 
   <p>
-    Using the so-called Comet ("long polling") approach, the server is able to notify the client
+    Using the so-called Comet (or “long polling”) approach, the server is able to notify the client
     <em>immediately</em>. The basic idea is that the client sends a request to the server that is
     not answered until the server needs to notify the client of a change.
   </p>
@@ -40,13 +40,13 @@
     API.
     <strong>Before</strong> starting a background task, create an instance of <em>ServerPushSession</em>
     and call
-    <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html#start()">start</a></em>
-    When the background task completes and no longer needs the
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html#start()">start</a></em>.
+    When the background task has completed and no longer needs the
     server push mechanism, call
     <em><a href="../reference/api/org/eclipse/rap/rwt/service/ServerPushSession.html#stop()">stop</a></em>.
     Example:
   </p>
-  <pre class="lang-java">
+<pre class="lang-java">
 final ServerPushSession pushSession = new ServerPushSession();
 Runnable bgRunnable = new Runnable() {
   public void run() {
@@ -69,19 +69,21 @@ bgThread.setDaemon( true );
 bgThread.start();
 </pre>
   <p>
-    One UI session may have any number of instances of <em>ServerPushSession</em> at the same time.
-    The underlying mechanism will be activated once the first <em>ServerPushSession</em> calls <em>start</em>,
-    and deactivated when the last instance has called <em>stop</em>.
+    A UI session may create and start any number of <em>ServerPushSession</em>s in parallel.
+    The framework will keep the server push enabled as long as there are any active push sessions.
+    That is, for multiple push sessions, there is only a single request needed.
   </p>
   <p>
     Note that unlike
     <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#asyncExec(java.lang.Runnable)">Display#asyncExec()</a></em>,
     <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#timerExec(int, java.lang.Runnable)">Display#timerExec()</a></em>,
-    does <i>not</i> require a <em>ServerPushSession</em>, as RAP creates one automatically in this case.
+    does <em>not</em> require an explicit <em>ServerPushSession</em>,
+    as RAP creates one automatically in this case.
   </p>
   <p>
     More technical details of the ServerPush implementation can be found on the
     <a href="http://wiki.eclipse.org/RAP/Server_Push" target="blank">RAP Wiki</a>.
   </p>
+
 </body>
 </html>
