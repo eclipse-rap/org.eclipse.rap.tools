@@ -45,31 +45,39 @@
     </li>
 
     <li>
-      <h3>Demo Plug-in</h3>
+      <h3>Demo Plug-ins</h3>
       <p>
-        The RAP project comes with two example applications demonstrating the features and
+        The RAP project comes with three example applications demonstrating the features and
         capabilities of RAP.
       </p>
       <p>
         The first application provides a workbench very closely aligned to the RCP workbench.
+        It requires the following bundles:
+        <ul>
+          <li>org.eclipse.rap.demo</li>
+          <li>org.eclipse.rap.demo.databinding</li>
+        </ul>
         The second demo, referred to as the 'controls demo', shows what widgets there are and that
         they behave very similar to the SWT widgets.
+        It requires the following bundles:
+        <ul>
+          <li>org.eclipse.rap.demo.controls</li>
+        </ul>
+        The third demo, called 'examples demo', demonstrates some widget specific features.
+        It requires the following bundles:
+        <ul>
+          <li>org.eclipse.rap.examples</li>
+          <li>org.eclipse.rap.examples.pages</li>
+        </ul>
       </p>
       <p>
         To access and run these demo applications, please open the Plug-ins view
         (e.g. through the Plug-in Development perspective).
-        Select the plug-in named <em>org.eclipse.rap.demo</em> which contains both demo
-        applications, right-click on this plug-in and select
+        Select the coresponding plug-ins, right-click on them and select
         <em class="UILabel">Import as &gt; Source Project</em>.
-        This plug-in will then appear with all source files in your workspace.
-        The demo also provides a ready-to-use
-        <a href="launcher.html#osgi-launcher">OSGi Launch Configuration</a>.
-      </p>
-      <p>
-        After launching, you can access the workbench demo using the URL<br/>
-        <code>http://localhost:&lt;port&gt;/rap</code>.
-        The controls demo is available at<br/>
-        <code>http://localhost:&lt;port&gt;/controls</code>.
+        These plug-ins will then appear with all source files in your workspace.
+        All demos also provide a ready-to-use
+        <a href="launcher.html#rap-launcher">RAP Launch Configurations</a>.
       </p>
     </li>
   </ul>
