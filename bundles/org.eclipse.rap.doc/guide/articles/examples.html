@@ -20,67 +20,64 @@
 
   <p>There are two kinds of example types available.</p>
 
+  <h3>Templates</h3>
+  <p>
+    To create a RAP plug-in from a template, open the <em>New Project</em> wizard
+    (<em class="UILabel">File > New > Project</em>) and select
+    <em class="UILabel">Plug-in Project</em>.
+    Type a project name (e.g. mail) and click <em class="UILabel">Next</em>.
+    On the following page, ensure that the option
+    <em class="UILabel">This plug-in will make contributions to the UI</em>
+    is selected and no <em class="UILabel">Rich Client Application</em> will be created.
+    Click <em class="UILabel">Next</em>. Now you should see a page where you can select
+    a template. Select one of the templates with the RAP prefix (e.g. RAP Mail) and
+    click <em class="UILabel">Finish</em>.
+  </p>
+
+  <p>
+    The plug-in comes with a pre-configured launch configuration.
+    Open the Run dialog (<em class="UILabel">Run &gt; Run Configurations...</em>), select the
+    <a href="launcher.html#rap-launcher">RAP Launch Configuration</a> that matches your
+    project name (e.g. mail) and click <em class="UILabel">Run</em> to start.
+  </p>
+
+  <h3>Demo Plug-ins</h3>
+  <p>
+    The RAP project comes with three example applications demonstrating the features and
+    capabilities of RAP.
+  </p>
+  <p>
+    The <q>Examples Demo</q>, demonstrates some key features of the RAP framework.
+    It requires the following bundles:
+  </p>
   <ul>
-    <li>
-      <h3>Templates</h3>
-      <p>
-        To create a RAP plug-in from a template, open the <em>New Project</em> wizard
-        (<em class="UILabel">File > New > Project</em>) and select
-        <em class="UILabel">Plug-in Project</em>.
-        Type a project name (e.g. mail) and click <em class="UILabel">Next</em>.
-        On the following page, ensure that the option
-        <em class="UILabel">This plug-in will make contributions to the UI</em>
-        is selected and no <em class="UILabel">Rich Client Application</em> will be created.
-        Click <em class="UILabel">Next</em>. Now you should see a page where you can select
-        a template. Select one of the templates with the RAP prefix (e.g. RAP Mail) and
-        click <em class="UILabel">Finish</em>.
-      </p>
-
-      <p>
-        The plug-in comes with a pre-configured launch configuration.
-        Open the Run dialog (<em class="UILabel">Run &gt; Run Configurations...</em>), select the
-        <a href="launcher.html#rap-launcher">RAP Launch Configuration</a> that matches your
-        project name (e.g. mail) and click <em class="UILabel">Run</em> to start.
-      </p>
-    </li>
-
-    <li>
-      <h3>Demo Plug-ins</h3>
-      <p>
-        The RAP project comes with three example applications demonstrating the features and
-        capabilities of RAP.
-      </p>
-      <p>
-        The first application provides a workbench very closely aligned to the RCP workbench.
-        It requires the following bundles:
-        <ul>
-          <li>org.eclipse.rap.demo</li>
-          <li>org.eclipse.rap.demo.databinding</li>
-        </ul>
-        The second demo, referred to as the 'controls demo', shows what widgets there are and that
-        they behave very similar to the SWT widgets.
-        It requires the following bundles:
-        <ul>
-          <li>org.eclipse.rap.demo.controls</li>
-        </ul>
-        The third demo, called 'examples demo', demonstrates some widget specific features.
-        It requires the following bundles:
-        <ul>
-          <li>org.eclipse.rap.examples</li>
-          <li>org.eclipse.rap.examples.pages</li>
-        </ul>
-      </p>
-      <p>
-        To access and run these demo applications, please open the Plug-ins view
-        (e.g. through the Plug-in Development perspective).
-        Select the coresponding plug-ins, right-click on them and select
-        <em class="UILabel">Import as &gt; Source Project</em>.
-        These plug-ins will then appear with all source files in your workspace.
-        All demos also provide a ready-to-use
-        <a href="launcher.html#rap-launcher">RAP Launch Configurations</a>.
-      </p>
-    </li>
+    <li>org.eclipse.rap.examples</li>
+    <li>org.eclipse.rap.examples.pages</li>
   </ul>
+  <p>
+    The <q>Workbench Demo</q>provides a workbench very closely aligned to the RCP workbench.
+    It requires the following bundles:
+  </p>
+  <ul>
+    <li>org.eclipse.rap.demo</li>
+    <li>org.eclipse.rap.demo.databinding</li>
+  </ul>
+  <p>
+    The <q>Controls Demo</q>, showcases the different widgets
+    of the RAP Widget Toolkit.
+    It requires the following bundle:
+  </p>
+  <ul>
+    <li>org.eclipse.rap.demo.controls</li>
+  </ul>
+  <p>
+    To access and run these demo applications, open the <em class="UILabel">Plug-ins</em> view
+    and select the corresponding plug-ins. Open the context menu and select
+    <em class="UILabel">Import as &gt; Source Project</em>.
+    In the <em class="UILabel">Package Explorer</em>, open the imported plug-in and launch
+    the demo using the provided
+    <a href="launcher.html#rap-launcher">launch configuration</a>.
+  </p>
 
 </body>
 </html>

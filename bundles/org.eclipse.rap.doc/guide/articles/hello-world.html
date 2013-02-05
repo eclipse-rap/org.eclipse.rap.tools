@@ -42,7 +42,7 @@
   <img src="../images/hello-world/NewProject-1.png" alt="New Project Wizard"/>
   <p>
     On the second page of the wizard, disable the option
-    <em class="UILabel">Generate an activator, …</em>.
+    <em class="UILabel">Generate an activator</em>.
     (This option would create a bundle activator, but we don't need that now.)
     Ensure that no <em class="UILabel">Rich Client Application</em> will be created.
   </p>
@@ -67,33 +67,32 @@
   <p>
     The wizard automatically creates a class named <em>BasicEntryPoint</em> that extends
     <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>
-    in the speified package. In the method 
+    in the speified package. In the method
     <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html#createContents(org.eclipse.swt.widgets.Composite)">createContents</a></em>,
-    we already have some SWT code with two <em>Button</em>'s.
+    we already have some SWT code with two buttons.
   </p>
   <pre class="lang-java">
-  public class BasicEntryPoint extends AbstractEntryPoint {
+public class BasicEntryPoint extends AbstractEntryPoint {
 
-      @Override
-      protected void createContents(Composite parent) {
-          parent.setLayout(new GridLayout(2, false));
-          Button checkbox = new Button(parent, SWT.CHECK);
-          checkbox.setText("Hello");
-          Button button = new Button(parent, SWT.PUSH);
-          button.setText("World");
-      }
-
+  @Override
+  protected void createContents(Composite parent) {
+    parent.setLayout(new GridLayout(2, false));
+    Button checkbox = new Button(parent, SWT.CHECK);
+    checkbox.setText("Hello");
+    Button button = new Button(parent, SWT.PUSH);
+    button.setText("World");
   }
-  </pre>
+
+} </pre>
 
   <h2>Launch the application</h2>
   <p>
-    Now we can launch this application using the generated launch configuration 
+    Now we can launch this application using the generated launch configuration
     <em>org.examples.rap.helloworld.launch</em> in the project root.
     Select <em class="UILabel">Run As &gt; org.examples.rap.helloworld</em> from the context menu
     of the launch configuration file.
     A browser view should open up soon afterwards and show your running application.
-    More on launching RAP applications in the chapter
+    More information on launching RAP applications can be found in the chapter
     <a href="./launcher.html">Launching RAP Applications</a>.
   </p>
 

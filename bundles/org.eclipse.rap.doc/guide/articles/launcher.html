@@ -111,10 +111,10 @@
       opened in a browser after a successful start.
       The application can be opened either in an internal browser, i.e. embedded in the Eclipse IDE,
       or in an external browser.
-      The external browser application can be configured in the <em>Web Browser</em> preference
-      settings, the link <em class="UILabel">Configure browsers…</em> lets you jump right there.<br/>
-      The <em class="UILabel">Servlet Path</em> is used to construct the URL to be opened with the
-      browser.
+      The external browser application can be configured in the <em>Web Browser</em> preferences
+      of your IDE. The link <em class="UILabel">Configure browsers…</em> lets you jump right there.
+      The <em class="UILabel">Servlet Path</em> is used to construct the URL
+      which will be opened in the browser.
       If you're launching an <em>entry point</em>, you are free to choose an arbitrary path.
       When launching an application from a <em>web.xml</em>, it must point to one of the servlets
       defined in the web.xml.
@@ -123,23 +123,23 @@
       In the <em class="UILabel">Server Settings</em>, you can select a fixed network port
       to start your application at, a session timeout and a context path.
       <p>
-		    <em class="UILabel">Use a fixed port</em> configuration lets you select a fixed network port
-		    to start your application at.
-		    If you don't configure a port, the launcher will choose a free port, which may be
-		    different on every launch.
-		  </p>
-		  <p>
-		    <em class="UILabel">Session Timeout</em> specifies the servlet session timeout in minutes.
-		    If the checkbox is unselected, the session will never expire.
-		  </p>
-		  <p>
-		    <em class="UILabel">Context Path</em> selects an optional context path for the web application.
-		    The context path is part of a web application's URL, e.g.
-		    <code>http://&lt;server&gt;:&lt;port&gt;/contextPath/servletPath</code>.
-		    In a servlet container, every webapp is available at its own context path.
-		    This setting lets you simulate the same context path that your application will be accessible
-		    at in the production environment.
-		  </p>
+        <em class="UILabel">Use a fixed port</em> configuration lets you select a fixed network port
+        to start your application at.
+        If you don't configure a port, the launcher will choose a free port, which may be
+        different on every launch.
+      </p>
+      <p>
+        <em class="UILabel">Session Timeout</em> specifies the servlet session timeout in minutes.
+        If the checkbox is unselected, the session will never expire.
+      </p>
+      <p>
+        <em class="UILabel">Context Path</em> selects an optional context path for the web application.
+        The context path is part of a web application's URL, e.g.
+        <code style="white-space:nowrap">http://&lt;server&gt;:&lt;port&gt;/contextPath/servletPath</code>.
+        In a servlet container, every web app is available at its own context path.
+        This setting lets you simulate the same context path that your application will be accessible
+        at in the production environment.
+      </p>
     </li>
   </ul>
 
@@ -166,12 +166,12 @@
     The application can be opened either in an internal browser, i.e. embedded in the Eclipse IDE,
     or in an external browser.
     The external browser application can be configured in the <em>Web Browser</em> preference
-    settings, the link <em class="UILabel">Configure browsers…</em> lets you jump right there.
+    of your IDE, the link <em class="UILabel">Configure browsers…</em> lets you jump right there.
   </p>
   <p>
     The <em class="UILabel">Servlet Path</em> field lets you configure the URL that will be
     opened in the browser. Which path is mapped to which entry point is configured in the
-    <a href="application-configuration.html">application configuration</a></a>.
+    <a href="application-configuration.html">application configuration</a>.
   </p>
 
   <h3>Server Settings</h3>
