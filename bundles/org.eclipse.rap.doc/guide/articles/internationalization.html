@@ -10,6 +10,14 @@
 </head>
 <body>
 
+  <p>
+    <em><strong>Note:</strong> This article explains internationalization in the context of workbench
+    applications.
+    For RAP applications that don't use the workbench, only parts of this article are applicable.
+    Plain RWT applications can also use traditional ResourceBundles and get the locale from the
+    UISession as explained below.</em>
+  </p>
+
   <h1>How to Internationalize a RAP application</h1>
 
   <p>
@@ -33,13 +41,12 @@
 
   <h2>Move translatable strings into *.properties files</h2>
   <p>
-    In RCP, it's quite simple to externalize strings using the <q>Externalize
+    In the Eclipse IDE, it's quite simple to externalize strings using the <q>Externalize
     Strings</q> wizard provided by JDT.
-    Unfortunately, this wizard is not yet prepared to externalize strings the RAP
-    way.
+    Unfortunately, this wizard generates code that is not suitable for multi-user applications
+    because it stores translations in static fields.
     You can probably benefit from the assistance of the <q>Externalize Strings</q>
     wizard anyway, but only partly.
-    Until now, you are on your own here.
     We will now explain how to do it from scratch.
   </p>
 
@@ -221,12 +228,20 @@ Bundle-Localization: plugin</pre>
 
   <h2>How does RAP select the language for a user session?</h2>
   <p>
-    Web browsers allow users to set their preferred languages and they pass those
-    preferences in an <code>Accept-Language</code> HTTP header with every request.
-    RAP tries to select one of the requested languages in the preferred order and
-    if this is not possible, it uses the default locale as fallback.
-    The default locale can be set by adding the system property
-    <code>user.language</code> to the launch configuration.
+    A RAP client provides the user's preferred locale(s) in the <em>ClientInfo</em> service.
+    This information is based on the list of locales passed in the
+    <code>Accept-Language</code> HTTP header, which usually reflects the user's language preferences
+    in the Web browser.
+    Alternative RAP clients may provide a different ClientInfo implementation.
+  </p>
+  <p>
+    Applications can obtain the preferred locale from the UISession using
+    <em>UISession.getLocale()</em>.
+    The UISession locale is based on the preferred locale provided by the client, but can be
+    changed programmatically using <em>UISession.setLocale()</em>.
+    If the client does not provide a locale, the system default locale is taken as a fallback.
+    The default locale can be set by adding the system property <code>user.language</code>
+    to the launch configuration.
     If no matching properties file can be found, the default one
     (<code>messages.properties</code>) takes precedence.
   </p>
