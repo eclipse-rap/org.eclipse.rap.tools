@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.rap.tools.feature"
       label="RAP Tools"
-      version="2.0.0.qualifier"
+      version="2.1.0.qualifier"
       provider-name="Eclipse.org - RAP">
 
    <description>
@@ -18,7 +18,7 @@
    </license>
 
    <url>
-      <update label="Remote Application Platform (RAP) 2.0 Tools Repository" url="http://download.eclipse.org/rt/rap/tools/2.0/"/>
+      <update label="Remote Application Platform (RAP) 2.1 Tools Repository" url="http://download.eclipse.org/rt/rap/tools/2.1/"/>
    </url>
 
    <requires>
