@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public class ServerSettingsSection extends RWTLaunchTab {
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     group.setText( "Server Settings" );
     group.setLayout( new GridLayout( 2, false ) );
-    cbManualPort = createCheckButton( group, "Use a fixed port:" );
+    cbManualPort = createCheckButton( group, "Use a fixed &port:" );
     cbManualPort.addSelectionListener( new UpdateConfigSelectionListener() );
     spnPort = new Spinner( group, SWT.BORDER );
     spnPort.setLayoutData( new GridData( SWT.FILL, SWT.DEFAULT, true, false ) );

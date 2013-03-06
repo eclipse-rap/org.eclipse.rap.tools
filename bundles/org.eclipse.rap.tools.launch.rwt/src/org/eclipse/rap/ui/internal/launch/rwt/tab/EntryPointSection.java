@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,11 +43,11 @@ public class EntryPointSection extends RWTLaunchTab {
     group.setText( "Application entry point" );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     group.setLayout( new GridLayout( 3, false ) );
-    rbEntryPoint = createLaunchTargetRadioButton( group, "Run entry point class" );
+    rbEntryPoint = createLaunchTargetRadioButton( group, "Run &entry point class" );
     stEntryPoint = new SearchText( group, "Class name:", "Search...", MARGIN );
     stEntryPoint.addModifyListener( new TextModifyListener() );
     stEntryPoint.addSelectionListener( new EntryPointClassSelectionListener() );
-    rbWebXml = createLaunchTargetRadioButton( group, "Run from web.xml" );
+    rbWebXml = createLaunchTargetRadioButton( group, "Run from &web.xml" );
     stWebXmlLocation = new SearchText( group, "Location:", "Search...", MARGIN );
     stWebXmlLocation.addModifyListener( new TextModifyListener() );
     stWebXmlLocation.addSelectionListener( new WebXmlSelectionListener() );
