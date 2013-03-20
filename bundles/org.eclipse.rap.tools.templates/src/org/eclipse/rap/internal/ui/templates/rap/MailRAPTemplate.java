@@ -22,6 +22,8 @@ import org.eclipse.rap.internal.ui.templates.XmlNames;
 
 class MailRAPTemplate extends AbstractRAPTemplate {
 
+  private static final String KEY_BUSINESS_DESIGN = "businessDesign"; //$NON-NLS-1$
+
   MailRAPTemplate() {
     setPageCount( 1 );
     createTemplateOptions();
@@ -59,7 +61,9 @@ class MailRAPTemplate extends AbstractRAPTemplate {
     createPerspectivesExtension();
     createViewsExtension();
     createCommandsExtension();
-    createBrandingExtension();
+    if( useBusinessDesign() ) {
+      createBrandingExtension();
+    }
   }
 
   //////////////////
@@ -73,7 +77,9 @@ class MailRAPTemplate extends AbstractRAPTemplate {
     entryPointElement.setAttribute( XmlNames.ATT_ID, getApplicationId() + ".entrypoint" );
     entryPointElement.setAttribute( XmlNames.ATT_SERVLET_PATH, getServletPath() );
     entryPointElement.setAttribute( XmlNames.ATT_APPLICATION_ID, getFullApplicationId() );
-    entryPointElement.setAttribute( XmlNames.ATT_BRANDING_ID, getPackageName() + ".branding" );
+    if( useBusinessDesign() ) {
+      entryPointElement.setAttribute( XmlNames.ATT_BRANDING_ID, getPackageName() + ".branding" );
+    }
     extension.add( entryPointElement );
     addExtensionToPlugin( extension );
   }
@@ -199,6 +205,11 @@ class MailRAPTemplate extends AbstractRAPTemplate {
                Messages.mailRAPTemplate_appClass,
                "Application",  //$NON-NLS-1$
                0 );
+    addOption( KEY_BUSINESS_DESIGN, Messages.mailRAPTemplate_useBusinessDesign, false, 0 );
+  }
+
+  private boolean useBusinessDesign() {
+    return getBooleanOption( KEY_BUSINESS_DESIGN );
   }
 
 }

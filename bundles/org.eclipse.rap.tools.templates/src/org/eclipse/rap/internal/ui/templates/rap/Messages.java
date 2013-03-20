@@ -39,6 +39,7 @@ public class Messages extends NLS {
   public static String mailRAPTemplate_pageDescr;
   public static String mailRAPTemplate_pageTitle;
   public static String mailRAPTemplate_windowTitle;
+  public static String mailRAPTemplate_useBusinessDesign;
   public static String mailRAPWizard_windowTitle;
 
   private static final String BUNDLE_NAME
