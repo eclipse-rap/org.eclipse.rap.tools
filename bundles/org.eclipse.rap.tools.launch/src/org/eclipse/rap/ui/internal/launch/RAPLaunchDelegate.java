@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource and others.
+ * Copyright (c) 2007, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
 package org.eclipse.rap.ui.internal.launch;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.*;
 import java.text.MessageFormat;
 import java.util.*;
@@ -23,7 +25,7 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.*;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.pde.internal.launching.launcher.LauncherUtils;
-import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
+import org.eclipse.pde.launching.EquinoxLaunchConfiguration;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
 import org.eclipse.swt.widgets.Display;
@@ -60,6 +62,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     this.testMode = testMode;
   }
 
+  @Override
   public void launch( final ILaunchConfiguration config,
                       final String mode,
                       final ILaunch launch,
@@ -97,10 +100,11 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   ///////////////////////////////////////
   // EquinoxLaunchConfiguration overrides
 
+  @Override
   public String[] getVMArguments( final ILaunchConfiguration config )
     throws CoreException
   {
-    List list = new ArrayList();
+    List<String> list = new ArrayList<String>();
     // ORDER IS CRUCIAL HERE:
     // Override VM arguments that are specified manually with the values
     // necessary for the RAP launcher
@@ -111,14 +115,15 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return result;
   }
 
+  @Override
   public String[] getProgramArguments( ILaunchConfiguration configuration ) throws CoreException {
-    List newProgrammArguments = new ArrayList();
+    List<String> newProgramArguments = new ArrayList<String>();
     String[] originalPogramArguments = super.getProgramArguments( configuration );
-    newProgrammArguments.addAll( Arrays.asList( originalPogramArguments ) );
+    newProgramArguments.addAll( Arrays.asList( originalPogramArguments ) );
     String[] dataLocationArgument = getDataLocationArgument();
-    newProgrammArguments.addAll( Arrays.asList( dataLocationArgument ) );
-    String[] result = new String[ newProgrammArguments.size() ];
-    newProgrammArguments.toArray( result );
+    newProgramArguments.addAll( Arrays.asList( dataLocationArgument ) );
+    String[] result = new String[ newProgramArguments.size() ];
+    newProgramArguments.toArray( result );
     return result;
   }
 
@@ -315,8 +320,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     debugPlugin.addDebugEventListener( new IDebugEventSetListener() {
       public void handleDebugEvents( final DebugEvent[] events ) {
-        for( int i = 0; i < events.length; i++ ) {
-          DebugEvent event = events[ i ];
+        for( DebugEvent event : events ) {
           if( isTerminateEventFor( event, previousLaunch ) ) {
             DebugPlugin.getDefault().removeDebugEventListener( this );
             synchronized( signal ) {
@@ -399,6 +403,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
   }
 
+  @Override
   public void clear( ILaunchConfiguration configuration, IProgressMonitor monitor )
     throws CoreException
   {
@@ -410,9 +415,51 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException
   {
     String resolvedDataLocation = getResolvedDataLoacation();
-    boolean isCleared = LauncherUtils.clearWorkspace( configuration, resolvedDataLocation, monitor );
-    if( !isCleared ) {
+    if( !clearWorkspace( configuration, resolvedDataLocation, monitor ) ) {
       throw new CoreException( Status.CANCEL_STATUS );
+    }
+  }
+
+  private boolean clearWorkspace( ILaunchConfiguration configuration,
+                                  String resolvedDataLocation,
+                                  IProgressMonitor monitor ) throws CoreException
+  {
+    // See bug 406608: PDE has renamed LauncherUtils.clearWorkspace()
+    Method clearMethod = findClearWorkspaceMethod();
+    try {
+      Object result = clearMethod.invoke( null, configuration, resolvedDataLocation, monitor );
+      return ( (Boolean)result ).booleanValue();
+    } catch( InvocationTargetException exception ) {
+      Throwable cause = exception.getCause();
+      if( cause instanceof CoreException ) {
+        throw (CoreException)cause;
+      }
+      throw new RuntimeException( exception );
+    } catch( Exception exception ) {
+      throw new RuntimeException( exception );
+    }
+  }
+
+  private static Method findClearWorkspaceMethod() {
+    try {
+      return findClearWorkspaceMethod( "checkWorkspace" );
+    } catch( NoSuchMethodException e ) {
+      try {
+        return findClearWorkspaceMethod( "clearWorkspace" );
+      } catch( NoSuchMethodException exception ) {
+        throw new RuntimeException( exception );
+      }
+    }
+  }
+
+  private static Method findClearWorkspaceMethod( String methodName ) throws NoSuchMethodException {
+    try {
+      return LauncherUtils.class.getMethod( methodName,
+                                            ILaunchConfiguration.class,
+                                            String.class,
+                                            IProgressMonitor.class );
+    } catch( SecurityException exception ) {
+      throw new RuntimeException( exception );
     }
   }
 
@@ -423,8 +470,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     debugPlugin.addDebugEventListener( new IDebugEventSetListener() {
       public void handleDebugEvents( final DebugEvent[] events ) {
-        for( int i = 0; i < events.length; i++ ) {
-          DebugEvent event = events[ i ];
+        for( DebugEvent event : events ) {
           if( isCreateEventFor( event, launch ) ) {
             DebugPlugin.getDefault().removeDebugEventListener( this );
             // Start a separate job to wait for the http service and launch the
@@ -432,6 +478,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
             // service we are waiting for
             final String jobTaskName = LaunchMessages.RAPLaunchDelegate_StartClientTaskName;
             Job job = new Job( jobTaskName ) {
+              @Override
               protected IStatus run( final IProgressMonitor monitor ) {
                 String taskName = jobTaskName;
                 monitor.beginTask( taskName, 2 );
