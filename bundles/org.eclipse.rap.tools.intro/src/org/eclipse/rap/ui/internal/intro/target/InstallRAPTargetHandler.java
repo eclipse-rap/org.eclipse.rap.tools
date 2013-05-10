@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 Innoopract Informationssysteme GmbH and others.
+ * Copyright (c) 2007, 2013 Innoopract Informationssysteme GmbH and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     InstallTargetDialog dialog = new InstallTargetDialog( shell );
     int result = dialog.open();
     if( result == Window.OK ) {
-      execute( dialog.shouldSwitchTarget(), dialog.getTargetRepository() );
+      execute( dialog.shouldSwitchTarget(), TargetProvider.TARGET_REPOSITORY );
     }
     return null;
   }
@@ -66,4 +66,5 @@ public class InstallRAPTargetHandler extends AbstractHandler {
     installTargetJob.setRule( INSTALL_RULE );
     installTargetJob.schedule();
   }
+
 }
