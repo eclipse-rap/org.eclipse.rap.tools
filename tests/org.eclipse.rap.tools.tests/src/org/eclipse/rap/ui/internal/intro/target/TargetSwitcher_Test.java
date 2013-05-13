@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 EclipseSource and others.
+ * Copyright (c) 2011, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -123,17 +123,6 @@ public class TargetSwitcher_Test extends TestCase {
     assertTrue( "Target should be in resolved state", resolved );
     TargetBundle[] bundles = targetDefinition.getBundles();
     assertEquals( "Not all bundles are resolved", 1, bundles.length );
-  }
-
-  public void testWsRapSet() throws Exception {
-    String p2RepoURI = createTargetDefinitionFile( TARGET_LOCATION );
-    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
-                                                                 false,
-                                                                 new NullProgressMonitor() );
-    assertNotNull( "Target shouldn't be null if no exception happened", targetDefinition );
-    assertFalse( "rap".equals( targetDefinition.getWS() ) );
-// TODO [rst] Re-enable when bug 338544 is fixed
-// assertEquals( "rap", targetDefinition.getWS() );
   }
 
   public void testInstallTwice() throws Exception {
