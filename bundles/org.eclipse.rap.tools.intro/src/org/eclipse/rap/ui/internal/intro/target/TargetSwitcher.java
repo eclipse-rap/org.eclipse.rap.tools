@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.pde.core.target.*;
 import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.rap.ui.internal.intro.ErrorUtil;
+import org.eclipse.rap.ui.internal.intro.IntroPlugin;
 
 
 @SuppressWarnings( "restriction" )
@@ -73,7 +74,7 @@ public final class TargetSwitcher {
       IStatus downloadStatus = downloadTarget( target, downloadMonitor );
       if( downloadStatus.isOK() ) {
         saveTarget( targetPlatformService, target );
-        if( switchTarget == true ) {
+        if( switchTarget ) {
           switchTarget( target );
         }
       }
@@ -125,6 +126,9 @@ public final class TargetSwitcher {
         // Case no P2-repository problem
         String message = IntroMessages.TargetSwitcher_TargetRepositoryProblemErrorMsg;
         status = ErrorUtil.createErrorStatus( message, statusException );
+      } else if( monitor.isCanceled() && status.getSeverity() != IStatus.CANCEL ) {
+        // Workaround for bug 407823 (407861)
+        status = new Status( IStatus.CANCEL, IntroPlugin.getPluginId(), 0, "", null );
       }
       throw new CoreException( status );
     }
