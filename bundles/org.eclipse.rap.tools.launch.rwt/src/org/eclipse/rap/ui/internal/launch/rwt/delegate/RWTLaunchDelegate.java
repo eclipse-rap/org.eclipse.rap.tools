@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,10 @@ import org.eclipse.rap.ui.internal.launch.rwt.util.*;
 
 
 public class RWTLaunchDelegate extends JavaLaunchDelegate {
+
+  private static final String VMARG_JETTY_HOME = " -Djetty.home="; //$NON-NLS-1$
+  private static final String VMARG_DEVELOPMENT_MODE
+    = " -Dorg.eclipse.rap.rwt.developmentMode="; //$NON-NLS-1$
 
   private RWTLaunch launch;
 
@@ -83,12 +87,15 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
   }
 
   public String getVMArguments( ILaunchConfiguration configuration ) throws CoreException {
-    String result = super.getVMArguments( configuration );
-    result += " -Djetty.home="; //$NON-NLS-1$
-    result += "\""; //$NON-NLS-1$
-    result += launch.getJettyHomePath();
-    result += "\""; //$NON-NLS-1$
-    return result;
+    StringBuilder result = new StringBuilder();
+    result.append( super.getVMArguments( configuration ) );
+    result.append( VMARG_JETTY_HOME )
+          .append( '"' )
+          .append( launch.getJettyHomePath() )
+          .append( '"' );
+    result.append( VMARG_DEVELOPMENT_MODE )
+          .append( launch.getLaunchConfig().getDevelopmentMode() );
+    return result.toString();
   }
 
   void initializeLaunch( ILaunch genericLaunch ) {

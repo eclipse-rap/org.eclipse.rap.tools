@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,12 +28,14 @@ public class RWTMainTab extends RWTLaunchTab {
   private EntryPointSection entryPointSection;
   private BrowserSection  browserSection;
   private ServerSettingsSection serverSettingsSection;
+  private RWTSettingsSection rwtSettings;
 
   public RWTMainTab() {
     projectSection = new ProjectSection();
     entryPointSection = new EntryPointSection();
     browserSection = new BrowserSection();
     serverSettingsSection = new ServerSettingsSection();
+    rwtSettings = new RWTSettingsSection();
   }
 
   public String getName() {
@@ -52,6 +54,7 @@ public class RWTMainTab extends RWTLaunchTab {
     entryPointSection.createControl( container );
     browserSection.createControl( container );
     serverSettingsSection.createControl( container );
+    rwtSettings.createControl( container );
     Dialog.applyDialogFont( container );
     setControl( container );
     HelpContextIds.assign( getControl(), HelpContextIds.MAIN_TAB );
@@ -63,6 +66,7 @@ public class RWTMainTab extends RWTLaunchTab {
     entryPointSection.setLaunchConfigurationDialog( dialog );
     serverSettingsSection.setLaunchConfigurationDialog( dialog );
     browserSection.setLaunchConfigurationDialog( dialog );
+    rwtSettings.setLaunchConfigurationDialog( dialog );
   }
 
   public void initializeFrom( RWTLaunchConfig launchConfig ) {
@@ -70,6 +74,7 @@ public class RWTMainTab extends RWTLaunchTab {
     entryPointSection.initializeFrom( launchConfig );
     serverSettingsSection.initializeFrom( launchConfig );
     browserSection.initializeFrom( launchConfig );
+    rwtSettings.initializeFrom( launchConfig );
   }
 
   public void performApply( RWTLaunchConfig launchConfig ) {
@@ -77,5 +82,7 @@ public class RWTMainTab extends RWTLaunchTab {
     entryPointSection.performApply( launchConfig );
     serverSettingsSection.performApply( launchConfig );
     browserSection.performApply( launchConfig );
+    rwtSettings.performApply( launchConfig );
   }
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,7 @@ public class RWTLaunchConfig_Test extends TestCase {
     assertFalse( rwtConfig.getUseSessionTimeout() );
     assertEquals( 0, rwtConfig.getSessionTimeout() );
     assertTrue( rwtConfig.getOpenBrowser() );
+    assertTrue( rwtConfig.getDevelopmentMode() );
     assertSame( BrowserMode.INTERNAL, rwtConfig.getBrowserMode() );
   }
 
@@ -192,6 +193,11 @@ public class RWTLaunchConfig_Test extends TestCase {
     assertFalse( rwtConfig.getOpenBrowser() );
   }
 
+  public void testDevelopmentMode() {
+    rwtConfig.setDevelopmentMode( false );
+    assertFalse( rwtConfig.getDevelopmentMode() );
+  }
+
   public void testBrowserMode() {
     rwtConfig.setBrowserMode( BrowserMode.EXTERNAL );
     assertSame( BrowserMode.EXTERNAL, rwtConfig.getBrowserMode() );
@@ -213,4 +219,5 @@ public class RWTLaunchConfig_Test extends TestCase {
   protected void tearDown() throws Exception {
     config.delete();
   }
+
 }

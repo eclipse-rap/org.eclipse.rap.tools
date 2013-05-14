@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,6 +54,7 @@ public final class RWTLaunchConfig {
   public static final String SESSION_TIMEOUT = PREFIX + "sessionTimeout"; //$NON-NLS-1$
   private static final String OPEN_BROWSER = PREFIX + "openBrowser"; //$NON-NLS-1$
   private static final String BROWSER_MODE = PREFIX + "browserMode"; //$NON-NLS-1$
+  private static final String DEVELOPMENT_MODE = PREFIX + "developmentMode"; //$NON-NLS-1$
 
   // Default values for attributes
   private static final LaunchTarget DEFAULT_LAUNCH_TARGET = LaunchTarget.ENTRY_POINT;
@@ -72,6 +73,7 @@ public final class RWTLaunchConfig {
   private static final int DEFAULT_SESSION_TIMEOUT = MIN_SESSION_TIMEOUT;
   private static final boolean DEFAULT_OPEN_BROWSER = true;
   private static final String DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL.toString();
+  private static final boolean DEFAULT_DEVELOPMENT_MODE = true;
 
 
   public static ILaunchConfigurationType getType() {
@@ -270,6 +272,15 @@ public final class RWTLaunchConfig {
     workingCopy.setAttribute( BROWSER_MODE, browserMode.toString() );
   }
 
+  public boolean getDevelopmentMode() {
+    return getAttribute( DEVELOPMENT_MODE, DEFAULT_DEVELOPMENT_MODE );
+  }
+
+  public void setDevelopmentMode( boolean developmentMode ) {
+    checkWorkingCopy();
+    workingCopy.setAttribute( DEVELOPMENT_MODE, developmentMode );
+  }
+
   /////////////////
   // Helping method
 
@@ -320,4 +331,5 @@ public final class RWTLaunchConfig {
     String msg = "Failed to read launch configuration attribute: " + name; //$NON-NLS-1$
     throw new RuntimeException( msg, e );
   }
+
 }
