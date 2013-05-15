@@ -28,14 +28,14 @@ public class RWTMainTab extends RWTLaunchTab {
   private EntryPointSection entryPointSection;
   private BrowserSection  browserSection;
   private ServerSettingsSection serverSettingsSection;
-  private RWTSettingsSection rwtSettings;
+  private RAPSettingsSection rapSettings;
 
   public RWTMainTab() {
     projectSection = new ProjectSection();
     entryPointSection = new EntryPointSection();
     browserSection = new BrowserSection();
     serverSettingsSection = new ServerSettingsSection();
-    rwtSettings = new RWTSettingsSection();
+    rapSettings = new RAPSettingsSection();
   }
 
   public String getName() {
@@ -54,7 +54,7 @@ public class RWTMainTab extends RWTLaunchTab {
     entryPointSection.createControl( container );
     browserSection.createControl( container );
     serverSettingsSection.createControl( container );
-    rwtSettings.createControl( container );
+    rapSettings.createControl( container );
     Dialog.applyDialogFont( container );
     setControl( container );
     HelpContextIds.assign( getControl(), HelpContextIds.MAIN_TAB );
@@ -66,7 +66,7 @@ public class RWTMainTab extends RWTLaunchTab {
     entryPointSection.setLaunchConfigurationDialog( dialog );
     serverSettingsSection.setLaunchConfigurationDialog( dialog );
     browserSection.setLaunchConfigurationDialog( dialog );
-    rwtSettings.setLaunchConfigurationDialog( dialog );
+    rapSettings.setLaunchConfigurationDialog( dialog );
   }
 
   public void initializeFrom( RWTLaunchConfig launchConfig ) {
@@ -74,7 +74,7 @@ public class RWTMainTab extends RWTLaunchTab {
     entryPointSection.initializeFrom( launchConfig );
     serverSettingsSection.initializeFrom( launchConfig );
     browserSection.initializeFrom( launchConfig );
-    rwtSettings.initializeFrom( launchConfig );
+    rapSettings.initializeFrom( launchConfig );
   }
 
   public void performApply( RWTLaunchConfig launchConfig ) {
@@ -82,7 +82,7 @@ public class RWTMainTab extends RWTLaunchTab {
     entryPointSection.performApply( launchConfig );
     serverSettingsSection.performApply( launchConfig );
     browserSection.performApply( launchConfig );
-    rwtSettings.performApply( launchConfig );
+    rapSettings.performApply( launchConfig );
   }
 
 }

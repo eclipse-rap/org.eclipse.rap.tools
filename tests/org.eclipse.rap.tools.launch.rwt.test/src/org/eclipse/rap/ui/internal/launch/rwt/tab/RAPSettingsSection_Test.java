@@ -14,26 +14,26 @@ import junit.framework.TestCase;
 
 import org.eclipse.swt.widgets.Shell;
 
-public class RWTSettingsSection_Test extends TestCase {
+public class RAPSettingsSection_Test extends TestCase {
 
   private Shell shell;
-  private RWTSettingsSection rwtSettingsSection;
+  private RAPSettingsSection rapSettingsSection;
 
   public void testGetName() {
-    String name = rwtSettingsSection.getName();
+    String name = rapSettingsSection.getName();
 
     assertNotNull( name );
     assertTrue( name.length() > 0 );
   }
 
   public void testCreateControlCallsSetControl() {
-    rwtSettingsSection.createControl( shell );
+    rapSettingsSection.createControl( shell );
 
-    assertNotNull( rwtSettingsSection.getControl() );
+    assertNotNull( rapSettingsSection.getControl() );
   }
 
   protected void setUp() throws Exception {
-    rwtSettingsSection = new RWTSettingsSection();
+    rapSettingsSection = new RAPSettingsSection();
     shell = new Shell();
   }
 

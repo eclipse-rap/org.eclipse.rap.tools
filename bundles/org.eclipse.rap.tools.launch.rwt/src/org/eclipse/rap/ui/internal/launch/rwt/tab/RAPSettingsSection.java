@@ -19,18 +19,18 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
 
-public class RWTSettingsSection extends RWTLaunchTab {
+public class RAPSettingsSection extends RWTLaunchTab {
 
   private Button cbDevelopmentMode;
 
   public String getName() {
-    return "RWT Settings";
+    return "RAP Settings";
   }
 
   public void createControl( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
-    group.setText( "RWT Settings" );
+    group.setText( "RAP Settings" );
     group.setLayout( new GridLayout( 2, false ) );
     cbDevelopmentMode = createCheckButton( group, "Start in &development mode" );
     cbDevelopmentMode.addSelectionListener( new UpdateConfigSelectionListener() );
