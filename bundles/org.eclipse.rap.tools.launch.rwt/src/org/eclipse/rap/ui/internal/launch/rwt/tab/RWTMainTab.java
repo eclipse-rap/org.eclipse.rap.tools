@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
@@ -29,6 +31,7 @@ public class RWTMainTab extends RWTLaunchTab {
   private BrowserSection  browserSection;
   private ServerSettingsSection serverSettingsSection;
   private RAPSettingsSection rapSettings;
+  private ILaunchConfigurationListener launchConfigListener;
 
   public RWTMainTab() {
     projectSection = new ProjectSection();
@@ -36,6 +39,7 @@ public class RWTMainTab extends RWTLaunchTab {
     browserSection = new BrowserSection();
     serverSettingsSection = new ServerSettingsSection();
     rapSettings = new RAPSettingsSection();
+    addLaunchConfigListener();
   }
 
   public String getName() {
@@ -83,6 +87,31 @@ public class RWTMainTab extends RWTLaunchTab {
     serverSettingsSection.performApply( launchConfig );
     browserSection.performApply( launchConfig );
     rapSettings.performApply( launchConfig );
+  }
+
+  @Override
+  public void dispose() {
+    getLaunchManager().removeLaunchConfigurationListener( launchConfigListener );
+    super.dispose();
+  }
+
+  private void addLaunchConfigListener() {
+    launchConfigListener = getLaunchConfigListener();
+    getLaunchManager().addLaunchConfigurationListener( launchConfigListener );
+  }
+
+  private ILaunchConfigurationListener getLaunchConfigListener() {
+    return new ILaunchConfigurationListener() {
+      public void launchConfigurationChanged( ILaunchConfiguration configuration ) {
+        browserSection.updateApplicationUrl( new RWTLaunchConfig( configuration ) );
+      }
+      public void launchConfigurationAdded( ILaunchConfiguration configuration ) {
+        // Do nothing
+      }
+      public void launchConfigurationRemoved( ILaunchConfiguration configuration ) {
+        // Do nothing
+      }
+    };
   }
 
 }

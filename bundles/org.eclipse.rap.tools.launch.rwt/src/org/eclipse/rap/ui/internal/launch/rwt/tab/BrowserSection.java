@@ -15,6 +15,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.rap.ui.internal.launch.rwt.config.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
+import org.eclipse.rap.ui.internal.launch.rwt.util.URLBuilder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
@@ -33,6 +34,7 @@ public class BrowserSection extends RWTLaunchTab {
   private Button rbExternalBrowser;
   private Label lblServletPath;
   private Text txtServletPath;
+  private Text txtApplicationUrl;
 
   public BrowserSection() {
     GridData gridData = new GridData( SWT.FILL, SWT.CENTER, true, false );
@@ -100,6 +102,11 @@ public class BrowserSection extends RWTLaunchTab {
     txtServletPath = new Text( composite, SWT.BORDER );
     txtServletPath.addModifyListener( new TextModifyListener() );
     GridDataFactory.fillDefaults().grab( true, false ).applyTo( txtServletPath );
+    Label lblApplicationUrl = new Label( composite, SWT.NONE );
+    lblApplicationUrl.setText( "Application URL:" );
+    txtApplicationUrl = new Text( composite, SWT.SINGLE | SWT.READ_ONLY );
+    txtApplicationUrl.setBackground( txtApplicationUrl.getParent().getBackground() );
+    GridDataFactory.fillDefaults().grab( true, false ).applyTo( txtApplicationUrl );
   }
 
   public void initializeFrom( RWTLaunchConfig config ) {
@@ -134,6 +141,23 @@ public class BrowserSection extends RWTLaunchTab {
       = PreferencesUtil.createPreferenceDialogOn( getShell(), BROWSER_PREFERENCE_PAGE, null, null );
     dialog.open();
     dialog.close();
+  }
+
+  public void updateApplicationUrl( RWTLaunchConfig config ) {
+    updateApplicationUrl( URLBuilder.fromLaunchConfig( config ) );
+  }
+
+  private void updateApplicationUrl( final String applicationUrl ) {
+    if( txtApplicationUrl != null && !txtApplicationUrl.isDisposed() ) {
+      // could be called from a non UI thread
+      txtApplicationUrl.getDisplay().syncExec( new Runnable() {
+        public void run() {
+          if( !applicationUrl.equals( txtApplicationUrl.getText() ) ) {
+            txtApplicationUrl.setText( applicationUrl );
+          }
+        }
+      } );
+    }
   }
 
   private class OpenBrowserSelectionListener extends SelectionAdapter {
