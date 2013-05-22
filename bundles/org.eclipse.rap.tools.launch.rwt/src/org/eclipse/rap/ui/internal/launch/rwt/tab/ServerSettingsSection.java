@@ -37,7 +37,7 @@ public class ServerSettingsSection extends RWTLaunchTab {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     group.setText( "Server Settings" );
-    group.setLayout( new GridLayout( 2, false ) );
+    group.setLayout( new GridLayout( 4, false ) );
     cbManualPort = createCheckButton( group, "Use a fixed &port:" );
     cbManualPort.addSelectionListener( new UpdateConfigSelectionListener() );
     spnPort = new Spinner( group, SWT.BORDER );
@@ -46,6 +46,7 @@ public class ServerSettingsSection extends RWTLaunchTab {
     spnPort.setMaximum( RWTLaunchConfig.MAX_PORT_NUMBER );
     spnPort.addModifyListener( new UpdateConfigModifyListener() );
     cbSessionTimeout = new Button( group, SWT.CHECK );
+    GridDataFactory.fillDefaults().indent( 25, 0 ).applyTo( cbSessionTimeout );
     cbSessionTimeout.setText( "Session &timeout [min]:" );
     cbSessionTimeout.addSelectionListener( new UpdateConfigSelectionListener() );
     spnSessionTimeout = new Spinner( group, SWT.BORDER );
@@ -57,7 +58,7 @@ public class ServerSettingsSection extends RWTLaunchTab {
     cbContextPath.setText( "Context pat&h:" );
     cbContextPath.addSelectionListener( new UpdateConfigSelectionListener() );
     txtContextPath = new Text( group, SWT.BORDER | SWT.SINGLE );
-    GridDataFactory.fillDefaults().grab( true, false ).applyTo( txtContextPath );
+    GridDataFactory.fillDefaults().grab( true, false ).span( 3, 1 ).applyTo( txtContextPath );
     txtContextPath.addModifyListener( new UpdateConfigModifyListener() );
     updateEnablement();
     setControl( group );

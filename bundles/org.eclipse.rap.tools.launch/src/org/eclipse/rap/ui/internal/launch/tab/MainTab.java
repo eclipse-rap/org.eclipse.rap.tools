@@ -301,7 +301,7 @@ public final class MainTab extends AbstractLauncherTab {
     Group group = new Group( parent, SWT.NONE );
     group.setLayoutData( fillHorizontal.create() );
     group.setText( LaunchMessages.MainTab_ServerSettings );
-    group.setLayout( new GridLayout( 2, false ) );
+    group.setLayout( new GridLayout( 4, false ) );
     useFixedPortCheckBox = new Button( group, SWT.CHECK );
     useFixedPortCheckBox.setText( LaunchMessages.MainTab_ManualPortConfig );
     useFixedPortCheckBox.addSelectionListener( selectionListener );
@@ -311,6 +311,7 @@ public final class MainTab extends AbstractLauncherTab {
     portSpinner.setMaximum( RAPLaunchConfig.MAX_PORT_NUMBER );
     portSpinner.addModifyListener( modifyListener );
     useSessionTimeoutCheckBox = new Button( group, SWT.CHECK );
+    GridDataFactory.fillDefaults().indent( 25, 0 ).applyTo( useSessionTimeoutCheckBox );
     useSessionTimeoutCheckBox.setText( LaunchMessages.MainTab_ManualTimeoutConfig );
     useSessionTimeoutCheckBox.addSelectionListener( selectionListener );
     sessionTimeoutSpinner = new Spinner( group, SWT.BORDER );
@@ -322,7 +323,7 @@ public final class MainTab extends AbstractLauncherTab {
     contextPathCheckBox.setText( LaunchMessages.MainTab_ManualContextPath );
     contextPathCheckBox.addSelectionListener( selectionListener );
     contextPathTextField = new Text( group, SWT.BORDER | SWT.SINGLE );
-    GridDataFactory.fillDefaults().grab( true, false ).applyTo( contextPathTextField );
+    GridDataFactory.fillDefaults().grab( true, false ).span( 3, 1 ).applyTo( contextPathTextField );
     contextPathTextField.addModifyListener( modifyListener );
   }
 
