@@ -24,7 +24,7 @@
     Therefore you should make yourself familiar with some important rules of SWT before you get
     started.<br/><br/>
     We highly recommend to read this article by the creators of SWT. <a href="#ext1">[1]</a><br/>
-    The RAP Wiki may cover more recent issues regarding custom widgets. <a href="#ext2">[2]</a><br/>
+    The RAP Wiki may cover more recent issues regarding custom widgets. <br/>
   </p>
 
   <h2>Different types of custom widgets</h2>
@@ -96,8 +96,9 @@
       not for the code that is running inside it.
     </li>
     <li>
-      The widgets are re-usable in desktop applications with SWT when
-      <a href="web-embedding.html#notes">certain conditions</a> apply.
+      The widgets are re-usable in desktop applications with SWT when all resources are either
+      inlined or provided externally. (See the Google Maps Widget for RCP/RAP <a href="#ext3">[3]</a>
+      as an example for the former.)
     </li>
   </ul>
 
@@ -108,12 +109,9 @@
     existing SWT/RAP-widgets, but cannot be reasonably well implemented as a compound widget
     because of the latency of the
     HTTP-requests involved, ClientScripting is often the ideal solution. It can also help in
-    <i>some</i> cases where
-    <a href="http://wiki.eclipse.org/RAP/Incubator/ClientScripting#Supported_Event_Types">certain SWT events</a>
-     are not implemented in RAP
-    (<em><a href="key-and-mouse-events.html#mouse">MouseEnter</a></em>/<em><a href="key-and-mouse-events.html#mouse">MouseExit</a></em>), or are
-    limited compared to SWT
-    (<em><a href="rwt.html#verify">Verify</a></em>).
+    <i>some</i> cases where certain SWT events are not implemented in RAP
+    (<em><a href="key-and-mouse-events.html#mouse">MouseEnter</a></em>/<em><a href="key-and-mouse-events.html#mouse">MouseExit</a></em>),
+    or are limited compared to SWT (<em><a href="rwt.html#verify">Verify</a></em>).
     ClientScripting is <strong>not</strong> to be confused with developing a Remote-API based
     custom widget. While it also runs partially on the client, the difference is that
     ClientScripting provides an SWT-like API and does not require/allow you to implement any
@@ -129,15 +127,9 @@
     </li>
     <li>
       The widgets are currently not innately re-usable in desktop applications with SWT.
-      However, some code can be shared between both platforms, and the rest is easily ported.
+      Please consult the projects wiki for more information on Single-Sourcing. <a href="#ext4">[4]</a>
     </li>
   </ul>
-  <p>
-    ClientScripting is as of January 2013 not yet feature-complete.
-    Detailed information
-    can be found in the <a href="http://wiki.eclipse.org/RAP/Incubator/ClientScripting">RAP Wiki</a>,
-    including some JavaScript hints and tips for Java Developer.
-  </p>
 
   <h3 id="native">Remote-API based Custom Widgets</h3>
   <p>
@@ -157,7 +149,7 @@
     on the <em><a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html">RemoteObject</a></em>
     instance, while the client registers a
     <a href="../reference/jsdoc/symbols/rap.html#.registerTypeHandler">TypeHandler</a> once
-    globally. For more detailed information visit the RAP Wiki <a href="#ext2">[2]</a>.
+    globally. More detailed information may be found in the RAP Wiki <a href="#ext2">[2]</a>.
   </p>
   <ul>
     <li>
@@ -180,6 +172,12 @@
     </li>
     <li id="ext2">
       [2] <a href="http://wiki.eclipse.org/RAP/Custom_Widgets">RAP Wiki - Custom Widgets</a>
+    </li>
+    <li id="ext3">
+      [3] <a href="http://wiki.eclipse.org/RAP/Add-Ons">RAP Wiki - Add-Ons</a>
+    </li>
+    <li id="ext4">
+      [4] <a href="http://wiki.eclipse.org/RAP/Incubator/ClientScripting">RAP Wiki - ClientScripting</a>
     </li>
   </ul>
 

@@ -5,12 +5,13 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Introduction and Comparison to SWT</title>
+  <title>Differences between RWT and SWT</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
 
-  <h1>Introduction to the RAP Widget Toolkit</h1>
+  <h1>Differences between RWT and SWT</h1>
+  <h2>Introduction to the RAP Widget Toolkit</h2>
   <p>
     At the core of RAP operates the RAP Widget Toolkit (RWT), which largely implements the same
     API as the Standard Widget Toolkit (SWT). That is why many projects that build upon SWT
@@ -35,7 +36,7 @@
     <a href="../reference/api/overview-summary.html">here</a>.
   </p>
 
-  <h1>Differences between the RWT and SWT</h1>
+  <h2>Compabibility to SWT</h2>
   <p>
     RAP generally follows the rule <q>If it compiles, it works</q>. That means that all SWT API
     implemented in RWT is working <i>within the requirements set by SWT</i>.
@@ -72,7 +73,7 @@
     <li id="client" style="margin-bottom:10px">
       <b>Client Class and  Client Services</b>
       <br/>
-      All features specific to the RAP client (which is exchangeable)
+      All features specific to the <a href="client.html">RAP client</a> (which is exchangeable)
       are handled by the client class and the client services.
       This includes support for browser history, JavaScript execution and retrieving the clients
       time zone offset.
@@ -162,7 +163,7 @@
       and
       <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawImage(org.eclipse.swt.graphics.Image, int, int)">drawImage</a></em>
       methods may disregard the drawing order and overlap elements that are drawn later.
-      Some methods are unimplemented, including <em>copyArea</em>, <em>drawPath</em>,
+      Some methods are unimplemented, including <em>copyArea</em>,
       <em>setClipping</em>, <em>setTransform</em>, <em>setInterpolation</em>,
       <em>setLineDash</em> and <em>setXORMode</em>.
       Performance and results of a drawing operations can differ depending on the browser.

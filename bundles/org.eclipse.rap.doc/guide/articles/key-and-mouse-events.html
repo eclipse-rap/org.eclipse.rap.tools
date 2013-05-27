@@ -13,7 +13,7 @@
   <p>
     Most SWT widgets provide distinctive events that are well suited for typical use cases of
     that widget, like selection events and modify events. These events should, if possible, always
-    be favored over key and mouse events, which are available on all widgets. Not only are the more
+    be favored over key and mouse events, which are available on all controls. Not only are the more
     specific events fired at the appropriate times and provide all relevant informations, but they
     can also be more optimized by the RAP framework regarding performance, network-traffic and
     compatibility. Still, key and mouse events are sometimes necessary to use, especially when
@@ -49,7 +49,7 @@
       <li><em>MouseWheel</em></li>
     </ul>
     <p>
-    They can not be reasonably implemented because the network latency would make them
+    These can not be reasonably implemented because the network latency would make them
     barely usable. They are mostly supported in <a href = "http://wiki.eclipse.org/RAP/ClientScripting">RAP ClientScripting</a> though.
     </p>
     <p id ="mouse_filter">
@@ -153,8 +153,8 @@ widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2
     <em>Additional Notes:</em>
   </p>
     <ul>
-      <li>Valid patterns to identify key combinations are documented with the
-        <a href="#active">Active Keys</a> feature.
+      <li>Valid patterns to identify key combinations are documented on the
+        <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#ACTIVE_KEYS">RWT.ACTIVE_KEYS</a></em> constant.
       </li>
       <li>Browser-shortcuts of the pattern <q><code>ALT+[letter]</code></q> can often not be suppressed.</li>
       <li>The Cancel Keys do not influence the key event handling. That means it works whether a

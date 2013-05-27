@@ -145,9 +145,14 @@ Defines the color used as the background of the element:
 Format: <code><a href="#format/named-color">&lt;named-color&gt;</a>
       | <a href="#format/hex-color">&lt;hex-color&gt;</a>
       | <a href="#format/rgb-color">&lt;rgb-color&gt;</a>
+      | <a href="#format/rgba-color">&lt;rgba-color&gt;</a>
       | transparent</code>
 </p>
-
+<p>
+Semi-transparent backgrounds may not be supported on all widgets, in which case the alpha channel
+of the <code>rgba-color</code> format  will
+be ignored. If support for <code>rgba-color</code> is present, it is explicitly noted on the element.
+</p>
 <h3><a name="background-image"/>background-image</h3>
 <p>
 Defines either an image or a color-gradient to cover the background of a widget.
@@ -455,6 +460,7 @@ The path is relative to the root of the bundle.
   <li><code>color: rgb( 255, 128, 0 );</code></li>
   <li><code>color: rgb( 100%, 50%, 0% ); /* same as above */</code></li>
 </ul>
+
 
 <h3><a name="cursor"/>cursor</h3>
 <p>

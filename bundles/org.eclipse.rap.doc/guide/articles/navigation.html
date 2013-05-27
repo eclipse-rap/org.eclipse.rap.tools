@@ -37,9 +37,38 @@
       <a href="markup.html#link"><q>real</q> links</a>
       in the application using the
       <a href="markup.html#markup">markup feature</a>.
-      Clicking such a link will <em>not</em> trigger any events, but open the given URL (in the
-      same window, if there is no target attribute set).
+      Clicking such a link will (by default) not trigger any events, but open the given URL
+      in the same window. The user can also open the URL in a new browser tab or window (e.g. using
+      the links native context menu), or the application can force the URL to be opened in a new
+      tab/window by setting the target attribute to <code>"_blank"</code>.
     </p>
+    <pre class="lang-java">
+List list = new List( parent, style );
+list.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+list.add( "This link opens &lt;a href='http://eclipse.org/rap' target='_blank'&gt;a new tab&lt;/a&gt;" );</pre>
+    <p>
+      When embedding a link in <em>List</em>, <em>Tree</em>, or <em>Table</em> widgets, it may also
+      be used to issue selection events instead of navigating to an URL. To do so, the target attribute
+      must be set to <code>"_rwt"</code>. If the link is clicked now, a <em>Selection</em> event will be fired. This
+      event is different from ordinary <em>Selection</em> events in that the <em>detail</em>
+      field equals <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#HYPERLINK">RWT.HYPERLINK</a></em> and the <em>text</em> field contains the value
+      of the links "href" attribute. If no "href" attribute is set, the value is the text
+      between "<code>&lt;a&gt;</code>" and "<code>&lt;/a&gt;</code>". Note that some browser
+      (specifically, Internet Explorer) may re-write the "href" value to an absolute URL
+      if no protocol was given. One possible workaround is to start the "href" value with a "#" and
+      cut of anything before that:
+    </p>
+    <pre class="lang-java">
+List list = new List( parent, style );
+list.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+list.add( "Click &lt;a href='#myvalue' target='_rwt'&gt;here&lt;/a&gt;" );
+list.addListener( SWT.Selection, new Listener() {
+  public void handleEvent( Event event ) {
+    if( event.detail == RWT.HYPERLINK &amp;&amp; event.text.contains( "#" ) ) {
+      log( "Clicked link \"" + event.text.split( "#" )[ 1 ] + "\"" );
+    }
+  }
+} );</pre>
     <h2 id="launcher">Open URLs in an external browser/application</h2>
     <p>
       It is possible in RAP to programmatically open any URL without leaving the current
@@ -133,12 +162,17 @@ public void navigated( BrowserNavigationEvent event ) {
   <p>
     Opening <q><code>http://myRapApp/#employees/john.doe</code></q> could then open the application
     already displaying the entry or search for <q>John Doe</q>.
+  </p><p>
+    Combined with <a href="#links">"real" links</a> or the
+    <em><a href="#launcher">URLLauncher</a></em>, deep links
+    provide additional ways to navigate within the session, or open new (parallel) UI sessions in
+    additional browser tabs.
   </p>
   <h2 id="history">Browser History</h2>
   <p>
     Support for browser history means that the user is able to go back to a previous state of the
     application using the browsers <q>back</q> button, without leaving the RAP application itself.
-    He can also use the browsers history dialog to jump multiple entries back or forwards.
+    He/She can also use the browsers history dialog to jump multiple entries back or forwards.
   </p>
   <p>
     If a <em>BrowserNavigationListener</em> is already implemented
@@ -157,7 +191,7 @@ public void navigated( BrowserNavigationEvent event ) {
     <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html">Browser</a></em>
     widget in the same application. The back button may sometimes go back in
     the history of the browser widget and in the history of the RAP application simultaneously, or
-    not at all.
+    not at all. Also, in some browser the current URL will change when navigating, but not in all.
   </p>
 </body>
 </html>
