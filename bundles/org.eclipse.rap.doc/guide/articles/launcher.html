@@ -43,7 +43,9 @@
     <a href="application-setup.html#osgi">OSGi</a>,
     <a href="application-configuration.html">application configuration</a> or
     <a href="branding.html">Branding</a>, only an
-    <a href="hello-world.html#entrypoint">entry point</a>.
+    <a href="hello-world.html#entrypoint">entry point</a>. Consequentially, this method
+    does not allow multiple entry points or any customization of the application
+    (e.g. using  a custom theme).
   </p>
   <ol>
     <li>
@@ -66,7 +68,7 @@
     <code style="color:red">INFO: Started SocketListener on 0.0.0.0:&lt;port&gt;</code>.
   </p>
 
-  <h3>Further configuration options</h3>
+  <h3>Further launch configuration options</h3>
 
   <p>
     Whenever you start an application as described above, a <em>launch configuration</em> is
@@ -139,6 +141,16 @@
         In a servlet container, every web app is available at its own context path.
         This setting lets you simulate the same context path that your application will be accessible
         at in the production environment.
+      </p>
+    </li>
+    <li>
+      <p>
+        The option <em class="UILabel">Start in development mode</em> selects the variant of the
+        RWT JavaScript library that will be delivered to the client.
+        If development mode is on, the client maintains the JavaScript code in its original,
+        human-readable form. If it is off, the client is optimized for speed and size by compressing the
+        JavaScript code. It will also print non-critical JavaScript errors to the browsers
+        console instead of crashing the entire client.
       </p>
     </li>
   </ul>
@@ -349,7 +361,7 @@
         In this case, edit the launch configuration and set the JRE to a Java 6 or higher.
       </p>
     </li>
-    <li>
+    <li id="trouble_jee">
       <p>
         <b>Unsupported Operation mode</b>
       </p>
@@ -373,6 +385,20 @@ display.dispose();</pre>
         implementing the <a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a>
         interface directly. With AbstractEntryPoint no main loop is required, no matter which operation
         mode is used.
+      </p>
+    </li>
+    <li id="trouble_swt">
+      <p>
+        <b>UI does not react to user input</b>
+      </p>
+      <p>
+        This happens if the application starts in
+        <a href="application-setup.html#compat">SWT compatibility mode</a> and no SWT main loop
+        is present. Basically the reverse of the <a href="#trouble_jee">above issue</a>.
+        Either add a <a href="#trouble_jee">main loop</a>, or extend
+        <a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a> instead of
+        implementing the <a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a>
+        interface.
       </p>
     </li>
     <li>

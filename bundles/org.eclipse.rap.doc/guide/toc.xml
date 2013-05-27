@@ -10,7 +10,7 @@
         label="Installing a RAP Target"
         href="guide/articles/target-install.html"/>
     <topic
-        label="Writing a Hello World with RAP"
+        label="Creating a Hello World with RAP"
         href="guide/articles/hello-world.html"/>
     <topic
         label="Launching RAP Applications from the IDE"
