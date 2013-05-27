@@ -136,6 +136,28 @@ HelloWorldView_Message = Hello RAP World </pre>
     <code>Messages</code> class, as they are not shared over all user session and
     thus cannot be accessed in a static way in RAP.
   </p>
+  
+  <h2>Localizable JFace dialog buttons</h2>
+  <p>
+    In RCP the JFace dialog button labels could be obtained through static constants in 
+    <code>IDialogConstants</code> class. This is the preferred method when the client is known to
+    be used in a single-locale system. However, RAP is running in a multi-locale system and pattern 
+    <code>JFaceResources.getString( String )</code> should be used instead. Using the keys in 
+    <code>IDialogLabelKeys</code> class and accessing the common dialog labels dynamically is the 
+    preferred method when the client is running in a multi-locale system.
+  </p>
+  <pre class="lang-java">
+protected void createButtonsForButtonBar( Composite parent ) {
+  createButton( parent,
+                IDialogConstants.OK_ID,
+                JFaceResources.getString( IDialogLabelKeys.OK_LABEL_KEY ),
+                true );
+  createButton( parent,
+                IDialogConstants.CANCEL_ID,
+                JFaceResources.getString( IDialogLabelKeys.CANCEL_LABEL_KEY ),
+                false );
+}
+  </pre>
 
   <h2>Translate plug-in manifest</h2>
   <p>
