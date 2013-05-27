@@ -37,7 +37,7 @@
   <p>
     These are the simplest ones.
     Compound widgets are compositions of existing SWT/RAP widgets.
-    These widgets have to extend 
+    These widgets have to extend
     <em><a href="../reference/api/org/eclipse/swt/widgets/Composite.html">Composite</a></em>.
     There is no fundamental difference between SWT and RAP for compound widgets.
     Everything that is said about compound widgets in <a href="#ext1">[1]</a> also applies to RAP.
@@ -71,7 +71,7 @@
     If performance becomes an issue and your custom widgets has layers or areas that need to be
     redrawn less often than others, you should consider combining this with the
     compound approach. Either stack multiple canvases on top of each other (use
-    <a href="../reference/api/org/eclipse/swt/SWT.html#INHERIT_FORCE">SWT.INHERIT_FORCE</a> on the 
+    <a href="../reference/api/org/eclipse/swt/SWT.html#INHERIT_FORCE">SWT.INHERIT_FORCE</a> on the
     <a href="../reference/api/org/eclipse/swt/widgets/Composite.html#setBackgroundMode(int)">parent background</a>
     to make their background transparent),
     or put them in any layout as you would other widgets.
@@ -108,10 +108,10 @@
     existing SWT/RAP-widgets, but cannot be reasonably well implemented as a compound widget
     because of the latency of the
     HTTP-requests involved, ClientScripting is often the ideal solution. It can also help in
-    <i>some</i> cases where 
+    <i>some</i> cases where
     <a href="http://wiki.eclipse.org/RAP/Incubator/ClientScripting#Supported_Event_Types">certain SWT events</a>
      are not implemented in RAP
-    (<em><a href="key-and-mouse-events.html#mouse">MouseEnter</a></em>/<em><a href="key-and-mouse-events.html#mouse">MouseExit</a></em>), or are 
+    (<em><a href="key-and-mouse-events.html#mouse">MouseEnter</a></em>/<em><a href="key-and-mouse-events.html#mouse">MouseExit</a></em>), or are
     limited compared to SWT
     (<em><a href="rwt.html#verify">Verify</a></em>).
     ClientScripting is <strong>not</strong> to be confused with developing a Remote-API based
@@ -141,21 +141,21 @@
 
   <h3 id="native">Remote-API based Custom Widgets</h3>
   <p>
-    RAP 2.0 introduces the "Remote-API" which provides a simple way to write custom widgets
+    RAP 2.0 introduced the "Remote-API" which provides a simple way to write custom widgets
     that function with the same efficiency as RAP/RWT core widgets. Both sides can send messages
-    to the other by using a <q>Remote Object</q>. While the server 
-    <em><a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html">RemoteObject</a></em> 
-    can be 
+    to the other by using a <q>Remote Object</q>. While the server
+    <em><a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html">RemoteObject</a></em>
+    can be
     <a href="../reference/api/org/eclipse/rap/rwt/remote/Connection.html#createRemoteObject(java.lang.String)">created</a> by
-    the custom widget code, the client <em><a href="../reference/jsdoc/symbols/RemoteObject.html">RemoteObject</a></em> 
-    is 
+    the custom widget code, the client <em><a href="../reference/jsdoc/symbols/RemoteObject.html">RemoteObject</a></em>
+    is
     <a href="../reference/jsdoc/symbols/rap.html#.getRemoteObject">provided</a> by the framework.
-    To process messages, the server side 
+    To process messages, the server side
     <a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html#setHandler(org.eclipse.rap.rwt.remote.OperationHandler)">registers</a>
-    an 
-    <em><a href="../reference/api/org/eclipse/rap/rwt/remote/OperationHandler.html">OperationHandler</a></em> 
+    an
+    <em><a href="../reference/api/org/eclipse/rap/rwt/remote/OperationHandler.html">OperationHandler</a></em>
     on the <em><a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html">RemoteObject</a></em>
-    instance, while the client registers a 
+    instance, while the client registers a
     <a href="../reference/jsdoc/symbols/rap.html#.registerTypeHandler">TypeHandler</a> once
     globally. For more detailed information visit the RAP Wiki <a href="#ext2">[2]</a>.
   </p>
