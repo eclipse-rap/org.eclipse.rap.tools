@@ -31,7 +31,12 @@
         <![CDATA[<h1>Eclipse Remote Application Platform API Reference</h1>]]>
       </doctitle>
       <bottom>
-        <![CDATA[<font size="-1"><p>Copyright (c) EclipseSource and others 2002, 2012. All rights reserved.</p></font>]]>
+        <![CDATA[<font size="-1"><p>
+          Copyright (c) EclipseSource and others 2002, 2013.
+          All rights reserved. This program and the accompanying materials
+          are made available under the terms of the
+          <a href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License v1.0</a>
+        </p></font>]]>
       </bottom>
       <header>
         <![CDATA[<b>Eclipse Remote Application Platform</b>]]>
