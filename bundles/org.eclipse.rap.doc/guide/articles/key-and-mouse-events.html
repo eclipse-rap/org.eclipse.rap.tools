@@ -187,7 +187,7 @@ widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2
       <li>This approach is also single-sourcing capable, as long as the key listener does
       not rely on the preselection of the Active Keys feature.</li>
     </ul>
-  <h3>Global Key Event Handling (Keybindings)</h3>
+  <h3 id="global">Global Key Event Handling (Keybindings)</h3>
   <p>
     Both <q>Active Keys</q> and <q>Cancel Keys</q> can also be used on an instance of
     <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html">Display</a></em>,
@@ -234,5 +234,43 @@ widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2
        <li>The key combination is in the displays Cancel Keys list.</li>
        <li>The focused widget has a Cancel Keys list and the key combination is in it.</li>
      </ul>
+   <h3>Mnemonics and Accelerators</h3>
+   <p>
+     Mnemonics and accelerators provide simpler alternatives to implementing shortcuts
+     via <a href="#global">global key event handling</a>, but will also influence
+     conventional key events.
+   </p>
+   <p>
+     Accelerators are shortcuts that can be associated with <em>MenuItem</em> widgets
+     using the method
+     <em><a href="../reference/api/org/eclipse/swt/widgets/MenuItem.html#setAccelerator(int)">MenuItem#setAccelerator</a></em>.
+     Entering the shortcut will fire a <em>Selection</em> event on the associated
+     <em>MenuItem</em>. The shortcuts will also be added to the displays <a href="#global">current
+     ACTIVE_KEYS list</a>. <strong>Take care not to overwrite them.</strong>
+   </p>
+   <p>
+     Mnemonics are a simple method to select widgets using the keyboard.
+     Any character in a widgets text can be made a mnemonic by inserting an ampersand character
+     (<code>&amp;</code>) before it. A list of supported widgets can be found
+    <a href="../reference/api/org/eclipse/rap/rwt/RWT.html#MNEMONIC_ACTIVATOR">here</a>.
+   </p>
+   <p>
+     Mnemonics must be enabled for the UISession by setting the modifier key or key-combination that
+     makes the mnemonics visible:
+   </p>
+<pre class="lang-java">
+display.setData( RWT.MNEMONIC_ACTIVATOR, "CTRL+ALT" );
+</pre>
+  <p>
+    Any combination of <em>CTRL</em>, <em>SHIFT</em> and <em>ALT</em> is valid,
+    but <em>ALT</em> should not be used by itself since the browser may reserve this key for itself.
+    Holding the mnemonic activator will underline all onscreen mnemonic characters,
+    and pressing the matching key will then select or focus the associated widget.
+  </p>
+  <p>
+    Mnemonics have a higher priority than key bindings, accelerators or key events. This also means
+    that <strong>no key events will be fired for a key combination that triggers
+    a mnemnoic</strong>.
+  </p>
 </body>
 </html>
