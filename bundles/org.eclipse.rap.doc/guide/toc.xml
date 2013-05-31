@@ -44,7 +44,7 @@
     <topic
         label="Custom Widgets"
         href="guide/articles/custom-widget.html"/>
-    <topic href="guide/articles/resources.html" label="Registering Static Resources">
+    <topic href="guide/articles/resources.html" label="Static Resources and Downloads">
     </topic>
   </topic>
   <topic label="Scopes and Threads in RAP">

@@ -10,16 +10,23 @@
 </head>
 <body>
 
-  <h1>Static Resources</h1>
+  <h1>Static Resources and Downloads</h1>
+
+  <h2>Registering Static Resources</h2>
 
   <p>
     Every RAP application can host it's own static resources, like documents, scripts, images,
-    or CSS-files. These can then be used for
-    <a href="application-configuration.html#entrypointconfig">favicon, splash-screen</a>,
-    <a href="markup.html#img">images in markup</a>,
-    <a href="web-embedding.html">within a browser widget</a>,
-    <a href="client.html#jsloader">with the JavaScriptLoader</a> or
-    <a href="custom-widget.html#native">in any JavaScript-based custom widget</a>.
+    or CSS-files. These can then be used
+  </p>
+  <ul>
+    <li><a href="application-configuration.html#entrypointconfig">for favicons and splash-screen</a>...</li>
+    <li><a href="markup.html#img">for images</a> and <a href="markup.html#link">links</a> in markup...</li>
+    <li><a href="web-embedding.html">within of a browser widget</a>...</li>
+    <li><a href="client.html#jsloader">with the JavaScriptLoader</a>...</li>
+    <li><a href="navigation.html#launcher">with the URLLauncher</a>...</li>
+    <li><a href="custom-widget.html#native">for JavaScript-based custom widgets</a>...</li>
+  </ul>
+  <p>
     It is <i>not</i> necessary to register images used by
     <a href="theming.html">CSS theming</a>.
   </p>
@@ -93,5 +100,67 @@ if( !resourceManager.isRegistered( "foo/icon.png" ) ) {
     <pre class="lang-java">
 String src = RWT.getResourceManager().getLocation( "foo/icon.png" ); </pre>
 
+  <h2>Service Handler and Downloads</h2>
+  <p>
+    If you want to provide downloads in your RAP application it is recommended to use a service
+    handler instead of static resources.
+    Below is an example of a very basic downloads service handler.
+  </p>
+  <pre class="lang-java">
+public class DownloadServiceHandler implements ServiceHandler {
+
+  public void service( HttpServletRequest request, HttpServletResponse response )
+    throws IOException, ServletException
+  {
+    // Which file to download?
+    String fileName = request.getParameter( "filename" );
+    // Get the file content
+    byte[] download = MyDataStore.getByteArrayData( fileName );
+    // Send the file in the response
+    response.setContentType( "application/octet-stream" );
+    response.setContentLength( download.length );
+    String contentDisposition = "attachment; filename=\"" + fileName + "\"";
+    response.setHeader( "Content-Disposition", contentDisposition );
+    response.getOutputStream().write( download );
+  }
+}
+  </pre>
+  <p>
+    The request has a parameter "filename" which indicates which content
+    (either static or dynamically generated) should be sent to the client.
+    The <code>MyDataStore</code>-line is a placeholder for whatever
+    code is required to provide the content.
+    In our example the content is retrieved as <code>byte[]</code>,
+    but InputStreams and Readers can be easily accommodated as well.
+  </p>
+  <p>
+    The service handler has to be registered, like static resources, once <i>per application</i>.
+    The best place to do this is (depending on your <a href="application-setup.html">application setup</a>)
+    either the <a href="application-configuration.html">Application Configuration</a> or
+    <em><a href="../reference/extension-points/org_eclipse_rap_ui_serviceHandler.html">
+    org.eclipse.rap.ui.serviceHandler</a></em> extension. If need be it can also be done at runtime:
+  </p>
+  <pre class="lang-java">
+ServiceManager manager = RWT.getServiceManager();
+ServiceHandler handler = new DownloadServiceHandler();
+manager.registerServiceHandler( "downloadServiceHandler", handler );
+</pre>
+  <p>
+    The URL for the download link can be generated as follows:
+  </p>
+  <pre class="lang-java">
+private String createDownloadUrl( String filename ) {
+  StringBuilder url = new StringBuilder();
+  url.append( RWT.getServiceManager().getServiceHandlerUrl( "downloadServiceHandler" ) );
+  url.append( '&amp;' ).append( "filename" ).append( '=' ).append( filename );
+  return url.toString();
+}</pre>
+<p>
+  The link can either be embedded using <a href="markup.html#link">markup</a>, or
+  opened programmatically with the <a href="navigation.html#launcher">URLLauncher</a>.
+  The application can <strong>not</strong> control whether certain file types are opened
+  in a browser popup/tab/window, or in a "save-as" dialog. This is completely up to the browser.
+  However, a markup hyperlink usually has a native context menu with a "save-as" entry.
+</p>
 </body>
 </html>
