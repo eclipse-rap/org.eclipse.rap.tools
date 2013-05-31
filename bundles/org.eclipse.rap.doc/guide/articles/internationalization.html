@@ -3,150 +3,115 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2011 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Internationalization</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
 
-  <p>
-    <em><strong>Note:</strong> This article explains internationalization in the context of workbench
-    applications.
-    For RAP applications that don't use the workbench, only parts of this article are applicable.
-    Plain RWT applications can also use traditional ResourceBundles and get the locale from the
-    UISession as explained below.</em>
-  </p>
-
-  <h1>How to Internationalize a RAP application</h1>
+  <h1>Internationalization in RAP</h1>
 
   <p>
-    Internationalization in RAP follows the same approach as RCP.
-    However, due to the server-side, multi-user nature of RAP, a few adaptations are necessary.
-    In the following, you will get a step-by-step guide to internationalize the simple
-    <a href="../getting-started/hello-world.html">Hello World application</a>
-    created in the getting-started chapter.
-    For a more general introduction to internationalization in RCP, see
-    <a href="#ref1">[1]</a>.
+    Internationalization (i18n) is the process of adapting applications to the user's
+    language and region, including things like number formats, date and time, etc.
+    The Java class library has support for internationalization, most notably by
+    <em>locales</em> and <em>resource bundles</em>.
+    RAP applications can use these features just like other applications,
+    but since they are accessed by multiple users simultaneously, they must be designed to
+    work with user-specific locales instead of a single, system-wide locale.
   </p>
 
-  <h2>Why does RAP internationalization differ from RCP?</h2>
-  <p>
-    In RAP we have to deal with different languages for different user sessions.
-    Indeed, the language can also change between requests within the same session.
-    Therefore, we cannot store language related information statically in <code>Message</code>
-    classes as this is done in RCP.
-    Instead, we must use a different instance of the <code>Message</code> class for every language.
-  </p>
-
-  <h2>Move translatable strings into *.properties files</h2>
-  <p>
-    In the Eclipse IDE, it's quite simple to externalize strings using the <q>Externalize
-    Strings</q> wizard provided by JDT.
-    Unfortunately, this wizard generates code that is not suitable for multi-user applications
-    because it stores translations in static fields.
-    You can probably benefit from the assistance of the <q>Externalize Strings</q>
-    wizard anyway, but only partly.
-    We will now explain how to do it from scratch.
-  </p>
+  <h2>Getting and Setting the Locale</h2>
 
   <p>
-    Let's start with the preparations.
-    You probably know the resource bundle accessor classes (usually called
-    <code>Messages</code>).
-    We also use such a class, but instead of accessing a resource bundle,
-    we use the RAP NLS facility to access nationalized strings.
-    We create a class <code>Messages</code> in the package
-    <code>org.eclipse.rap.helloworld</code> with the following initial
-    content:
+    In RAP, every UISession has its own locale that can be obtained using the method
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/UISession#getLocale()">getLocale</a></em>.
+    By default, this locale is based on the user's preferred locale provided by the client.
+    If the client does not provide a locale, the system-wide default locale is taken as a fallback.
+    The default locale can be set by adding the system property <code>user.language</code>
+    to the launch configuration.
+    The UISession locale can also be changed programmatically using
+    <em><a href="../reference/api/org/eclipse/rap/rwt/service/UISession#setLocale(java.util.Locale)">setLocale</a></em>,
+    for example when the user selects a preferred locale in the application's UI.
   </p>
-  <pre class="lang-java">
-  public class Messages {
-
-    private static final String BUNDLE_NAME
-      = "org.eclipse.rap.helloworld.messages"; //$NON-NLS-1$
-
-    private Messages() {
-      // prevent instantiation
-    }
-
-    public static Messages get() {
-      Class clazz = Messages.class;
-      return ( Messages )RWT.NLS.getISO8859_1Encoded( BUNDLE_NAME, clazz );
-    }
-  }</pre>
   <p>
-    The constant <code>BUNDLE_NAME</code> contains the name (without extension) of
-    a properties file, that contains the mapping from keys to real strings.
-    Note that in contrast to RCP, the class does not extend
-    <code>org.eclipse.osgi.util.NLS</code>.
-    Instances, which can be acquired through the factory method
-    <code>get()</code>, contain fields that hold the translated strings.
+    Note: The static methods <em>RWT.getLocale()</em> and <em>RWT.setLocale()</em>
+    are shortcuts for <em>RWT.getUISession().getLocale()</em> and
+    <em>RWT.getUISession().getLocale(...)</em>, respectively.
+  </p>
+  <p>
+    In addition to this, a client provides the user's preferred locales in the
+    <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/ClientInfo.html">ClientInfo</a></em>
+    service.
+    This information is based on the list of locales passed in the
+    HTTP header <code>Accept-Language</code>, which usually reflects the user's language preferences
+    in the Web browser.
+    Alternative RAP clients may provide a different ClientInfo implementation.
   </p>
 
+  <h2>Localization</h2>
   <p>
-    In the next step, we create an empty properties file
-    <code>messages.properties</code> in the same package.
-    This properties file follows the conventions of standard
-    <code>ResourceBundle</code> properties files.
-    For each externalized string, there has to be a key entry in the properties
-    file.
+    Localization is the process of translating an internationalizable application
+    for a certain language and region.
+    The locale-specific strings are usually kept in a Java properties files, accessed
+    by a <em>ResourceBundle</em>.
+    Translated versions of these property files must have a suffix that indicates
+    their language, optionally also the country and a variant (for the details, please refer to
+    <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/util/Locale.html">Locale</a> and
+    <a href="http://docs.oracle.com/javase/1.5.0/docs/api/java/util/ResourceBundle.html">ResourceBundle</a>.
+    For example, to create a German translation for a resource property file named
+    <code>MyResources.properties</code>, you would create a copy of the file and name it
+    <code>MyResources_de.properties</code>.
+    Then you would translate the strings in this file and put it into the same package as the
+    original file.
+    The translated files and other localized resources can go into a separate .jar file or,
+    if your application uses OSGi, in a fragment bundle.
+  </p>
+  <p>
+    Be aware that the property files are expected to be in ISO-8859-1 (Latin 1) encoding.
+    If the translated properties files contain accented characters that are not included
+    in the Latin-1 encoding, they have to be represented by <en>Unicode Escapes</en>.
+    Property files in other encodings can be converted using the <code>native2ascii</code>
+    utility, that is shipped with the Java SDK.
+  </p>
+  <p>
+    <strong>Note:</strong> The ResourceBundle fallback mechanism can sometimes lead to confusion.
+    You could expect that the system falls back to the default properties file if no translated
+    properties file can be found that matches the user's locale. That's not the case.
+    If a translation is not found for the locale in question, the ResourceBundle lookup will
+    first try the <em>default</em> locale, i.e. <em>Locale.getDefault()</em>.
+    For example, if your VM is set to German and there is a <code>MyResources_de.properties</code>
+    file, the translation will fallback to this file instead of the default
+    <code>MyResources.properties</code>.
+    If you want to have English as your fallback, you have to set your VM to English.
   </p>
 
+  <h2>Localizing RAP Error Messages</h2>
   <p>
-    Now we are prepared to externalize strings.
-    Let's start with the class <code>HelloWorldView</code> from the hello world
-    example.
-    The class contains one string we'd like to externalize in order to make it
-    translatable:
+    In case of session timeout, a network error, and other kinds of exception,
+    the web client will display a message box.
+    In an internationalized application these messages should be translated as well.
+    The default texts reside in the properties file
+    <em>org/eclipse/rap/rwt/internal/RWTMessages.properties</em>
+    in the bundle <em>org.eclise.rap.rwt</em>.
+    To localize the application, include the translated versions (<em>RWTMessages_xx.properties</em>)
+    in the deployed application, e.g. in an OSGi fragment bundle.
+    At the moment, we don't provide any translated versions, so you'll have to
+    create them on your own.
   </p>
-  <pre class="lang-java">
-public void createPartControl( Composite parent ) {
-  Label label = new Label ( parent, SWT.NONE );
-  label.setText( <strong>"Hello RAP World"</strong> );
-  label.setSize( 80, 20 );
-}</pre>
+
+  <h2>Internationalization in JFace</h2>
   <p>
-    We change the string into the following code:
+    The texts for JFace dialog buttons are traditionally set directly to one of the constants
+    in <code>IDialogConstants</code>.
+    This method is not suitable for multiple users because the strings contained in these constants
+    are translated only once.
+    For multi-user applications, <code>IDialogLabelKeys</code> also provides <em>keys</em> that can
+    be resolved to localized strings dynamically using <code>JFaceResources.getString( key )</code>.
+    In a RAP application, label texts should be obtained as in this example:
   </p>
-  <pre class="lang-java">
-public void createPartControl( Composite parent ) {
-  Label label = new Label ( parent, SWT.NONE );
-  label.setText( <strong>Messages.get().HelloWorldView_Message</strong> );
-  label.setSize( 80, 20 );
-}</pre>
-  <p>
-    The key <code>HelloWorldView_Message</code> can be freely chosen, however,
-    the RCP convention is to prefix it with the name of the class that uses it.
-    Now we have to add that key to the <code>Messages</code> class:
-  </p>
-  <pre class="lang-java">
-public class Messages {
-  ...
-  public String HelloWorldView_Message;
-  ...
-}</pre>
-  <p>
-    and add a definition to the <code>messages.properties</code> file:
-  </p>
-  <pre>
-HelloWorldView_Message = Hello RAP World </pre>
-  <p>
-    Note that in contrast to RCP, you must use fields instead of constants in the
-    <code>Messages</code> class, as they are not shared over all user session and
-    thus cannot be accessed in a static way in RAP.
-  </p>
-  
-  <h2>Localizable JFace dialog buttons</h2>
-  <p>
-    In RCP the JFace dialog button labels could be obtained through static constants in 
-    <code>IDialogConstants</code> class. This is the preferred method when the client is known to
-    be used in a single-locale system. However, RAP is running in a multi-locale system and pattern 
-    <code>JFaceResources.getString( String )</code> should be used instead. Using the keys in 
-    <code>IDialogLabelKeys</code> class and accessing the common dialog labels dynamically is the 
-    preferred method when the client is running in a multi-locale system.
-  </p>
-  <pre class="lang-java">
+<pre class="lang-java">
 protected void createButtonsForButtonBar( Composite parent ) {
   createButton( parent,
                 IDialogConstants.OK_ID,
@@ -157,115 +122,149 @@ protected void createButtonsForButtonBar( Composite parent ) {
                 JFaceResources.getString( IDialogLabelKeys.CANCEL_LABEL_KEY ),
                 false );
 }
-  </pre>
+</pre>
 
-  <h2>Translate plug-in manifest</h2>
+  <h2>Internationalization in RCP</h2>
+
   <p>
-    Also the plug-in manifest file (<code>plugin.xml</code>) may contain
-    translatable strings.
-    Like in RCP, those stings are replaced by unique keys, prefixed with a
-    <code>%</code> sign.
-    The keys are then resolved in a <code>plugin.properties</code> file that
-    resides in the root directory of the plug-in.
-    For example, the internationalized version of the HelloWorld plug-in manifest
-    file contains placeholders for the names of the view and the perspective.
+    RCP established its own internationalization mechanism that is explained in
+    <a href="#ref1">[1]</a>.
+    This approach is based on resource bundle <em>accessor classes</em> that keep translated
+    strings in static fields, which is not suitable for a multi-user system.
+    To solve this problem, the RAP project has developed a method to adjust existing RCP
+    applications for use in multi-user environments with minimal modifications.
   </p>
-  <pre class="lang-xml">
-...
+
+  <p>
+    Here's an example snippet of RCP code that reads a localized string from a static field of an
+    accessor class (commonly named “Messages”).
+  </p>
+
+<pre class="lang-java">
+label.setText( Messages.ExampleView_Message );
+</pre>
+
+  <p>
+    For multiple users, we need different translations.
+    Therefore we suggest to use instance fields instead of static fields and to create a different
+    instance of the class for every language.
+    This allows for re-using the existing code with only a minimal change,
+    which is to insert a <em>get()</em> method that returns an instance of
+    the resource bundle accessor class for the current UISession locale:
+  </p>
+
+<pre class="lang-java">
+label.setText( Messages<strong>.get()</strong>.ExampleView_Message );
+</pre>
+
+  <p>
+    To allow for this pattern, the static fields in the <code>Messages</code> class must be changed
+    to instance fields.
+    Moreover, the <em>get()</em> method must be added to this class.
+    This method must return an instance of the class with all fields translated to the current
+    UISession locale.
+    The RAP framework provides a helper class RWT.NLS to do this.
+    Here's an example of a modified accessor class:
+  </p>
+
+<pre class="lang-java">
+public class Messages {
+
+  private static final String BUNDLE_NAME = "org.example.views.messages"; //$NON-NLS-1$
+
+  public String ExampleView_Title;
+  public String ExampleView_Message;
+
+  public static Messages get() {
+    Class clazz = Messages.class;
+    return ( Messages )RWT.NLS.getISO8859_1Encoded( BUNDLE_NAME, clazz );
+  }
+
+  private Messages() {
+    // prevent instantiation
+  }
+
+}
+</pre>
+  <p>
+    Note that in contrast to RCP, the class does not extend
+    <code>org.eclipse.osgi.util.NLS</code>.
+    The constant <code>BUNDLE_NAME</code> contains the name (without extension) of
+    the properties file that contains the mapping from keys to localized strings.
+    In the example above, a properties file <code>messages.properties</code> is expected in
+    the package <code>org/example/views</code>.
+    This property file must contain the default strings for every key:
+  </p>
+<pre>
+ExampleView_Title = Example
+ExampleView_Message = Hello World
+</pre>
+  <p>
+    Note: to simplify the translation to non-Latin languages, the RAP NLS utility also accepts
+    UTF-8 encoded property files.
+  </p>
+
+  <h2>Internationalization of Plug-ins (plugin.xml)</h2>
+  <p>
+    Plug-in manifest files (<code>plugin.xml</code>) may also contain translatable strings,
+    e.g. view names or menu labels.
+    Therefore, a plugin.xml may contain placeholder strings that are prefixed with a
+    <code>%</code> sign.
+    These placeholder keys are then resolved in a properties file, which is by convention named
+    <code>plugin.properties</code> and resides in the root directory of the plug-in.
+    Here's an example of a view extension that contains a placeholder for the name attribute:
+  </p>
+<pre class="lang-xml">
 &lt;extension
       point="org.eclipse.ui.views"&gt;
    &lt;view
-         id="org.eclipse.rap.helloworld.helloWorldView"
-         class="org.eclipse.rap.helloworld.HelloWorldView"
-         name="<strong>%helloWorldView_name</strong>"&gt;
+         id="org.example.views.exampleView"
+         class="org.example.views.ExampleView"
+         name="<strong>%exampleView_name</strong>"&gt;
    &lt;/view&gt;
 &lt;/extension&gt;
-
-&lt;extension
-      point="org.eclipse.ui.perspectives"&gt;
-   &lt;perspective
-         id="org.eclipse.rap.helloworld.perspective"
-         class="org.eclipse.rap.helloworld.Perspective"
-         icon="icons/icon.gif"
-         name="<strong>%perspective_name</strong>"&gt;
-   &lt;/perspective&gt;
-&lt;/extension&gt;</pre>
+</pre>
   <p>
-    And here's the <code>plugin.properties</code>:
+    The bundle would include a file <code>plugin.properties</code> that contains the translatable
+    text for this placeholder in a line like the following:
   </p>
-  <pre>
-helloWorldView_name = Hello World View
-perspective_name = Hello World Perspective</pre>
+<pre>
+exampleView_name = Example
+</pre>
   <p>
-    To make this work, the OSGi manifest file (<code>MANIFEST.MF</code>) must contain the line:
+    To make this work, the OSGi manifest (<code>MANIFEST.MF</code>) must contain a
+    <em>Bundle-Localization</em> header that points to the name of the properties file
+    (without extension):
   </p>
-  <pre>
-Bundle-Localization: plugin</pre>
-
+<pre>
+Bundle-Localization: plugin
+</pre>
   <p>
-    In the end the Equinox extension registry must be made aware that it has to
-    serve strings in multiple locales simultaneously. This is done by setting the
-    system property <code>eclipse.registry.MultiLanguage</code> to
-    <code>true</code> or by setting the framework property
-    <code>registryMultiLanguage</code>.
+    In a multi-user environment, the Equinox extension registry must be set to multi-locale mode
+    to be able to serve strings in multiple locales simultaneously. This is done by setting the
+    system property <code>eclipse.registry.MultiLanguage</code> to <code>true</code> or by setting
+    the framework property <code>registryMultiLanguage</code>.
   </p>
 
   <p>
-    If you are <a href="deployment.html">deploying your application as a WAR</a>,
+    If you're <a href="deployment.html">deploying your application as a WAR</a>,
     make sure to include the framework property in the <code>web.xml</code> like
     shown below:
   </p>
-  <pre class="lang-xml">
+<pre class="lang-xml">
 &lt;init-param&gt;
   &lt;param-name>commandline&lt;/param-name&gt;
   &lt;param-value>-registryMultiLanguage&lt;/param-value&gt;
-&lt;/init-param&gt;</pre>
+&lt;/init-param&gt;
+</pre>
 
-  <h2>Create translations of your *.properties files</h2>
+  <h2>Tool Support</h2>
   <p>
-    The last step of the internationalization is to actually translate.
-    The translated strings are contained in localization properties files.
-    These files may also reside in a fragment of its own, together with other
-    localized resources.
-    Localization properties files have a suffix that determines the language,
-    optionally also the country, and a variant (refer to the
-    <code>java.util.Locale</code> JavaDoc for these concepts), all preceded
-    by an underscore character.
-    For example, to create a translation to Swiss German, create a copy of the
-    <code>messages.properties</code> file and name it
-    <code>messages_de_CH.properties</code>.
-    Then you can start to translate the contained stings.
-    Be aware that the translated properties files will very likely contain
-    accented characters that are not included in the Latin-1 encoding
-    (UTF-8), which is expected by the RAP NLS support (as well as by the
-    Java ResourceBundle mechanism).
-    Those files can be converted using the <code>native2ascii</code>
-    conversion utility, included with the Java SDK.
-    Alternatively, RAP also allows for UTF-8 encoded properties files to ease the
-    translation into non-latin languages.
-    In this case, you have to change the call to
-    <code>RWT.NLS.getISO8859_1Encoded</code> into
-    <code>RWT.NLS.getUTF8Encoded</code> in the <code>Messages</code> class.
-  </p>
-
-  <h2>How does RAP select the language for a user session?</h2>
-  <p>
-    A RAP client provides the user's preferred locale(s) in the <em>ClientInfo</em> service.
-    This information is based on the list of locales passed in the
-    <code>Accept-Language</code> HTTP header, which usually reflects the user's language preferences
-    in the Web browser.
-    Alternative RAP clients may provide a different ClientInfo implementation.
-  </p>
-  <p>
-    Applications can obtain the preferred locale from the UISession using
-    <em>UISession.getLocale()</em>.
-    The UISession locale is based on the preferred locale provided by the client, but can be
-    changed programmatically using <em>UISession.setLocale()</em>.
-    If the client does not provide a locale, the system default locale is taken as a fallback.
-    The default locale can be set by adding the system property <code>user.language</code>
-    to the launch configuration.
-    If no matching properties file can be found, the default one
-    (<code>messages.properties</code>) takes precedence.
+    The Java tools in the Eclipse IDE provide a tool to easily extract strings into message bundles,
+    the <em>Externalize Strings</em> wizard (<em>Source &gt; Externalize String…</em>).
+    This wizard has an option to “use Eclipse's string externalization mechanism” (the mechanism
+    that is described in [1]), which is enabled by default for Plug-in Projects.
+    As explained above, this mechanism is not suitable for multi-user applications.
   </p>
 
   <h2>References</h2>
