@@ -97,16 +97,17 @@ if( !resourceManager.isRegistered( "foo/icon.png" ) ) {
     exception, it can use the path given during registration).
     This information is in all cases provided by the <em>ResourceManager</em>:
   </p>
-    <pre class="lang-java">
-String src = RWT.getResourceManager().getLocation( "foo/icon.png" ); </pre>
+<pre class="lang-java">
+String src = RWT.getResourceManager().getLocation( "foo/icon.png" );
+</pre>
 
   <h2>Service Handler and Downloads</h2>
   <p>
-    If you want to provide downloads in your RAP application it is recommended to use a service
+    If you want to provide downloads in your RAP application, you can use a service
     handler instead of static resources.
     Below is an example of a very basic downloads service handler.
   </p>
-  <pre class="lang-java">
+<pre class="lang-java">
 public class DownloadServiceHandler implements ServiceHandler {
 
   public void service( HttpServletRequest request, HttpServletResponse response )
@@ -124,7 +125,7 @@ public class DownloadServiceHandler implements ServiceHandler {
     response.getOutputStream().write( download );
   }
 }
-  </pre>
+</pre>
   <p>
     The request has a parameter "filename" which indicates which content
     (either static or dynamically generated) should be sent to the client.
@@ -148,7 +149,7 @@ manager.registerServiceHandler( "downloadServiceHandler", handler );
   <p>
     The URL for the download link can be generated as follows:
   </p>
-  <pre class="lang-java">
+<pre class="lang-java">
 private String createDownloadUrl( String filename ) {
   StringBuilder url = new StringBuilder();
   url.append( RWT.getServiceManager().getServiceHandlerUrl( "downloadServiceHandler" ) );
