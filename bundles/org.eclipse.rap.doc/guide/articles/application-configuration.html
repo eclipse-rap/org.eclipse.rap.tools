@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2012, 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title> Application Configuration </title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -25,59 +25,63 @@
     A RAP application consists of various parts, such as entry points, URL mappings, themes,
     service handlers, etc.
     All these parts constitute an <em>application configuration</em>,
-    which the framework can use to create and start an application instance.
+    which is used by the framework to create and start an application instance.
     There can be more than one application instance at runtime, e.g. running on different network
-    ports or different servlet contexts.
+    ports or in different servlet contexts.
   </p>
   <p>
+    An application configuration is an implementation of the interface
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html">ApplicationConfiguration</a></em>.
     RAP uses a callback approach to configure applications before they are started.
-    For that, an implementation of the interface
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html">ApplicationConfiguration</a></em>
-    is required. There, the method <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html#configure(org.eclipse.rap.rwt.application.Application)">configure( Application )</a></em> is invoked with
-    a reference to the created <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html">Application</a></em>
-    as the sole argument. A minimal implementation must register at least one implementation of the
+    The method <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html#configure(org.eclipse.rap.rwt.application.Application)">configure( Application )</a></em>
+    is invoked with a reference to the created
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html">Application</a></em>
+    as the sole argument.
+    A minimal implementation must register at least one implementation of the
     <em><a href="../reference/api/org/eclipse/rap/rwt/application/EntryPoint.html">EntryPoint</a></em>
-    interface.
-    (<a href="hello-world.html#entrypoint">It is recommended</a> to extend
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>.)
+    interface
+    (<a href="hello-world.html#entrypoint">it's recommended</a> to extend
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/AbstractEntryPoint.html">AbstractEntryPoint</a></em>).
   </p>
-  <pre class="lang-java">public class SimpleConfiguration implements ApplicationConfiguration {
+<pre class="lang-java">
+public class SimpleConfiguration implements ApplicationConfiguration {
 
   public void configure( Application application ) {
     application.addEntryPoint( "/simple", SimpleEntryPoint.class, null );
   }
 
-}</pre>
+}
+</pre>
   <p>
-    Any application may have any number of entry points, as long as they are mapped
-    to different paths. In this case the entry point would be executed when the URL
-    <code>http://&lt;rapserver&gt;:&lt;port&gt;/simple</code> is typed into the browser.
+    An application may have any number of entry points, each mapped to a separate servlet path.
+    In case of the example above, the entry point would be available at the URL
+    <code>http://{rapserver}:{port}/simple</code>.
   </p>
   <p id="entrypointconfig">
-    The third argument of <em>addEntryPoint</em> can be a map that configures visual aspects of the entry point.
+    The third argument of <em>addEntryPoint</em> is an optional map to configure visual aspects
+    of the entry point.
     These may be client-specific, and therefore the
-    <a href="client.html">client class</a> (i.e. <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html">WebClient</a></em>)
-    provides constants to be used with the map. It's possible to specify
-    <a href="theming.html#rwt">which theme to use</a>,
-    and which <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#FAVICON">icon</a>
-    and <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#PAGE_TITLE">name</a>
-    should be displayed in the browser title bar.
-    If your favicon has to work with legacy browsers, use a file in the
-    <a href="http://en.wikipedia.org/wiki/ICO_%28icon_image_file_format%29">ICO format</a>.
-  It's also possible
-    to add static HTML to the client documents
+    <a href="client.html">Client</a> implementation
+    (e.g. <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html">WebClient</a></em>)
+    provides constants to be used with the map.
+    For example, it's possible to specify
+    <a href="theming.html#rwt">a theme to use</a>,
+    and an <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#FAVICON">icon</a>
+    and <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#PAGE_TITLE">title</a>
+    to be displayed in the browser title bar.
+    It's also possible to add static HTML to the client documents
     <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#HEAD_HTML">head</a></em>
-    or <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#BODY_HTML">body</a></em>.
-    That way a simple splash screen can be implemented.
+    or <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#BODY_HTML">body</a></em>,
+    e.g. to implement a simple splash screen.
   </p>
-  <pre class="lang-java">
+<pre class="lang-java">
 Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();
 properties.put( WebClient.PAGE_TITLE, "RAP Example" );
 properties.put( WebClient.BODY_HTML, "&lt;big&gt;Loading Application&lt;big&gt;" );
 properties.put( WebClient.FAVICON, "icons/favicon.png" );
 properties.put( WebClient.THEME_ID, "MyCustomTheme" );
 application.addEntryPoint( "/example", Example.class, properties );
-  </pre>
+</pre>
   <p>
     Note that the favicon and any images you might use in the additional HTML must be registered
     as a static resource. This can also be done in the application configuration with the
@@ -90,74 +94,100 @@ application.addEntryPoint( "/example", Example.class, properties );
     Learn more about custom themes and theme contributions <a href="theming.html">here</a>.
   </p>
   <p>
-    The application instance also a method
-    (<em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#setOperationMode(org.eclipse.rap.rwt.application.Application.OperationMode)">setOperationMode</a></em>)
-    to <a href="application-setup.html#compat">set the operation mode</a> and
-    <a  href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addServiceHandler(java.lang.String, org.eclipse.rap.rwt.service.ServiceHandler)">one to
-    register service handler</a>.
+    Moreover, the application instance provides methods to set the
+    <a href="application-setup.html#compat">operation mode</a>
+    and to register a
+    <a  href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addServiceHandler(java.lang.String, org.eclipse.rap.rwt.service.ServiceHandler)">service handler</a>.
   </p>
 
   <h2>Registering the Application Configuration</h2>
   <p>
-    When using OSGi, the application configuration can be registered as a service.
-    We recommend using OSGi declarative services (DS).
-    You can create a service component definition with Eclipse
-    (<em class="UILabel">New &gt; Plug-in Development &gt; Component Definition</em>).
-    The service component definition is an XML file, usually contained in a directory
-    named <em>OSGI-INF</em>. Edit it to point to your configuration implementation as shown below:
+    The application configuration needs to be registered in order to be found by the framework.
+    When using OSGi, it can be registered as a service.
+    This can be done either programmatically in a bundle activator or in a declarative way.
+    Declarative services (DS) are the preferred way to register services in Equinox.
+    For applications that don't use OSGi, the application configuration must be provided in a
+    context parameter (see below).
   </p>
-  <pre class="lang-xml"><code>&lt;scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0"&gt;
-  &lt;implementation class="com.example.SimpleConfiguration"/&gt;
+
+  <h3>Using OSGi Declarative Services (DS)</h3>
+  <p>
+    Using OSGi <a href="http://wiki.osgi.org/wiki/Declarative_Services">Declarative Services</a>,
+    a service component can be declared in an XML file inside the bundle.
+    Here's an example that registers an application configuration:
+  </p>
+<pre class="lang-xml">
+&lt;scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0"&gt;
+  &lt;implementation class="com.example.ExampleConfiguration"/&gt;
   &lt;service&gt;
      &lt;provide interface="org.eclipse.rap.rwt.application.ApplicationConfiguration"/&gt;
   &lt;/service&gt;
 &lt;/scr:component&gt;
-</code></pre>
+</pre>
   <p>
-    When manually creating this file, it also has to be registered in the bundle manifest.
-    Add a line like the following to the <em>MANIFEST.MF</em>:
+    Adjust the element <em>implementation</em> to point to your application configuration.
+    A common convention is to put this file in a directory named <em>OSGI-INF</em> in the bundle
+    root.
+    The file must be referenced in the bundle manifest (<em>MANIFEST.MF</em>) as follows:
   </p>
-  <pre><code>Service-Component: OSGI-INF/configuration.xml
-</code></pre>
+<pre>
+Service-Component: OSGI-INF/configuration.xml
+</pre>
+  <p>
+    The Plug-in development tools in Eclipse include a wizard for creating service declarations:
+    <em class="UILabel">New &gt; Plug-in Development &gt; Component Definition</em>.
+  </p>
 
-  <h3>Custom context path</h3>
+  <h4>Custom context path</h4>
   <p>
-    Applications configurations can be registered for a custom context path by adding the service
-    parameter <em>contextName</em> to the service registration. When using declarative services, a
-    line like the following can be added to the component definition:
+    By default, a RAP application is available directly at the servlet container's root.
+    For example, the servlet path “<code>/simple</code>” will be mapped to a URL like
+    <code>http://example.com:8080/simple</code>.
+    When using the servlet bridge, an additional path segment will be included that represents
+    the web application.
   </p>
-  <pre class="lang-xml"><code>  &lt;property name=&quot;contextName&quot; type=&quot;String&quot; value=&quot;example&quot;/&gt;
-</code></pre>
   <p>
-    With this configuration, the entry point <em>simple</em> defined above will be available at
-    <code>http://&lt;host&gt;:&lt;port&gt;/example/simple</code>.
+    It is possible to specify a custom <em>context path</em> to be included in the URL.
+    To do so, the application configuration service must be registered with a service parameter
+    <em>contextName</em>.
+    When using declarative services, a line like the following would be added to the component
+    declaration:
+  </p>
+<pre class="lang-xml">
+  &lt;property name=&quot;contextName&quot; type=&quot;String&quot; value=&quot;example&quot;/&gt;
+</pre>
+  <p>
+    With this configuration, the same entry point will be available at
+    <code>http://example.com:8080/example/simple</code>.
   </p>
 
   <h3>RWT stand-alone</h3>
   <p>
-    When using <a href="rwt-standalone.html">RWT as a library</a> in a traditional web application,
-    i.e. without OSGi, the application configuration can be registered in the deployment descriptor-
-    (web.xml) by adding a
-    <code>context-param</code> with the fully qualified class name of the implementation:
+    When using <a href="rwt-standalone.html">RWT as a library</a> in a traditional web application
+    (i.e. without OSGi) the application configuration must be registered using a context parameter.
+    This can be done by adding a <code>context-param</code> element to the <code>web.xml</code>:
   </p>
-  <pre class="lang-xml">
+<pre class="lang-xml">
 &lt;context-param&gt;
   &lt;param-name&gt;org.eclipse.rap.applicationConfiguration&lt;/param-name&gt;
   &lt;param-value&gt;com.example.ExampleConfiguration&lt;/param-value&gt;
 &lt;/context-param&gt;
 </pre>
   <p>
-    You can always look up the <em>param-name</em> in the constant
-    <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html#CONFIGURATION_PARAM">ApplicationConfiguration#CONFIGURATION_PARAM</a></em>.
+    Replace the parameter value with the fully qualified class name of your application
+    configuration.
+    The parameter name is also contained in the constant
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html#CONFIGURATION_PARAM">ApplicationConfiguration#CONFIGURATION_PARAM</a></em>
+    as a reference.
   </p>
 
   <h2>
-    Starting an Application
+    Starting the Application
   </h2>
   <p>
-    When an application configuration has been registered as described above, the bundle
-    <em>org.eclipse.rap.rwt.osgi</em> will automatically start this application on
-    every available HttpService.
+    When an application configuration has been registered as a service in OSGi, the bundle
+    <em>org.eclipse.rap.rwt.osgi</em> will automatically start this application on any available
+    HttpService.
     When using Equinox, don’t forget to also include the <em>org.eclipse.equinox.ds</em> bundle.
   </p>
   <p>
@@ -168,9 +198,10 @@ application.addEntryPoint( "/example", Example.class, properties );
   </p>
   <p>
     As an alternative to letting the framework start the application automatically, applications
-    can also be started explicitly using an <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationRunner.html">ApplicationRunner</a></em>:
+    can also be started explicitly using an
+    <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationRunner.html">ApplicationRunner</a></em>:
   </p>
-  <pre class="lang-java">
+<pre class="lang-java">
 ApplicationConfiguration configuration = new SimpleConfiguration();
 ApplicationRunner runner = new ApplicationRunner( configuration, servletContext );
 runner.start();
