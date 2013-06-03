@@ -100,6 +100,39 @@ application.addEntryPoint( "/example", Example.class, properties );
     <a  href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addServiceHandler(java.lang.String, org.eclipse.rap.rwt.service.ServiceHandler)">service handler</a>.
   </p>
 
+  <h3>Exception Handlers</h3>
+  <p>
+    By default, any exception that occurs during the event handling in a RAP application
+    will lead to an HTTP 500 response (“Internal Server Error”).
+    As an effect, the current UISession can not be continued.
+    In a production environment, this is not always an appropriate response to an error.
+  </p>
+  <p>
+    Since RAP 2.1, a custom exception handler can be registered in an application configuration
+    to process exceptions that happen in event handling code.
+    When an exception handler is registered, all exceptions that occur while running the event
+    loop will be forwarded to this handler.
+    The exception handler can then decide to ignore the exception, to write it to a log,
+    display a message to the user, or to gracefully terminate the UISession.
+  </p>
+
+<pre class="lang-java">
+application.setExceptionHandler( new ExceptionHandler() {
+  @Override
+  public void handleException( Throwable exception ) {
+    // display error dialog, redirect to error page,
+    // write exception to log, ...
+  }
+});
+</pre>
+
+  <p>
+    To allow an exception handler to log all kinds of errors, it is even called for instances of
+    <code>Error</code>.
+    However, since errors must not be swallowed, they will be re-thrown after the handler was
+    called.
+  </p>
+
   <h2>Registering the Application Configuration</h2>
   <p>
     The application configuration needs to be registered in order to be found by the framework.
