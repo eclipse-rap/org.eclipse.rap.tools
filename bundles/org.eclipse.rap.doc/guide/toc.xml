@@ -119,6 +119,8 @@
           href="guide/reference/api/org/eclipse/rap/rwt/theme/package-summary.html"/>
       <topic label="org.eclipse.rap.rwt.widgets"
           href="guide/reference/api/org/eclipse/rap/rwt/widgets/package-summary.html"/>
+      <topic label="org.eclipse.rap.rwt.osgi"
+          href="guide/reference/api/org/eclipse/rap/rwt/osgi/package-summary.html"/>
       <topic label="org.eclipse.swt"
           href="guide/reference/api/org/eclipse/swt/package-summary.html"/>
       <topic label="org.eclipse.swt.accessibility"
