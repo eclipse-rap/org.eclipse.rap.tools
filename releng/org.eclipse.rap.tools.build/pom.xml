@@ -24,7 +24,7 @@
   <properties>
     <tycho-version>0.16.0</tycho-version>
     <tycho-extras-version>${tycho-version}</tycho-extras-version>
-    <base-platform>4.3milestones/S-4.3RC3-201305301430</base-platform>
+    <base-platform>4.3milestones/S-4.3RC4-201306052000</base-platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/rap/org.eclipse.rap.tools.git</tycho.scmUrl>
     <!-- disabled due to bug 393977
