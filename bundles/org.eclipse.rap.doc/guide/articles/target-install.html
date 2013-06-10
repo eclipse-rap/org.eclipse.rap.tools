@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2012 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2012, 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Installing a RAP Target</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -57,27 +57,23 @@
     </li>
     <li>
       The target editor will open and show the contents of this target definition.
-      Now, you must add the RAP runtime from a p2 repository ("software site").
+      Now, you must add the RAP runtime from a p2 repository (a “software site”).
       Press <em class="UILabel">Add</em>, select <em class="UILabel">Software Site</em>.
-      You'll be confronted with another dialog, named <em class="UILabel">Add Software Site</em>.
+      Another dialog will show up, named <em class="UILabel">Add Software Site</em>.
     </li>
     <li>
-      Again press <em class="UILabel">Add</em> and enter the URL of the RAP runtime repository.
-      You find these URLs on the RAP <a href="http://eclipse.org/rap/downloads/">download page</a>,
-      e.g.
-      <ul>
-        <li>
-          for RAP 2.1: http://download.eclipse.org/rt/rap/2.1
-        </li>
-      </ul>
-      Hint: You can also install the RAP runtime directly from a download zip archive.
+      Again press <em class="UILabel">Add</em> and enter the URL of the RAP repository.
+      You find these URLs on the RAP <a href="http://eclipse.org/rap/downloads/">download page</a>.
+      For RAP 2.1, the URL is <em>http://download.eclipse.org/rt/rap/2.1</em>.
+      You can also install RAP directly from a downloaded zip archive.
       In this case, press <em class="UILabel">Archive…</em> and select the zip file.
     </li>
     <li>
-      For a basic RAP target, select the category <em>Remote Application Platform (RAP)</em>.
-      This category contains two features:
-      The RAP runtime itself (<em>RAP Runtime Target Components</em>),
-      and a set of Eclipse bundles needed for a basic RAP target (<em>RAP Basic Equinox Target</em>).
+      Select the category <em>Remote Application Platform (RAP)</em>.
+      This category contains four features.
+      For a minimal RAP target, you'll need at least <em>RAP Runtime</em> and
+      <em>RAP Basic Target Requirements</em>.
+      If you want to include source code and demos, select all four features.
     </li>
     <li>
       Activate the target platform by clicking the link
