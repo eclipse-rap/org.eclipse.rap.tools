@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title> ClientScripting </title>
+  <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+  <style type="text/css">
+    .summaryTable {
+      width: 100%;
+      margin-bottom: 8px;
+	    border-right: 1px #7F8FB1 solid;
+      border-left: 1px #7F8FB1 solid;
+    }
+    .summaryTable td
+		{
+	    vertical-align: top;
+	    padding: 4px;
+		}
+		.summaryTable td.attributes
+		{
+	    border-right: 1px #7F8FB1 solid;
+	    border-bottom: 1px #7F8FB1 solid;
+	    width: 140px;
+	    text-align: right;
+		}
+    .summaryTable td.nameDescription
+		{
+	    border-bottom: 1px #7F8FB1 solid;
+	    text-align: left;
+	    font-size: 13px;
+		}
+
+		.summaryTable td.nameDescription, .description
+		{
+	    line-height: 15px;
+	    padding: 4px;
+	    padding-left: 4px;
+		}
+		.fixedFont
+		{
+	    line-height: 15px;
+	    color: #002EBE;
+	    font-family: "Courier New",Courier,monospace;
+	    font-size: 13px;
+		}
+		caption
+	  {
+	    background-color: #7F8FB1;
+	    color: #fff;
+	    font-size:130%;
+	    text-align: left;
+	    padding: 2px 6px 2px 6px;
+	    border: 1px #7F8FB1 solid;
+	  }
+  </style>
+</head>
+<body>
+
+  <h1>ClientScripting</h1>
+  <p>Index:</p>
+
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#java-api">Java API</a>
+	    <ul>
+	      <li><a href="#client-listener-class">The ClientListener Class</a></li>
+	      <li><a href="#event-types">Supported Event Types</a></li>
+	    </ul>
+    </li>
+    <li><a href="#javascript-api">JavaScript API</a>
+	    <ul>
+	      <li><a href="#event-object">The Event Object</a>
+		      <ul>
+			      <li><a href="#gc">GC</a></li>
+			    </ul>
+		    </li>
+		    <li><a href="#swt-object">The SWT Object</a></li>
+		    <li><a href="#widget-object">The Widget Object</a>
+		      <ul>
+	          <li><a href="#setter">Setter</a></li>
+	          <li><a href="#getter">Getter</a></li>
+	          <li><a href="#user-data">User data</a></li>
+	          <li><a href="#controls-methods">Methods on Controls</a></li>
+	          <li><a href="#data-types">Data Types</a></li>
+	        </ul>
+		    </li>
+	    </ul>
+    </li>
+    <li><a href="#limitations">Known Limitations</a></li>
+    <li><a href="#restrictions">General Restrictions and Discouraged Usage</a></li>
+    <li><a href="#hints">JavaScript Hints for Java Developer</a>
+      <ul>
+        <li><a href="#differences">Noteable differences between Java and JavaScript</a></li>
+        <li><a href="#similarities">Noteable similarities between Java and JavaScript</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2><a name="#overview">Overview</a></h2>
+  <p>
+    Conventional RAP applications are running almost entirely on a Server, with a thin client only
+    rendering a user interface with some limited interactivity. This has several advantages, but it
+    also means all application-relevant events have to be forwarded to the Server before being
+    processed, causing small delays and traffic. Scenarios where interactions occur with a high
+    frequency, like typing or mouse movements, would therefore be undesirable.
+  </p>
+  <p>
+    This is where RAP ClientScripting can help. ClientScripting allows developers to handle some of
+    the events directly on the client, without creating any http-requests. This is ideal to
+    customize or enhance the behavior of specific widgets, making it much less often necessary to
+    develop RAP custom-widgets.
+  </p>
+  <p>
+    The scripts themselves are written in JavaScript on a SWT-like API. This allows application
+    developers with SWT-experience to get started right away, and makes porting between SWT and
+    RAP-ClientScripting fairly easy. Even without any JavaScript-experience, this document should
+    provide you with all the basics you need for ClientScripting.
+  </p>
+
+  <h2><a name="#java-api">Java API</a></h2>
+  <p>
+    Client event processing works like untyped event handling in SWT, with the main difference that
+    the handler itself has to be written in JavaScript, and is added to the widget using a method
+    on the listener itself. It also does (naturally) not have access to all of the resources and
+    functionality that would be available on the server.
+  </p>
+
+  <h3><a name="#client-listener-class">The ClientListener Class</a></h3>
+  <p>
+    Instances of this class represent a JavaScript function that can be attached to any widget for
+    any supported event. It's similar in concept to <code>org.eclipse.swt.widgets.Listener</code>,
+    but can only be executed on the client.
+  </p>
+  <table class="summaryTable" cellspacing="0">
+	  <caption>Constructor Summary</caption>
+	  <tbody>
+	    <tr>
+	      <td class="nameDescription">
+	        <div class="fixedFont"><b>ClientListener</b>( String scriptCode )
+	        </div>
+	        <div class="description">
+	          Creates an instance of <code>ClientListener</code> using the given String as JavaScript
+	          source code.
+	        </div>
+	      </td>
+	    </tr>
+	  </tbody>
+	</table>
+	<p>
+    Example:
+  </p>
+  <pre class="lang-java">
+widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
+  </pre>
+  <p>
+    The JavaScript source code can define any number of named function, either with
+    "<code>var myFunction = function(){};</code>" or "<code>function myFunction(){};</code>".
+    One of the functions has to be named "<code>handleEvent</code>" and take one argument (the
+    event). Example: "<code>var handleEvent = function( event ){ ... };</code>". The other functions
+    can be called from handleEvent to be used as helper functions. The order in which the functions
+    are defined is not relevant.
+  </p>
+  <p>
+    If your script is longer than a few lines, we recommend to read it from an external file.
+  </p>
+  <p>
+    For the documentation of the "event" object, see the JavaScript chapter below. Note that the
+    function is executed without any context ("this"), meaning that unlike the SWT
+    <code>handleEvent</code> method, it is not a member of an object.
+  </p>
+
+  <h3><a name="#event-types">Supported Event Types</a></h3>
+  <table border="1" cellpadding="3" cellspacing="0">
+    <tr>
+      <th align="left">Event Type</th>
+      <th align="left">Notes</th>
+    </tr>
+    <tr>
+      <td>
+        <code>KeyDown</code>
+      </td>
+      <td>
+        Fired once when pressing a key, then repeatedly while holding it down. The <code>doit</code>
+        flag can be used to prevent the character from beeing inserted.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>KeyUp</code>
+      </td>
+      <td>
+        Fired when releasing a key.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>MouseDown</code>
+      </td>
+      <td>
+        Fired when pressing a mouse button.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>MouseUp</code>
+      </td>
+      <td>
+        Fired when releasing a mouse button.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>MouseMove</code>
+      </td>
+      <td>
+        Fired when moving the mouse within the widget. This type is not supported in server-side
+        RAP, only clientscripting.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>MouseEnter</code>
+      </td>
+      <td>
+        Fired when moving the mouse over the widget. This type is not supported in server-side RAP,
+        only clientscripting.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>MouseExit</code>
+      </td>
+      <td>
+        Fired when moving the mouse out of the widget. This type is not supported in server-side
+        RAP, only clientscripting.
+      </td>
+     </tr>
+    <tr>
+      <td>
+        <code>MouseDoubleClick</code>
+      </td>
+      <td>
+        Fired when clicking twice.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>FocusIn</code>
+      </td>
+      <td>
+        Fired when widget is focused.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>FocusOut</code>
+      </td>
+      <td>
+        Fired when widget is blured.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Paint</code>
+      </td>
+      <td>
+        Fired when widget appears, is changing size, or when "redraw" is called on the widget either
+        in java, or in clientscripting. Only supported on <code>Canvas</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Selection</code>
+      </td>
+      <td>
+        Fired on List widgets when selection changes. Other widgets are currently not supported.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>DefaultSelection</code>
+      </td>
+      <td>
+        Fired on List widgets when an item is double-clicked. (As in SWT and server-side RAP.) Other
+        widgets are currently not supported.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Modify</code>
+      </td>
+      <td>
+        Fired then the value of the "text" property of a <code>Text</code> widget changes. Not
+        supported on other widgets.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Verify</code>
+      </td>
+      <td>
+        Fired then the value of the "text" property of a <code>Text</code> widget is changed by the
+        user. Not supported on other widgets. The <code>doit</code> flag can be used to prevent the
+        change. The "text" field of the event may be changed to replace the inserted text.
+      </td>
+    </tr>
+  </table>
+
+  <h2><a name="#javascript-api">JavaScript API</a></h2>
+  <h3><a name="#event-object">The Event Object</a></h3>
+  <p>
+    This object is given as the first argument when calling a client event listener function. Its
+    API is designed after <code>org.eclipse.swt.widgets.Event</code>.
+  </p>
+  <table class="summaryTable" cellspacing="0">
+      <caption>Field Summary</caption>
+      <tbody>
+        <tr>
+          <td class="attributes"><code>number</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>type</b>
+            </div>
+            <div class="description">
+              the type of event, as defined by the event type constants in object <code>SWT</code>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>Widget</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>widget</b>
+            </div>
+            <div class="description">
+              an object representing the widget that issued the event.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>boolean</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>doit</b>
+            </div>
+            <div class="description">
+              depending on the event, a flag indicating whether the operation should be allowed.
+              Setting this field to false will cancel the operation. Currently supported only for
+              key and mouse events on <code>Text</code> and <code>Text</code>-like widgets.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>number</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>keyCode</b>
+            </div>
+            <div class="description">
+              depending on the event, the key code of the key that was typed, as defined by the key
+              code constants in object <code>SWT</code>. When the character field of the event is
+              ambiguous, this field contains the unaffected value of the original character. For
+              example, typing Shift+M or M results in different characters ( 'M' and 'm' ), but the
+              same keyCode (109, character code for 'm').
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>string</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>character</b>
+            </div>
+            <div class="description">
+              depending on the event, the character represented by the key that was typed. This is
+              the final character that results after all modifiers have been applied. For
+              non-printable keys (like arrow-keys) this field is not set. Changing its value has no
+              effect.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>number</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>stateMask</b>
+            </div>
+            <div class="description">
+              depending on the event, the state of the keyboard modifier keys and mouse masks at the
+              time the event was generated.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>number</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>button</b>
+            </div>
+            <div class="description">
+              the button that was pressed or released; 1 for the first button, 2 for the second
+              button, and 3 for the third button, etc.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>number</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>x</b>
+            </div>
+            <div class="description">
+              x coordinate of the pointer at the time of the event
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>number</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>y</b>
+            </div>
+            <div class="description">
+              y coordinate of the pointer at the time of the event
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>string</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>text</b>
+            </div>
+            <div class="description">
+              depending on the event, the new text that will be inserted. Setting this field will
+              change the text that is about to be inserted or deleted.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>number</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>start</b>
+            </div>
+            <div class="description">
+              depending on the event, the range of text being modified. Setting these fields has no
+              effect.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>number</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>end</b>
+            </div>
+            <div class="description">
+              depending on the event, the range of text being modified. Setting these fields has no
+              effect.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>object</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>gc</b>
+            </div>
+            <div class="description">
+              the graphics context to use when painting
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      The fields "keyCode" and "character" are set on key and verify events. "stateMask" is set for
+      key and mouse events. "x", "y" and "button" are set for mouse events. "text", "start" and
+      "end" are set for verify events. "gc" is set only on paint events. The "doit" flag is
+      supported on key and verify events.
+    </p>
+
+    <h3><a name="#gc">GC</a></h3>
+    <p>
+		  The client-side GC does not feature the API of the SWT GC. Instead it supports a subset of the
+		  HTML5 Canvas API (<a class="external free" rel="nofollow" title="http://www.w3.org/TR/2dcontext/" href="http://www.w3.org/TR/2dcontext/">http://www.w3.org/TR/2dcontext/</a>):
+		</p>
+		<ul>
+		  <li>Fields:
+				<ul>
+					<li>strokeStyle</li>
+					<li>fillStyle</li>
+					<li>lineWidth</li>
+					<li>lineJoin</li>
+					<li>lineCap</li>
+					<li>miterLimit</li>
+					<li> globalAlpha</li>
+				</ul>
+		  </li>
+		  <li>Methods:
+				<ul>
+				  <li>save</li>
+				  <li>restore</li>
+				  <li>beginPath</li>
+				  <li>closePath</li>
+				  <li>clearRect (Limitation: in IE 7+8 arguments are ignored, the entire canvas is cleared)
+				  </li>
+				  <li>stroke</li>
+				  <li>fill</li>
+				  <li>moveTo</li>
+				  <li>lineTo</li>
+				  <li>quadraticCurveTo</li>
+				  <li>bezierCurveTo</li>
+				  <li>rect</li>
+				  <li>arc (Limitation: in IE 7+8 not available in RAP 1.5, only RAP 2.x)</li>
+				  <li>drawImage</li>
+				  <li>createLinearGradient (Limitations: In IE 7+8, the gradient can be only be drawn either
+				  vertically or horizontally. Calls to "addColorStop" must be in the order of the offsets
+				  and can not overwrite previous colorsStops)</li>
+				</ul>
+		  </li>
+		</ul>
+		<ul>
+		  <li>In IE7+8, these are all supported methods. More may be supported on other browser, since
+		    the the native HTML5 canvas is used.
+		  </li>
+		</ul>
+		<ul>
+		  <li>HTML5 canvas does not support drawing ellipses. A possible workaround can be found
+		    <a href="http://stackoverflow.com/a/2173084/1466158" class="external text" title="http://stackoverflow.com/a/2173084/1466158" rel="nofollow">here</a>.
+		  </li>
+		</ul>
+		<p>
+		  It is not a good idea to attach a server-side AND a client-side paint listener. Both will be
+		  triggered.
+		</p>
+
+		<h3><a name="#swt-object">The SWT Object</a></h3>
+		<p>
+		  The SWT object contains a number of public contants. It is available as a local variable
+		  within the scope of any ClientScripting function. Its API is designed after
+		  <code>org.eclipse.swt.SWT</code>, but the values for the constants may be different. To get
+		  an overview of all available constants and their purpose, view the file
+		  "js/rwt/scripting/SWT.js" from the RWT bundle.
+    </p>
+
+    <h3><a name="#widget-object">The Widget Object</a></h3>
+    <p>
+      The Widget object in RAP ClientScripting is an abstract representation of an SWT widget. It
+      has a subset of the API of the actual SWT Widget it represents. In some cases the API may
+      slightly differ.
+    </p>
+
+    <h4><a name="#setter">Setter</a></h4>
+    <p>
+      All widgets have setter functions for all properties defined in the
+      <a href="http://wiki.eclipse.org/RAP/Protocol" class="external text" title="http://wiki.eclipse.org/RAP/Protocol" rel="nofollow">RAP-Protocol</a>.
+      All setter take exactly one argument. For a case of overloaded setter in SWT, they are usually
+      taking the most complex/complete type of argument. For example, <code>Text</code> has
+      "<code>setSelection( int start )</code>", "<code>setSelection( Point selection )</code>" and
+      "<code>setSelection( int start, int end )</code>". The setter
+      "<code>setSelection( Point selection )</code>" is one with the complete data and takes only
+      one argument. Since <code>Point</code> is represented in ClientScripting as an Array (see Data
+      Types below), the setter is "<code>setSelection( [ start, end ] )</code>".
+    </p>
+    <p>
+      <strong>Please be aware that as of now, changing a widgets property with these setter
+      will in most cases only affect it's client side representation.</strong> Only properties that
+      can also be changed by a user's interaction with the UI (like selection) will also be updated
+      on the java widget instance. This will be improved in later versions to fully synchronize all
+      properties.
+    </p>
+
+    <h4><a name="#getter">Getter</a></h4>
+    <p>
+      Currently only some getters are available. Note that the getter might return null, but never
+      undefined.
+    </p>
+
+    <h4><a name="#user-data">User data</a></h4>
+    <p>
+      The Widget provides object a <code>setData</code> and a <code>getData</code> function. Similar
+      to SWT, these allow to attach data to a widget instance without affecting the widget itself.
+      Unlike SWT any value can be stored with <code>setData</code> not just objects. By default, the
+      data storage on the client is not synchronized with the data storage on the actual SWT Widget.
+    </p>
+    <table class="summaryTable" cellspacing="0">
+      <caption>Function Summary</caption>
+      <tbody>
+        <tr>
+          <td class="attributes"><code>undefined</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>setData</b>( string key, value value )
+            </div>
+            <div class="description">
+              stores the given value. The key is mandatory.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>value</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>getData</b>( string key )
+            </div>
+            <div class="description">
+              gets a stored value. The key is mandatory.
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Data attached to the SWT Widget can be transfarred to the ClientScripting widget. To do so,
+      the key for that data has to be registered with the
+      <code>WidgetUtil.registerDataKeys( String... )</code>, like so:
+    </p>
+    <pre class="lang-java">
+WidgetUtil.registerDataKeys( &quot;foo&quot; );
+widget.setData( &quot;foo&quot;, &quot;myData&quot; );
+    </pre>
+    <p>
+      The key has only to be added once per session, but adding it multiple times has no side
+      effects. The following types are supported:
+    </p>
+    <ul>
+			<li>null</li>
+			<li>String</li>
+			<li>Byte</li>
+			<li>Short</li>
+			<li>Integer</li>
+			<li>Long</li>
+			<li>Double</li>
+			<li>Float</li>
+			<li>Boolean</li>
+			<li>int[]</li>
+			<li>boolean[]</li>
+			<li>String[]</li>
+			<li>Object[]</li>
+			<li>Map</li>
+			<li>JsonValue</li>
+		</ul>
+		<p>
+		  Changing the value on the client does not change it on the server.
+    </p>
+    <p>
+      Widgets can not be transferred, but the id can:
+    </p>
+    <p>Java:</p>
+    <pre class="lang-java">
+widget.setData( &quot;otherWidget&quot;, WidgetUtil.getId( otherWidget ) );
+    </pre>
+    <p>JavaScript:</p>
+    <pre class="lang-javascript">
+var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
+    </pre>
+
+    <h4><a name="#controls-methods">Methods on Controls</a></h4>
+    <p>
+      Controls provide some additional methods:
+    </p>
+    <table class="summaryTable" cellspacing="0">
+      <caption>Function Summary</caption>
+      <tbody>
+        <tr>
+          <td class="attributes"><code>boolean</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>forceFocus()</b>
+            </div>
+            <div class="description">
+              forces the control to get keyboard focus, even if it can not be focused by the user
+              (by mouse mouse/keyboard). Returns true if the control got focus, and false if it was
+              unable to.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="attributes"><code>undefined</code></td>
+          <td class="nameDescription">
+            <div class="fixedFont"><b>redraw()</b>
+            </div>
+            <div class="description">
+              fires a <code>Paint</code> event. Only useful with <code>Canvas</code>.
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4><a name="#data-types">Data Types</a></h4>
+    <p>
+      The type and format of the values that can be set/get on the widget objects is a
+      javascript-specific approximation of its SWT counterpart. They are identical to those used in
+      the RAP Protocol.
+    </p>
+    <p>
+      For simple data types/values the mapping is as follows:
+    </p>
+    <table border="1" cellpadding="3" cellspacing="0">
+			<tr>
+			  <th>SWT</th>
+			  <th>ClientScripting</th>
+			</tr>
+			<tr>
+			  <td>void</td>
+			  <td>undefined</td>
+			</tr>
+			<tr>
+			  <td>null</td>
+			  <td>null</td>
+			</tr>
+			<tr>
+			  <td>boolean</td>
+			  <td>boolean</td>
+			</tr>
+			<tr>
+			  <td>int</td>
+			  <td>number, but treated like int</td>
+			</tr>
+			<tr>
+			  <td>float</td>
+			  <td>number</td>
+			</tr>
+			<tr>
+			  <td>String</td>
+			  <td>string</td>
+			</tr>
+			<tr>
+			  <td>char</td>
+			  <td>string with length of 1</td>
+			</tr>
+	  </table>
+	  <p>
+	    For complex types see <a href="http://wiki.eclipse.org/RAP/Protocol#Common_Data_Types">http://wiki.eclipse.org/RAP/Protocol#Common_Data_Types</a>.
+    </p>
+
+    <h2><a name="#limitations">Known Limitations</a></h2>
+    <p>
+      This is a list of limitations on existing features with the current ClientScripting
+      implementation. Limitations are not bugs, those are tracked in bugzilla only. If a bugzilla
+      entry for a listed issue exists, it should be linked, but not all limitations are
+      possible/planned to be fixed in the future.
+    </p>
+		<ul>
+		  <li>
+		    As mentioned above, there are only some <b>getter</b> available on the widget object. New
+		    ones will added as needed.
+		  </li>
+		  <li>
+		    Also mentioned above, many property changes (such as background color) are currently <b>not
+		    synchronized</b> with the server.
+		  </li>
+		  <li>
+		    The <b>doit</b> flag is currently only supported on the Text Widget for Key and Verify
+		    events.
+		  </li>
+		  <li>
+		    It is not (and will not be) possible to prevent Text Widget selection/carret change by
+		    mouse (using doit flag). Its also not supported to set the Text selection property in a
+		    <b>MouseDown</b> event. These are also not working (correctly) in SWT. Changing selection on
+		    Text on a MouseUp works.
+		  </li>
+		  <li><b>Verify</b> event:
+				<ul>
+				  <li>Currently only supported on Text.</li>
+				  <li>
+				    Setting the text or selection property <i>of the target</i> within the Verify event is
+				    not supported, but it doesn't produce useful results in SWT either. The modiy event is
+				    better suited for this.
+				  </li>
+				  <li>
+				    Changing the events "text" field has no effect if its empty to begin with. (I.e.
+				    deleting can not be used to insert text).
+				  </li>
+				</ul>
+		  </li>
+		  <li>
+		    In SWT, some <b>key constants</b> can be compared with both the keyCode field and the
+		    character field (<code>SWT.DEL, SWT.ESC, SWT.BS, SWT.BS, SWT.CR, SWT.TAB</code>). In
+		    ClientScripting they can only be compared with the keyCode field. The character field will
+		    either not be set for these keys, or contain a (javascript) string, while these constants
+		    are numbers.
+			</li>
+	  </ul>
+
+	  <h2><a name="#restrictions">General Restrictions and Discouraged Usage</a></h2>
+	  <p>
+	    For the RAP default client, ClientScripting runs in the same environment as the client itself.
+      For reasons of stability, compatibility and security you should not:
+    </p>
+    <ul>
+      <li>Try to access any internal RAP client API.</li>
+      <li>Manipulate any of the ClientScripting objects in an undocumented manner.</li>
+      <li>Access any DOM (HTML) elements.</li>
+      <li>Manipulate any of JavaScript's own prototypes/constructors (Object, Function, etc.).</li>
+      <li> Set a widget's property to any invalid/unsupported values.</li>
+    </ul>
+    <p>
+      Violating any of the above guidelines might create unpredictable results, even if the
+      application seems to run fine at first.
+    </p>
+    <p>
+      Accessing the window/document Objects is discouraged for cross-browser/cross-client
+      compaibility concerns. You can do so at your own risk.
+    </p>
+    <p>
+      Creating global variables is also heavily discouraged, and can easily happen by accident if a
+      variable is created without the "var" keyword.
+    </p>
+    <p>
+      For security reasons you should be aware that, unlike RAP source code written in Java, all
+      ClientScripting functions (JavaScript source code) are currently transferred to the client
+      completely unaltered (including comments), and can be read by any user with enough technical
+      expertice.
+    </p>
+
+    <h2><a name="#hints">JavaScript Hints for Java Developer</a></h2>
+    <p>
+      Developers experienced with Java programming and less familiar with (or completely new to)
+      JavaScript might find the following hints useful in regard to ClientScripting:
+    </p>
+
+    <h3><a name="#differences">Noteable differences between Java and JavaScript</a></h3>
+    <ul><li><b>JavaScript variables are dynamically typed and have function scope</b></li></ul>
+		<p>
+		  All local variables in JavaScript are delcared with "var" and can contain any type (undefined,
+		  null, number, boolean, string, object). It is not relevant at all where in the function it is
+		  declared, its scope is always the entire function.
+		</p>
+    <ul><li><b>Strings are not objects</b></li></ul>
+    <p>
+      Strings are primitives in JavaScript, and are compared with "<code>==</code>" (or
+      "<code>===</code>"), not "<code>.equals</code>". However, string primitives can be coerced
+      into a string object, on which several useful methods are
+      <a href="http://www.w3schools.com/jsref/jsref_obj_string.asp">available</a>.
+    </p>
+    <ul><li><b>A number is not always a number</b></li></ul>
+    <p>
+      When calculating a numeric value in JavaScript, the result might not always be a number, even
+      if it is of the <i>type</i> number. The two cases are <code>infinity</code> (e.g. "<code>10/0
+      == infinity</code>") and <code>NaN</code> (not a number, e.g. "<code>Math.sqrt( -1 )</code>").
+      <code>NaN</code> can be detected only by using <code>isNaN</code> (e.g. "
+      <code>isNaN( Math.sqrt( -1 ) ) == true</code>"). If a number is neither <code>NaN</code> nor
+      <code>infinity</code>, it can do most things Javas <code>int</code> or <code>double</code>
+      can, including bitwise operations.
+    </p>
+    <ul><li><b>Arrays have dynamic length</b></li></ul>
+    <p>
+      Even though their syntax is very similar, JavaScript Arrays behave more like Java Lists than
+      Java Arrays. They can store different types in different slots, and can change their length as
+      needed. They also have differently named, but similarly working
+      <a href="http://www.w3schools.com/jsref/jsref_obj_array.asp">methods</a>.
+    </p>
+
+    <h3><a name="#similarities">Noteable similarities between Java and JavaScript</a></h3>
+    <ul><li><b>Objects and Maps</b></li></ul>
+    <p>
+      JavaScript Objects (created with a literal "<code>{}</code>") can be used like Java Maps. A
+      "<code>map.put( "key", value )</code>" would be "<code>map[ key ] = value</code>", and a
+      "<code> map.get( "key" )</code>" would be "<code>map[ "key" ] </code>". In JavaScript,
+      <code>value</code> could be of any type.
+    </p>
+    <ul><li><b>System.out.println and console.log</b></li></ul>
+    <p>
+      Most browser (but not all!) have some form of javascript console. They all have at least one
+      function in common that can be used like <code>System.out.println</code>, which is
+      <code>console.log</code>. Some browser also have <code>console.trace</code>. Browser not
+      supporting <code>console.log</code> (or in case of InternetExplorer, not having it activated),
+      will crash when calling that method, so remember removing all occurrences of console from your
+      JavaScript code after debugging.
+    </p>
+    <ul><li><b>Math and Math</b></li></ul>
+    <p>
+      The Java <code>Math</code> class and the JavaScript <code>Math</code> object have almost
+      identical <a href="http://www.w3schools.com/jsref/jsref_obj_math.asp">API</a>.
+    </p>
+    <ul><li><b>Date and Date</b></li></ul>
+    <p>
+      The JavaScript constructor
+      <code><a href="http://www.w3schools.com/jsref/jsref_obj_date.asp">Date</a></code>
+      creates objects almost identical in API to instances of Javas <code>Date</code> class.
+    </p>
+    <ul><li><b>Regular Expressions and RegExp</b></li></ul>
+    <p>
+      JavaScript also supports
+      <a href="http://www.w3schools.com/jsref/jsref_obj_regexp.asp">regular expressions</a>.
+    </p>
+    <ul><li><b>char and string</b></li></ul>
+    <p>
+      JavaScript has no <code>char</code> type. For ClientScripting, a string with a length of one
+      character is used instead. This allows for comparison like
+      "<code>event.character == "A"</code>", but not "<code>event.character &gt;= 65</code>".
+      To do that use <code>charCodeAt</code>.
+      Example: "<code>event.character.charCodeAt( 0 ) &gt;= 65</code>".
+    </p>
+
+</body>
+</html>
