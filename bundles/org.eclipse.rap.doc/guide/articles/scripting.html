@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2013 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title> Scripting </title>
+  <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+
+  <h1>Scripting</h1>
+  <h2>Overview</h2>
+  <p>
+    RAP applications are running almost entirely on a Server, all application-relevant events
+    that occur on the client have to be forwarded to the Server before being
+    processed. Scenarios minor delays are unacceptable
+    (e.g. typing or mouse movements) would therefore be undesirable.
+  </p>
+  <p>
+    This is where RWT Scripting can help. With scripting developers can handle some of
+    the events directly on the client, without creating any HTTP-requests. This is ideal to
+    customize or enhance the behavior of specific widgets, <em>especially</em> <code>Text</code>.
+  </p>
+  <p>
+    The scripts themselves are written in JavaScript on a SWT-like API. This allows application
+    developers with SWT-experience to get started right away, and makes porting between SWT and
+    RWT Scripting fairly easy. Even without any JavaScript-experience, this document should
+    provide you with all the basics you need for RWT Scripting.
+  </p>
+
+  <h2 id="java-api">Java API</h2>
+  <p>
+    Client event processing works like untyped event handling in SWT, with the main difference that
+    the handler itself has to be written in JavaScript. It also does (naturally) not have access
+    to all of the resources and functionality that would be available on the server. To attach a
+    client side listener to a widget, Instances of this <code>ClientListener</code>
+    are used.
+  </p>
+  <p>
+    Example:
+  </p>
+  <pre class="lang-java">
+widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
+  </pre>
+  <p>
+    The JavaScript source code can define any number of named function, either with
+    "<code>var myFunction = function(){};</code>" or "<code>function myFunction(){};</code>".
+    The function named "<code>handleEvent</code>" (obligatory) is the one that is called in case an event
+    is fired. It takes one argument, the event. Example:
+    "<code>var handleEvent = function( event ){ ... };</code>". Other functions
+    can be called from handleEvent to be used as helper. The order in which the functions
+    are defined is not relevant.
+  </p>
+  <p>
+    If your script is longer than a few lines, we recommend to read it from an external file.
+    If it is very long and used repeatedly, only one instance of
+    <code>ClientListener</code> should be created and shared within the session, for example
+    by using the SessionStore or creating a SessionSingleton that extends <code>ClientListener</code>.
+  </p>
+
+  <h3 id="events">Supported Event Types</h3>
+  <table border="1" cellpadding="3" cellspacing="0">
+    <tr>
+      <th align="left">Event Type</th>
+      <th align="left">Notes</th>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.KeyDown</code>
+      </td>
+      <td>
+        Fired once when pressing a key, then repeatedly while holding it down. The <code>doit</code>
+        flag can be used to prevent the character from beeing inserted.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.KeyUp</code>
+      </td>
+      <td>
+        Fired when releasing a key.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.MouseDown</code>
+      </td>
+      <td>
+        Fired when pressing a mouse button.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.MouseUp</code>
+      </td>
+      <td>
+        Fired when releasing a mouse button.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.MouseMove</code>
+      </td>
+      <td>
+        Fired when moving the mouse within the widget. This type is not supported in server-side
+        RAP, only RWT Scripting.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.MouseEnter</code>
+      </td>
+      <td>
+        Fired when moving the mouse over the widget. This type is not supported in server-side RAP,
+        only RWT Scripting.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.MouseExit</code>
+      </td>
+      <td>
+        Fired when moving the mouse out of the widget. This type is not supported in server-side
+        RAP, only RWT Scripting.
+      </td>
+     </tr>
+    <tr>
+      <td>
+        <code>SWT.MouseDoubleClick</code>
+      </td>
+      <td>
+        Fired when clicking twice.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.FocusIn</code>
+      </td>
+      <td>
+        Fired when widget is focused.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.FocusOut</code>
+      </td>
+      <td>
+        Fired when widget is blured.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.Paint</code>
+      </td>
+      <td>
+        Fired when widget appears, is changing size, or when "redraw" is called on the widget either
+        in java, or in RWT Scripting. Only supported on <code>Canvas</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.Selection</code>
+      </td>
+      <td>
+        Fired on List widgets when selection changes. Other widgets are currently not supported.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.DefaultSelection</code>
+      </td>
+      <td>
+        Fired on List widgets when an item is double-clicked. (As in SWT and server-side RAP.) Other
+        widgets are currently not supported.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.Modify</code>
+      </td>
+      <td>
+        Fired then the value of the "text" property of a <code>Text</code> widget changes. Not
+        supported on other widgets.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>SWT.Verify</code>
+      </td>
+      <td>
+        Fired then the value of the "text" property of a <code>Text</code> widget is changed by the
+        user. Not supported on other widgets. The <code>doit</code> flag can be used to prevent the
+        change. The "text" field of the event may be changed to replace the inserted text.
+      </td>
+    </tr>
+  </table>
+
+  <h2 id="js-api">JavaScript API</h2>
+
+    <h3>The Widget Object</h3>
+    <p>
+      The Widget object in RWT Scripting is an abstract representation of an SWT widget. It
+      has a JavaScript conform subset of the API of the actual SWT Widget it represents.
+      In some cases the API may differ slightly. The object can be obtained from the event, or
+      from <code>rap.getObject</code>.
+    </p>
+    <p>
+      As in SWT the Widget provides <code>setData</code> and a <code>getData</code> methods. These
+      allow to attach data to a widget instance without affecting the widget itself.
+      Unlike SWT any value can be stored with <code>setData</code>, not just objects.
+    </p>
+    <p>
+      Data attached to the SWT Widget can be transfarred to the Scripting widget. To do so,
+      the key for that data has to be registered with the
+      <code>WidgetUtil.registerDataKeys( String... )</code>, like so:
+    </p>
+    <pre class="lang-java">
+WidgetUtil.registerDataKeys( &quot;foo&quot; );
+widget.setData( &quot;foo&quot;, &quot;myData&quot; );
+    </pre>
+    <p>
+      The key has only to be added once per session, but adding it multiple times has no side
+      effects. The following types are supported:
+    </p>
+    <ul>
+      <li>null</li>
+      <li>String</li>
+      <li>Byte</li>
+      <li>Short</li>
+      <li>Integer</li>
+      <li>Long</li>
+      <li>Double</li>
+      <li>Float</li>
+      <li>Boolean</li>
+      <li>int[]</li>
+      <li>boolean[]</li>
+      <li>String[]</li>
+      <li>Object[]</li>
+      <li>Map</li>
+      <li>JsonValue</li>
+    </ul>
+    <p>
+      Changing the value on the client does not change it on the server.
+    </p>
+    <p>
+      Widgets can <i>not</i> be transferred, but the id can:
+    </p>
+    <p>Java:</p>
+    <pre class="lang-java">
+widget.setData( &quot;otherWidget&quot;, WidgetUtil.getId( otherWidget ) );
+    </pre>
+    <p>JavaScript:</p>
+    <pre class="lang-javascript">
+var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
+    </pre>
+
+    <h4>Methods on Controls</h4>
+    <!-- TODO: obsolete after creating JSDoc reference -->
+    <p>
+      Controls provide some additional methods:
+    </p>
+    <table cellspacing="0">
+      <caption>Function Summary</caption>
+      <tbody>
+        <tr>
+          <td><code>boolean</code></td>
+          <td>
+            <div><b>forceFocus()</b>
+            </div>
+            <div>
+              forces the control to get keyboard focus, even if it can not be focused by the user
+              (by mouse mouse/keyboard). Returns true if the control got focus, and false if it was
+              unable to.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>undefined</code></td>
+          <td>
+            <div><b>redraw()</b>
+            </div>
+            <div>
+              fires a <code>Paint</code> event. Only useful with <code>Canvas</code>.
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Data Types</h4>
+    <!-- TODO: obsolete after creating JSDoc reference -->
+    <p>
+      The type and format of the values that can be set/get on the widget objects is a
+      javascript-specific approximation of its SWT counterpart. They are identical to those used in
+      the RAP Protocol.
+    </p>
+    <p>
+      For simple data types/values the mapping is as follows:
+    </p>
+    <table border="1" cellpadding="3" cellspacing="0">
+      <tr>
+        <th>SWT</th>
+        <th>RWT Scripting</th>
+      </tr>
+      <tr>
+        <td>void</td>
+        <td>undefined</td>
+      </tr>
+      <tr>
+        <td>null</td>
+        <td>null</td>
+      </tr>
+      <tr>
+        <td>boolean</td>
+        <td>boolean</td>
+      </tr>
+      <tr>
+        <td>int</td>
+        <td>number, but treated like int</td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td>number</td>
+      </tr>
+      <tr>
+        <td>String</td>
+        <td>string</td>
+      </tr>
+      <tr>
+        <td>char</td>
+        <td>string with length of 1</td>
+      </tr>
+    </table>
+
+    <h2 id="limitations">Noteable Limitations and discouraged Usage</h2>
+    <ul>
+      <li>
+        It is not (and will not be) possible to prevent <code>Text</code> selection/carret change by
+        mouse (using doit flag). Its also not supported to set the Text selection property in a
+        MouseDown event. These are also not working (correctly) in SWT. Changing selection on
+        Text on a MouseUp works.
+      </li>
+      <li>Verify event:
+        <ul>
+          <li>Currently only supported on Text.</li>
+          <li>
+            Setting the text or selection property <i>of the target</i> within the Verify event is
+            not supported, but it doesn't produce useful results in SWT either. The modiy event is
+            better suited for this.
+          </li>
+          <li>
+            Changing the events "text" field has no effect if its empty to begin with. (I.e.
+            deleting can not be used to insert text).
+          </li>
+        </ul>
+      </li>
+      <li>
+        In SWT, some key constants can be compared with both the keyCode field and the
+        character field (<code>SWT.DEL, SWT.ESC, SWT.BS, SWT.BS, SWT.CR, SWT.TAB</code>). In
+        RWT Scripting they can only be compared with the keyCode field. The character field will
+        either not be set for these keys, or contain a (JavaScript) string, while these constants
+        are numbers.
+      </li>
+      <li>
+        Accessing the window/document Objects is discouraged for cross-browser/cross-client
+        compaibility concerns. You can do so at your own risk.
+      </li>
+      <li>
+        Creating global variables from within a ClientListener is also heavily discouraged
+        and can easily happen by accident if a
+        variable is created without the "var" keyword.
+      </li>
+      <li>
+        For <b>security</b> reasons you should be aware that, unlike RAP source code written in
+        Java, all RWT Scripting functions (JavaScript source code) are currently transferred to
+        the client completely unaltered, <i>including comments</i>,
+        and can be read by any user with enough technical expertice.
+      </li>
+    </ul>
+
+
+    <h2 id="jshints">JavaScript Hints for Java Developer</h2>
+    <p>
+      Developers experienced with Java programming and less familiar with (or completely new to)
+      JavaScript might find the following hints useful in regard to RWT Scripting:
+    </p>
+
+    <h3>Noteable differences between Java and JavaScript</h3>
+    <ul><li><b>JavaScript variables are dynamically typed and have function scope</b></li></ul>
+    <p>
+      All local variables in JavaScript are delcared with "var" and can contain any type (undefined,
+      null, number, boolean, string, object). It is not relevant at all where in the function it is
+      declared, its scope is always the entire function.
+    </p>
+    <ul><li><b>Strings are not objects</b></li></ul>
+    <p>
+      Strings are primitives in JavaScript, and are compared with "<code>==</code>" (or
+      "<code>===</code>"), not "<code>.equals</code>". However, string primitives can be coerced
+      into a string object, on which several useful methods are
+      <a href="http://www.w3schools.com/jsref/jsref_obj_string.asp">available</a>.
+    </p>
+    <ul><li><b>A number is not always a number</b></li></ul>
+    <p>
+      When calculating a numeric value in JavaScript, the result might not always be a number, even
+      if it is of the <i>type</i> number. The two cases are <code>infinity</code> (e.g. "<code>10/0
+      == infinity</code>") and <code>NaN</code> (not a number, e.g. "<code>Math.sqrt( -1 )</code>").
+      <code>NaN</code> can be detected only by using <code>isNaN</code> (e.g. "
+      <code>isNaN( Math.sqrt( -1 ) ) == true</code>"). If a number is neither <code>NaN</code> nor
+      <code>infinity</code>, it can do most things Javas <code>int</code> or <code>double</code>
+      can, including bitwise operations.
+    </p>
+    <ul><li><b>Arrays have dynamic length</b></li></ul>
+    <p>
+      Even though their syntax is very similar, JavaScript Arrays behave more like Java Lists than
+      Java Arrays. They can store different types in different slots, and can change their length as
+      needed. They also have differently named, but similarly working
+      <a href="http://www.w3schools.com/jsref/jsref_obj_array.asp">methods</a>.
+    </p>
+
+    <h3>Noteable similarities between Java and JavaScript</h3>
+    <ul><li><b>Objects and Maps</b></li></ul>
+    <p>
+      JavaScript Objects (created with a literal "<code>{}</code>") can be used like Java Maps. A
+      "<code>map.put( "key", value )</code>" would be "<code>map[ key ] = value</code>", and a
+      "<code> map.get( "key" )</code>" would be "<code>map[ "key" ] </code>". In JavaScript,
+      <code>value</code> could be of any type.
+    </p>
+    <ul><li><b>System.out.println and console.log</b></li></ul>
+    <p>
+      Most browser (but not all!) have some form of javascript console. They all have at least one
+      function in common that can be used like <code>System.out.println</code>, which is
+      <code>console.log</code>. Some browser also have <code>console.trace</code>. Browser not
+      supporting <code>console.log</code> (or in case of InternetExplorer, not having it activated),
+      will crash when calling that method, so remember removing all occurrences of console from your
+      JavaScript code after debugging.
+    </p>
+    <ul><li><b>Math and Math</b></li></ul>
+    <p>
+      The Java <code>Math</code> class and the JavaScript <code>Math</code> object have almost
+      identical <a href="http://www.w3schools.com/jsref/jsref_obj_math.asp">API</a>.
+    </p>
+    <ul><li><b>Date and Date</b></li></ul>
+    <p>
+      The JavaScript constructor
+      <code><a href="http://www.w3schools.com/jsref/jsref_obj_date.asp">Date</a></code>
+      creates objects almost identical in API to instances of Javas <code>Date</code> class.
+    </p>
+    <ul><li><b>Regular Expressions and RegExp</b></li></ul>
+    <p>
+      JavaScript also supports
+      <a href="http://www.w3schools.com/jsref/jsref_obj_regexp.asp">regular expressions</a>.
+    </p>
+    <ul><li><b>char and string</b></li></ul>
+    <p>
+      JavaScript has no <code>char</code> type. For RWT Scripting, a string with a length of one
+      character is used instead. This allows for comparison like
+      "<code>event.character == "A"</code>", but not "<code>event.character &gt;= 65</code>".
+      To do that use <code>charCodeAt</code>.
+      Example: "<code>event.character.charCodeAt( 0 ) &gt;= 65</code>".
+    </p>
+
+</body>
+</html>

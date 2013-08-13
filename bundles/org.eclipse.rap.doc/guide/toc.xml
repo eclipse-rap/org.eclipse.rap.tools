@@ -44,7 +44,7 @@
     <topic
         label="Custom Widgets"
         href="guide/articles/custom-widget.html"/>
-    <topic href="guide/articles/client-scripting.html" label="ClientScripting"/>
+    <topic href="guide/articles/scripting.html" label="Scripting"/>
     <topic href="guide/articles/resources.html" label="Static Resources and Downloads">
     </topic>
   </topic>

@@ -185,8 +185,10 @@ ul.inheritsList
       <!-- begin publish.classesIndex -->
       <div align="center"><a href="../index.html">Index</a></div>
 <hr />
-<h2>Namespaces</h2>
+<h2>Global Objects</h2>
 <ul class="classList">
+  
+  <li></li>
   
   <li></li>
   
@@ -194,13 +196,19 @@ ul.inheritsList
   
   <li><a href="../symbols/rap.html">rap</a></li>
   
+  <li><a href="../symbols/SWT.html">SWT</a></li>
+  
 </ul>
 <h2>Types</h2>
 <ul class="classList">
   
   <li><a href="../symbols/Composite.html">Composite</a></li>
   
+  <li><a href="../symbols/Event.html">Event</a></li>
+  
   <li><a href="../symbols/RemoteObject.html">RemoteObject</a></li>
+  
+  <li></li>
   
   <li></li>
   
@@ -213,7 +221,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
       <h1 class="classTitle">
         
-        Namespace rap
+        Object rap
       </h1>
 
 <!-- ============================== class summary ========================== -->
@@ -221,14 +229,14 @@ ul.inheritsList
         
         
 
-        Holds all public API of the RAP WebClient.
+        Holds all global public methods of the RAP WebClient.
 
       </p>
 
 <!-- ============================== constructor summary ==================== -->
       
       <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class rap.">
-        <caption>Namespace Summary</caption>
+        <caption>Object Summary</caption>
         <thead>
           <tr>
             <th scope="col">Constructor Attributes</th>
@@ -242,7 +250,7 @@ ul.inheritsList
               <div class="fixedFont">
                 <b><a href="../symbols/rap.html#constructor">rap</a></b>
               </div>
-              <div class="description"></div>
+              <div class="description">Contains methods required for custom widget development and RWT Scripting.</div>
             </td>
           </tr>
         </tbody>
@@ -271,7 +279,9 @@ ul.inheritsList
               <td class="nameDescription">
                 <div class="fixedFont">rap.<b><a href="../symbols/rap.html#.getObject">getObject</a></b>(id)
                 </div>
-                <div class="description">Returns the client object associated with the given id.</div>
+                <div class="description">Returns the client object associated with the given id as returned
+by <code>org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId</code> and
+<code>org.eclipse.rap.rwt.remote.RemoteObject.getId</code>.</div>
               </td>
             </tr>
           
@@ -364,7 +374,7 @@ ul.inheritsList
       
       <div class="details"><a name="constructor"> </a>
         <div class="sectionTitle">
-          Namespace Detail
+          Object Detail
         </div>
 
         <div class="fixedFont">
@@ -372,7 +382,7 @@ ul.inheritsList
         </div>
 
         <div class="description">
-          
+          Contains methods required for custom widget development and RWT Scripting.
           
         </div>
 
@@ -412,9 +422,13 @@ ul.inheritsList
 
           </div>
           <div class="description">
-            Returns the client object associated with the given id.
-If there is no object registered for the given id, null is returned.
-For RAP internal objects (e.g. RWT widgets) a wrapper is returned instead of the real object.
+            Returns the client object associated with the given id as returned
+by <code>org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId</code> and
+<code>org.eclipse.rap.rwt.remote.RemoteObject.getId</code>.
+If there is no object registered for the given id, <code>null</code> is returned.
+For internal objects (e.g. RWT/SWT widgets) a wrapper is returned that approximates
+the API of its Java analoge. <a href="../symbols/Composite.html">Composite</a> is a special case where additional API
+is present to allow HTML/DOM based custom widget development.
             
             
           </div>
