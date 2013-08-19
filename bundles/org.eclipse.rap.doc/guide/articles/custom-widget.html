@@ -102,24 +102,24 @@
     </li>
   </ul>
 
-  <h3 id="clientscripting">ClientScripting-enhanced widgets</h3>
+  <h3 id="clientscripting">Scripting-enhanced widgets</h3>
   <p>
-    ClientScripting is a RAP Incubator component that allows adding client-side behavior to
+    <a href="scripting.html">RWT Scripting</a> allows adding client-side behavior to
     existing RAP widgets. When your custom-widget can graphically be represented by one or more
     existing SWT/RAP-widgets, but cannot be reasonably well implemented as a compound widget
     because of the latency of the
-    HTTP-requests involved, ClientScripting is often the ideal solution. It can also help in
+    HTTP-requests involved, RWT Scripting may be the best solution. It can also help in
     <i>some</i> cases where certain SWT events are not implemented in RAP
     (<em><a href="key-and-mouse-events.html#mouse">MouseEnter</a></em>/<em><a href="key-and-mouse-events.html#mouse">MouseExit</a></em>),
     or are limited compared to SWT (<em><a href="rwt.html#verify">Verify</a></em>).
-    ClientScripting is <strong>not</strong> to be confused with developing a Remote-API based
+    RWT Scripting is <strong>not</strong> to be confused with developing a Remote-API based
     custom widget. While it also runs partially on the client, the difference is that
-    ClientScripting provides an SWT-like API and does not require/allow you to implement any
-    client-server communication.
+    RWT Scripting does not require registering any JavaScript resources and does not create new
+    widgets or HTML elements on the client.
   </p>
   <ul>
     <li>
-      Writing ClientScripting-enhanced widgets requires minor-to-moderate JavaScript knowledge,
+      Writing scripting-enhanced widgets requires minor-to-moderate JavaScript knowledge,
       and no knowledge of any other browser technology.</li>
     <li>
       Cross-browser compatibility is ensured by RAP as long as EcmaScript-standards are followed

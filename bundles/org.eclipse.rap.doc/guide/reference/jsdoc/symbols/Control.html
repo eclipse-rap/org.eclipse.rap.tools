@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="generator" content="JsDoc Toolkit" />
     
-    <title>JsDoc Reference - RemoteObject</title>
+    <title>JsDoc Reference - Control</title>
 
     <style type="text/css">
       /* default.css */
@@ -241,7 +241,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
       <h1 class="classTitle">
         
-        Type RemoteObject
+        Type Control
       </h1>
 
 <!-- ============================== class summary ========================== -->
@@ -249,12 +249,32 @@ ul.inheritsList
         
         
 
-        Instances of RemoteObject represent the server-side counterpart of a client object
-and are used to write operations into the next protocol message.
+        RWT Scripting analoge to org.eclipse.swt.widgets.Control
 
       </p>
 
 <!-- ============================== constructor summary ==================== -->
+      
+      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Control.">
+        <caption>Type Summary</caption>
+        <thead>
+          <tr>
+            <th scope="col">Constructor Attributes</th>
+            <th scope="col">Constructor Name and Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="attributes">&nbsp;</td>
+            <td class="nameDescription" >
+              <div class="fixedFont">
+                <b><a href="../symbols/Control.html#constructor">Control</a></b>()
+              </div>
+              <div class="description">The constructor is not public.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       
 
 <!-- ============================== properties summary ===================== -->
@@ -264,7 +284,7 @@ and are used to write operations into the next protocol message.
       
         
         
-        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class RemoteObject.">
+        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Control.">
           <caption>Method Summary</caption>
           <thead>
             <tr>
@@ -277,27 +297,52 @@ and are used to write operations into the next protocol message.
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/RemoteObject.html#call">call</a></b>(method, properties)
+                <div class="fixedFont"><b><a href="../symbols/Control.html#forceFocus">forceFocus</a></b>()
                 </div>
-                <div class="description">Instructs the remote object to call the given method.</div>
+                <div class="description">Forces the receiver to have the <em>keyboard focus</em>, causing
+all keyboard events to be delivered to it.</div>
               </td>
             </tr>
           
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/RemoteObject.html#notify">notify</a></b>(event, properties)
+                <div class="fixedFont"><b><a href="../symbols/Control.html#getData">getData</a></b>(property)
                 </div>
-                <div class="description">Notifies the remote object that an event of the given type occurred.</div>
+                <div class="description">Returns the application defined property of the receiver
+with the specified name, or null if it has not been set.</div>
               </td>
             </tr>
           
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/RemoteObject.html#set">set</a></b>(property, value)
+                <div class="fixedFont"><b><a href="../symbols/Control.html#setBackground">setBackground</a></b>(color)
                 </div>
-                <div class="description">Sets the specified property of the remote object to the given value.</div>
+                <div class="description">Sets the receiver's background color to the color specified
+by the argument, or to the default system color for the control
+if the argument is null.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#setData">setData</a></b>(property, value)
+                </div>
+                <div class="description">Sets the application defined property of the receiver
+with the specified name to the given value.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#setForeground">setForeground</a></b>(color)
+                </div>
+                <div class="description">Sets the receiver's foreground color to the color specified
+by the argument, or to the default system color for the control
+if the argument is null.</div>
               </td>
             </tr>
           
@@ -317,13 +362,12 @@ and are used to write operations into the next protocol message.
           Type Detail
         </div>
 
-        <div class="fixedFont">&lt;private&gt; 
-            <b>RemoteObject</b>()
+        <div class="fixedFont">
+            <b>Control</b>()
         </div>
 
         <div class="description">
-          The constructor is not public. Instances can
-be obtained from <a href="../symbols/rap.html#.getRemoteObject">rap.getRemoteObject</a>.
+          The constructor is not public.
           
         </div>
 
@@ -331,22 +375,11 @@ be obtained from <a href="../symbols/rap.html#.getRemoteObject">rap.getRemoteObj
 
 
           
-            <dl class="detailList">
-            <dt class="heading">Parameters:</dt>
-            
-              <dt>
-                 <b></b>
-                
-              </dt>
-                <dd></dd>
-            
-            </dl>
-          
           
           
             <dl class="detailList">
             <dt class="heading">Since:</dt>
-              <dd>2.0</dd>
+              <dd>2.2</dd>
             </dl>
           
           
@@ -366,18 +399,16 @@ be obtained from <a href="../symbols/rap.html#.getRemoteObject">rap.getRemoteObj
           Method Detail
         </div>
         
-          <a name="call"> </a>
+          <a name="forceFocus"> </a>
           <div class="fixedFont">
 
-          
-          <b>call</b>(method, properties)
+          <span class="light">{boolean}</span>
+          <b>forceFocus</b>()
 
           </div>
           <div class="description">
-            Instructs the remote object to call the given method.
-Calling this method will write a "call" operation into the message, which will to be sent to
-the server within a few milliseconds. One message
-may contain several "call" operations, if they are added consecutively.
+            Forces the receiver to have the <em>keyboard focus</em>, causing
+all keyboard events to be delivered to it.
             
             
           </div>
@@ -385,94 +416,36 @@ may contain several "call" operations, if they are added consecutively.
           
 
             
+            
+            
+            
+            
               <dl class="detailList">
-              <dt class="heading">Parameters:</dt>
+              <dt class="heading">Returns:</dt>
               
-                <dt>
-                  <span class="light fixedFont">{string}</span> <b>method</b>
-                  
-                </dt>
-                <dd>The name of the method.</dd>
-              
-                <dt>
-                  <span class="light fixedFont">{Object|null}</span> <b>properties</b>
-                  <i>Optional</i>
-                </dt>
-                <dd>This object may contain any number of additional
-properties/fields associated with the call. It may also be null or omitted.</dd>
+                <dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the control got focus, and <code>false</code> if it was unable to.</dd>
               
               </dl>
-            
-            
-            
-            
             
             
             
 
           <hr />
         
-          <a name="notify"> </a>
+          <a name="getData"> </a>
           <div class="fixedFont">
 
-          
-          <b>notify</b>(event, properties)
+          <span class="light">{var}</span>
+          <b>getData</b>(property)
 
           </div>
           <div class="description">
-            Notifies the remote object that an event of the given type occurred.
-Notifications can only be sent for types that the server is currently listening for
-(see <a href="../symbols/rap.html#.registerTypeHandler">rap.registerTypeHandler</a>, <b>handler.events</b>). If this is not the
-case, no "notify" operation is written into the message and no request will be sent.
-Otherwise the message will be sent to the server within a few milliseconds. One message
-may contain several "notify" operations, if they are added consecutively.
-            
-            
-          </div>
-
-          
-
-            
-              <dl class="detailList">
-              <dt class="heading">Parameters:</dt>
-              
-                <dt>
-                  <span class="light fixedFont">{string}</span> <b>event</b>
-                  
-                </dt>
-                <dd>The type of the event that occured.</dd>
-              
-                <dt>
-                  <span class="light fixedFont">{Object|null}</span> <b>properties</b>
-                  <i>Optional</i>
-                </dt>
-                <dd>This object may contain any number of additional
-properties/fields associated with the event. It may also be null or omitted.</dd>
-              
-              </dl>
-            
-            
-            
-            
-            
-            
-            
-
-          <hr />
-        
-          <a name="set"> </a>
-          <div class="fixedFont">
-
-          
-          <b>set</b>(property, value)
-
-          </div>
-          <div class="description">
-            Sets the specified property of the remote object to the given value.
-Calling this method multiple times for the same property will overwrite the previous value,
-the message will not become longer. This method does not cause the message to be sent
-immediately. Instead it will be sent the next time a "notify" or "call" operation is
-written to the message.
+            Returns the application defined property of the receiver
+with the specified name, or null if it has not been set.
+<p>
+  The java widget properties can be accessed if the
+  property name was registered with WidgetUtil.registerDataKeys.
+</p>
             
             
           </div>
@@ -487,13 +460,151 @@ written to the message.
                   <span class="light fixedFont">{string}</span> <b>property</b>
                   
                 </dt>
-                <dd>The name of the property.</dd>
+                <dd>the name of the property</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{var}</span> the value</dd>
+              
+              </dl>
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/Control.html#setData">Control#setData</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="setBackground"> </a>
+          <div class="fixedFont">
+
+          
+          <b>setBackground</b>(color)
+
+          </div>
+          <div class="description">
+            Sets the receiver's background color to the color specified
+by the argument, or to the default system color for the control
+if the argument is null.
+            
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{int[]|null}</span> <b>color</b>
+                  
+                </dt>
+                <dd>the new color as array [ red, green, blue ] or null</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+
+          <hr />
+        
+          <a name="setData"> </a>
+          <div class="fixedFont">
+
+          
+          <b>setData</b>(property, value)
+
+          </div>
+          <div class="description">
+            Sets the application defined property of the receiver
+with the specified name to the given value.
+<p>
+  The java widget is not affected by this method, but can itself set this object's
+  properties if the name was registered with WidgetUtil.registerDataKeys.
+</p>
+            
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>property</b>
+                  
+                </dt>
+                <dd>the name of the property</dd>
               
                 <dt>
                   <span class="light fixedFont">{var}</span> <b>value</b>
                   
                 </dt>
-                <dd>The value of the property.</dd>
+                <dd>the new value for the property</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/Control.html#getData">Control#getData</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="setForeground"> </a>
+          <div class="fixedFont">
+
+          
+          <b>setForeground</b>(color)
+
+          </div>
+          <div class="description">
+            Sets the receiver's foreground color to the color specified
+by the argument, or to the default system color for the control
+if the argument is null.
+            
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{int[]|null}</span> <b>color</b>
+                  
+                </dt>
+                <dd>the new color as array [ red, green, blue ] or null</dd>
               
               </dl>
             

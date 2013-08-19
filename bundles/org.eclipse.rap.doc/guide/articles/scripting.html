@@ -12,15 +12,15 @@
   <h1>Scripting</h1>
   <h2>Overview</h2>
   <p>
-    RAP applications are running almost entirely on a Server, all application-relevant events
+    RAP applications are running almost entirely on a Server. All application-relevant events
     that occur on the client have to be forwarded to the Server before being
-    processed. Scenarios minor delays are unacceptable
+    processed. Scenarios where minor delays are unacceptable
     (e.g. typing or mouse movements) would therefore be undesirable.
   </p>
   <p>
     This is where RWT Scripting can help. With scripting developers can handle some of
     the events directly on the client, without creating any HTTP-requests. This is ideal to
-    customize or enhance the behavior of specific widgets, <em>especially</em> <code>Text</code>.
+    customize or enhance the behavior of specific widgets, <em>most notably</em> <code>Text</code>.
   </p>
   <p>
     The scripts themselves are written in JavaScript on a SWT-like API. This allows application
@@ -59,6 +59,17 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
     by using the SessionStore or creating a SessionSingleton that extends <code>ClientListener</code>.
   </p>
 
+  <h3 id="widgets">Supported Widget</h3>
+  <p>
+    The following widges support ClientListener:
+  </p>
+  <ul>
+    <li>Button</li>
+    <li>Canvas</li>
+    <li>Composite</li>
+    <li>Label</li>
+    <li>Text</li>
+  </ul>
   <h3 id="events">Supported Event Types</h3>
   <table border="1" cellpadding="3" cellspacing="0">
     <tr>
@@ -158,6 +169,7 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
         in java, or in RWT Scripting. Only supported on <code>Canvas</code>.
       </td>
     </tr>
+    <!--
     <tr>
       <td>
         <code>SWT.Selection</code>
@@ -175,6 +187,7 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
         widgets are currently not supported.
       </td>
     </tr>
+     -->
     <tr>
       <td>
         <code>SWT.Modify</code>
@@ -201,17 +214,23 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
     <h3>The Widget Object</h3>
     <p>
       The Widget object in RWT Scripting is an abstract representation of an SWT widget. It
-      has a JavaScript conform subset of the API of the actual SWT Widget it represents.
-      In some cases the API may differ slightly. The object can be obtained from the event, or
+      has a JavaScript conform
+      <a href="../reference/jsdoc/index.html">subset</a>
+      of the API of the actual SWT Widget it represents.
+      The object can be obtained from the event, or
       from <code>rap.getObject</code>.
     </p>
     <p>
-      As in SWT the Widget provides <code>setData</code> and a <code>getData</code> methods. These
+      As in SWT the Widget provides
+      <a href="../reference/jsdoc/symbols/Control.html#setData"><code>setData</code></a>
+      and
+      <a href="../reference/jsdoc/symbols/Control.html#getData"><code>getData</code></a>
+      methods. These
       allow to attach data to a widget instance without affecting the widget itself.
       Unlike SWT any value can be stored with <code>setData</code>, not just objects.
     </p>
     <p>
-      Data attached to the SWT Widget can be transfarred to the Scripting widget. To do so,
+      Data attached to the SWT Widget can be transferred to the scripting widget. To do so,
       the key for that data has to be registered with the
       <code>WidgetUtil.registerDataKeys( String... )</code>, like so:
     </p>
@@ -254,84 +273,6 @@ widget.setData( &quot;otherWidget&quot;, WidgetUtil.getId( otherWidget ) );
     <pre class="lang-javascript">
 var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
     </pre>
-
-    <h4>Methods on Controls</h4>
-    <!-- TODO: obsolete after creating JSDoc reference -->
-    <p>
-      Controls provide some additional methods:
-    </p>
-    <table cellspacing="0">
-      <caption>Function Summary</caption>
-      <tbody>
-        <tr>
-          <td><code>boolean</code></td>
-          <td>
-            <div><b>forceFocus()</b>
-            </div>
-            <div>
-              forces the control to get keyboard focus, even if it can not be focused by the user
-              (by mouse mouse/keyboard). Returns true if the control got focus, and false if it was
-              unable to.
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td><code>undefined</code></td>
-          <td>
-            <div><b>redraw()</b>
-            </div>
-            <div>
-              fires a <code>Paint</code> event. Only useful with <code>Canvas</code>.
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h4>Data Types</h4>
-    <!-- TODO: obsolete after creating JSDoc reference -->
-    <p>
-      The type and format of the values that can be set/get on the widget objects is a
-      javascript-specific approximation of its SWT counterpart. They are identical to those used in
-      the RAP Protocol.
-    </p>
-    <p>
-      For simple data types/values the mapping is as follows:
-    </p>
-    <table border="1" cellpadding="3" cellspacing="0">
-      <tr>
-        <th>SWT</th>
-        <th>RWT Scripting</th>
-      </tr>
-      <tr>
-        <td>void</td>
-        <td>undefined</td>
-      </tr>
-      <tr>
-        <td>null</td>
-        <td>null</td>
-      </tr>
-      <tr>
-        <td>boolean</td>
-        <td>boolean</td>
-      </tr>
-      <tr>
-        <td>int</td>
-        <td>number, but treated like int</td>
-      </tr>
-      <tr>
-        <td>float</td>
-        <td>number</td>
-      </tr>
-      <tr>
-        <td>String</td>
-        <td>string</td>
-      </tr>
-      <tr>
-        <td>char</td>
-        <td>string with length of 1</td>
-      </tr>
-    </table>
 
     <h2 id="limitations">Noteable Limitations and discouraged Usage</h2>
     <ul>
