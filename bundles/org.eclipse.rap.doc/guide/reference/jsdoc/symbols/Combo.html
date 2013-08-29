@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="generator" content="JsDoc Toolkit" />
     
-    <title>JsDoc Reference - Text</title>
+    <title>JsDoc Reference - Combo</title>
 
     <style type="text/css">
       /* default.css */
@@ -257,7 +257,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
       <h1 class="classTitle">
         
-        Type Text
+        Type Combo
       </h1>
 
 <!-- ============================== class summary ========================== -->
@@ -267,13 +267,13 @@ ul.inheritsList
           <a href="../symbols/Control.html">Control</a>.<br />
         
 
-        RWT Scripting analoge to org.eclipse.swt.widgets.Text
+        RWT Scripting analoge to org.eclipse.swt.widgets.Combo
 
       </p>
 
 <!-- ============================== constructor summary ==================== -->
       
-      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Text.">
+      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Combo.">
         <caption>Type Summary</caption>
         <thead>
           <tr>
@@ -286,7 +286,7 @@ ul.inheritsList
             <td class="attributes">&nbsp;</td>
             <td class="nameDescription" >
               <div class="fixedFont">
-                <b><a href="../symbols/Text.html#constructor">Text</a></b>()
+                <b><a href="../symbols/Combo.html#constructor">Combo</a></b>()
               </div>
               <div class="description">The constructor is not public.</div>
             </td>
@@ -302,7 +302,7 @@ ul.inheritsList
       
         
         
-        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Text.">
+        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Combo.">
           <caption>Method Summary</caption>
           <thead>
             <tr>
@@ -315,16 +315,7 @@ ul.inheritsList
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#getEditable">getEditable</a></b>()
-                </div>
-                <div class="description">Returns the editable state.</div>
-              </td>
-            </tr>
-          
-            <tr>
-              <td class="attributes">&nbsp;</td>
-              <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#getSelection">getSelection</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/Combo.html#getSelection">getSelection</a></b>()
                 </div>
                 <div class="description">Returns an array whose first value is the
 character position representing the start of the selected
@@ -336,7 +327,7 @@ representing the end of the selection.</div>
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#getText">getText</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/Combo.html#getText">getText</a></b>()
                 </div>
                 <div class="description">Returns the widget text.</div>
               </td>
@@ -345,9 +336,9 @@ representing the end of the selection.</div>
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#setSelection">setSelection</a></b>(selection)
+                <div class="fixedFont"><b><a href="../symbols/Combo.html#setSelection">setSelection</a></b>(selection)
                 </div>
-                <div class="description">Sets the selection to the range specified
+                <div class="description">Sets the selection of the text to the range specified
 by an array whose first value is the
 character position representing the start of the selected
 text, and whose second value is the character position
@@ -358,9 +349,9 @@ representing the end of the selection.</div>
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#setText">setText</a></b>(text)
+                <div class="fixedFont"><b><a href="../symbols/Combo.html#setText">setText</a></b>(text)
                 </div>
-                <div class="description">Sets the contents of the receiver to the given string.</div>
+                <div class="description">Sets the contents of the receiver's text field to the given string.</div>
               </td>
             </tr>
           
@@ -385,7 +376,7 @@ representing the end of the selection.</div>
         </div>
 
         <div class="fixedFont">
-            <b>Text</b>()
+            <b>Combo</b>()
         </div>
 
         <div class="description">
@@ -420,38 +411,6 @@ representing the end of the selection.</div>
         <div class="sectionTitle">
           Method Detail
         </div>
-        
-          <a name="getEditable"> </a>
-          <div class="fixedFont">
-
-          <span class="light">{boolean}</span>
-          <b>getEditable</b>()
-
-          </div>
-          <div class="description">
-            Returns the editable state.
-            
-            
-          </div>
-
-          
-
-            
-            
-            
-            
-            
-              <dl class="detailList">
-              <dt class="heading">Returns:</dt>
-              
-                <dd><span class="light fixedFont">{boolean}</span> whether or not the receiver is editable</dd>
-              
-              </dl>
-            
-            
-            
-
-          <hr />
         
           <a name="getSelection"> </a>
           <div class="fixedFont">
@@ -533,7 +492,7 @@ Indexing is zero based.  The range of a selection is from
 
           </div>
           <div class="description">
-            Sets the selection to the range specified
+            Sets the selection of the text to the range specified
 by an array whose first value is the
 character position representing the start of the selected
 text, and whose second value is the character position
@@ -587,9 +546,13 @@ usual array indexing rules.
 
           </div>
           <div class="description">
-            Sets the contents of the receiver to the given string. If the receiver has style
-SINGLE and the argument contains multiple lines of text, the result of this
-operation is undefined and may vary from platform to platform.
+            Sets the contents of the receiver's text field to the given string.
+<p>
+Note: The text field in a <code>Combo</code> is typically only capable of
+displaying a single line of text. Thus, setting the text to a string
+containing line breaks or other special characters will probably cause it
+to display incorrectly.
+</p>
             
             
           </div>

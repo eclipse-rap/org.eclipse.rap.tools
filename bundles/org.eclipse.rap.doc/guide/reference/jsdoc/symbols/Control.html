@@ -204,6 +204,14 @@ ul.inheritsList
   
   <li></li>
   
+  <li></li>
+  
+  <li></li>
+  
+  <li></li>
+  
+  <li></li>
+  
   <li><a href="../symbols/rap.html">rap</a></li>
   
   <li><a href="../symbols/SWT.html">SWT</a></li>
@@ -216,6 +224,8 @@ ul.inheritsList
   
   <li><a href="../symbols/Canvas.html">Canvas</a></li>
   
+  <li><a href="../symbols/Combo.html">Combo</a></li>
+  
   <li><a href="../symbols/Composite.html">Composite</a></li>
   
   <li><a href="../symbols/Control.html">Control</a></li>
@@ -224,7 +234,13 @@ ul.inheritsList
   
   <li><a href="../symbols/Label.html">Label</a></li>
   
+  <li><a href="../symbols/ProgressBar.html">ProgressBar</a></li>
+  
   <li><a href="../symbols/RemoteObject.html">RemoteObject</a></li>
+  
+  <li><a href="../symbols/Scale.html">Scale</a></li>
+  
+  <li><a href="../symbols/Spinner.html">Spinner</a></li>
   
   <li><a href="../symbols/Text.html">Text</a></li>
   
@@ -307,10 +323,67 @@ all keyboard events to be delivered to it.</div>
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#getBackground">getBackground</a></b>()
+                </div>
+                <div class="description">Returns the receiver's background color.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#getCursor">getCursor</a></b>()
+                </div>
+                <div class="description">Returns the receiver's cursor, or null if it has not been set.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
                 <div class="fixedFont"><b><a href="../symbols/Control.html#getData">getData</a></b>(property)
                 </div>
                 <div class="description">Returns the application defined property of the receiver
 with the specified name, or null if it has not been set.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#getEnabled">getEnabled</a></b>()
+                </div>
+                <div class="description">Returns <code>true</code> if the receiver is enabled, and
+<code>false</code> otherwise.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#getForeground">getForeground</a></b>()
+                </div>
+                <div class="description">Returns the receiver's foreground color.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#getToolTipText">getToolTipText</a></b>()
+                </div>
+                <div class="description">Returns the receiver's tool tip text, or null if it has
+not been set.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#getVisible">getVisible</a></b>()
+                </div>
+                <div class="description">Returns <code>true</code> if the receiver is visible, and
+<code>false</code> otherwise.</div>
               </td>
             </tr>
           
@@ -338,11 +411,41 @@ with the specified name to the given value.</div>
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#setEnabled">setEnabled</a></b>(enabled)
+                </div>
+                <div class="description">Enables the receiver if the argument is <code>true</code>,
+and disables it otherwise.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
                 <div class="fixedFont"><b><a href="../symbols/Control.html#setForeground">setForeground</a></b>(color)
                 </div>
                 <div class="description">Sets the receiver's foreground color to the color specified
 by the argument, or to the default system color for the control
 if the argument is null.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#setToolTipText">setToolTipText</a></b>(toolTipText)
+                </div>
+                <div class="description">Sets the receiver's tool tip text to the argument, which
+may be null indicating that no tool tip text should be shown.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#setVisible">setVisible</a></b>(visible)
+                </div>
+                <div class="description">Marks the receiver as visible if the argument is <code>true</code>,
+and marks it invisible otherwise.</div>
               </td>
             </tr>
           
@@ -432,6 +535,77 @@ all keyboard events to be delivered to it.
 
           <hr />
         
+          <a name="getBackground"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{int[]}</span>
+          <b>getBackground</b>()
+
+          </div>
+          <div class="description">
+            Returns the receiver's background color.
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{int[]}</span> the background color as array [ red, green, blue ]</dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
+          <a name="getCursor"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{string|null}</span>
+          <b>getCursor</b>()
+
+          </div>
+          <div class="description">
+            Returns the receiver's cursor, or null if it has not been set.
+<p>
+When the mouse pointer passes over a control its appearance
+is changed to match the control's cursor.
+</p>
+<p>
+All possible values are available as constants on the <a href="../symbols/SWT.html">SWT</a> object.
+</p>
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{string|null}</span> the receiver's cursor or <code>null</code></dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
           <a name="getData"> </a>
           <div class="fixedFont">
 
@@ -483,6 +657,145 @@ with the specified name, or null if it has not been set.
                 <dd><a href="../symbols/Control.html#setData">Control#setData</a></dd>
               
               </dl>
+            
+
+          <hr />
+        
+          <a name="getEnabled"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{boolean}</span>
+          <b>getEnabled</b>()
+
+          </div>
+          <div class="description">
+            Returns <code>true</code> if the receiver is enabled, and
+<code>false</code> otherwise. A disabled control is typically
+not selectable from the user interface and draws with an
+inactive or "grayed" look.
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{boolean}</span> the receiver's enabled state</dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
+          <a name="getForeground"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{int[]}</span>
+          <b>getForeground</b>()
+
+          </div>
+          <div class="description">
+            Returns the receiver's foreground color.
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{int[]}</span> the foreground color as array [ red, green, blue ]</dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
+          <a name="getToolTipText"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{string|null}</span>
+          <b>getToolTipText</b>()
+
+          </div>
+          <div class="description">
+            Returns the receiver's tool tip text, or null if it has
+not been set.
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{string|null}</span> the receiver's tool tip text</dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
+          <a name="getVisible"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{boolean}</span>
+          <b>getVisible</b>()
+
+          </div>
+          <div class="description">
+            Returns <code>true</code> if the receiver is visible, and
+<code>false</code> otherwise.
+<p>
+If one of the receiver's ancestors is not visible or some
+other condition makes the receiver not visible, this method
+may still indicate that it is considered visible even though
+it may not actually be showing.
+</p>
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{boolean}</span> the receiver's visibility state</dd>
+              
+              </dl>
+            
+            
             
 
           <hr />
@@ -579,6 +892,45 @@ with the specified name to the given value.
 
           <hr />
         
+          <a name="setEnabled"> </a>
+          <div class="fixedFont">
+
+          
+          <b>setEnabled</b>(enabled)
+
+          </div>
+          <div class="description">
+            Enables the receiver if the argument is <code>true</code>,
+and disables it otherwise. A disabled control is typically
+not selectable from the user interface and draws with an
+inactive or "grayed" look.
+            
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{boolean}</span> <b>enabled</b>
+                  
+                </dt>
+                <dd>the new enabled state</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+
+          <hr />
+        
           <a name="setForeground"> </a>
           <div class="fixedFont">
 
@@ -605,6 +957,90 @@ if the argument is null.
                   
                 </dt>
                 <dd>the new color as array [ red, green, blue ] or null</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+
+          <hr />
+        
+          <a name="setToolTipText"> </a>
+          <div class="fixedFont">
+
+          
+          <b>setToolTipText</b>(toolTipText)
+
+          </div>
+          <div class="description">
+            Sets the receiver's tool tip text to the argument, which
+may be null indicating that no tool tip text should be shown.
+            
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string|null}</span> <b>toolTipText</b>
+                  
+                </dt>
+                <dd>the new tool tip text (or null)</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+
+          <hr />
+        
+          <a name="setVisible"> </a>
+          <div class="fixedFont">
+
+          
+          <b>setVisible</b>(visible)
+
+          </div>
+          <div class="description">
+            Marks the receiver as visible if the argument is <code>true</code>,
+and marks it invisible otherwise.
+<p>
+If one of the receiver's ancestors is not visible or some
+other condition makes the receiver not visible, marking
+it visible may not actually cause it to be displayed.
+</p>
+<p>
+<b>NOTE:</b> If there is a <code>Show</code> or <code>Hide</code> Java listener attached
+to this widget, it may be notified at a later point in time. <code>ClientListener</code>
+are notified right away.
+</p>
+            
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{boolean}</span> <b>visible</b>
+                  
+                </dt>
+                <dd>the new visibility state</dd>
               
               </dl>
             

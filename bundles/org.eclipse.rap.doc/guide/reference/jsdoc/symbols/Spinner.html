@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="generator" content="JsDoc Toolkit" />
     
-    <title>JsDoc Reference - Text</title>
+    <title>JsDoc Reference - Spinner</title>
 
     <style type="text/css">
       /* default.css */
@@ -257,7 +257,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
       <h1 class="classTitle">
         
-        Type Text
+        Type Spinner
       </h1>
 
 <!-- ============================== class summary ========================== -->
@@ -267,13 +267,13 @@ ul.inheritsList
           <a href="../symbols/Control.html">Control</a>.<br />
         
 
-        RWT Scripting analoge to org.eclipse.swt.widgets.Text
+        RWT Scripting analoge to org.eclipse.swt.widgets.Spinner
 
       </p>
 
 <!-- ============================== constructor summary ==================== -->
       
-      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Text.">
+      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Spinner.">
         <caption>Type Summary</caption>
         <thead>
           <tr>
@@ -286,7 +286,7 @@ ul.inheritsList
             <td class="attributes">&nbsp;</td>
             <td class="nameDescription" >
               <div class="fixedFont">
-                <b><a href="../symbols/Text.html#constructor">Text</a></b>()
+                <b><a href="../symbols/Spinner.html#constructor">Spinner</a></b>()
               </div>
               <div class="description">The constructor is not public.</div>
             </td>
@@ -302,7 +302,7 @@ ul.inheritsList
       
         
         
-        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Text.">
+        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Spinner.">
           <caption>Method Summary</caption>
           <thead>
             <tr>
@@ -315,52 +315,48 @@ ul.inheritsList
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#getEditable">getEditable</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/Spinner.html#getMaximum">getMaximum</a></b>()
                 </div>
-                <div class="description">Returns the editable state.</div>
+                <div class="description">Returns the maximum value which the receiver will allow.</div>
               </td>
             </tr>
           
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#getSelection">getSelection</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/Spinner.html#getMinimum">getMinimum</a></b>()
                 </div>
-                <div class="description">Returns an array whose first value is the
-character position representing the start of the selected
-text, and whose second value is the character position
-representing the end of the selection.</div>
+                <div class="description">Returns the minimum value which the receiver will allow.</div>
               </td>
             </tr>
           
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#getText">getText</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/Spinner.html#getSelection">getSelection</a></b>()
                 </div>
-                <div class="description">Returns the widget text.</div>
+                <div class="description">Returns the 'selection', which is the receiver's position.</div>
               </td>
             </tr>
           
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#setSelection">setSelection</a></b>(selection)
+                <div class="fixedFont"><b><a href="../symbols/Spinner.html#getText">getText</a></b>()
                 </div>
-                <div class="description">Sets the selection to the range specified
-by an array whose first value is the
-character position representing the start of the selected
-text, and whose second value is the character position
-representing the end of the selection.</div>
+                <div class="description">Returns a string containing a copy of the contents of the
+receiver's text field, or an empty string if there are no
+contents.</div>
               </td>
             </tr>
           
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Text.html#setText">setText</a></b>(text)
+                <div class="fixedFont"><b><a href="../symbols/Spinner.html#setSelection">setSelection</a></b>(selection)
                 </div>
-                <div class="description">Sets the contents of the receiver to the given string.</div>
+                <div class="description">Sets the 'selection', which is the receiver's value, to the argument which
+must be greater than or equal to zero.</div>
               </td>
             </tr>
           
@@ -385,7 +381,7 @@ representing the end of the selection.</div>
         </div>
 
         <div class="fixedFont">
-            <b>Text</b>()
+            <b>Spinner</b>()
         </div>
 
         <div class="description">
@@ -421,15 +417,15 @@ representing the end of the selection.</div>
           Method Detail
         </div>
         
-          <a name="getEditable"> </a>
+          <a name="getMaximum"> </a>
           <div class="fixedFont">
 
-          <span class="light">{boolean}</span>
-          <b>getEditable</b>()
+          <span class="light">{int}</span>
+          <b>getMaximum</b>()
 
           </div>
           <div class="description">
-            Returns the editable state.
+            Returns the maximum value which the receiver will allow.
             
             
           </div>
@@ -444,7 +440,39 @@ representing the end of the selection.</div>
               <dl class="detailList">
               <dt class="heading">Returns:</dt>
               
-                <dd><span class="light fixedFont">{boolean}</span> whether or not the receiver is editable</dd>
+                <dd><span class="light fixedFont">{int}</span> the maximum</dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
+          <a name="getMinimum"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{int}</span>
+          <b>getMinimum</b>()
+
+          </div>
+          <div class="description">
+            Returns the minimum value which the receiver will allow.
+            
+            
+          </div>
+
+          
+
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{int}</span> the minimum</dd>
               
               </dl>
             
@@ -456,20 +484,12 @@ representing the end of the selection.</div>
           <a name="getSelection"> </a>
           <div class="fixedFont">
 
-          <span class="light">{int[]}</span>
+          <span class="light">{int}</span>
           <b>getSelection</b>()
 
           </div>
           <div class="description">
-            Returns an array whose first value is the
-character position representing the start of the selected
-text, and whose second value is the character position
-representing the end of the selection. An "empty" selection
-is indicated by the values being identical.
-<p>
-Indexing is zero based.  The range of a selection is from
-0..N where N is the number of characters in the widget.
-</p>
+            Returns the 'selection', which is the receiver's position.
             
             
           </div>
@@ -484,7 +504,7 @@ Indexing is zero based.  The range of a selection is from
               <dl class="detailList">
               <dt class="heading">Returns:</dt>
               
-                <dd><span class="light fixedFont">{int[]}</span> array representing the selection start and end</dd>
+                <dd><span class="light fixedFont">{int}</span> the selection</dd>
               
               </dl>
             
@@ -501,7 +521,9 @@ Indexing is zero based.  The range of a selection is from
 
           </div>
           <div class="description">
-            Returns the widget text.
+            Returns a string containing a copy of the contents of the
+receiver's text field, or an empty string if there are no
+contents.
             
             
           </div>
@@ -516,7 +538,7 @@ Indexing is zero based.  The range of a selection is from
               <dl class="detailList">
               <dt class="heading">Returns:</dt>
               
-                <dd><span class="light fixedFont">{string}</span> the widget text</dd>
+                <dd><span class="light fixedFont">{string}</span> the receiver's text</dd>
               
               </dl>
             
@@ -533,25 +555,8 @@ Indexing is zero based.  The range of a selection is from
 
           </div>
           <div class="description">
-            Sets the selection to the range specified
-by an array whose first value is the
-character position representing the start of the selected
-text, and whose second value is the character position
-representing the end of the selection. An "empty" selection
-is indicated by the values being identical.
-<p>
-Indexing is zero based.  The range of
-a selection is from 0..N where N is
-the number of characters in the widget.
-</p><p>
-Text selections are specified in terms of
-caret positions.  In a text widget that
-contains N characters, there are N+1 caret
-positions, ranging from 0..N.  This differs
-from other functions that address character
-position such as getText () that use the
-usual array indexing rules.
-</p>
+            Sets the 'selection', which is the receiver's value, to the argument which
+must be greater than or equal to zero.
             
             
           </div>
@@ -563,48 +568,10 @@ usual array indexing rules.
               <dt class="heading">Parameters:</dt>
               
                 <dt>
-                  <span class="light fixedFont">{int[]}</span> <b>selection</b>
+                  <span class="light fixedFont">{int}</span> <b>selection</b>
                   
                 </dt>
-                <dd>array representing the selection start and end</dd>
-              
-              </dl>
-            
-            
-            
-            
-            
-            
-            
-
-          <hr />
-        
-          <a name="setText"> </a>
-          <div class="fixedFont">
-
-          
-          <b>setText</b>(text)
-
-          </div>
-          <div class="description">
-            Sets the contents of the receiver to the given string. If the receiver has style
-SINGLE and the argument contains multiple lines of text, the result of this
-operation is undefined and may vary from platform to platform.
-            
-            
-          </div>
-
-          
-
-            
-              <dl class="detailList">
-              <dt class="heading">Parameters:</dt>
-              
-                <dt>
-                  <span class="light fixedFont">{string}</span> <b>text</b>
-                  
-                </dt>
-                <dd>the new text</dd>
+                <dd>the new selection (must be zero or greater)</dd>
               
               </dl>
             
