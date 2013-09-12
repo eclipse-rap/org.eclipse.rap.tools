@@ -172,9 +172,31 @@
     <topic href="guide/reference/jsdoc/index.html" label="RAP WebClient API Reference">
        <topic href="guide/reference/jsdoc/symbols/rap.html" label="rap">
        </topic>
+       <topic href="guide/reference/jsdoc/symbols/SWT.html" label="SWT">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Button.html" label="Button">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Canvas.html" label="Canvas">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Combo.html" label="Combo">
+       </topic>
        <topic href="guide/reference/jsdoc/symbols/Composite.html" label="Composite">
        </topic>
+       <topic href="guide/reference/jsdoc/symbols/Control.html" label="Control">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Event.html" label="Event">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Label.html" label="Label">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/ProgressBar.html" label="ProgressBar">
+       </topic>
        <topic href="guide/reference/jsdoc/symbols/RemoteObject.html" label="RemoteObject">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Scale.html" label="Scale">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Spinner.html" label="Spinner">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Text.html" label="Text">
        </topic>
     </topic>
   </topic>
