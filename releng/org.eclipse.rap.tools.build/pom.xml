@@ -25,7 +25,7 @@
     <tycho-version>0.18.0</tycho-version>
     <tycho-extras-version>${tycho-version}</tycho-extras-version>
     <signing-plugin-version>1.0.4</signing-plugin-version>
-    <base-platform>4.4milestones/S-4.4M2-201309182000/</base-platform>
+    <base-platform>4.3/R-4.3.1-201309111000/</base-platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/rap/org.eclipse.rap.tools.git</tycho.scmUrl>
     <!-- disabled due to bug 393977
