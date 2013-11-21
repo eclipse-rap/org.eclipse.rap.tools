@@ -49,6 +49,9 @@
     <module>../../bundles/org.eclipse.rap.tools.templates</module>
     <module>../../bundles/org.eclipse.rap.tools.launch</module>
     <module>../../bundles/org.eclipse.rap.tools.launch.rwt</module>
+    <!-- tests -->
+    <module>../../tests/org.eclipse.rap.tools.tests</module>
+    <module>../../tests/org.eclipse.rap.tools.launch.rwt.test</module>
   </modules>
 
   <repositories>
@@ -129,6 +132,25 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <useUIHarness>true</useUIHarness>
+          <appArgLine>-nl en -consoleLog</appArgLine>
+          <includes>
+            <include>**/*Test.*</include>
+          </includes>
+          <runOrder>random</runOrder>
+          <dependency>
+            <type>eclipse-feature</type>
+            <artifactId>org.eclipse.rcp</artifactId>
+            <version>0.0.0</version>
+          </dependency>
+        </configuration>
       </plugin>
 
     </plugins>

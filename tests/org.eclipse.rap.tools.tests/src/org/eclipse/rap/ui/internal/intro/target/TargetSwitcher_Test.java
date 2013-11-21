@@ -40,7 +40,7 @@ import org.osgi.framework.Bundle;
 @SuppressWarnings( "restriction" )
 public class TargetSwitcher_Test extends TestCase {
 
-  private final static String TARGET_LOCATION = "/target";
+  private final static String TARGET_LOCATION = "/test_target";
   private final static String LATEST_TARGET_LOCATION = "/latest_target";
   private ITargetHandle[] initialTargets;
   private List< File > filesToDelete;
@@ -185,7 +185,7 @@ public class TargetSwitcher_Test extends TestCase {
     final File targetTemplateFile = new Path( targetTemplateFileUrl.getPath() ).toFile();
     String targetTemplateFileContent = Fixture.readContent( targetTemplateFile );
     String targetContent = targetTemplateFileContent.replace( "<template_uri>", fakeRepositoryUri );
-    File targetFile = File.createTempFile( "target", "" );
+    File targetFile = File.createTempFile( "test_target", "" );
     filesToDelete.add( targetFile );
     Fixture.writeContentToFile( targetFile, targetContent );
     return targetFile.toURI().toString();
