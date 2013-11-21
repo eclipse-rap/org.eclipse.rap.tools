@@ -50,7 +50,9 @@
     <module>../../bundles/org.eclipse.rap.tools.launch</module>
     <module>../../bundles/org.eclipse.rap.tools.launch.rwt</module>
     <!-- tests -->
+    <!--
     <module>../../tests/org.eclipse.rap.tools.tests</module>
+    -->
     <module>../../tests/org.eclipse.rap.tools.launch.rwt.test</module>
   </modules>
 
