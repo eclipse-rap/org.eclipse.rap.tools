@@ -40,7 +40,7 @@ $SCRIPTS_DIR/ant-runner.sh releng/org.eclipse.rap.tools.build/reference/build.xm
 
 cd "$WORKSPACE/org.eclipse.rap.tools/releng/org.eclipse.rap.tools.build" || exit 1
 echo "Running maven on $PWD, sign=$sign"
-$MVN clean package -Dsign=$sign || exit 1
+$MVN clean integration-test -Dsign=$sign || exit 1
 
 VERSION=$(ls repository/target/repository/features/org.eclipse.rap.tools.feature_*.jar | sed 's/.*_\([0-9.-]\+\)\..*\.jar/\1/')
 TIMESTAMP=$(ls repository/target/repository/features/org.eclipse.rap.tools.feature_*.jar | sed 's/.*\.\([0-9-]\+\)\.jar/\1/')
