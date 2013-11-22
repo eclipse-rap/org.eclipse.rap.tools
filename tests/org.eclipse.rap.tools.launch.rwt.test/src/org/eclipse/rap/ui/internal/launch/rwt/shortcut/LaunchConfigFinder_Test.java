@@ -1,16 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.shortcut;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -21,65 +24,78 @@ import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig.LaunchTarge
 import org.eclipse.rap.ui.internal.launch.rwt.shortcut.LaunchConfigFinder.LaunchConfigSelector;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class LaunchConfigFinder_Test extends TestCase {
+public class LaunchConfigFinder_Test {
 
-  private static class TestLaunchConfigSelector implements LaunchConfigSelector {
-    boolean wasInvoked;
-    public ILaunchConfiguration select( ILaunchConfiguration[] launchConfigs ) {
-      wasInvoked = true;
-      return launchConfigs[ 0 ];
-    }
-  }
-  
   private LaunchConfigFinder launchConfigFinder;
   private TestLaunchConfigSelector launchConfigSelector;
   private TestProject project;
-  
-  public void testForTypeWhenMatchingLaunchConfigIsPresent() throws CoreException {
+
+  @Before
+  public void setUp() throws Exception {
+    project = new TestProject();
+    launchConfigSelector = new TestLaunchConfigSelector();
+    launchConfigFinder = new LaunchConfigFinder( launchConfigSelector );
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    Fixture.deleteAllRWTLaunchConfigs();
+    project.delete();
+  }
+
+  @Test
+  public void testForType_whenMatchingLaunchConfigIsPresent() throws CoreException {
     IType entryPointType = createEntryPointType();
     RWTLaunchConfig launchConfig = createLaunchConfigFromType( entryPointType );
-    
+
     ILaunchConfiguration foundConfig = launchConfigFinder.forType( entryPointType );
-    
+
     assertTrue( foundConfig.contentsEqual( launchConfig.getUnderlyingLaunchConfig() ) );
     assertFalse( launchConfigSelector.wasInvoked );
   }
 
-  public void testForTypeWhenMultipleMatchingLaunchConfigsArePresent() throws CoreException {
+  @Test
+  public void testForType_whenMultipleMatchingLaunchConfigsArePresent() throws CoreException {
     IType entryPointType = createEntryPointType();
     RWTLaunchConfig launchConfig1 = createLaunchConfigFromType( entryPointType );
     createLaunchConfigFromType( entryPointType );
-    
+
     ILaunchConfiguration foundConfig = launchConfigFinder.forType( entryPointType );
-    
+
     assertTrue( foundConfig.contentsEqual( launchConfig1.getUnderlyingLaunchConfig() ) );
     assertTrue( launchConfigSelector.wasInvoked );
   }
-  
-  public void testForTypeWhenLaunchConfigWithoutProjectIsPresent() throws CoreException {
+
+  @Test
+  public void testForType_whenLaunchConfigWithoutProjectIsPresent() throws CoreException {
     IType entryPointType = createEntryPointType();
     ILaunchConfigurationWorkingCopy launchConfig = Fixture.createRWTLaunchConfig();
     RWTLaunchConfig rwtLaunchConfig = new RWTLaunchConfig( launchConfig );
     rwtLaunchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
     rwtLaunchConfig.setEntryPoint( entryPointType.getFullyQualifiedName() );
     launchConfig.doSave();
-    
+
     ILaunchConfiguration foundConfig = launchConfigFinder.forType( entryPointType );
-    
+
     assertNull( foundConfig );
   }
 
-  public void testForTypeWhenNoLaunchConfigIs() throws CoreException {
+  @Test
+  public void testForType_whenNoLaunchConfigIs() throws CoreException {
     IType entryPointType = createEntryPointType();
-    
+
     ILaunchConfiguration foundConfig = launchConfigFinder.forType( entryPointType );
-    
+
     assertNull( foundConfig );
   }
-  
-  public void testForTypeWhenSimilarWebXmlConfigIsPresent() throws CoreException {
+
+  @Test
+  public void testForType_whenSimilarWebXmlConfigIsPresent() throws CoreException {
     IType entryPointType = createEntryPointType();
     ILaunchConfigurationWorkingCopy launchConfig = Fixture.createRWTLaunchConfig();
     RWTLaunchConfig rwtLaunchConfig = new RWTLaunchConfig( launchConfig );
@@ -88,19 +104,8 @@ public class LaunchConfigFinder_Test extends TestCase {
     rwtLaunchConfig.setLaunchTarget( LaunchTarget.WEB_XML );
 
     ILaunchConfiguration foundConfig = launchConfigFinder.forType( entryPointType );
-    
+
     assertNull( foundConfig );
-  }
-  
-  protected void setUp() throws Exception {
-    project = new TestProject();
-    launchConfigSelector = new TestLaunchConfigSelector();
-    launchConfigFinder = new LaunchConfigFinder( launchConfigSelector );
-  }
-  
-  protected void tearDown() throws Exception {
-    Fixture.deleteAllRWTLaunchConfigs();
-    project.delete();
   }
 
   private IType createEntryPointType() throws CoreException {
@@ -126,4 +131,13 @@ public class LaunchConfigFinder_Test extends TestCase {
     launchConfig.doSave();
     return result;
   }
+
+  private static class TestLaunchConfigSelector implements LaunchConfigSelector {
+    boolean wasInvoked;
+    public ILaunchConfiguration select( ILaunchConfiguration[] launchConfigs ) {
+      wasInvoked = true;
+      return launchConfigs[ 0 ];
+    }
+  }
+
 }

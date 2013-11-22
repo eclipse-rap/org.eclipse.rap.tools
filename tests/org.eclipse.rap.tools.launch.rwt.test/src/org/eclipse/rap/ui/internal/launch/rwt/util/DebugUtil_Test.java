@@ -1,21 +1,25 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.util;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugEvent;
@@ -26,126 +30,22 @@ import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestLaunch;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProcess;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class DebugUtil_Test extends TestCase {
+public class DebugUtil_Test {
 
   private List<RuntimeProcess> runtimeProcesses;
-  
-  public void testGetLaunchName() throws CoreException {
-    ILaunchConfigurationWorkingCopy launchConfig = Fixture.createRWTLaunchConfig();
-    ILaunch launch = new TestLaunch( launchConfig );
-    
-    String launchName = DebugUtil.getLaunchName( launch );
-    
-    assertEquals( launchConfig.getName(), launchName );
-  }
-  
-  public void testGetLaunchNameWhenLaunchConfigIsNull() {
-    ILaunch launch = new TestLaunch( null );
-    
-    String launchName = DebugUtil.getLaunchName( launch );
-    
-    assertNull( launchName );
-  }
-  
-  public void testContainsCreateEventWithCreateEvent() throws Exception {
-    ILaunch launch = createLaunch();
-    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
-    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.CREATE );
-    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
-    
-    boolean containsCreateEvent = DebugUtil.containsCreateEventFor( debugEvents, launch );
-    
-    assertTrue( containsCreateEvent );
-  }
-  
-  public void testContainsCreateEventWithCreateEventAndOtherEvent() throws Exception {
-    ILaunch launch = createLaunch();
-    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
-    DebugEvent otherEvent = new DebugEvent( new Object(), DebugEvent.CREATE );
-    DebugEvent createEvent = new DebugEvent( runtimeProcess, DebugEvent.CREATE );
-    DebugEvent[] debugEvents = new DebugEvent[] { otherEvent, createEvent };
-    
-    boolean containsCreateEvent = DebugUtil.containsCreateEventFor( debugEvents, launch );
-    
-    assertTrue( containsCreateEvent );
-  }
-  
-  public void testContainsCreateEventWithTerminateEvent() throws Exception {
-    ILaunch launch = createLaunch();
-    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
-    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.TERMINATE );
-    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
-    
-    boolean containsCreateEvent = DebugUtil.containsCreateEventFor( debugEvents, launch );
-    
-    assertFalse( containsCreateEvent );
-  }
 
-  public void testContainsCreateEventWithCreateEventFromDifferentLaunch() throws Exception {
-    ILaunch launch = createLaunch();
-    ILaunch otherLaunch = createLaunch();
-    RuntimeProcess runtimeProcess = createRuntimeProcess( otherLaunch );
-    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.CREATE );
-    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
-    
-    boolean containsCreateEvent = DebugUtil.containsCreateEventFor( debugEvents, launch );
-    
-    assertFalse( containsCreateEvent );
-  }
-  
-  public void testContainsTerminateEventWithTerminateEvent() throws Exception {
-    ILaunch launch = createLaunch();
-    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
-    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.TERMINATE );
-    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
-    
-    boolean containsTerminateEvent = DebugUtil.containsTerminateEventFor( debugEvents, launch );
-    
-    assertTrue( containsTerminateEvent );
-  }
-  
-  public void testContainsTerminateEventWithTerminateEventAndOtherEvent() throws Exception {
-    ILaunch launch = createLaunch();
-    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
-    DebugEvent otherEvent = new DebugEvent( new Object(), DebugEvent.CREATE );
-    DebugEvent terminateEvent = new DebugEvent( runtimeProcess, DebugEvent.TERMINATE );
-    DebugEvent[] debugEvents = new DebugEvent[] { otherEvent, terminateEvent };
-    
-    boolean containsTerminateEvent = DebugUtil.containsTerminateEventFor( debugEvents, launch );
-    
-    assertTrue( containsTerminateEvent );
-  }
-  
-  public void testContainsTerminateEventWithDifferentEvent() throws Exception {
-    ILaunch launch = createLaunch();
-    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
-    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.CHANGE );
-    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
-    
-    boolean containsTerminateEvent = DebugUtil.containsTerminateEventFor( debugEvents, launch );
-    
-    assertFalse( containsTerminateEvent );
-  }
-  
-  public void testContainsTerminateEventWithTerminateEventFromDifferentLaunch() throws Exception {
-    ILaunch launch = createLaunch();
-    ILaunch otherLaunch = createLaunch();
-    RuntimeProcess runtimeProcess = createRuntimeProcess( otherLaunch );
-    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.TERMINATE );
-    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
-    
-    boolean containsTerminateEvent = DebugUtil.containsTerminateEventFor( debugEvents, launch );
-    
-    assertFalse( containsTerminateEvent );
-  }
-  
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     runtimeProcesses = new LinkedList<RuntimeProcess>();
   }
-  
-  protected void tearDown() throws Exception {
+
+  @After
+  public void tearDown() throws Exception {
     Iterator iter = runtimeProcesses.iterator();
     while( iter.hasNext() ) {
       RuntimeProcess runtimeProcess = ( RuntimeProcess )iter.next();
@@ -154,8 +54,130 @@ public class DebugUtil_Test extends TestCase {
     Fixture.deleteAllRWTLaunchConfigs();
   }
 
+  @Test
+  public void testGetLaunchName() throws CoreException {
+    ILaunchConfigurationWorkingCopy launchConfig = Fixture.createRWTLaunchConfig();
+    ILaunch launch = new TestLaunch( launchConfig );
+
+    String launchName = DebugUtil.getLaunchName( launch );
+
+    assertEquals( launchConfig.getName(), launchName );
+  }
+
+  @Test
+  public void testGetLaunchName_whenLaunchConfigIsNull() {
+    ILaunch launch = new TestLaunch( null );
+
+    String launchName = DebugUtil.getLaunchName( launch );
+
+    assertNull( launchName );
+  }
+
+  @Test
+  public void testContainsCreateEventFor_withCreateEvent() throws Exception {
+    ILaunch launch = createLaunch();
+    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
+    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.CREATE );
+    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
+
+    boolean containsCreateEvent = DebugUtil.containsCreateEventFor( debugEvents, launch );
+
+    assertTrue( containsCreateEvent );
+  }
+
+  @Test
+  public void testContainsCreateEventFor_withCreateEventAndOtherEvent() throws Exception {
+    ILaunch launch = createLaunch();
+    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
+    DebugEvent otherEvent = new DebugEvent( new Object(), DebugEvent.CREATE );
+    DebugEvent createEvent = new DebugEvent( runtimeProcess, DebugEvent.CREATE );
+    DebugEvent[] debugEvents = new DebugEvent[] { otherEvent, createEvent };
+
+    boolean containsCreateEvent = DebugUtil.containsCreateEventFor( debugEvents, launch );
+
+    assertTrue( containsCreateEvent );
+  }
+
+  @Test
+  public void testContainsCreateEventFor_withTerminateEvent() throws Exception {
+    ILaunch launch = createLaunch();
+    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
+    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.TERMINATE );
+    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
+
+    boolean containsCreateEvent = DebugUtil.containsCreateEventFor( debugEvents, launch );
+
+    assertFalse( containsCreateEvent );
+  }
+
+  @Test
+  public void testContainsCreateEventFor_withCreateEventFromDifferentLaunch() throws Exception {
+    ILaunch launch = createLaunch();
+    ILaunch otherLaunch = createLaunch();
+    RuntimeProcess runtimeProcess = createRuntimeProcess( otherLaunch );
+    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.CREATE );
+    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
+
+    boolean containsCreateEvent = DebugUtil.containsCreateEventFor( debugEvents, launch );
+
+    assertFalse( containsCreateEvent );
+  }
+
+  @Test
+  public void testContainsTerminateEventFor_withTerminateEvent() throws Exception {
+    ILaunch launch = createLaunch();
+    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
+    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.TERMINATE );
+    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
+
+    boolean containsTerminateEvent = DebugUtil.containsTerminateEventFor( debugEvents, launch );
+
+    assertTrue( containsTerminateEvent );
+  }
+
+  @Test
+  public void testContainsTerminateEventFor_withTerminateEventAndOtherEvent() throws Exception {
+    ILaunch launch = createLaunch();
+    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
+    DebugEvent otherEvent = new DebugEvent( new Object(), DebugEvent.CREATE );
+    DebugEvent terminateEvent = new DebugEvent( runtimeProcess, DebugEvent.TERMINATE );
+    DebugEvent[] debugEvents = new DebugEvent[] { otherEvent, terminateEvent };
+
+    boolean containsTerminateEvent = DebugUtil.containsTerminateEventFor( debugEvents, launch );
+
+    assertTrue( containsTerminateEvent );
+  }
+
+  @Test
+  public void testContainsTerminateEventFor_withDifferentEvent() throws Exception {
+    ILaunch launch = createLaunch();
+    RuntimeProcess runtimeProcess = createRuntimeProcess( launch );
+    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.CHANGE );
+    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
+
+    boolean containsTerminateEvent = DebugUtil.containsTerminateEventFor( debugEvents, launch );
+
+    assertFalse( containsTerminateEvent );
+  }
+
+  @Test
+  public void testContainsTerminateEventFor_withTerminateEventFromDifferentLaunch()
+    throws Exception
+  {
+    ILaunch launch = createLaunch();
+    ILaunch otherLaunch = createLaunch();
+    RuntimeProcess runtimeProcess = createRuntimeProcess( otherLaunch );
+    DebugEvent debugEvent = new DebugEvent( runtimeProcess, DebugEvent.TERMINATE );
+    DebugEvent[] debugEvents = new DebugEvent[] { debugEvent };
+
+    boolean containsTerminateEvent = DebugUtil.containsTerminateEventFor( debugEvents, launch );
+
+    assertFalse( containsTerminateEvent );
+  }
+
   private RuntimeProcess createRuntimeProcess( ILaunch launch ) {
-    RuntimeProcess result = new RuntimeProcess( launch, new TestProcess(), "", new HashMap() );
+    HashMap<String, String> attributes = new HashMap<String, String>();
+    RuntimeProcess result = new RuntimeProcess( launch, new TestProcess(), "", attributes );
     runtimeProcesses.add( result );
     return result;
   }
@@ -164,4 +186,5 @@ public class DebugUtil_Test extends TestCase {
     RWTLaunchConfig launchConfig = new RWTLaunchConfig( Fixture.createRWTLaunchConfig() );
     return new TestLaunch( launchConfig.getUnderlyingLaunchConfig() );
   }
+
 }

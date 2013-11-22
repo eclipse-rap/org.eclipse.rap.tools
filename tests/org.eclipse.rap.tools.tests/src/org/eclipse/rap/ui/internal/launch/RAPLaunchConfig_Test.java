@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource and others.
+ * Copyright (c) 2007, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,27 +11,36 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.rap.ui.tests.Fixture;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class RAPLaunchConfig_Test extends TestCase {
+public class RAPLaunchConfig_Test {
 
   private ILaunchConfigurationWorkingCopy config;
   private RAPLaunchConfig rapConfig;
 
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     config = Fixture.createRAPLaunchConfig();
     rapConfig = new RAPLaunchConfig( config );
   }
 
-  protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
     config.delete();
   }
 
+  @Test
   public void testInitialValues() throws CoreException {
     assertFalse( rapConfig.getUseManualPort() );
     assertFalse( "".equals( rapConfig.getServletPath() ) );
@@ -42,55 +51,72 @@ public class RAPLaunchConfig_Test extends TestCase {
     assertTrue( "/".equals( rapConfig.getContextPath() ) );
   }
 
-  public void testServletName() throws CoreException {
+  @Test
+  public void testServletPath() throws CoreException {
     rapConfig.setServletPath( "xyz" );
+
     assertEquals( "xyz", rapConfig.getServletPath() );
+  }
+
+  @Test
+  public void testServletPath_failsWithNull() throws CoreException {
+    rapConfig.setServletPath( "xyz" );
     try {
+
       rapConfig.setServletPath( null );
-      fail( "Must not allow to set servlet name to null" );
+
+      fail();
     } catch( NullPointerException e ) {
-      // expected
       assertEquals( "xyz", rapConfig.getServletPath() );
     }
   }
 
+  @Test
   public void testSetDataLocation() throws CoreException {
     rapConfig.setDataLocation( "xyz" );
     assertEquals( "xyz", rapConfig.getDataLocation() );
   }
 
-  public void testSetDataLocationThrowsExceptionWithNullValue() throws CoreException {
+  @Test
+  public void testSetDataLocation_failsWithNull() throws CoreException {
     rapConfig.setDataLocation( "xyz" );
     try {
+
       rapConfig.setDataLocation( null );
-      fail( "Must not allow to set data location to null" );
+
+      fail();
     } catch( NullPointerException e ) {
-      // expected
       assertEquals( "xyz", rapConfig.getDataLocation() );
     }
   }
 
-  public void testSetContextPathValideValue() throws CoreException {
+  @Test
+  public void testSetContextPath_withValidPath() throws CoreException {
     rapConfig.setContextPath( "/xyz" );
+
     assertEquals( "/xyz", rapConfig.getContextPath() );
   }
 
-  public void testSetContextPathInvalidValue() {
-    try {
-      rapConfig.setContextPath( null );
-      fail( "Must not allow to set context path to null" );
-    } catch( NullPointerException e ) {
-      // expected
-    }
+  @Test( expected = NullPointerException.class )
+  public void testSetContextPath_failsWithNull() {
+    rapConfig.setContextPath( null );
   }
 
-  public void testUseDefaultDataLocation() throws CoreException {
+  @Test
+  public void testSetUseDefaultDataLocation_false() throws CoreException {
     rapConfig.setUseDefaultDataLocation( false );
+
     assertFalse( rapConfig.getUseDefaultDatatLocation() );
+  }
+
+  @Test
+  public void testSetUseDefaultDataLocation_true() throws CoreException {
     rapConfig.setUseDefaultDataLocation( true );
+
     assertTrue( rapConfig.getUseDefaultDatatLocation() );
   }
 
+  @Test
   public void testDoClear() throws CoreException {
     rapConfig.setDoClearDataLocation( false );
     assertFalse( rapConfig.getDoClearDataLocation() );

@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tests;
 
@@ -39,26 +40,27 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
 
+
 public final class TestProject {
-  private static final String PLUGIN_ID = "org.eclipse.rap.ui.launch.rwt.tests";
+
+  private static final String PLUGIN_ID = "org.eclipse.rap.tools.launch.rwt.tests";
 
   private static final String DEFAULT_SOURCE_FOLDER = "src";
   private static final String DEFAULT_OUTPUT_FOLDER = "bin";
 
-  
   private static int uniqueId = 0;
   private static List<TestProject> projects = new LinkedList<TestProject>();
-  
+
+  private final String projectName;
+  private IProject project;
+  private IJavaProject javaProject;
+
   public static void deleteAll() throws CoreException {
     while( projects.size() > 0 ) {
       TestProject project = projects.get( 0 );
       project.delete();
     }
   }
-  
-  private final String projectName;
-  private IProject project;
-  private IJavaProject javaProject;
 
   public TestProject() {
     projectName = "test.project." + uniqueId;
@@ -69,21 +71,21 @@ public final class TestProject {
     initializeProject();
     return project.getName();
   }
-  
+
   public IProject getProject() {
     initializeProject();
     return project;
   }
-  
+
   public IJavaProject getJavaProject() throws CoreException {
     initializeJavaProject();
     return javaProject;
   }
-  
+
   public void createJavaProject() throws CoreException {
     initializeJavaProject();
   }
-  
+
   public IFolder createFolder( String name ) throws CoreException {
     initializeProject();
     IFolder result = project.getFolder( name );
@@ -92,8 +94,8 @@ public final class TestProject {
     }
     return result;
   }
-  
-  public IFile createFile( IContainer parent, String fileName, String content ) throws CoreException 
+
+  public IFile createFile( IContainer parent, String fileName, String content ) throws CoreException
   {
     IFile result = parent.getFile( new Path( fileName ) );
     InputStream stream = Fixture.toUtf8Stream( content );
@@ -104,9 +106,9 @@ public final class TestProject {
     }
     return result;
   }
-  
-  public ICompilationUnit createJavaClass( String packageName, String className, String content ) 
-    throws CoreException 
+
+  public ICompilationUnit createJavaClass( String packageName, String className, String content )
+    throws CoreException
   {
     initializeJavaProject();
     IProgressMonitor monitor = newProgressMonitor();
@@ -122,7 +124,7 @@ public final class TestProject {
     waitForAutoBuild();
     return result;
   }
-  
+
   public void delete() throws CoreException {
     if( isProjectCreated() ) {
       projects.remove( this );
@@ -164,11 +166,11 @@ public final class TestProject {
 
       IFolder binFolder = createFolder( DEFAULT_OUTPUT_FOLDER );
       javaProject.setOutputLocation( binFolder.getFullPath(), newProgressMonitor() );
-      
+
       IPath jrePath = JavaRuntime.getDefaultJREContainerEntry().getPath();
       IClasspathEntry jreEntry = JavaCore.newContainerEntry( jrePath );
       javaProject.setRawClasspath( new IClasspathEntry[] { jreEntry }, newProgressMonitor() );
-      
+
       IFolder sourceFolder = createFolder( DEFAULT_SOURCE_FOLDER );
       IPackageFragmentRoot packageRoot = javaProject.getPackageFragmentRoot( sourceFolder );
       IClasspathEntry entry = JavaCore.newSourceEntry( packageRoot.getPath() );
@@ -205,7 +207,7 @@ public final class TestProject {
       handleException( "waitForAutoBuild failed", e );
     }
   }
-  
+
   private static IProgressMonitor newProgressMonitor() {
     return new NullProgressMonitor();
   }
@@ -214,4 +216,5 @@ public final class TestProject {
     IStatus status = new Status( IStatus.ERROR, PLUGIN_ID, msg, throwable );
     throw new CoreException( status );
   }
+
 }

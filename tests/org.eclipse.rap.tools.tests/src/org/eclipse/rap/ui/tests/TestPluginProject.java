@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 EclipseSource.
+ * Copyright (c) 2009, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     EclipseSource - initial API and implementation
+ *    EclipseSource - initial API and implementation
  ******************************************************************************/
 package org.eclipse.rap.ui.tests;
 
@@ -42,30 +42,28 @@ import org.eclipse.pde.internal.core.bundle.WorkspaceBundlePluginModel;
 import org.eclipse.pde.internal.core.ibundle.IBundle;
 import org.eclipse.pde.internal.core.ibundle.IBundlePluginModelBase;
 
+
+@SuppressWarnings( "restriction" )
 public final class TestPluginProject {
 
   private static final String BUNDLE_SYMBOLIC_NAME = "Bundle-SymbolicName";
-
   private static final String MANIFEST_MF = "META-INF/MANIFEST.MF";
   private static final String PLUGIN_XML = "plugin.xml";
   private static final String DEFAULT_SOURCE_FOLDER = "src";
   private static final String DEFAULT_OUTPUT_FOLDER = "bin";
-
   private static final String PLUGIN_NATURE = "org.eclipse.pde.PluginNature";
-
   private static int uniqueId = 0;
-
-  private final List extensions;
+  private final List<Extension> extensions;
   private final IProject project;
   private final IJavaProject javaProject;
 
   public TestPluginProject() throws CoreException {
     this( "test.project." + uniqueId );
-    uniqueId++;
+    uniqueId++ ;
   }
 
-  public TestPluginProject( final String name ) throws CoreException {
-    extensions = new ArrayList();
+  public TestPluginProject( String name ) throws CoreException {
+    extensions = new ArrayList<Extension>();
     project = createProject( name );
     project.open( new NullProgressMonitor() );
     addNature( JavaCore.NATURE_ID );
@@ -78,14 +76,12 @@ public final class TestPluginProject {
   public String getName() {
     return project.getName();
   }
-  
+
   public IJavaProject getJavaProject() {
     return javaProject;
   }
 
-  public void createExtension( final String point,
-                               final String element,
-                               final Map attributes )
+  public void createExtension( String point, String element, Map<String, String> attributes )
     throws CoreException
   {
     extensions.add( new Extension( point, element, attributes, null ) );
@@ -94,11 +90,10 @@ public final class TestPluginProject {
     ensureSingletonBundle();
   }
 
-  public void createExtensionWithExtensionId( final String point,
-                                              final String element,
-                                              final Map attributes,
-                                              final String id )
-    throws CoreException
+  public void createExtensionWithExtensionId( String point,
+                                              String element,
+                                              Map<String, String> attributes,
+                                              String id ) throws CoreException
   {
     extensions.add( new Extension( point, element, attributes, id ) );
     String contents = createPluginXmlContents();
@@ -110,9 +105,8 @@ public final class TestPluginProject {
     project.delete( true, true, new NullProgressMonitor() );
   }
 
-  //////////////////////////
+  // ////////////////////////
   // Project creation helper
-
   private IJavaProject createJavaProjectLayout() throws CoreException {
     project.open( new NullProgressMonitor() );
     IJavaProject result = JavaCore.create( project );
@@ -125,7 +119,7 @@ public final class TestPluginProject {
     IPath jrePath = JavaRuntime.getDefaultJREContainerEntry().getPath();
     IClasspathEntry jreEntry = JavaCore.newContainerEntry( jrePath );
     IPath binPath = project.getFullPath().append( DEFAULT_OUTPUT_FOLDER );
-    IClasspathEntry[] cpes = new IClasspathEntry[]{ srcEntry, jreEntry };
+    IClasspathEntry[] cpes = new IClasspathEntry[] { srcEntry, jreEntry };
     result.setRawClasspath( cpes, binPath, new NullProgressMonitor() );
     return result;
   }
@@ -133,11 +127,10 @@ public final class TestPluginProject {
   private void createManifest() {
     IFile pluginFile = project.getFile( PLUGIN_XML );
     IFile bundleFile = project.getFile( MANIFEST_MF );
-    IBundlePluginModelBase model
-      = new WorkspaceBundlePluginModel( bundleFile, pluginFile );
+    IBundlePluginModelBase model = new WorkspaceBundlePluginModel( bundleFile, pluginFile );
     IPluginBase plugin = model.getPluginBase();
     IBundle bundle = ( ( BundlePluginBase )plugin ).getBundle();
-    bundle.setHeader( BUNDLE_SYMBOLIC_NAME, project.getName() ); //$NON-NLS-1$
+    bundle.setHeader( BUNDLE_SYMBOLIC_NAME, project.getName() );
     bundle.setHeader( "Bundle-Version", "1.0.0" ); //$NON-NLS-1$ //$NON-NLS-2$
     bundle.setHeader( "Bundle-ManifestVersion", "2" ); //$NON-NLS-1$ //$NON-NLS-2$
     bundle.setHeader( "Bundle-ActivationPolicy", "lazy" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -145,7 +138,7 @@ public final class TestPluginProject {
     model.save();
   }
 
-  private void addNature( final String nature ) throws CoreException {
+  private void addNature( String nature ) throws CoreException {
     IProjectDescription description = project.getDescription();
     String[] natures = description.getNatureIds();
     String[] newNatures = new String[ natures.length + 1 ];
@@ -155,18 +148,15 @@ public final class TestPluginProject {
     project.setDescription( description, new NullProgressMonitor() );
   }
 
-  private static IProject createProject( final String name )
-    throws CoreException
-  {
+  private static IProject createProject( String name ) throws CoreException {
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
     IProject result = root.getProject( name );
     result.create( new NullProgressMonitor() );
     return result;
   }
 
-  ///////////////////////////////
+  // /////////////////////////////
   // plugin.xml generation helper
-  
   private String createPluginXmlContents() {
     StringBuffer result = new StringBuffer();
     result.append( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" );
@@ -181,7 +171,7 @@ public final class TestPluginProject {
     return result.toString();
   }
 
-  private void savePluginXml( final String contents ) throws CoreException {
+  private void savePluginXml( String contents ) throws CoreException {
     IFile pluginXml = project.getFile( PLUGIN_XML );
     InputStream stream = toUtf8Stream( contents );
     if( !pluginXml.exists() ) {
@@ -192,7 +182,7 @@ public final class TestPluginProject {
     waitForAutoBuild();
   }
 
-  private static ByteArrayInputStream toUtf8Stream( final String string ) {
+  private static ByteArrayInputStream toUtf8Stream( String string ) {
     try {
       return new ByteArrayInputStream( string.getBytes( "UTF-8" ) ); //$NON-NLS-1$
     } catch( UnsupportedEncodingException e ) {
@@ -203,8 +193,7 @@ public final class TestPluginProject {
   private void ensureSingletonBundle() {
     IFile pluginFile = project.getFile( PLUGIN_XML );
     IFile bundleFile = project.getFile( MANIFEST_MF );
-    IBundlePluginModelBase model
-      = new WorkspaceBundlePluginModel( bundleFile, pluginFile );
+    IBundlePluginModelBase model = new WorkspaceBundlePluginModel( bundleFile, pluginFile );
     IPluginBase plugin = model.getPluginBase();
     IBundle bundle = ( ( BundlePluginBase )plugin ).getBundle();
     String symbolicName = bundle.getHeader( BUNDLE_SYMBOLIC_NAME );
@@ -215,9 +204,8 @@ public final class TestPluginProject {
     }
   }
 
-  //////////////////
+  // ////////////////
   // helping methods
-
   private static void waitForAutoBuild() throws CoreException {
     try {
       NullProgressMonitor monitor = new NullProgressMonitor();
@@ -225,42 +213,36 @@ public final class TestPluginProject {
     } catch( OperationCanceledException e ) {
       handleException( "waitForAutoBuild failed", e );
     } catch( InterruptedException e ) {
-      handleException( "waitForAutoBuild failed", e );
+      //handleException( "waitForAutoBuild failed", e );
     }
   }
-  private static void handleException( final String msg,
-                                       final Throwable throwable )
+
+  private static void handleException( String msg, Throwable throwable )
     throws CoreException
   {
-    String pluginId = Fixture.PLUGIN_ID;
-    IStatus status = new Status( IStatus.ERROR, pluginId, msg, throwable );
+    IStatus status = new Status( IStatus.ERROR, Fixture.PLUGIN_ID, msg, throwable );
     throw new CoreException( status );
   }
 
-  /////////////////
+  // ///////////////
   // helper classes
-  
   private static final class Extension {
 
     private final String point;
     private final String element;
-    private final Map attributes;
-    private String id;
+    private final Map<String, String> attributes;
+    private final String id;
 
-    private Extension( final String point, 
-                       final String element, 
-                       final Map attributes,
-                       final String id ) 
-    {
+    private Extension( String point, String element, Map<String, String> attributes, String id ) {
       this.point = point;
       this.element = element;
-      this.attributes = new HashMap();
+      this.attributes = new HashMap<String, String>();
       this.id = id;
       if( attributes != null ) {
         this.attributes.putAll( attributes );
       }
     }
-    
+
     private String toXml() {
       StringBuffer result = new StringBuffer();
       result.append( "<extension" );
@@ -270,7 +252,7 @@ public final class TestPluginProject {
       result.append( " point=\"" );
       result.append( point );
       result.append( "\">\n" );
-      result.append( "  <");
+      result.append( "  <" );
       result.append( element );
       result.append( "\n" );
       Iterator iter = attributes.keySet().iterator();
@@ -285,12 +267,13 @@ public final class TestPluginProject {
           result.append( "\n" );
         }
       }
-      result.append( ">\n");
-      result.append( "  </");
+      result.append( ">\n" );
+      result.append( "  </" );
       result.append( element );
-      result.append( ">\n");
+      result.append( ">\n" );
       result.append( "</extension>\n" );
       return result.toString();
     }
   }
+
 }

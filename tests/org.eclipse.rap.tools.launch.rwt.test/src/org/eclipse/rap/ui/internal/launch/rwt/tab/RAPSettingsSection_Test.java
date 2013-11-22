@@ -10,15 +10,32 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class RAPSettingsSection_Test extends TestCase {
+
+public class RAPSettingsSection_Test {
 
   private Shell shell;
   private RAPSettingsSection rapSettingsSection;
 
+  @Before
+  public void setUp() throws Exception {
+    rapSettingsSection = new RAPSettingsSection();
+    shell = new Shell();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    shell.dispose();
+  }
+
+  @Test
   public void testGetName() {
     String name = rapSettingsSection.getName();
 
@@ -26,18 +43,11 @@ public class RAPSettingsSection_Test extends TestCase {
     assertTrue( name.length() > 0 );
   }
 
-  public void testCreateControlCallsSetControl() {
+  @Test
+  public void testCreateControl_callsSetControl() {
     rapSettingsSection.createControl( shell );
 
     assertNotNull( rapSettingsSection.getControl() );
   }
 
-  protected void setUp() throws Exception {
-    rapSettingsSection = new RAPSettingsSection();
-    shell = new Shell();
-  }
-
-  protected void tearDown() throws Exception {
-    shell.dispose();
-  }
 }

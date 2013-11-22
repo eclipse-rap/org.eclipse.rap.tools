@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 EclipseSource.
+ * Copyright (c) 2009, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     EclipseSource - initial API and implementation
+ *    EclipseSource - initial API and implementation
  ******************************************************************************/
 package org.eclipse.rap.ui.tests;
 
@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
@@ -34,6 +35,7 @@ public final class Fixture {
 
   private static int uniqueId;
 
+  @SuppressWarnings( "deprecation" )
   public static ILaunchConfigurationWorkingCopy createRAPLaunchConfig()
     throws CoreException
   {
@@ -46,7 +48,7 @@ public final class Fixture {
     return type.newInstance( null, name );
   }
 
-  public static File createDirectory( final String directory ) {
+  public static File createDirectory( String directory ) {
     String workingDir = Platform.getInstanceLocation().getURL().getPath();
     String tempDirectory;
     if( directory == null ) {
@@ -58,26 +60,24 @@ public final class Fixture {
     return new File( workingDir, tempDirectory );
   }
 
-  public static void deleteDirectory( final File directory ) {
+  public static void deleteDirectory( File directory ) {
     if( directory.isDirectory() ) {
       File[] files = directory.listFiles();
-      for( int i = 0; i < files.length; i++ ) {
-        deleteDirectory( files[ i ] );
+      for( File file : files ) {
+        deleteDirectory( file );
       }
     }
     directory.delete();
   }
 
   public static void writeContentToFile( File fileToWrite, String content ) throws IOException {
-    FileWriter fileWriter = null;
+    Writer writer = null;
     try {
-      fileWriter = new FileWriter( fileToWrite );
-      BufferedWriter out = new BufferedWriter( fileWriter );
-      out.write( content );
-      out.flush();
+      writer = new BufferedWriter( new FileWriter( fileToWrite ) );
+      writer.write( content );
     } finally {
-      if( fileWriter != null ) {
-        fileWriter.close();
+      if( writer != null ) {
+        writer.close();
       }
     }
   }
@@ -100,4 +100,5 @@ public final class Fixture {
   private Fixture() {
     // prevent instantiation
   }
+
 }

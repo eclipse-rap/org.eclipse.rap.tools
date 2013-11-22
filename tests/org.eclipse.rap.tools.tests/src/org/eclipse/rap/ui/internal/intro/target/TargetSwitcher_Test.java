@@ -10,16 +10,19 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro.target;
 
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.eclipse.ant.core.AntRunner;
 import org.eclipse.core.runtime.CoreException;
@@ -31,44 +34,49 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.pde.core.target.ITargetDefinition;
 import org.eclipse.pde.core.target.ITargetHandle;
 import org.eclipse.pde.core.target.ITargetPlatformService;
-import org.eclipse.pde.core.target.TargetBundle;
 import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.rap.ui.tests.Fixture;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.Bundle;
 
 
 @SuppressWarnings( "restriction" )
-public class TargetSwitcher_Test extends TestCase {
+public class TargetSwitcher_Test {
 
   private final static String TARGET_LOCATION = "/test_target";
   private final static String LATEST_TARGET_LOCATION = "/latest_target";
   private ITargetHandle[] initialTargets;
-  private List< File > filesToDelete;
+  private List<File> filesToDelete;
 
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
     initialTargets = targetPlatformService.getTargets( new NullProgressMonitor() );
-    filesToDelete = new ArrayList< File >();
+    filesToDelete = new ArrayList<File>();
   }
 
-  protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
     ITargetHandle[] currentTargets = targetPlatformService.getTargets( new NullProgressMonitor() );
     // Delete all available targets
-    for( int i = 0; i < currentTargets.length; i++ ) {
-      targetPlatformService.deleteTarget( currentTargets[ i ] );
+    for( ITargetHandle currentTarget : currentTargets ) {
+      targetPlatformService.deleteTarget( currentTarget );
     }
     // Add initial targets
-    for( int i = 0; i < initialTargets.length; i++ ) {
-      ITargetDefinition targetDefinition = initialTargets[ i ].getTargetDefinition();
+    for( ITargetHandle initialTarget : initialTargets ) {
+      ITargetDefinition targetDefinition = initialTarget.getTargetDefinition();
       targetPlatformService.saveTargetDefinition( targetDefinition );
     }
     // Deletes all files
-    for( int i = 0; i < filesToDelete.size(); i++ ) {
-      Fixture.deleteDirectory( filesToDelete.get( i ) );
+    for( File file : filesToDelete ) {
+      Fixture.deleteDirectory( file );
     }
   }
 
+  @Test
   public void testSwitchTarget() throws CoreException {
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
     ITargetHandle workspaceTargetHandle = targetPlatformService.getWorkspaceTargetHandle();
@@ -77,7 +85,9 @@ public class TargetSwitcher_Test extends TestCase {
       newTarget.setName( "testTarget" );
       targetPlatformService.saveTargetDefinition( newTarget );
       assertNotSame( newTarget.getHandle(), workspaceTargetHandle );
+
       TargetSwitcher.switchTarget( newTarget );
+
       ITargetHandle workspaceTargetHandle2 = targetPlatformService.getWorkspaceTargetHandle();
       assertEquals( newTarget.getHandle(), workspaceTargetHandle2 );
     } finally {
@@ -87,80 +97,78 @@ public class TargetSwitcher_Test extends TestCase {
     }
   }
 
-  public void testInstallTargetAvailable() throws Exception {
+  @Test
+  public void testInstall_whenTargetAvailable() throws Exception {
     String targetFileUri = createTargetDefinitionFile( TARGET_LOCATION );
+
     ITargetDefinition targetDefinition = TargetSwitcher.install( targetFileUri,
                                                                  false,
                                                                  new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-    ITargetPlatformService targetPlatformService = getTargetPlatformService();
-    ITargetHandle[] availableTargets = targetPlatformService.getTargets( new NullProgressMonitor() );
-    List< ITargetHandle > availableTargetsAsList = Arrays.asList( availableTargets );
-    ITargetHandle handle = targetDefinition.getHandle();
-    assertTrue( "Target wasn't install properly", availableTargetsAsList.contains( handle ) );
+
+    assertNotNull( targetDefinition );
+    List<ITargetHandle> availableTargets
+      = asList( getTargetPlatformService().getTargets( new NullProgressMonitor() ) );
+    assertTrue( availableTargets.contains( targetDefinition.getHandle() ) );
   }
 
+  @Test
   public void testInstall() throws Exception {
     String targetFileUri = createTargetDefinitionFile( TARGET_LOCATION );
+
     ITargetDefinition targetDefinition = TargetSwitcher.install( targetFileUri,
                                                                  false,
                                                                  new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-    boolean resolved = targetDefinition.isResolved();
-    assertTrue( "Target should be in resolved state", resolved );
-    TargetBundle[] bundles = targetDefinition.getBundles();
-    assertEquals( "Not all bundles are resolved", 1, bundles.length );
+
+    assertNotNull( targetDefinition );
+    assertTrue( targetDefinition.isResolved() );
+    assertEquals( 1, targetDefinition.getBundles().length );
   }
 
-  public void testInstallOldTargetAndLatestTargetFileLoaded() throws Exception {
+  @Test
+  public void testInstall_withOldTargetAndLatestTargetFileLoaded() throws Exception {
     String targetFileUri = createTargetDefinitionFile( TARGET_LOCATION );
     createTargetDefinitionFile( LATEST_TARGET_LOCATION );
+
     ITargetDefinition targetDefinition = TargetSwitcher.install( targetFileUri,
                                                                  false,
                                                                  new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-    boolean resolved = targetDefinition.isResolved();
-    assertTrue( "Target should be in resolved state", resolved );
-    TargetBundle[] bundles = targetDefinition.getBundles();
-    assertEquals( "Not all bundles are resolved", 1, bundles.length );
+
+    assertNotNull( targetDefinition );
+    assertTrue( targetDefinition.isResolved() );
+    assertEquals( 1, targetDefinition.getBundles().length );
   }
 
-  public void testInstallTwice() throws Exception {
+  @Test
+  public void testInstall_twice() throws Exception {
     String p2RepoURI = createTargetDefinitionFile( TARGET_LOCATION );
     ITargetPlatformService targetPlatformService = getTargetPlatformService();
-    ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
-                                                                 false,
-                                                                 new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-    boolean resolved = targetDefinition.isResolved();
-    assertTrue( "Target should be in resolved state", resolved );
-    TargetBundle[] bundles = targetDefinition.getBundles();
-    assertEquals( "Not all bundles are resolved", 1, bundles.length );
-    ITargetHandle[] targets = targetPlatformService.getTargets( new NullProgressMonitor() );
+    TargetSwitcher.install( p2RepoURI, false, new NullProgressMonitor() );
+    ITargetHandle[] targets1 = targetPlatformService.getTargets( new NullProgressMonitor() );
+
     // Second installation
     ITargetDefinition targetDefinition2 = TargetSwitcher.install( p2RepoURI,
                                                                   false,
                                                                   new NullProgressMonitor() );
-    boolean resolved2 = targetDefinition2.isResolved();
-    assertTrue( "Target should be in resolved state", resolved2 );
-    TargetBundle[] bundles2 = targetDefinition2.getBundles();
-    assertEquals( "Not all bundles are resolved", 1, bundles2.length );
+
+    assertTrue( targetDefinition2.isResolved() );
+    assertEquals( 1, targetDefinition2.getBundles().length );
     ITargetHandle[] targets2 = targetPlatformService.getTargets( new NullProgressMonitor() );
-    assertEquals( "Targets should be equal", targets.length, targets2.length );
+    assertEquals( targets1.length, targets2.length );
   }
 
-  public void testInstallTargetConfiguration() throws Exception {
+  @Test
+  public void testInstall_targetConfiguration() throws Exception {
     String VM_ARGS = "-Dosgi.noShutdown=true -Declipse.ignoreApp=true"; //$NON-NLS-1$
     String PROGRAM_ARGS = "-console -consolelog"; //$NON-NLS-1$
     String p2RepoURI = createTargetDefinitionFile( TARGET_LOCATION );
+
     ITargetDefinition targetDefinition = TargetSwitcher.install( p2RepoURI,
                                                                  false,
                                                                  new NullProgressMonitor() );
-    assertNotNull( "Target shuldn't be null if no exception happened", targetDefinition );
-    String targetVmArguments = targetDefinition.getVMArguments();
-    assertEquals( VM_ARGS, targetVmArguments );
-    String targetProgramArguments = targetDefinition.getProgramArguments();
-    assertEquals( PROGRAM_ARGS, targetProgramArguments );
+
+    assertNotNull( targetDefinition );
+    assertEquals( VM_ARGS, targetDefinition.getVMArguments() );
+    assertEquals( PROGRAM_ARGS, targetDefinition.getProgramArguments() );
   }
 
   private static ITargetPlatformService getTargetPlatformService() {
@@ -182,7 +190,7 @@ public class TargetSwitcher_Test extends TestCase {
     IPath targetTemplateFiletPath = new Path( targetLocation ).append( "target_template" );
     URL unresolvedFileUrl = FileLocator.find( bundle, targetTemplateFiletPath, null );
     URL targetTemplateFileUrl = FileLocator.resolve( unresolvedFileUrl );
-    final File targetTemplateFile = new Path( targetTemplateFileUrl.getPath() ).toFile();
+    File targetTemplateFile = new Path( targetTemplateFileUrl.getPath() ).toFile();
     String targetTemplateFileContent = Fixture.readContent( targetTemplateFile );
     String targetContent = targetTemplateFileContent.replace( "<template_uri>", fakeRepositoryUri );
     File targetFile = File.createTempFile( "test_target", "" );
@@ -199,15 +207,15 @@ public class TargetSwitcher_Test extends TestCase {
     URL copyRepositoryScriptURL = getResourceURL( "copy_repository.ant.xml" );
     URL repositoryContentURL = getResourceURL( targetLocation );
     Path repositoryContentPath = new Path( repositoryContentURL.getPath() );
-    Map< String, String > scriptProperties = getProperties( repositoryContentPath.toString(),
-                                          repositoryDestPath.toString() );
+    Map<String, String> scriptProperties = getProperties( repositoryContentPath.toString(),
+                                                          repositoryDestPath.toString() );
     runAntTask( copyRepositoryScriptURL, runner, scriptProperties );
     return repositoryDest.toString();
   }
 
   private void runAntTask( URL copyRepositoryScriptURL,
                            AntRunner runner,
-                           Map< String, String > scriptProperties ) throws CoreException
+                           Map<String, String> scriptProperties ) throws CoreException
   {
     Path copyRepositoryPath = new Path( copyRepositoryScriptURL.getPath() );
     runner.setBuildFileLocation( copyRepositoryPath.toString() );
@@ -215,8 +223,8 @@ public class TargetSwitcher_Test extends TestCase {
     runner.run( new NullProgressMonitor() );
   }
 
-  private Map< String, String > getProperties( String srcProp, String destProp ) {
-    Map< String, String > result = new HashMap< String, String >();
+  private Map<String, String> getProperties( String srcProp, String destProp ) {
+    Map<String, String> result = new HashMap<String, String>();
     result.put( "src", srcProp ); //$NON-NLS-1$
     result.put( "dest", destProp ); //$NON-NLS-1$
     return result;
@@ -228,4 +236,5 @@ public class TargetSwitcher_Test extends TestCase {
     fakeRepositoryDest.mkdirs();
     return fakeRepositoryDest.toURI().toURL();
   }
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,17 +11,22 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.util;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
-import org.eclipse.rap.ui.internal.launch.rwt.util.BundleFileLocator;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 
-public class BundleFileLocator_Test extends TestCase {
+public class BundleFileLocator_Test {
 
-  public void testLocateWithExistingBundle() {
+  @Test
+  public void testLocate_withExistingBundle() {
     String bundleName = "org.eclipse.jetty.server";
+
     String location = BundleFileLocator.locate( bundleName );
 
     assertNotNull( location );
@@ -30,9 +35,11 @@ public class BundleFileLocator_Test extends TestCase {
     assertFalse( file.isDirectory() );
   }
 
-  public void testLocateWithNonExistingBundle() {
+  @Test
+  public void testLocate_withNonExistingBundle() {
     String location = BundleFileLocator.locate( "does.not.exist" );
 
     assertNull( location );
   }
+
 }

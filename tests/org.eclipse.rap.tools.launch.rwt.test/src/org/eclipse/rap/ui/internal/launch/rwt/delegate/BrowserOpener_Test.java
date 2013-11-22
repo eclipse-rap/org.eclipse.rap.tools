@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,11 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.delegate;
 
-import java.net.ServerSocket;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
+import java.net.ServerSocket;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.rap.ui.internal.launch.rwt.config.BrowserMode;
@@ -21,13 +23,28 @@ import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestLaunch;
 import org.eclipse.ui.browser.IWebBrowser;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class BrowserOpener_Test extends TestCase {
+public class BrowserOpener_Test {
 
   private RWTLaunchConfig launchConfig;
   private ILaunch launch;
 
+  @Before
+  public void setUp() throws Exception {
+    launchConfig = new RWTLaunchConfig( Fixture.createRWTLaunchConfig() );
+    launch = new TestLaunch( launchConfig.getUnderlyingLaunchConfig() );
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    Fixture.deleteAllRWTLaunchConfigs();
+  }
+
+  @Test
   public void testConstructorWithInvalidUrl() {
     try {
       new BrowserOpener( launch );
@@ -35,6 +52,7 @@ public class BrowserOpener_Test extends TestCase {
     }
   }
 
+  @Test
   public void testComputeBrowserUrl() {
     launchConfig.setServletPath( "/servletpath" );
     setLaunchPort( 1234 );
@@ -45,7 +63,8 @@ public class BrowserOpener_Test extends TestCase {
     assertEquals( "http://127.0.0.1:1234/servletpath", url );
   }
 
-  public void testComputeBrowserUrl_WithContextPath() {
+  @Test
+  public void testComputeBrowserUrl_withContextPath() {
     launchConfig.setServletPath( "/servletpath" );
     launchConfig.setUseManualContextPath( true );
     launchConfig.setContextPath( "/contextpath" );
@@ -58,7 +77,8 @@ public class BrowserOpener_Test extends TestCase {
   }
 
 
-  public void testComputeBrowserUrl_WithContextPathAndTrailingSlash() {
+  @Test
+  public void testComputeBrowserUrl_withContextPathAndTrailingSlash() {
     launchConfig.setServletPath( "/servletpath" );
     launchConfig.setUseManualContextPath( true );
     launchConfig.setContextPath( "/contextpath/" );
@@ -70,7 +90,8 @@ public class BrowserOpener_Test extends TestCase {
     assertEquals( "http://127.0.0.1:1234/contextpath/servletpath", url );
   }
 
-  public void testGetBrowserAssignedDifferentIdsForInternalAndExternal() throws Exception {
+  @Test
+  public void testGetBrowser_assignesDifferentIdsForInternalAndExternal() throws Exception {
     launchConfig.setBrowserMode( BrowserMode.EXTERNAL );
     setLaunchPort( 1234 );
     BrowserOpener externalBrowserOpener = new BrowserOpener( launch );
@@ -83,7 +104,8 @@ public class BrowserOpener_Test extends TestCase {
     assertFalse( internalBrowser.getId().equals( externalBrowser.getId() ) );
   }
 
-  public void testCanConnectToUrlWhenAvailable() throws Exception {
+  @Test
+  public void testCanConnectToUrl_whenAvailable() throws Exception {
     ServerSocket socket = new ServerSocket( 0 );
     setLaunchPort( socket.getLocalPort() );
     BrowserOpener browserOpener = new BrowserOpener( launch );
@@ -94,7 +116,8 @@ public class BrowserOpener_Test extends TestCase {
     assertTrue( canConnectToUrl );
   }
 
-  public void testCanConnectToUrlWhenUnvailable() throws Exception {
+  @Test
+  public void testCanConnectToUrl_whenUnvailable() throws Exception {
     ServerSocket socket = new ServerSocket( 0 );
     setLaunchPort( socket.getLocalPort() );
     socket.close();
@@ -105,16 +128,8 @@ public class BrowserOpener_Test extends TestCase {
     assertFalse( canConnectToUrl );
   }
 
-  protected void setUp() throws Exception {
-    launchConfig = new RWTLaunchConfig( Fixture.createRWTLaunchConfig() );
-    launch = new TestLaunch( launchConfig.getUnderlyingLaunchConfig() );
-  }
-
-  protected void tearDown() throws Exception {
-    Fixture.deleteAllRWTLaunchConfigs();
-  }
-
   private void setLaunchPort( int port ) {
     new RWTLaunch( launch ).setPort( port );
   }
+
 }

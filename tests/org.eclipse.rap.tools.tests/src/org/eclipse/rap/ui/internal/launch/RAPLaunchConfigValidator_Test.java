@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource and others.
+ * Copyright (c) 2007, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,11 +13,11 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -26,12 +26,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.rap.ui.tests.Fixture;
 import org.eclipse.rap.ui.tests.TestPluginProject;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class RAPLaunchConfigValidator_Test extends TestCase {
+public class RAPLaunchConfigValidator_Test {
 
   private static final String FEATURE_PROJECT_NAME = "com.junitTest.feature";
 
@@ -40,20 +42,23 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
   private List projectsToDelete;
   private RAPLaunchConfigValidator validator;
 
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     config = Fixture.createRAPLaunchConfig();
     rapConfig = new RAPLaunchConfig( config );
     validator = new RAPLaunchConfigValidator( rapConfig );
     projectsToDelete = new ArrayList();
   }
 
-  protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
     config.delete();
     deleteProjects( projectsToDelete );
     deleteFeature();
   }
 
-  public void testValidateDataLocation() {
+  @Test
+  public void testValidate_emptyDataLocation() {
     rapConfig.setDataLocation( "" );
 
     IStatus[] states = validator.validate();
@@ -61,7 +66,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_DATA_LOCATION ) );
   }
 
-  public void testValidateServletPath() throws Exception {
+  @Test
+  public void testValidate_validServletPath() throws Exception {
     rapConfig.setOpenBrowser( true );
     rapConfig.setServletPath( "/foo" );
 
@@ -70,7 +76,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
-  public void testValidateServletPathEmpty() {
+  @Test
+  public void testValidate_emptyServletPath() {
     rapConfig.setOpenBrowser( true );
     // servlet name has a default value, clear this
     rapConfig.setServletPath( "" );
@@ -80,7 +87,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_PATH ) );
   }
 
-  public void testValidateServletPathInvalidCharacters() {
+  @Test
+  public void testValidate_servletPathWithInvalidCharacters() {
     rapConfig.setOpenBrowser( true );
     rapConfig.setServletPath( "/rap*" );
 
@@ -89,7 +97,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_PATH_INVALID ) );
   }
 
-  public void testValidateServletPathLeadingSlash() {
+  @Test
+  public void testValidate_servletPathWithoutLeadingSlash() {
     rapConfig.setOpenBrowser( true );
     rapConfig.setServletPath( "rap" );
 
@@ -98,7 +107,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_SERVLET_PATH_LEADING_SLASH ) );
   }
 
-  public void testValidateServletPathLeadingSlashWithoutOpenBrowser() {
+  @Test
+  public void testValidate_servletPathWithoutLeadingSlash_withoutOpenBrowser() {
     rapConfig.setOpenBrowser( false );
     rapConfig.setServletPath( "rap" );
 
@@ -107,38 +117,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
-  public void testValidateWsRAP() throws Exception {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "-ws rap" );
-
-    IStatus[] states = validator.validate();
-
-    assertTrue( isOk( states ) );
-  }
-
-  public void testValidateWsEmpty() throws Exception {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "" );
-
-    IStatus[] states = validator.validate();
-
-    // TODO [rst] Change to assertTrue when bug 338544 is fixed
-    // assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.WARN_WS_WRONG ) );
-    assertTrue( isOk( states ) );
-  }
-
-  public void testValidateWsNotRAP() throws Exception {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "-ws test" );
-
-    IStatus[] states = validator.validate();
-
-    // TODO [rst] Change to assertTrue when bug 338544 is fixed
-    // assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.WARN_WS_WRONG ) );
-    assertTrue( isOk( states ) );
-  }
-
-  public void testInvalidButDisabledContextPath() {
+  @Test
+  public void testValidate_invalidButDisabledContextPath() {
     rapConfig.setContextPath( "contains space" );
     rapConfig.setUseManualContextPath( false );
 
@@ -147,7 +127,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
-  public void testContextPathStartSlash() {
+  @Test
+  public void testValidate_contextPathWithLeadingSlash() {
     rapConfig.setContextPath( "/ok" );
     rapConfig.setUseManualContextPath( true );
 
@@ -156,7 +137,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
-  public void testContextPathEndSlash() {
+  @Test
+  public void testValidate_contextPathWithTrailingSlash() {
     rapConfig.setContextPath( "/foo/" );
     rapConfig.setUseManualContextPath( true );
 
@@ -165,7 +147,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
-  public void testContextPath_MissingLeadingSlash() {
+  @Test
+  public void testValidate_contextPathWithoutLeadingSlash() {
     rapConfig.setContextPath( "noleadingslash" );
     rapConfig.setUseManualContextPath( true );
 
@@ -174,7 +157,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_CONTEXT_PATH_LEADING_SLASH ) );
   }
 
-  public void testInvalidContextPath() {
+  @Test
+  public void testValidate_invalidContextPath() {
     rapConfig.setContextPath( "/invalid\\character" );
     rapConfig.setUseManualContextPath( true );
 
@@ -183,7 +167,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_CONTEXT_PATH ) );
   }
 
-  public void testContextPathWithSpaces() {
+  @Test
+  public void testValidate_contextPathWithSpaces() {
     rapConfig.setContextPath( "/contains space" );
     rapConfig.setUseManualContextPath( true );
 
@@ -192,7 +177,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_CONTEXT_PATH ) );
   }
 
-  public void testContextPathWithDoubleSlash() {
+  @Test
+  public void testValidate_contextPathWithDoubleSlash() {
     rapConfig.setContextPath( "/double//slash" );
     rapConfig.setUseManualContextPath( true );
 
@@ -201,7 +187,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_CONTEXT_PATH ) );
   }
 
-  public void testInvalidPort() {
+  @Test
+  public void testValidate_invalidPort() {
     rapConfig.setUseManualPort( true );
     rapConfig.setPort( -1 );
 
@@ -210,7 +197,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_PORT ) );
   }
 
-  public void testPortRetry() {
+  @Test
+  public void testValidate_validPortAfterRetry() {
     rapConfig.setUseManualPort( true );
     rapConfig.setPort( -1 );
     // Fix validation error and retry
@@ -221,7 +209,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
-  public void testInvalidTimeout() {
+  @Test
+  public void testValidate_invalidTimeout() {
     rapConfig.setUseSessionTimeout( true );
     rapConfig.setSessionTimeout( -1 );
 
@@ -230,7 +219,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( hasStatusCode( states, RAPLaunchConfigValidator.ERR_TIMEOUT ) );
   }
 
-  public void testZeroTimeout() {
+  @Test
+  public void testValidate_zeroTimeout() {
     rapConfig.setUseSessionTimeout( true );
     rapConfig.setSessionTimeout( 0 );
 
@@ -239,7 +229,8 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
     assertTrue( isOk( states ) );
   }
 
-  public void testPositiveTimeout() {
+  @Test
+  public void testValidate_positiveTimeout() {
     rapConfig.setUseSessionTimeout( true );
     rapConfig.setSessionTimeout( Integer.MAX_VALUE );
 
@@ -287,4 +278,5 @@ public class RAPLaunchConfigValidator_Test extends TestCase {
       project.delete();
     }
   }
+
 }

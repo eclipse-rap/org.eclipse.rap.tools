@@ -1,14 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.util;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -16,96 +23,121 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import junit.framework.TestCase;
-
-import org.eclipse.rap.ui.internal.launch.rwt.tests.AssertUtil;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class IOUtil_Test extends TestCase {
-  
+public class IOUtil_Test {
+
   private File tempDestination;
   private File tempSource;
 
   private File directory;
-  
-  public void testDeleteWithExistingDirectory() {
-    directory.mkdirs();
-    
+
+  @Before
+  public void setUp() throws Exception {
+    directory = new File( getTempDir(), "testdir" );
+    directory.deleteOnExit();
+    tempDestination = createTempFile();
+    tempDestination.deleteOnExit();
+    tempSource = createTempFile();
+    tempSource.deleteOnExit();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    tempDestination.delete();
+    tempSource.delete();
     IOUtil.delete( directory );
-    
+  }
+
+  @Test
+  public void testDelete_withExistingDirectory() {
+    directory.mkdirs();
+
+    IOUtil.delete( directory );
+
     assertFalse( directory.exists() );
   }
-  
-  public void testDeleteWithSubDirectories() {
+
+  @Test
+  public void testDelete_withSubDirectories() {
     File subDirectory = new File( directory, "subdir" );
     subDirectory.mkdirs();
-    
+
     IOUtil.delete( directory );
-    
+
     assertFalse( directory.exists() );
   }
-  
-  public void testDeleteWithSubDirectoriesAndFiles() throws IOException {
+
+  @Test
+  public void testDelete_withSubDirectoriesAndFiles() throws IOException {
     File subDirectory = new File( directory, "subdir" );
     subDirectory.mkdirs();
     File fileInDirectory = createTempFile( directory );
     File fileInSubDirectory = createTempFile( subDirectory );
-    
+
     boolean deleted = IOUtil.delete( directory );
-    
+
     assertTrue( deleted );
     assertFalse( directory.exists() );
     assertFalse( subDirectory.exists() );
     assertFalse( fileInDirectory.exists() );
     assertFalse( fileInSubDirectory.exists() );
   }
-  
-  public void testDeleteWithFile() throws IOException {
+
+  @Test
+  public void testDelete_withFile() throws IOException {
     directory.mkdirs();
     File file = createTempFile( directory );
-    
+
     boolean deleted = IOUtil.delete( file );
-    
+
     assertTrue( deleted );
     assertTrue( directory.exists() );
     assertFalse( file.exists() );
   }
 
-  public void testDeleteWithNonExistingDirectory() {
+  @Test
+  public void testDelete_withNonExistingDirectory() {
     directory.mkdirs();
     File subDirectory = new File( directory, "non-existing" );
-    
+
     boolean deleted = IOUtil.delete( subDirectory );
-    
+
     assertFalse( deleted );
     assertFalse( subDirectory.exists() );
   }
 
-  public void testCopyFromFileToFile() throws IOException {
+  @Test
+  public void testCopy_fromFileToFile() throws IOException {
     byte[] content = new byte[] { 0, 1, 2, 3, 4 };
     writeFile( tempSource, content );
-    
+
     IOUtil.copy( tempSource, tempDestination );
-    
-    AssertUtil.assertEquals( content, Fixture.readBytes( tempDestination ) );
+
+    assertArrayEquals( content, Fixture.readBytes( tempDestination ) );
   }
 
-  public void testCopyFromFileToFileInNonExistingDir() throws IOException {
+  @Test
+  public void testCopy_fromFileToFileInNonExistingDir() throws IOException {
     byte[] content = new byte[] { 0, 1, 2, 3, 4 };
     writeFile( tempSource, content );
     String tempDir = getTempDir();
     File nonExistingDir = new File( tempDir, "dir-" + System.currentTimeMillis() );
     File destination = new File( nonExistingDir, "rwt-test-file.tmp" );
     destination.deleteOnExit();
-    
+
     IOUtil.copy( tempSource, destination );
-    
-    AssertUtil.assertEquals( content, Fixture.readBytes( destination ) );
+
+    assertArrayEquals( content, Fixture.readBytes( destination ) );
     destination.delete();
   }
-  
-  public void testCopyFromNonExistingFile() {
+
+  @Test
+  public void testCopy_fromNonExistingFile() {
     File nonExistingFile = new File( getTempDir(), "does/not/exist" );
     File destination = new File( getTempDir(), "rwt-test-file.tmp" );
     destination.deleteOnExit();
@@ -117,87 +149,81 @@ public class IOUtil_Test extends TestCase {
     destination.delete();
   }
 
-  public void testCopyFromStreamToFile() throws IOException {
+  @Test
+  public void testCopy_fromStreamToFile() throws IOException {
     byte[] content = new byte[] { 0, 1, 2, 3, 4 };
-    
+
     IOUtil.copy( new ByteArrayInputStream( content ), tempDestination );
-    
-    AssertUtil.assertEquals( content, Fixture.readBytes( tempDestination ) );
+
+    assertArrayEquals( content, Fixture.readBytes( tempDestination ) );
   }
-  
-  public void testCopyStreamWithIOExceptionInRead() {
+
+  @Test
+  public void testCopy_fromStreamWithIOExceptionInRead() {
     InputStream inputStream = new InputStream() {
+      @Override
       public int read() throws IOException {
         throw new IOException();
       }
     };
-    
+
     try {
       IOUtil.copy( inputStream, tempDestination );
     } catch( RuntimeException expected ) {
     }
   }
-  
+
+  @Test
   public void testReadContent() throws IOException {
     String content = "content";
     byte[] contentBytes = content.getBytes( "utf-8" );
     InputStream inputStream = new ByteArrayInputStream( contentBytes );
-    
+
     String readContent = IOUtil.readContent( inputStream );
-    
+
     assertEquals( content, readContent );
   }
-  
-  public void testReadContentWithNonMatchingEncoding() throws IOException {
+
+  @Test
+  public void testReadContent_withNonMatchingEncoding() throws IOException {
     String content = "content with umlauts: äüöß";
     byte[] contentBytes = content.getBytes( "iso-8859-1" );
     InputStream inputStream = new ByteArrayInputStream( contentBytes );
-    
+
     String readContent = IOUtil.readContent( inputStream );
-    
+
     assertFalse( content.equals( readContent ) );
   }
-  
-  public void testCloseInputStreamWithoutException() {
+
+  @Test
+  public void testCloseInputStream_withoutException() {
     CloseableInputStream inputStream = new CloseableInputStream();
-    
+
     IOUtil.closeInputStream( inputStream );
-    
+
     assertTrue( inputStream.isClosed );
   }
-  
-  public void testCloseInputStreamWithException() {
+
+  @Test
+  public void testCloseInputStream_withException() {
     InputStream inputStream = new InputStream() {
+      @Override
       public int read() throws IOException {
         return 0;
       }
+      @Override
       public void close() throws IOException {
         throw new IOException( "Could not close..." );
       }
     };
-    
+
     try {
       IOUtil.closeInputStream( inputStream );
       fail();
     } catch( RuntimeException expected ) {
     }
   }
-  
-  protected void setUp() throws Exception {
-    directory = new File( getTempDir(), "testdir" );
-    directory.deleteOnExit();
-    tempDestination = createTempFile();
-    tempDestination.deleteOnExit();
-    tempSource = createTempFile();
-    tempSource.deleteOnExit();
-  }
 
-  protected void tearDown() throws Exception {
-    tempDestination.delete();
-    tempSource.delete();
-    IOUtil.delete( directory );
-  }
-  
   private String getTempDir() {
     return System.getProperty( "java.io.tmpdir" );
   }
@@ -215,8 +241,8 @@ public class IOUtil_Test extends TestCase {
   {
     FileOutputStream outputStream = new FileOutputStream( file, false );
     try {
-      for( int i = 0; i < content.length; i++ ) {
-        outputStream.write( content[ i ] );
+      for( byte element : content ) {
+        outputStream.write( element );
       }
     } finally {
       outputStream.close();
@@ -225,13 +251,16 @@ public class IOUtil_Test extends TestCase {
 
   private static final class CloseableInputStream extends InputStream {
     boolean isClosed;
-  
+
+    @Override
     public int read() throws IOException {
       return 0;
     }
-  
+
+    @Override
     public void close() throws IOException {
       isClosed = true;
     }
   }
+
 }

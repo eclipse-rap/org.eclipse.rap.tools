@@ -1,41 +1,53 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class VMArgumentsSection_Test extends TestCase {
+public class VMArgumentsSection_Test {
 
   private Shell shell;
   private VMArgumentsSection vmArgumentsSection;
 
-  public void testCreateControlCallsSetControl() {
-    vmArgumentsSection.createControl( shell );
-    assertNotNull( vmArgumentsSection.getControl() );
-  }
-  
-  public void testGetName() {
-    String name = vmArgumentsSection.getName();
-    assertNotNull( name );
-    assertTrue( name.length() > 0 );
-  }
-
-  protected void setUp() throws Exception {
+  @Before
+  public void setUp() throws Exception {
     vmArgumentsSection = new VMArgumentsSection();
     shell = new Shell();
   }
 
-  protected void tearDown() throws Exception {
+  @After
+  public void tearDown() throws Exception {
     shell.dispose();
   }
+
+  @Test
+  public void testGetName() {
+    String name = vmArgumentsSection.getName();
+
+    assertNotNull( name );
+    assertTrue( name.length() > 0 );
+  }
+
+  @Test
+  public void testCreateControl_callsSetControl() {
+    vmArgumentsSection.createControl( shell );
+
+    assertNotNull( vmArgumentsSection.getControl() );
+  }
+
 }

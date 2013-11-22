@@ -11,11 +11,14 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.delegate;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -25,26 +28,44 @@ import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestLaunch;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class RWTLaunchDelegate_Test extends TestCase {
+public class RWTLaunchDelegate_Test {
 
   private ILaunchConfigurationWorkingCopy launchConfig;
   private RWTLaunchConfig rwtLaunchConfig;
   private RWTLaunchDelegate launchDelegate;
 
-  public void testGetProgramArguments() {
-    String programArgs = "programArgument";
-    setProgramArguments( programArgs );
-
-    String returnedProgramArgs = launchDelegate.getProgramArguments( launchConfig );
-
-    assertTrue( returnedProgramArgs.indexOf( "programArgument" ) == -1 );
+  @Before
+  public void setUp() throws Exception {
+    launchConfig = Fixture.createRWTLaunchConfig();
+    rwtLaunchConfig = new RWTLaunchConfig( launchConfig );
+    launchDelegate = new RWTLaunchDelegate();
+    launchDelegate.initializeLaunch( new TestLaunch( launchConfig ) );
   }
 
-  @SuppressWarnings("unchecked")
+  @After
+  public void tearDown() throws Exception {
+    TestProject.deleteAll();
+    launchConfig.delete();
+  }
+
+  @Test
+  public void testGetProgramArguments() {
+    setProgramArguments( "program-argument" );
+
+    String programArgs = launchDelegate.getProgramArguments( launchConfig );
+
+    assertFalse( programArgs.contains( "program-argument" ) );
+  }
+
+  @Test
   public void testGetMainTypeName() {
     String mainTypeName = launchDelegate.getMainTypeName( launchConfig );
+
     ClassLoader loader = RWTLaunchDelegate.class.getClassLoader();
     try {
       Class jettyLauncher = loader.loadClass( mainTypeName );
@@ -57,12 +78,15 @@ public class RWTLaunchDelegate_Test extends TestCase {
     }
   }
 
+  @Test
   public void testGetVMArguments() throws CoreException {
     String vmArguments = launchDelegate.getVMArguments( launchConfig );
-    assertTrue( vmArguments.indexOf( "-Djetty.home=" ) >= 0 );
-    assertTrue( vmArguments.indexOf( "-Dorg.eclipse.rap.rwt.developmentMode=" ) >= 0 );
+
+    assertTrue( vmArguments.contains( "-Djetty.home=" ) );
+    assertTrue( vmArguments.contains( "-Dorg.eclipse.rap.rwt.developmentMode=" ) );
   }
 
+  @Test
   public void testGetVMArgumentsWithUserDefinedArgument() throws CoreException {
     String vmArgument = "-Dfoo=bar";
     setVMArgument( vmArgument );
@@ -72,6 +96,7 @@ public class RWTLaunchDelegate_Test extends TestCase {
     assertTrue( vmArguments.indexOf( vmArgument ) >= 0 );
   }
 
+  @Test
   public void testGetJavaProject() throws CoreException {
     TestProject testProject = new TestProject();
     IJavaProject javaProject = testProject.getJavaProject();
@@ -82,11 +107,13 @@ public class RWTLaunchDelegate_Test extends TestCase {
     assertEquals( javaProject, returnedJavaProject );
   }
 
+  @Test
   public void testGetClasspath() throws CoreException {
     String[] classpath = launchDelegate.getClasspath( launchConfig );
     assertEquals( 11, classpath.length );
   }
 
+  @Test
   public void testDeterminePortWhenManualPortConfigured() {
     int configuredPort = 1234;
     rwtLaunchConfig.setUseManualPort( true );
@@ -97,24 +124,13 @@ public class RWTLaunchDelegate_Test extends TestCase {
     assertEquals( configuredPort, port );
   }
 
+  @Test
   public void testDeterminePortWhenAutomaticPortConfigured() throws IOException {
     rwtLaunchConfig.setUseManualPort( false );
 
     int port = launchDelegate.determinePort();
 
     assertTrue( isPortFree( port ) );
-  }
-
-  protected void setUp() throws Exception {
-    launchConfig = Fixture.createRWTLaunchConfig();
-    rwtLaunchConfig = new RWTLaunchConfig( launchConfig );
-    launchDelegate = new RWTLaunchDelegate();
-    launchDelegate.initializeLaunch( new TestLaunch( launchConfig ) );
-  }
-
-  protected void tearDown() throws Exception {
-    TestProject.deleteAll();
-    launchConfig.delete();
   }
 
   private void setVMArgument( String vmArgument ) {
@@ -137,4 +153,5 @@ public class RWTLaunchDelegate_Test extends TestCase {
     }
     return result;
   }
+
 }

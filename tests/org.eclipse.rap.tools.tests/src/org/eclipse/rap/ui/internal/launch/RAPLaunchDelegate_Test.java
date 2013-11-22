@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 Innoopract Informationssysteme GmbH and others.
+ * Copyright (c) 2007, 2013 Innoopract Informationssysteme GmbH and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,12 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -25,9 +27,28 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.rap.ui.tests.Fixture;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class RAPLaunchDelegate_Test extends TestCase {
+public class RAPLaunchDelegate_Test {
+
+  private ILaunchConfigurationWorkingCopy config;
+  private RAPLaunchConfig rapConfig;
+  private RAPLaunchDelegate launchDelegate;
+
+  @Before
+  public void setUp() throws CoreException {
+    config = Fixture.createRAPLaunchConfig();
+    rapConfig = new RAPLaunchConfig( config );
+    launchDelegate = new RAPLaunchDelegate();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    config.delete();
+  }
 
   /*
    * Make sure that user VM arguments are 'overridden' by those added by the
@@ -35,59 +56,43 @@ public class RAPLaunchDelegate_Test extends TestCase {
    * Overriding currently is done by ensuring that the VM arguments added by
    * the launcher come *after* the user VM arguments.
    */
+  @Test
   public void testGetVMArguments() throws CoreException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
     // prepare launch configuration
     config.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
                          "-Dorg.osgi.service.http.port=manually" );
     rapConfig.setUseManualPort( true );
     rapConfig.setPort( 1234 );
-    // setup launch configuration
-    try {
-      launchDelegate.launch( config, null, null, null );
-    } catch( Throwable thr ) {
-      // ignore any exceptions, the only purpose of the above call is to
-      // set the 'config' field of the RAPLaunchDelegate
-    }
+    applyConfig( config, launchDelegate );
+
     String[] arguments = launchDelegate.getVMArguments( config );
-    int manualPortIndex
-      = indexOf( arguments, "-Dorg.osgi.service.http.port=manually" );
-    int autoPortIndex = indexOf( arguments, "-Dorg.osgi.service.http.port=0" );
+
+    int manualPortIndex = indexOf( arguments, "-Dorg.osgi.service.http.port=manually" );
+    int autoPortIndex = indexOf( arguments, "-Dorg.osgi.service.http.port=1234" );
     assertTrue( manualPortIndex > -1 );
     assertTrue( autoPortIndex > -1 );
     assertTrue( autoPortIndex > manualPortIndex );
   }
 
-  public void testGetVMArguments_DevelopmentMode() throws CoreException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
+  @Test
+  public void testGetVMArguments_developmentMode() throws CoreException {
     rapConfig.setDevelopmentMode( false );
-    try {
-      launchDelegate.launch( config, null, null, null );
-    } catch( Throwable thr ) {
-      // ignore any exceptions, the only purpose of the above call is to
-      // set the 'config' field of the RAPLaunchDelegate
-    }
+    applyConfig( config, launchDelegate );
+
     String[] arguments = launchDelegate.getVMArguments( config );
+
     assertTrue( indexOf( arguments, "-Dorg.eclipse.rap.rwt.developmentMode=false" ) > -1 );
   }
 
   /*
    * Make sure that user program arguments contain -data
    */
-  public void testGetProgramArgumentsDefaultLocation() throws CoreException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
-    try {
-      launchDelegate.launch( config, null, null, new NullProgressMonitor() );
-    } catch( Throwable thr ) {
-      // ignore any exceptions, the only purpose of the above call is to
-      // set the 'config' field of the RAPLaunchDelegate
-    }
+  @Test
+  public void testGetProgramArguments_defaultLocation() throws CoreException {
+    applyConfig( config, launchDelegate );
+
     String[] arguments = launchDelegate.getProgramArguments( config );
+
     int dataIndex = indexOf( arguments, "-data" );
     assertTrue( dataIndex > -1 );
     String defaultDataLocation = RAPLaunchConfig.getDefaultDataLocation( config.getName() );
@@ -95,70 +100,107 @@ public class RAPLaunchDelegate_Test extends TestCase {
     assertEquals( defaultDataLocationResolved, arguments[ dataIndex + 1 ] );
   }
 
+  @Test
   public void testGetProgramArguments() throws CoreException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    String expectedDataLocation = "test";
-    rapConfig.setDataLocation( expectedDataLocation );
-    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
-    try {
-      launchDelegate.launch( config, null, null, new NullProgressMonitor() );
-    } catch( Throwable thr ) {
-      // ignore any exceptions, the only purpose of the above call is to
-      // set the 'config' field of the RAPLaunchDelegate
-    }
+    rapConfig.setDataLocation( "test" );
+    applyConfig( config, launchDelegate );
+
     String[] arguments = launchDelegate.getProgramArguments( config );
+
     int dataIndex = indexOf( arguments, "-data" );
     assertTrue( dataIndex > -1 );
-    assertEquals( expectedDataLocation, arguments[ dataIndex + 1 ] );
+    assertEquals( "test", arguments[ dataIndex + 1 ] );
   }
 
-  public void testGetProgramArgumentsEmptyDataLocation() throws CoreException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+  @Test
+  public void testGetProgramArguments_emptyDataLocation() throws CoreException {
     rapConfig.setDataLocation( "" );
-    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
-    try {
-      launchDelegate.launch( config, null, null, new NullProgressMonitor() );
-    } catch( Throwable thr ) {
-      // ignore any exceptions, the only purpose of the above call is to
-      // set the 'config' field of the RAPLaunchDelegate
-    }
+    applyConfig( config, launchDelegate );
+
     String[] arguments = launchDelegate.getProgramArguments( config );
+
     int dataIndex = indexOf( arguments, "-data" );
     assertTrue( dataIndex == -1 );
   }
 
-  public void testClearsDataLocation() throws CoreException, IOException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
+  @Test
+  public void testClear_removesDataLocationWhenDoClearIsTrue() throws CoreException, IOException {
     File dataLocation = createDataLocation();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
+    RAPLaunchConfig.setDefaults( config );
+    rapConfig.setDataLocation( dataLocation.getAbsolutePath() );
+    rapConfig.setDoClearDataLocation( true );
+    applyConfig( config, launchDelegate );
+
+    launchDelegate.clear( config, new NullProgressMonitor() );
+
+    assertFalse( dataLocation.exists() );
+  }
+
+  @Test
+  public void testClear_retainsDataLocationWhenDoClearIsFalse() throws CoreException, IOException {
+    File dataLocation = createDataLocation();
     RAPLaunchConfig.setDefaults( config );
     rapConfig.setDataLocation( dataLocation.getAbsolutePath() );
     rapConfig.setDoClearDataLocation( false );
-    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
+    applyConfig( config, launchDelegate );
+
+    launchDelegate.clear( config, new NullProgressMonitor() );
+
+    assertTrue( dataLocation.exists() );
+  }
+
+  /*
+   * Make sure that the user specified session timeout value is used, when the
+   * "use session timeout" checkbox is selected.
+   */
+  @Test
+  public void testGetVMArguments_containsCustomSessionTimeout() throws CoreException {
+    rapConfig.setUseSessionTimeout( true );
+    rapConfig.setSessionTimeout( 100 );
+    applyConfig( config, launchDelegate );
+
+    String[] arguments = launchDelegate.getVMArguments( config );
+
+    String expected = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval=100";
+    int timeoutIndex = indexOf( arguments, expected );
+    assertTrue( timeoutIndex > -1 );
+  }
+
+  /*
+   * Make sure that the default session timeout value (zero) is used, when the
+   * "use session timeout" checkbox is NOT selected.
+   */
+  @Test
+  public void testGetVMArguments_containsDefaultSessionTimeout() throws CoreException {
+    rapConfig.setUseSessionTimeout( false );
+    rapConfig.setSessionTimeout( 100 );
+    applyConfig( config, launchDelegate );
+
+    String[] arguments = launchDelegate.getVMArguments( config );
+
+    String expected = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval=0";
+    int timeoutIndex = indexOf( arguments, expected );
+    assertTrue( timeoutIndex > -1 );
+  }
+
+  private static void applyConfig( ILaunchConfigurationWorkingCopy config,
+                                   RAPLaunchDelegate launchDelegate )
+  {
     try {
       launchDelegate.launch( config, null, null, new NullProgressMonitor() );
     } catch( Throwable thr ) {
       // ignore any exceptions, the only purpose of the above call is to
       // set the 'config' field of the RAPLaunchDelegate
     }
-    launchDelegate.clear( config, new NullProgressMonitor() );
-    assertTrue( dataLocation.exists() );
-    rapConfig.setDoClearDataLocation( true );
-    launchDelegate.clear( config, new NullProgressMonitor() );
-    assertFalse( dataLocation.exists() );
   }
 
-  private String resolveVariable( String defaultDataLocation ) throws CoreException {
-    final VariablesPlugin variablePlugin = VariablesPlugin.getDefault();
+  private static String resolveVariable( String expression ) throws CoreException {
+    VariablesPlugin variablePlugin = VariablesPlugin.getDefault();
     IStringVariableManager stringVariableManager = variablePlugin.getStringVariableManager();
-    String defaultDataLocationResolved
-      = stringVariableManager.performStringSubstitution( defaultDataLocation );
-    return defaultDataLocationResolved;
+    return stringVariableManager.performStringSubstitution( expression );
   }
 
-  private File createDataLocation() throws IOException {
+  private static File createDataLocation() throws IOException {
     File dataLocation = File.createTempFile( "dataLocation", "" );
     dataLocation.delete();
     dataLocation.mkdirs();
@@ -167,62 +209,13 @@ public class RAPLaunchDelegate_Test extends TestCase {
     return dataLocation;
   }
 
-  /*
-   * Make sure that the user specified session timeout value is used, when the
-   * "use session timeout" checkbox is selected.
-   */
-  public void testUseSessionTimeout() throws CoreException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
-    // prepare launch configuration
-    rapConfig.setUseSessionTimeout( true );
-    rapConfig.setSessionTimeout( 100 );
-    // setup launch configuration
-    try {
-      launchDelegate.launch( config, null, null, null );
-    } catch( Throwable thr ) {
-      // ignore any exceptions, the only purpose of the above call is to
-      // set the 'config' field of the RAPLaunchDelegate
-    }
-    String[] arguments = launchDelegate.getVMArguments( config );
-    int timeoutIndex = indexOf( arguments,
-      "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval=100" );
-    assertTrue( timeoutIndex > -1 );
-  }
-
-  /*
-   * Make sure that the default session timeout value (zero) is used, when the
-   * "use session timeout" checkbox is NOT selected.
-   */
-  public void testDefaultSessionTimeout() throws CoreException {
-    ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
-    RAPLaunchConfig rapConfig = new RAPLaunchConfig( config );
-    RAPLaunchDelegate launchDelegate = new RAPLaunchDelegate();
-    // prepare launch configuration
-    rapConfig.setUseSessionTimeout( false );
-    rapConfig.setSessionTimeout( 100 );
-    // setup launch configuration
-    try {
-      launchDelegate.launch( config, null, null, null );
-    } catch( Throwable thr ) {
-      // ignore any exceptions, the only purpose of the above call is to
-      // set the 'config' field of the RAPLaunchDelegate
-    }
-    String[] arguments = launchDelegate.getVMArguments( config );
-    String expected
-      = "-Dorg.eclipse.equinox.http.jetty.context.sessioninactiveinterval=0";
-    int timeoutIndex = indexOf( arguments, expected );
-    assertTrue( timeoutIndex > -1 );
-  }
-
-  private static int indexOf( final String[] strings, final String string ) {
-    int result = -1;
-    for( int i = 0; result == -1 && i < strings.length; i++ ) {
-      if( string.equals( strings[ i ] ) ) {
-        result = i;
+  private static int indexOf( Object[] array, Object object ) {
+    for( int i = 0; i < array.length; i++ ) {
+      if( object.equals( array[ i ] ) ) {
+        return i;
       }
     }
-    return result;
+    return -1;
   }
+
 }

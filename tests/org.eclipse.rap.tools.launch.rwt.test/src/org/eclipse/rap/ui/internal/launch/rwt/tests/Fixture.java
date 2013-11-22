@@ -27,9 +27,9 @@ import org.eclipse.rap.ui.internal.launch.rwt.config.RWTLaunchConfig;
 
 
 public final class Fixture {
-  
-  public static ILaunchConfigurationWorkingCopy createRWTLaunchConfig() 
-    throws CoreException 
+
+  public static ILaunchConfigurationWorkingCopy createRWTLaunchConfig()
+    throws CoreException
   {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     ILaunchManager manager = debugPlugin.getLaunchManager();
@@ -39,16 +39,16 @@ public final class Fixture {
     RWTLaunchConfig.setDefaults( result );
     return result;
   }
-  
+
   public static void deleteAllRWTLaunchConfigs() throws CoreException {
     ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
     ILaunchConfigurationType type = RWTLaunchConfig.getType();
     ILaunchConfiguration[] configurations = manager.getLaunchConfigurations( type );
-    for( int i = 0; i < configurations.length; i++ ) {
-      configurations[ i ].delete();
+    for( ILaunchConfiguration configuration : configurations ) {
+      configuration.delete();
     }
   }
-  
+
   public static ByteArrayInputStream toUtf8Stream( final String string ) {
     try {
       return new ByteArrayInputStream( string.getBytes( "UTF-8" ) ); //$NON-NLS-1$
@@ -57,8 +57,8 @@ public final class Fixture {
     }
   }
 
-  public static byte[] readBytes( File file ) 
-    throws IOException 
+  public static byte[] readBytes( File file )
+    throws IOException
   {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     try {
@@ -81,4 +81,5 @@ public final class Fixture {
   private Fixture() {
     // prevent instantiation
   }
+
 }

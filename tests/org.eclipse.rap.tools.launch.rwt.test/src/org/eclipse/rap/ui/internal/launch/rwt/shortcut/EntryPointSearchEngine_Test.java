@@ -11,9 +11,10 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.shortcut;
 
-import java.lang.reflect.InvocationTargetException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
+import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -24,14 +25,38 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.rap.ui.internal.launch.rwt.tests.TestProject;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class EntryPointSearchEngine_Test extends TestCase {
+public class EntryPointSearchEngine_Test {
 
   private TestProject project;
   private EntryPointSearchEngine searchEngine;
 
-  public void testSearchWithValidMethod() throws Exception {
+  @Before
+  public void setUp() throws Exception {
+    IRunnableContext runnableContext = new IRunnableContext() {
+      public void run( boolean fork,
+                       boolean cancelable,
+                       IRunnableWithProgress runnable )
+        throws InvocationTargetException, InterruptedException
+      {
+        runnable.run( new NullProgressMonitor() );
+      }
+    };
+    searchEngine = new EntryPointSearchEngine( runnableContext );
+    project = new TestProject();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    project.delete();
+  }
+
+  @Test
+  public void testSearch_withValidMethod() throws Exception {
     IType type = createEntryPointType();
     IJavaElement method = type.getMethod( "createUI", null );
     assertTrue( method.exists() );  // precondition
@@ -42,7 +67,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
   }
 
-  public void testSearchWithWrongMethodSignature() throws Exception {
+  @Test
+  public void testSearch_withWrongMethodSignature() throws Exception {
     String code
       = "package foo;\n"
       + "class Foo implements EntryPoint {\n"
@@ -60,7 +86,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( 0, entryPointTypes.length );
   }
 
-  public void testSearchWithoutEntryPointInterface() throws Exception {
+  @Test
+  public void testSearch_withoutEntryPointInterface() throws Exception {
     String code
       = "package foo;\n"
       + "class Foo {\n"
@@ -78,7 +105,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( 0, entryPointTypes.length );
   }
 
-  public void testSearchOnInterfaceWithInvalidEntryPoint() throws Exception {
+  @Test
+  public void testSearch_onInterfaceWithInvalidEntryPoint() throws Exception {
     String code
       = "package foo;\n"
       + "interface Foo extends EntryPoint {\n"
@@ -94,7 +122,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( 0, entryPointTypes.length );
   }
 
-  public void testSearchOnMethodWithInvalidEntryPoint() throws Exception {
+  @Test
+  public void testSearch_onMethodWithInvalidEntryPoint() throws Exception {
     String code
       = "package foo;\n"
       + "interface Foo extends EntryPoint {\n"
@@ -108,7 +137,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( 0, entryPointTypes.length );
   }
 
-  public void testSearchWithValidEntryPointClass() throws Exception {
+  @Test
+  public void testSearch_withValidEntryPointClass() throws Exception {
     IType type = createEntryPointType();
 
     IType[] entryPointTypes = searchEngine.search( new IJavaElement[] { type } );
@@ -117,7 +147,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
   }
 
-  public void testSearchWithValidIEntryPointClass() throws Exception {
+  @Test
+  public void testSearch_withValidIEntryPointClass() throws Exception {
     String code
       = "package foo;\n"
       + "class Foo implements IEntryPoint {\n"
@@ -134,7 +165,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
   }
 
-  public void testSearchNameWithCompilationUnit() throws Exception {
+  @Test
+  public void testSearch_nameWithCompilationUnit() throws Exception {
     String code
       = "package foo;\n"
       + "class Foo implements EntryPoint {\n"
@@ -150,7 +182,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
   }
 
-  public void testSearchWithCompilationUnit() throws Exception {
+  @Test
+  public void testSearch_withCompilationUnit() throws Exception {
     String code
       = "package foo;\n"
       + "class Foo implements EntryPoint {\n"
@@ -172,7 +205,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo$NestedFoo", entryPointTypes[ 1 ].getFullyQualifiedName() );
   }
 
-  public void testSearchWithNestedEntryPoint() throws Exception {
+  @Test
+  public void testSearch_withNestedEntryPoint() throws Exception {
     String code
       = "package foo;\n"
       + "class Foo {\n"
@@ -191,7 +225,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo$NestedFoo", entryPointTypes[ 0 ].getFullyQualifiedName() );
   }
 
-  public void testSearchWithNestedEntryPointRespectsScope() throws Exception {
+  @Test
+  public void testSearch_withNestedEntryPointRespectsScope() throws Exception {
     String code
       = "package foo;\n"
       + "class Foo implements EntryPoint {\n"
@@ -213,7 +248,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo$NestedFoo", entryPointTypes[ 0 ].getFullyQualifiedName() );
   }
 
-  public void testSearchWithExtendedAbstractEntryPoint() throws Exception {
+  @Test
+  public void testSearch_withExtendedAbstractEntryPoint() throws Exception {
     String code
     = "package foo;\n"
         + "class Foo extends AbstractEntryPoint {\n"
@@ -229,7 +265,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
   }
 
-  public void testSearchWithoutExtendsAbstractEntryPoint() throws Exception {
+  @Test
+  public void testSearch_withoutExtendsAbstractEntryPoint() throws Exception {
     String code
     = "package foo;\n"
         + "class Foo {\n"
@@ -244,7 +281,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( 0, entryPointTypes.length );
   }
 
-  public void testSearchWithAbstractClass() throws Exception {
+  @Test
+  public void testSearch_withAbstractClass() throws Exception {
     String code
     = "package foo;\n"
         + "abstract class Foo implements EntryPoint {\n"
@@ -260,7 +298,8 @@ public class EntryPointSearchEngine_Test extends TestCase {
     assertEquals( 0, entryPointTypes.length );
   }
 
-  public void testSearchWithProject() throws Exception {
+  @Test
+  public void testSearch_withProject() throws Exception {
     IType type = createEntryPointType();
     IJavaProject javaProject = type.getJavaProject();
 
@@ -268,24 +307,6 @@ public class EntryPointSearchEngine_Test extends TestCase {
 
     assertEquals( 1, entryPointTypes.length );
     assertEquals( "foo.Foo", entryPointTypes[ 0 ].getFullyQualifiedName() );
-  }
-
-  protected void setUp() throws Exception {
-    IRunnableContext runnableContext = new IRunnableContext() {
-      public void run( boolean fork,
-                       boolean cancelable,
-                       IRunnableWithProgress runnable )
-        throws InvocationTargetException, InterruptedException
-      {
-        runnable.run( new NullProgressMonitor() );
-      }
-    };
-    searchEngine = new EntryPointSearchEngine( runnableContext );
-    project = new TestProject();
-  }
-
-  protected void tearDown() throws Exception {
-    project.delete();
   }
 
   private IType createEntryPointType() throws CoreException {
@@ -297,7 +318,7 @@ public class EntryPointSearchEngine_Test extends TestCase {
       + "  }\n"
       + "}\n";
     project.createJavaClass( "foo", "Foo", code );
-    IType type = project.getJavaProject().findType( "foo.Foo" );
-    return type;
+    return project.getJavaProject().findType( "foo.Foo" );
   }
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,18 +11,35 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.rap.ui.internal.launch.rwt.tests.Fixture;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class ServletPathValidator_Test extends TestCase {
+public class ServletPathValidator_Test {
 
   private RWTLaunchConfig launchConfig;
   private Validator validator;
   private ValidationResult validationResult;
 
-  public void testValidateServletPathWhenEmptyAndOpenBrowserRequested() {
+  @Before
+  public void setUp() throws Exception {
+    launchConfig = new RWTLaunchConfig( Fixture.createRWTLaunchConfig() );
+    validationResult = new ValidationResult();
+    validator = new ServletPathValidator( launchConfig, validationResult );
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    Fixture.deleteAllRWTLaunchConfigs();
+  }
+
+  @Test
+  public void testValidate_whenServletPathEmptyAndOpenBrowserRequested() {
     launchConfig.setOpenBrowser( true );
     launchConfig.setServletPath( "" );
 
@@ -33,7 +50,8 @@ public class ServletPathValidator_Test extends TestCase {
     assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
   }
 
-  public void testValidateServletPathWhenEmptyAndNoBrowserRequested() {
+  @Test
+  public void testValidate_whenServletPathEmptyAndNoBrowserRequested() {
     launchConfig.setOpenBrowser( false );
     launchConfig.setServletPath( "" );
 
@@ -44,7 +62,8 @@ public class ServletPathValidator_Test extends TestCase {
     assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
   }
 
-  public void testValidateServletPathWhenMissingLeadingSlashAndOpenBrowserRequested() {
+  @Test
+  public void testValidate_whenServletPathMissingLeadingSlashAndOpenBrowserRequested() {
     launchConfig.setOpenBrowser( true );
     launchConfig.setServletPath( "foo" );
 
@@ -55,7 +74,8 @@ public class ServletPathValidator_Test extends TestCase {
     assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
   }
 
-  public void testValidateServletPathWhenMissingLeadingSlashAndNoBrowserRequested() {
+  @Test
+  public void testValidate_whenServletPathMissingLeadingSlashAndNoBrowserRequested() {
     launchConfig.setOpenBrowser( false );
     launchConfig.setServletPath( "foo" );
 
@@ -66,7 +86,8 @@ public class ServletPathValidator_Test extends TestCase {
     assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
   }
 
-  public void testValidateServletPathWhenSpecifiedAndOpenBrowserRequested() {
+  @Test
+  public void testValidate_whenServletPathSpecifiedAndOpenBrowserRequested() {
     launchConfig.setOpenBrowser( true );
     launchConfig.setServletPath( "/foo" );
 
@@ -77,7 +98,8 @@ public class ServletPathValidator_Test extends TestCase {
     assertFalse( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
   }
 
-  public void testValidateServletPathWithAsterisk() {
+  @Test
+  public void testValidate_whenServletPathContainsAsterisk() {
     launchConfig.setOpenBrowser( true );
     launchConfig.setServletPath( "/foo*" );
 
@@ -88,7 +110,8 @@ public class ServletPathValidator_Test extends TestCase {
     assertTrue( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
   }
 
-  public void testValidateServletPathWithSlash() {
+  @Test
+  public void testValidate_whenServletPathContainsSlash() {
     launchConfig.setOpenBrowser( true );
     launchConfig.setServletPath( "/foo/bar" );
 
@@ -99,13 +122,4 @@ public class ServletPathValidator_Test extends TestCase {
     assertTrue( validationResult.contains( ServletPathValidator.ERR_SERVLET_PATH_INVALID ) );
   }
 
-  protected void setUp() throws Exception {
-    launchConfig = new RWTLaunchConfig( Fixture.createRWTLaunchConfig() );
-    validationResult = new ValidationResult();
-    validator = new ServletPathValidator( launchConfig, validationResult );
-  }
-
-  protected void tearDown() throws Exception {
-    Fixture.deleteAllRWTLaunchConfigs();
-  }
 }
