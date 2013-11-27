@@ -36,7 +36,7 @@
     <a href="../reference/api/overview-summary.html">here</a>.
   </p>
 
-  <h2>Compabibility to SWT</h2>
+  <h2>Compatibility to SWT</h2>
   <p>
     RAP generally follows the rule <q>If it compiles, it works</q>. That means that all SWT API
     implemented in RWT is working <i>within the requirements set by SWT</i>.
@@ -108,10 +108,12 @@
     </li>
 
     <li style="margin-bottom:10px">
-      <b>Fixed Columns</b>
+      <b>Tree and Table Enhancements</b>
       <br/>
-      It is possible in RWT to exclude some columns from Tree or Table from scrolling.
-      Find out more about it <a href="tree-table.html#fixedcolumns">here</a>.
+      The RWT Tree and Table widgets provide a number of features not found in SWT.
+      This includes the possibility to exclude some columns from scrolling,
+      pre-caching of items, as well as support for templates, markup and advanced theming.
+      Find out more about it <a href="tree-table.html">here</a>.
     </li>
 
     <li style="margin-bottom:10px">
@@ -158,7 +160,7 @@
       <em><a href="../reference/api/org/eclipse/swt/widgets/Canvas.html">Canvas</a></em>
       widget.
       In some cases the
-      <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawText(java.lang.String, int, int)">drawText</a></em>
+      <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawText(java.lang.String, int, int)">drawText</a></em>,
       <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawString(java.lang.String, int, int)">drawString</a></em>
       and
       <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawImage(org.eclipse.swt.graphics.Image, int, int)">drawImage</a></em>
@@ -214,8 +216,8 @@
       and
       <em><a href="../reference/api/org/eclipse/swt/events/VerifyEvent.html#end">end</a></em>
       currently always report the entire text to have changed.
-      The <a href="http://wiki.eclipse.org/RAP/ClientScripting">ClientScripting</a> project was
-      started specifically to provide an alternative.
+      However, when using a <a href="scripting.html">ClientListener</a> (written in JavaScript),
+      these limitations do not exist.
     </li>
 
     <li style="margin-bottom:10px">

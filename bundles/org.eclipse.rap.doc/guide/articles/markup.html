@@ -16,7 +16,7 @@
       Using SWT API it is possible to apply any
       <em><a href="../reference/api/org/eclipse/swt/graphics/Font.html">Font</a></em>
       (including bold and italic styles)
-      to almost any widget, as long as it is installed on the target machine:
+      to almost any widget, as long as it is installed on the client device:
     </p>
     <pre class="lang-java">
 Label boldLabel = new Label( parent, SWT.NONE );
@@ -74,6 +74,7 @@ customLabel.setText( "This is funny!" );</pre>
       This is currently supported on
       <em><a href="../reference/api/org/eclipse/swt/widgets/Label.html">Label</a></em>,
       <em><a href="../reference/api/org/eclipse/swt/custom/CLabel.html">CLabel</a></em>,
+      <em><a href="../reference/api/org/eclipse/swt/widgets/ToolTip.html">ToolTip</a></em>,
       <em><a href="../reference/api/org/eclipse/swt/widgets/List.html">List</a></em>,
       <em><a href="../reference/api/org/eclipse/swt/widgets/Tree.html">Tree</a></em>
       and
@@ -82,7 +83,7 @@ customLabel.setText( "This is funny!" );</pre>
       you must first enable it explicitly using the
       <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#MARKUP_ENABLED">RWT.MARKUP_ENABLED</a></em>
       constant
-      as shown below, directly after calling the constructor. (It may not possible to enable
+      as shown below, directly after calling the constructor. (It may not be possible to enable
       this feature later on, and it can not be disabled again.) Afterwards, a
       <a href="../reference/api/org/eclipse/rap/rwt/RWT.html#MARKUP_ENABLED">subset of HTML tags</a>
       can be freely used in the widgets text property:
@@ -102,6 +103,20 @@ markupLabel.setText( "&lt;i&gt;This&lt;/i&gt; &lt;ins&gt;is&lt;/ins&gt; &lt;b&gt
     will cause an <em>IllegalArgumentException</em>. Using markup without enabling the feature
     first will not cause an exception, just display the text as is.
   </p>
+  <p>
+    The <em>ToolTipText</em>
+    <a href="../reference/api/org/eclipse/swt/widgets/Control.html#setToolTipText(java.lang.String)">property</a>
+    also supports markup if enabled with <a href="../reference/api/org/eclipse/rap/rwt/RWT.html#TOOLTIP_MARKUP_ENABLED">
+    TOOLTIP_MARKUP_ENABLED</a>:
+  </p>
+    <pre class="lang-java">
+someWidget.setData( RWT.TOOLTIP_MARKUP_ENABLED, Boolean.TRUE );
+someWidget.setToolTipText( "&lt;i&gt;Markup&lt;/i&gt; inside &lt;b&gt;a tooltip&lt;/b&gt;" );</pre>
+   <p>Putting a "&lt;a&gt;" tag in the <em>toolTipText</em> slightly alters the behavior of the
+   tooltip: Normally a tooltip immediately disappears if the mouse cursor hovers it (assuming
+   the user may be aiming for the underlying widget). But since anchor elements are interactive, the
+   tooltip stays until the link is clicked or the mouse cursor is moves away from the tooltip.
+   </p>
   <h3>Advanced uses of Markup</h3>
   <p>
     If the physical and logical tags allowed in the markup are not sufficient for your needs,
@@ -167,15 +182,10 @@ navLabel.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
 navLabel.setText( "Go to &lt;a href='#navPoint'&gt;navPoint&lt;/a&gt;!" );</pre>
   <h3>Markup on List, Tree and Table</h3>
   <p>
-    Combining the markup feature with <em>List</em>, <em>Tree</em> or <em>Table</em>
-    allows you to present your data in a much more informative and appealing way:
-  </p>
-  <p><img src="../images/markup-table.png"/></p>
-  <p>
     After setting the <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#MARKUP_ENABLED">RWT.MARKUP_ENABLED</a></em> property,
     markup is enabled for all items of the widget, except for columns.
     There is, however, one more property that might need to be set.
-    Since RAP can not easily predict how high items with markup are going to be, it will
+    Since RAP can not predict how high items with markup are going to be, it will
     not include it in the layout calculations for the height of the rows. This may result in cut off
     content, especially if <em>&lt;br/&gt;</em>, <em>&lt;span&gt;</em>
     or <em>&lt;img/&gt;</em> tags are used. To fix this, you can set the height the rows should
@@ -200,9 +210,10 @@ markupList.setItems( new String[]{
     If the HTML content is smaller than the inner cell/item height (i.e. with subtracted padding),
     it will be top-aligned and leaving empty space at the bottom.
     If it is higher, the content will be top-aligned (still respecting padding) and cut off at the bottom.
-    To shift all or part of the content you can use a <code>&lt;span&gt;</code> tag with a <code>style</code>
-    attribute of <code>"position:relative;top:&lt;dimension&gt;;left:&lt;dimension&gt;"</code>
-    (using <code>position:absolute</code> is <strong>not</strong> recommended).
+  </p>
+  <p>
+    <strong>Note:</strong> To achieve more complex layouts within a Tree or Table item, consider
+    using <a href="tree-table.html#templates">templates</a> instead.
   </p>
   <h3>Editing</h3>
   <p>

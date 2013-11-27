@@ -24,8 +24,7 @@
     automatically when the URL of a RAP application is entered into a browser. In-depth
     technical information about this client can be found in the
     <a href="http://wiki.eclipse.org/RAP/WebClient">RAP Wiki</a>.
-    Other client
-    implementations than the web client are currently not part of the RAP project.
+    Other client implementations are not part of the RAP project.
   </p>
   <h2>The Client Interface</h2>
   <p>
@@ -111,22 +110,23 @@ if( navigation != null ) {
       implement very simple features.
       <strong>NOTE:</strong>
       This feature allows manipulating the HTML DOM or accessing internals of the web client.
-      Doing so is <b>not</b> recommended and may have unintended consequences, including
-      crashing the client. Access to the public <a href="#jsapi">JavaScript API</a> is permitted, but it should be
-      noted that the JavaScript code may be evaluated before any of the widget instances are
-      updated or created.
+      It is strongly recommended to use the <a href="../reference/jsdoc/index.html">official
+      JavaScript API</a> only.
     </li>
 
     <li id="jsloader" style="margin-bottom:10px">
       <b>JavaScriptLoader</b>
       <br/>
       Can be used to
-      <a href="../reference/api/org/eclipse/rap/rwt/client/service/JavaScriptLoader.html#require(java.lang.String)">execute entire JavaScript files</a>
-      on the client. If a file has been
-      executed by the client instance once, it will not be executed again.
-      The URL has to point to the same domain the RAP server is in. This can be achieved
-      by registering the file as <a href="resources.html">static resource</a>.
-      Especially useful for
+      <a href="../reference/api/org/eclipse/rap/rwt/client/service/JavaScriptLoader.html#require(java.lang.String)">load and execute entire JavaScript files</a>
+      on the client.
+      The file may be provided by the RAP application itself
+      (by registering it as <a href="resources.html">static resource</a>), or (since RAP 2.2)
+      from any other URL that is reachable by the client.
+      When a file has been
+      loaded and executed by the connected client instance once, it will not do so again if
+      the method is called again with the same URL.
+      This service is especially useful for
       <a href="custom-widget.html">custom widget</a> / custom component development.
       <strong>NOTE:</strong>
       The warnings from <em>JavaScriptExecuter</em> also apply for <em>JavaScriptLoader</em>.
@@ -136,16 +136,15 @@ if( navigation != null ) {
   <h2 id="jsapi">JavaScript API</h2>
 
   <p>
-    The web client provides a minimal <a href="../reference/jsdoc/symbols/rap.html">JavaScript API</a>
+    The web client provides a <a href="../reference/jsdoc/symbols/rap.html">JavaScript API</a>
     that
     <a href="../reference/jsdoc/symbols/rap.html#.getRemoteObject">mirrors</a>
     the
     <a href="../reference/api/org/eclipse/rap/rwt/remote/Connection.html#createRemoteObject(java.lang.String)">server side Remote API</a>
      and allows
      <a href="../reference/jsdoc/symbols/rap.html#.getObject">limited access</a>
-     to client widget instances. The main purpose of this API is to
-     support custom widget development, but it also integrates with the ClientScripting project to
-     <a href="http://wiki.eclipse.org/RAP/Incubator/ClientScripting#crosswidget">allow cross-widget scripting</a>.
+     to client widget instances. The purpose of this API is to
+     support <a href="custom-widget.html">custom widget development</a> and <a href="scripting.html#crosswidget">allow cross-widget scripting</a>.
   </p>
 
 

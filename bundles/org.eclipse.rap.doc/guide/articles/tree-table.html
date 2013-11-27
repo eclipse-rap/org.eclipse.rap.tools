@@ -43,16 +43,18 @@
       Using
       <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#FIXED_COLUMNS">RWT.FIXED_COLUMNS</a></em>,
       it is possible to exclude any number of leftmost
-      columns from scrolling, so that they always stick on the left border of the tree or table.<br/>
+      columns from scrolling, so that they always stick on the left side of the tree or table.</p>
+    <p>
       Example:
     </p>
     <pre class="lang-java">tree.setData( RWT.FIXED_COLUMNS, new Integer( 1 ) );</pre>
 
+    <!-- TODO : Templates -->
+
     <h3 id="markup">Markup Support:</h3>
     <p>
-      You can greatly enhance the look and interactivity
-      of any Tree or Table using the RAP
-      <a href="markup.html#markup">markup feature</a>.
+      You use the <a href="markup.html#markup">markup feature</a> to format the text
+      within a cell or embed links and additional images.
     </p>
 
     <h3 id="break">Line breaks in Columns:</h3>
@@ -75,22 +77,9 @@
       experience unsatisfying performance while scrolling, try reducing the number of columns,
       or hide some columns (setting width to zero). When using the <em>VIRTUAL</em> flag,
       you will also experience a small rendering delay when scrolling to previously unseen data.
-      You can reduce this effect by pre-caching data you assume will be displayed in the near future.
-      A very basic implementation of such a feature could look like this:
+      You can reduce this effect by pre-caching data just above and below the visible area using
+      <code><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#PRELOADED_ITEMS">RWT.PRELOADED_ITEMS</a></code>.
     </p>
-    <pre class="lang-java">
-ScrollBar bar = viewer.getTable().getVerticalBar();
-bar.addListener( SWT.Selection, new Listener(){
-  public void handleEvent( Event event ) {
-    Table table = viewer.getTable();
-    int index = table.getTopIndex();
-    int max = Math.min(  index + 100, table.getItemCount() );
-    for( int i = index; i &lt; max; i++ ) {
-      table.getItem( i ).getText();
-    }
-  }
-} );</pre>
-
 
     <h3 id="rendering">Selection/Hover rendering order</h3>
     <p>

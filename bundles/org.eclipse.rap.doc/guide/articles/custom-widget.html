@@ -66,7 +66,7 @@
     <li>The widgets are re-usable in desktop applications with SWT.</li>
   </ul>
   <p>
-    <small>
+    <span style="font-size:smaller">
     <b>Hint</b>:
     If performance becomes an issue and your custom widgets has layers or areas that need to be
     redrawn less often than others, you should consider combining this with the
@@ -76,7 +76,7 @@
     to make their background transparent),
     or put them in any layout as you would other widgets.
     This can reduce the number of operations by calling &quot;redraw&quot; only on the canvases that need to be updated.
-    </small>
+    </span>
   </p>
 
   <h3 id="browser">Browser-based widgets</h3>
@@ -114,8 +114,8 @@
     or are limited compared to SWT (<em><a href="rwt.html#verify">Verify</a></em>).
     RWT Scripting is <strong>not</strong> to be confused with developing a Remote-API based
     custom widget. While it also runs partially on the client, the difference is that
-    RWT Scripting does not require registering any JavaScript resources and does not create new
-    widgets or HTML elements on the client.
+    RWT Scripting does not require registering any JavaScript resources and does not need to interact
+    with DOM in any way.
   </p>
   <ul>
     <li>
@@ -149,7 +149,7 @@
     on the <em><a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html">RemoteObject</a></em>
     instance, while the client registers a
     <a href="../reference/jsdoc/symbols/rap.html#.registerTypeHandler">TypeHandler</a> once
-    globally. More detailed information may be found in the RAP Wiki <a href="#ext2">[2]</a>.
+    globally. The RAP Wiki provides a FAQ for this kind of custom widget. <a href="#ext2">[2]</a>.
   </p>
   <ul>
     <li>
@@ -171,7 +171,7 @@
       [1] <a href="http://www.eclipse.org/articles/Article-Writing%20Your%20Own%20Widget/Writing%20Your%20Own%20Widget.htm">SWT: Writing Your Own Widget</a>
     </li>
     <li id="ext2">
-      [2] <a href="http://wiki.eclipse.org/RAP/Custom_Widgets">RAP Wiki - Custom Widgets</a>
+      [2] <a href="http://wiki.eclipse.org/RAP/Custom_Widgets_FAQ">RAP Wiki - Custom Widgets FAQ</a>
     </li>
     <li id="ext3">
       [3] <a href="http://wiki.eclipse.org/RAP/Add-Ons">RAP Wiki - Add-Ons</a>
