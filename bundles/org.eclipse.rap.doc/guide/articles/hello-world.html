@@ -34,7 +34,7 @@
     <em class="UILabel">Required Projects</em> in the next step.)
   </p><p>
     From the menu, select <em class="UILabel">File &gt; New &gt; Plug-in Project</em>.
-    Let's call the plug-in <code>org.example.rap.helloworld</code>.
+    Let's call the plug-in <em>org.example.rap.helloworld</em>.
     In the <em class="UILabel">Target Platform</em> box, choose
     <em class="UILabel">Eclipse version</em> and <em class="UILabel">3.5 or greater</em> to create a
     bundle that is compatible with Eclipse.
@@ -87,6 +87,12 @@ public class BasicEntryPoint extends AbstractEntryPoint {
 
 } </pre>
 
+  <p>The wizard also creates a class named <em>BasicApplication</em> that implements
+    the <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html">ApplicationConfiguration</a></em>
+    interface. Note that if you rename this class, or move it to another package,
+    you must also manually rename it in the file <code>OSGI-INF/contribution.xml</code>.
+  </p>
+
   <h2>Launch the application</h2>
   <p>
     Now we can launch this application using the generated launch configuration
@@ -97,6 +103,7 @@ public class BasicEntryPoint extends AbstractEntryPoint {
     More information on launching RAP applications can be found in the chapter
     <a href="./launcher.html">Launching RAP Applications</a>, including a section on
     <a href="./launcher.html#troubleshooting">troubleshooting</a>.
+    If the browser initially displays a 404 error, it can usually by fixed by a refresh (hit F5).
   </p>
 
 </body>
