@@ -22,7 +22,7 @@
    </p>
    <p>The following is a list of hints you might find helpful when working with Tree or Table.</p>
 
-   <h3 id="jface" >JFace support:</h3>
+   <h3 id="jface" >JFace support</h3>
    <p>
      RAP includes it's own JFace implementation that can be used
      to sort, filter and edit data in Trees and Tables.
@@ -34,7 +34,7 @@
    </p>
    <pre class="lang-java">viewer.getTable().setData( RWT.MARKUP_ENABLED, Boolean.TRUE );</pre>
 
-    <h3 id="fixedcolumns">Fixed Columns:</h3>
+    <h3 id="fixedcolumns">Fixed Columns</h3>
     <p>
       When a table or tree displays many columns, the user often has to scroll horizontally to see
       specific data.
@@ -49,20 +49,96 @@
     </p>
     <pre class="lang-java">tree.setData( RWT.FIXED_COLUMNS, new Integer( 1 ) );</pre>
 
-    <!-- TODO : Templates -->
-
-    <h3 id="markup">Markup Support:</h3>
+    <h3 id="templats">Templates</h3>
+    <p>
+      Row templates allow developers to customize the way a Table or Tree present
+      Items on screen, completely replacing the default column layout.
+      A template consists of text and image cells that can be freely arranged.
+      These cells can display either data from a Tree- or TableItem, or static content.
+    </p>
+    <p>
+      <img src="../images/rowtemplate.png">
+    </p>
+    <p>
+      To create a new template, construct an instance of the
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/Template.html">Template</a></em> class,
+      and then add any number of
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/ImageCell.html">ImageCell</a></em> and
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/TextCell.html">TextCell</a></em> instances.
+      To apply it on a Table or a Tree,
+      <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#ROW_TEMPLATE">RWT.ROW_TEMPLATE</a></em> is used:
+    </p>
+    <pre class="lang-java">Template template = new Template();
+ImageCell imageCell = new ImageCell( template );
+TextCell nameCell = new TextCell( template );
+//... configure cells
+table.setData( RWT.ROW_TEMPLATE, template );</pre>
+    <p>
+      The call to <em>setData</em> should be placed directly after the controls creation.
+      Once a template is applied to a control it will no longer be affected by changes to the template.
+      The same template instance can also be applied to multiple controls.
+    </p>
+    <p>
+      To position a cell, you have to set exactly two horizontal and two vertical dimensions
+      (two out of left, right and width, and two out of top, bottom and height). The values
+      are relative to the area that is available to display
+      the current item - which is usually the inner width of the Tree/Table widget and the height
+      given using <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#CUSTOM_ITEM_HEIGHT">RWT.CUSTOM_ITEM_HEIGHT</a></em>.
+    </p>
+    <pre class="lang-java">imageCell.setLeft( 4 ).setWidth( 48 ).setTop( 4 ).setBottom( 4 );</pre>
+    <p>
+      All cells can by further styled with colors, fonts, alignments, etc.
+      Since all setter return the cell instance, chaining the commands as shown
+      above is always possible. Note that as of RAP 2.2, the vertical alignment property
+      is not supported for text cells, only for image cells.
+    </p>
+    <p>
+      Each cell can either display static content (using
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/TextCell.html#setText(java.lang.String)">setText</a></em> or
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/ImageCell.html#setImage(org.eclipse.swt.graphics.Image)">setImage</a></em>
+      on the cell itself), or content form the current Tree/Table Item. For this the cell
+      needs to be bound to a specific column using the
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setBindingIndex(int)">bindingIndex</a></em>. For example, this
+      shows only the text from the first column:
+    </p>
+    <pre class="lang-java">Table table = new Table( parent, SWT.FULL_SELECTION );
+new TableColumn( table, SWT.NONE ); // important
+Template template = new Template();
+TextCell textCell = new TextCell( template );
+textCell.setLeft( 0 ).setRight( 0 ).setTop( 0 ).setBottom( 0 );
+textCell.setBindingIndex( 0 );
+table.setData( RWT.ROW_TEMPLATE, template );
+TableItem item = new TableItem( table, SWT.NONE );
+item.setText( 0, "Data in the first column" );</pre>
+    <p>
+      Please note that while it is not useful to set the <em>headerVisible</em> property to true if
+      row templates are used, it is still necessary to create column objects. They don't need
+      a text or width though.
+    </p>
+    <p>
+      Cells can also be
+      <a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setSelectable(boolean)">selectable</a>.
+      When a selectable cell is clicked on,
+      it does not select the item, but triggers a selection event with the
+      event.detail field set to <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#CELL">RWT.CELL</a></em>.
+      Items can still be selected by clicking elsewhere, though <strong>the selection is only visible if the
+      SWT.FULL_SELECTION style flag is set</strong>.
+      If multiple cells in a template are selectable, cells
+      <a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setName(java.lang.String)">can be given a name</a>
+      that is reflected in the <em>event.text</em> field in order to identify the selected cell.
+    </p>
+    <h3 id="markup">Markup Support</h3>
     <p>
       You use the <a href="markup.html#markup">markup feature</a> to format the text
       within a cell or embed links and additional images.
     </p>
 
-    <h3 id="break">Line breaks in Columns:</h3>
+    <h3 id="break">Line breaks in Columns</h3>
     <p>
       Unlike SWT, RAP supports line breaks ( <q>\n</q> ) in a columns text property.
     </p>
 
-    <h3 id="virtual">Virtual rendering and performance:</h3>
+    <h3 id="virtual">Virtual rendering and performance</h3>
     <p>
       There are two ways Tree and Table support virtual rendering. First, any tree/table will
       only render HTML for the data that is currently visible on screen. (Unlike <em>List</em>,

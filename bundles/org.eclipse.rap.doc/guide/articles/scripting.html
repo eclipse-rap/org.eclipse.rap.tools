@@ -14,47 +14,52 @@
   <p>
     RAP applications are running almost entirely on a Server. All application-relevant events
     that occur on the client have to be forwarded to the Server before being
-    processed. Scenarios where minor delays are unacceptable
-    (e.g. typing or mouse movements) would therefore be undesirable.
+    processed. Scenarios where minor delays in the event handling are unacceptable
+    (e.g. fast typing or mouse movements) would therefore be undesirable.
   </p>
   <p>
     This is where RWT Scripting can help. With scripting developers can handle some of
     the events directly on the client, without creating any HTTP-requests. This is ideal to
-    customize or enhance the behavior of specific widgets, <em>most notably</em> <code>Text</code>.
+    customize or enhance the behavior of specific widgets, most notably
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Text.html">Text</a></em>.
   </p>
   <p>
-    The scripts themselves are written in JavaScript on a SWT-like API. This allows application
+    The scripts themselves have to be written in JavaScript on an SWT-like API. This allows application
     developers with SWT-experience to get started right away, and makes porting between SWT and
-    RWT Scripting fairly easy. Even without any JavaScript-experience, this document should
+    RWT Scripting fairly easy. Even without much JavaScript-experience, this article should
     provide you with all the basics you need for RWT Scripting.
   </p>
 
   <h2 id="api">Java and JavaScript API</h2>
   <p>
-    Client event processing works like untyped event handling in SWT, with the main difference that
-    the handler itself has to be written in JavaScript. It also does (naturally) not have access
-    to all of the resources and functionality that would be available on the server. To attach a
-    client side listener to a widget, Instances of this <code>ClientListener</code>
-    are used.
+    Client event processing works like
+    <a href="http://help.eclipse.org/indigo/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_events.htm">untyped event handling</a>
+    in SWT/RWT, with the main difference that
+    the handler itself has to be written in JavaScript. It also can not not provide out-of-the-box
+    access to all of the resources and functionality that would be available on the server.
   </p>
+  <h3 id="ClientListener">Creating a ClientListener</h3>
   <p>
-    Example:
+    To attach a
+    client side listener to a widget, instances of
+    <em><a href="../reference/api/org/eclipse/rap/rwt/scripting/ClientListener.html">ClientListener</a></em>
+    are used. Example:
   </p>
   <pre class="lang-java">
 widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
   </pre>
   <p>
-    The JavaScript source code can define any number of named function, either with
-    "<code>var myFunction = function(){};</code>" or "<code>function myFunction(){}</code>".
-    The function named "<code>handleEvent</code>" (obligatory) is the one that is called in case an event
-    is fired. It takes one argument, which is the <code>event</code> object.
+    The JavaScript source code can define any number of named function, either with<br/>
+    "<code>var myFunction = function(){};</code>" or <br/>"<code>function myFunction(){}</code>".
+    A function named "<em>handleEvent</em>" is obligatory and will be called in case
+    an event is fired. It takes one argument, which is the <code>event</code> object.
   </p>
   <p>Example:</p>
-  <pre>var handleEvent = function( event ){
+  <pre class="lang-javajascript">var handleEvent = function( event ){
   event.widget.setText( &quot;Hello World!&quot; );
 };</pre>
-  <p id="other">Other functions
-    can be called from handleEvent to be used as helper. The order in which the functions
+  <p id="other">Other functions within the script
+    can be called from <em>handleEvent</em> to be used as helper. The order in which the functions
     are defined is not relevant.
     <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/Strict_mode">
     Strict mode</a> is supported and can be activated for the entire script by writing
@@ -62,24 +67,95 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
   </p>
   <p>
     If your script is longer than a few lines, we recommend to read it from an external file.
-    If it is very long and used repeatedly, only one instance of
-    <code>ClientListener</code> should be created and shared within the session, for example
-    by using the SessionStore or creating a SessionSingleton that extends <code>ClientListener</code>.
+    You may want to create a helper class to do so. It could look like this:
   </p>
-    <p>
-      The Widget object in RWT Scripting is an abstract representation of an SWT widget. It
-      has a JavaScript conform of the API of the actual SWT Widget it represents.
-      It can be obtained from the
-      <a href="../reference/jsdoc/symbols/Event.html#widget"><code>event</code></a>
-      object given in <code>handleEvent</code>, or
-      from <a href="../reference/jsdoc/symbols/rap.html#.getObject"><code>rap.getObject</code></a>.
-      The Scripting API for all widgets that support scripting
-      is <a href="../reference/jsdoc/index.html">documented the WebClient API Reference</a>.
-      Adding a ClientListener to Widget that does not support Scripting has no effect.
-    </p>
+  <pre class="lang-java" style="height:100px">public class ResourceLoaderUtil {
+
+  private static final ClassLoader CLASSLOADER = ResourceLoaderUtil.class.getClassLoader();
+
+  public static String readTextContent( String resource ) {
+    try {
+      return readTextContentChecked( resource );
+    } catch( IOException e ) {
+      throw new IllegalArgumentException( "Failed to read: " + resource );
+    }
+  }
+
+  private static String readTextContentChecked( String resource ) throws IOException {
+    InputStream stream = CLASSLOADER.getResourceAsStream( resource );
+    if( stream == null ) {
+      throw new IllegalArgumentException( "Not found: " + resource );
+    }
+    try {
+      BufferedReader reader = new BufferedReader( new InputStreamReader( stream, "UTF-8" ) );
+      return readLines( reader );
+    } finally {
+      stream.close();
+    }
+  }
+
+  private static String readLines( BufferedReader reader ) throws IOException {
+    StringBuilder builder = new StringBuilder();
+    String line = reader.readLine();
+    while( line != null ) {
+      builder.append( line );
+      builder.append( '\n' );
+      line = reader.readLine();
+    }
+    return builder.toString();
+  }
+
+}</pre>
+  <p>
+    <strong>Note that a ClientListener instance is permanently bound to the UISession.</strong> It is therefore
+    undesirable to create multiple <em>ClientListener</em> with the same script.
+    Instead it should be created once and shared within the session, for example
+    by using the SessionStore or creating a SessionSingleton.
+  </p>
+  <p><strong>Bad:</strong></p>
+  <pre class="lang-java">public static void addCustomBehavior( Control control ) {
+  String scriptCode
+    = ResourceLoaderUtil.readTextContent( "MyScript.js" );
+  ClientListener listener = new ClientListener( scriptCode );
+  control.addListener( SWT.MouseDown, listener );
+}</pre>
+  <p><strong>Good:</strong></p>
+  <pre class="lang-java">public static void addCustomBehavior( Control control ) {
+  ClientListener listener = MyClientListener.getInstance();
+  control.addListener( SWT.MouseDown, listener );
+}</pre>
+  <pre class="lang-java">public class MyClientListener extends ClientListener {
+
+  public static MyClientListener getInstance() {
+    return SingletonUtil.getSessionInstance( MyClientListener.class );
+  }
+
+  private MyClientListener() {
+    super( getText() );
+  }
+
+  private static String getText() {
+    return ResourceLoaderUtil.readTextContent( "MyScript.js" );
+  }
+
+}</pre>
+  <h3 id="widgets">Client Widget Objects</h3>
+  <p>
+    The widget objects in RWT Scripting are abstract representations of SWT widget instances. They
+    have a JavaScript-conform <b>subset</b> of the API of the actual SWT widgets they represent.
+    Client widget objects can be obtained from the
+    <a href="../reference/jsdoc/symbols/Event.html#widget"><code>event</code></a>
+    objects given in <em><a href="#ClientListener">handleEvent</a></em>, or
+    from <a href="../reference/jsdoc/symbols/rap.html#.getObject"><em>rap.getObject</em></a>.
+    (See also <q><a href="#crosswidget">Cross-Widget Scripting</a></q> below.)
+    The JavaScript API for all scriptable widgets
+    is <a href="../reference/jsdoc/index.html">documented the WebClient API Reference</a>.
+    Not all widgets support scripting. Adding a ClientListener to a widget that does not
+    support Scripting has no effect.
+  </p>
 
   <h3 id="events">Supported Event Types</h3>
-  <p> The follwing Event types are supported:</p>
+  <p> The following Event types are supported:</p>
   <table border="1" cellpadding="3" cellspacing="0">
     <tr>
       <th align="left">Event Type</th>
@@ -123,8 +199,11 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
         <code>SWT.MouseMove</code>
       </td>
       <td>
-        Fired when moving the mouse within the widget. This type is not supported in server-side
-        RAP, only RWT Scripting.
+        Fired when moving the mouse within the widget.
+        This type is not supported by server-side
+        <a href="../reference/api/org/eclipse/swt/widgets/Listener.html">Listener</a>,
+        only by
+        <a href="../reference/api/org/eclipse/rap/rwt/scripting/ClientListener.html">ClientListener</a>.
       </td>
     </tr>
     <tr>
@@ -132,8 +211,12 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
         <code>SWT.MouseWheel</code>
       </td>
       <td>
-        Fired when moving the mouse wheel. This type is not supported in server-side
-        RAP, only RWT Scripting.
+        Fired when moving the mouse wheel.
+        This type is not supported by server-side
+        <a href="../reference/api/org/eclipse/swt/widgets/Listener.html">Listener</a>,
+        only by
+        <a href="../reference/api/org/eclipse/rap/rwt/scripting/ClientListener.html">ClientListener</a>.
+
       </td>
     </tr>
     <tr>
@@ -141,8 +224,11 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
         <code>SWT.MouseEnter</code>
       </td>
       <td>
-        Fired when moving the mouse over the widget. This type is not supported in server-side RAP,
-        only RWT Scripting.
+        Fired when moving the mouse over the widget.
+        This type is not supported by server-side
+        <a href="../reference/api/org/eclipse/swt/widgets/Listener.html">Listener</a>,
+        only by
+        <a href="../reference/api/org/eclipse/rap/rwt/scripting/ClientListener.html">ClientListener</a>.
       </td>
     </tr>
     <tr>
@@ -150,8 +236,11 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
         <code>SWT.MouseExit</code>
       </td>
       <td>
-        Fired when moving the mouse out of the widget. This type is not supported in server-side
-        RAP, only RWT Scripting.
+        Fired when moving the mouse out of the widget.
+        This type is not supported by server-side
+        <a href="../reference/api/org/eclipse/swt/widgets/Listener.html">Listener</a>,
+        only by
+        <a href="../reference/api/org/eclipse/rap/rwt/scripting/ClientListener.html">ClientListener</a>.
       </td>
      </tr>
     <tr>
@@ -220,7 +309,7 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
   <h3 id="data">Transferring Widget Data</h3>
 
     <p>
-      As in SWT the Widget provides
+      As in SWT the client widget objects provides
       <a href="../reference/jsdoc/symbols/Control.html#setData"><code>setData</code></a>
       and
       <a href="../reference/jsdoc/symbols/Control.html#getData"><code>getData</code></a>
@@ -229,57 +318,72 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
       Unlike SWT any value can be stored with <code>setData</code>, not just objects.
     </p>
     <p>
-      Data attached to the SWT Widget can be transferred to the scripting widget. To do so,
-      the key for that data has to be registered with the
-      <code>WidgetUtil.registerDataKeys( String... )</code>, like so:
+      Data attached to the Java widget instance can be transferred to the client widget object.
+      To do so,
+      the key for that data has to be registered with the method
+      <em><a href="../reference/api/org/eclipse/rap/rwt/lifecycle/WidgetUtil.html#registerDataKeys(java.lang.String...)">WidgetUtil.registerDataKeys</a></em>,
+      like this:
     </p>
-    <pre class="lang-java">
-WidgetUtil.registerDataKeys( &quot;foo&quot; );
-widget.setData( &quot;foo&quot;, &quot;myData&quot; );
-    </pre>
+    <pre class="lang-java">WidgetUtil.registerDataKeys( &quot;foo&quot; );
+widget.setData( &quot;foo&quot;, &quot;myData&quot; );</pre>
     <p>
       The key has only to be added once per session, but adding it multiple times has no side
       effects. The following types are supported:
     </p>
-    <ul>
-      <li>null</li>
-      <li>String</li>
-      <li>Byte</li>
-      <li>Short</li>
-      <li>Integer</li>
-      <li>Long</li>
-      <li>Double</li>
-      <li>Float</li>
-      <li>Boolean</li>
-      <li>int[]</li>
-      <li>boolean[]</li>
-      <li>String[]</li>
-      <li>Object[]</li>
-      <li>Map</li>
-      <li>JsonValue</li>
-    </ul>
+    <table style="border:none">
+      <tr>
+        <td style="border:none" valign="top">
+          <ul>
+            <li>null</li>
+            <li>String</li>
+            <li>Byte</li>
+            <li>Short</li>
+            <li>Integer</li>
+            <li>Long</li>
+            <li>Double</li>
+            <li>Float</li>
+          </ul>
+        </td>
+        <td style="border:none" valign="top">
+          <ul>
+            <li>Boolean</li>
+            <li>int[]</li>
+            <li>boolean[]</li>
+            <li>String[]</li>
+            <li>Object[]</li>
+            <li>Map</li>
+            <li>JsonValue</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
     <p>
       Changing the value on the client does not change it on the server.
     </p>
-    <p id="crosswidget">
-      Widgets can <i>not</i> be transferred, but the id can:
+    <h3 id="crosswidget">Cross-Widget Scripting</h3>
+    <p>
+      Each <em>ClientListener</em> script has it's own scope and no direct access
+      any widget other than the one given by the <em>event</em> object.
+      Widget references can also <i>not</i> be transferred to the client using
+      <a href="#data">the setData method</a>, but a widgets protocol id can:
     </p>
     <p>Java:</p>
-    <pre class="lang-java">
-widget.setData( &quot;otherWidget&quot;, WidgetUtil.getId( otherWidget ) );
-    </pre>
+    <pre class="lang-java">widget.setData( &quot;otherWidget&quot;, WidgetUtil.getId( otherWidget ) );</pre>
+    <p>
+      The id can then be used to obtain the matching widget object on the client.
+    </p>
     <p>JavaScript:</p>
-    <pre class="lang-javascript">
-var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
-    </pre>
+    <pre class="lang-javascript">var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );</pre>
 
-    <h2 id="limitations">Noteable Limitations and discouraged Usage</h2>
+    <h2 id="limitations">Notable Limitations and discouraged Usage</h2>
     <ul>
       <li>
-        It is not (and will not be) possible to prevent <code>Text</code> selection/carret change by
-        mouse (using doit flag). Its also not supported to set the Text selection property in a
+        It is not (and will likely never be) possible to prevent
+        <em><a href="../reference/api/org/eclipse/swt/widgets/Text.html">Text</a></em> selection/carret
+        changes in mouse events (using doit flag). Its also not supported to set the <em>Text</em>
+        selection property in a
         MouseDown event. These are also not working (correctly) in SWT. Changing selection on
-        Text on a MouseUp works.
+        <em>Text</em> in a <em>MouseUp</em> event works.
       </li>
       <li>Verify event:
         <ul>
@@ -297,7 +401,7 @@ var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
       </li>
       <li>
         In SWT, some key constants can be compared with both the keyCode field and the
-        character field (<code>SWT.DEL, SWT.ESC, SWT.BS, SWT.BS, SWT.CR, SWT.TAB</code>). In
+        character field (<em>SWT.DEL, SWT.ESC, SWT.BS, SWT.BS, SWT.CR, SWT.TAB</em>). In
         RWT Scripting they can only be compared with the keyCode field. The character field will
         either not be set for these keys, or contain a (JavaScript) string, while these constants
         are numbers.
@@ -307,7 +411,7 @@ var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
         compaibility concerns. You can do so at your own risk.
       </li>
       <li>
-        Creating global variables from within a ClientListener is also heavily discouraged
+        Creating global variables from within a ClientListener is heavily discouraged
         and can easily happen by accident if a
         variable is created without the "var" keyword. Use <a href="#other">strict mode</a>
         and <a href="http://github.eclipsesource.com/jshint-eclipse/">jshint</a>
@@ -315,7 +419,7 @@ var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
         prevent this.
       </li>
       <li>
-        For <b>security</b> reasons you should be aware that, unlike RAP source code written in
+        <b>For security reasons</b> you should be aware that, unlike RAP source code written in
         Java, all RWT Scripting functions (JavaScript source code) are currently transferred to
         the client completely unaltered, <i>including comments</i>,
         and can be read by any user with enough technical expertice.
@@ -332,14 +436,15 @@ var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
     <h3>Debugging</h3>
     <p>
       Most modern browser have built-in developer tools, including a debugger. However,
-      since ClientFunctions are created using "eval", the scripts do not simply appear in
-      the "Scripts" or "Resources" tab of the developer tools, so it is not possible
-      to set a break point. There are two ways to solve this, though browser support may vary:
+      since the script of a <em>ClientListener</em> is created using an <q>eval</q> statement,
+      the scripts do not simply appear in the "Scripts" or "Resources" tab of the developer tools,
+      and so it is not possible to set a break point. There are two ways to solve this, though browser support may vary:
     </p>
     <p>
-      1. To make the Script appear in the developer tools, add the line
-      &quot;<code>//@ sourceURL=NameOfYourScript.js</code>&quot; to your script. An newer syntax is
-      also &quot;<code>//# sourceURL=NameOfYourScript.js</code>&quot;.
+      1. To make the Script appear in the developer tools, add the line<br/>
+      &quot;<code>//@ sourceURL=NameOfYourScript.js</code>&quot; to your script. Newer browser
+      may also recognize
+      <br/>&quot;<code>//# sourceURL=NameOfYourScript.js</code>&quot;.
     </p>
     <p>
       2. To set a break point programmatically, write <code>debugger;</code> in your script
@@ -347,12 +452,11 @@ var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
     </p>
 
     <h3>Noteable differences between Java and JavaScript</h3>
-    <ul><li><b>JavaScript variables are dynamically typed and have function scope</b></li></ul>
-    <p>
+    <ul><li><b>JavaScript variables are dynamically typed and have function scope</b><br/>
       All local variables in JavaScript are delcared with "var" and can contain any type (undefined,
       null, number, boolean, string, object). It is not relevant at all where in the function it is
       declared, its scope is always the entire function.
-    </p>
+    </li></ul>
     <ul><li><b>Strings are not objects</b></li></ul>
     <p>
       Strings are primitives in JavaScript, and are compared with "<code>==</code>" (or
@@ -388,7 +492,7 @@ var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );
     </p>
     <ul><li><b>System.out.println and console.log</b></li></ul>
     <p>
-      Most browser (but not all!) have some form of javascript console. They all have at least one
+      All modern desktop browser have some form of javascript console. They all have at least one
       function in common that can be used like <code>System.out.println</code>, which is
       <code>console.log</code>. Some browser also have <code>console.trace</code>. Browser not
       supporting <code>console.log</code> (or in case of InternetExplorer, not having it activated),
