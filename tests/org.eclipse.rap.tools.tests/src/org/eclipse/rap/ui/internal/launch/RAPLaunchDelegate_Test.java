@@ -27,8 +27,10 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.rap.ui.tests.Fixture;
+import org.eclipse.rap.ui.tests.TargetUtil;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -37,6 +39,11 @@ public class RAPLaunchDelegate_Test {
   private ILaunchConfigurationWorkingCopy config;
   private RAPLaunchConfig rapConfig;
   private RAPLaunchDelegate launchDelegate;
+
+  @BeforeClass
+  public static void setUpTarget() throws CoreException {
+    TargetUtil.initializeTargetPlatform();
+  }
 
   @Before
   public void setUp() throws CoreException {
