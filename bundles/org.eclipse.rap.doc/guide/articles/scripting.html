@@ -69,7 +69,7 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
     If your script is longer than a few lines, we recommend to read it from an external file.
     You may want to create a helper class to do so. It could look like this:
   </p>
-  <pre class="lang-java" style="height:100px">public class ResourceLoaderUtil {
+  <pre class="lang-java">public class ResourceLoaderUtil {
 
   private static final ClassLoader CLASSLOADER = ResourceLoaderUtil.class.getClassLoader();
 
