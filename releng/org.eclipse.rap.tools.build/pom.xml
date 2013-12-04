@@ -55,19 +55,6 @@
     <module>../../tests/org.eclipse.rap.tools.launch.rwt.test</module>
   </modules>
 
-  <repositories>
-    <repository>
-      <id>base-platform-repository</id>
-      <layout>p2</layout>
-      <url>http://download.eclipse.org/eclipse/updates/${base-platform}</url>
-    </repository>
-    <repository>
-      <id>jetty-repository</id>
-      <layout>p2</layout>
-      <url>http://download.eclipse.org/jetty/updates/jetty-bundles-8.x/8.1.3.v20120522/</url>
-    </repository>
-  </repositories>
-
   <build>
     <plugins>
 
@@ -103,6 +90,22 @@
           <sourceReferences> 
             <generate>true</generate> 
           </sourceReferences> 
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <target>
+            <artifact>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>org.eclipse.rap.tools-parent</artifactId>
+              <version>${project.version}</version>
+              <classifier>rap-tools</classifier>
+            </artifact>
+          </target>
         </configuration>
       </plugin>
 
