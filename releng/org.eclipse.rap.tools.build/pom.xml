@@ -31,6 +31,7 @@
     <!-- disabled due to bug 393977
     <baseline-repository>http://download.eclipse.org/rt/rap/nightly/tooling/</baseline-repository>
      -->
+    <test-workspace-dir>${java.io.tmpdir}/rap-tools-test-workspace</test-workspace-dir>
   </properties>
 
   <prerequisites>
@@ -50,9 +51,7 @@
     <module>../../bundles/org.eclipse.rap.tools.launch</module>
     <module>../../bundles/org.eclipse.rap.tools.launch.rwt</module>
     <!-- tests -->
-    <!--
     <module>../../tests/org.eclipse.rap.tools.tests</module>
-    -->
     <module>../../tests/org.eclipse.rap.tools.launch.rwt.test</module>
   </modules>
 
@@ -143,6 +142,8 @@
         <configuration>
           <useUIHarness>true</useUIHarness>
           <appArgLine>-nl en -consoleLog</appArgLine>
+          <!-- Create workspace in tmpdir to work around "file name too long" PDE bug 380911 -->
+          <osgiDataDirectory>${test-workspace-dir}</osgiDataDirectory>
           <includes>
             <include>**/*Test.*</include>
           </includes>
