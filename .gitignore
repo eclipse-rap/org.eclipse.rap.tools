@@ -1,3 +1,10 @@
 bin/
+
+# Maven
 target/
+# include packages with a "target" segment
+!/bundles/org.eclipse.rap.tools.intro/src/org/eclipse/rap/ui/internal/intro/target/
+!/tests/org.eclipse.rap.tools.tests/src/org/eclipse/rap/ui/internal/intro/target/
+
+# MacOS
 .DS_Store/
