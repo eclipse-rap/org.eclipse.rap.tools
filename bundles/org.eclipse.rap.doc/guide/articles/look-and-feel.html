@@ -49,8 +49,7 @@
       a menubar or the perspective switcher, or selecting a different font.
     </li>
     <li>
-      Activation by servlet name. You can leverage the servlets in RAP and use the
-      servlet name to access the whole layout from a single point.
+      Association with entry point by using <em>org.eclipse.rap.ui.branding</em> extension point.
     </li>
     <li>
       Reusable web components. Elements such as the header for an application are
@@ -320,10 +319,9 @@ button.setFont( set.getFont( "fontKey" );</pre>
     </li>
   </ol>
 
-  <h2>Activation by servlet name</h2>
+  <h2>Association with entry point</h2>
   <p>
-    Different layouts can be activated from a central point by using the servlet name.
-    To activate a PresentationFactory and a Layout by a servlet name, you can use the
+    To associate a PresentationFactory and a Layout with existing entry point, you can use the
     <a href="branding.html"><em>org.eclipse.rap.ui.branding</em> extension point</a>.
   </p>
   <p>
@@ -335,17 +333,15 @@ button.setFont( set.getFont( "fontKey" );</pre>
   <pre class="lang-xml">
 &lt;extension point="org.eclipse.rap.ui.branding"&gt;
   &lt;branding
-    defaultEntrypointId="org.eclipse.rap.demo.entrypoint1"
     favicon="icons/perspective.gif"
     id="org.eclipse.rap.presentation.macBarBranding"
-    servletName="api"
     themeId="org.eclipse.rap.presentation.macBarTheme"
     title="Interactiondesign API"&gt;
     &lt;presentationFactory
       defaultLayoutId="org.eclipse.rap.presentation.defaultlayout"
       id="org.eclipse.rap.presentation"
-      name="ConfigurablePF"&gt;
-      viewactionsVisible=true;
+      name="ConfigurablePF"
+      viewActionsVisible="true"&gt;
       &lt;defaultStackPresentation
         id="org.eclipse.rap.presentation.navigationPaneStackPresentation"
         name="Default"&gt;
@@ -365,14 +361,12 @@ button.setFont( set.getFont( "fontKey" );</pre>
   <ul>
     <li>
       <b>id</b><br/>
-      This is the id of the PresentationFactory which should be loaded when the
-      servlet name defined in the branding has been called.
+      This is the id of the PresentationFactory used by associated entry point.
     </li>
     <li>
       <b>defaultLayoutId</b><br/>
-      This optional argument represents the id of the Layout which should be activated
-      when the servlet name has been called. If no id is defined, the standard workbench
-      layout should be loaded.
+      This optional argument represents the id of the Layout. If no id is defined, the standard
+      workbench layout should be loaded.
     </li>
     <li>
       <b>viewActionsVisible</b><br/>
