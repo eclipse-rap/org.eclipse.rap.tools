@@ -84,9 +84,6 @@ public final class MainTab extends AbstractLauncherTab {
     return result;
   }
 
-  ////////////
-  // Overrides
-
   @Override
   public void dispose() {
     tabImage.dispose();
@@ -181,9 +178,6 @@ public final class MainTab extends AbstractLauncherTab {
   public void validateTab() {
     // We validate on performApply and launcher changes. No need to validate here.
   }
-
-  ///////////////////////////////////
-  // Helping methods to create the UI
 
   private void addLaunchConfigListener() {
     launchConfigListener = getLaunchConfigListener();
@@ -354,9 +348,6 @@ public final class MainTab extends AbstractLauncherTab {
     developmentModeCheckBox.addSelectionListener( selectionListener );
   }
 
-  /////////////
-  // Validation
-
   private void validate( RAPLaunchConfig config ) {
     RAPLaunchConfigValidator validator = new RAPLaunchConfigValidator( config );
     IStatus[] states = validator.validate();
@@ -422,9 +413,6 @@ public final class MainTab extends AbstractLauncherTab {
     dialog.open();
     dialog.close();
   }
-
-  /////////////////////////////////////////////////////////
-  // Helpers to get entered/selected values from UI widgets
 
   private BrowserMode getBrowserMode() {
     boolean selection = externalBrowserRadioButton.getSelection();

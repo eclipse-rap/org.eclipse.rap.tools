@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2013 Innoopract Informationssysteme GmbH and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.tab;
 
@@ -22,8 +22,7 @@ import org.eclipse.rap.ui.internal.launch.Activator;
 
 // TODO [rh] Could be replaced with org.eclipse.debug.ui.launchConfigurationTabs
 //      extension point introduced in 3.3
-public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
-{
+public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup {
 
   private static final String NEW_LINE = "\n"; //$NON-NLS-1$
   private static final String ATTR_VM_ARGUMENTS
@@ -31,21 +30,17 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
   private static final String JETTY_LOG_LEVEL
     = "-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=info"; //$NON-NLS-1$
 
-  public void createTabs( final ILaunchConfigurationDialog dialog,
-                          final String mode )
-  {
+  public void createTabs( ILaunchConfigurationDialog dialog, String mode ) {
     super.createTabs( dialog, mode );
     // Prepend existing tabs from OSGi launch with 'Main' tab
     setTabs( insertTab( getTabs(), 0, new MainTab() ) );
   }
 
-  private static ILaunchConfigurationTab[] insertTab(
-    final ILaunchConfigurationTab[] tabs,
-    final int position,
-    final ILaunchConfigurationTab newTab )
+  private static ILaunchConfigurationTab[] insertTab( ILaunchConfigurationTab[] tabs,
+                                                      int position,
+                                                      ILaunchConfigurationTab newTab )
   {
-    ILaunchConfigurationTab[] result
-    = new ILaunchConfigurationTab[ tabs.length + 1 ];
+    ILaunchConfigurationTab[] result = new ILaunchConfigurationTab[ tabs.length + 1 ];
     int offset = 0;
     for( int i = 0; i < result.length; i++ ) {
       if( i == position ) {
@@ -58,7 +53,7 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
     return result;
   }
 
-  public void setDefaults( final ILaunchConfigurationWorkingCopy config ) {
+  public void setDefaults( ILaunchConfigurationWorkingCopy config ) {
     super.setDefaults( config );
     String vmArguments = ""; //$NON-NLS-1$
     try {
@@ -69,8 +64,8 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
     vmArguments = appendJettyLogLevel( vmArguments );
     config.setAttribute( ATTR_VM_ARGUMENTS, vmArguments );
   }
-  
-  private static String appendJettyLogLevel( final String vmArguments ) {
+
+  private static String appendJettyLogLevel( String vmArguments ) {
     String result = vmArguments;
     if( result.length() > 0 ) {
       result += NEW_LINE;
@@ -78,4 +73,5 @@ public final class RAPLaunchTabGroup extends OSGiLauncherTabGroup
     result += JETTY_LOG_LEVEL;
     return result;
   }
+
 }

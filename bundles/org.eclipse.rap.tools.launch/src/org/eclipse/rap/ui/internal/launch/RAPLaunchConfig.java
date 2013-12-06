@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource and others.
+ * Copyright (c) 2007, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,48 +21,6 @@ import org.eclipse.pde.launching.IPDELauncherConstants;
 
 
 public final class RAPLaunchConfig {
-
-  public static final class BrowserMode {
-
-    public static final BrowserMode INTERNAL
-      = new BrowserMode( "INTERNAL" ); //$NON-NLS-1$
-    public static final BrowserMode EXTERNAL
-      = new BrowserMode( "EXTERNAL" ); //$NON-NLS-1$
-
-    public static BrowserMode[] values() {
-      return new BrowserMode[] { INTERNAL, EXTERNAL };
-    }
-
-    public static BrowserMode parse( final String name ) {
-      BrowserMode result = null;
-      BrowserMode[] knownValues = values();
-      for( int i = 0; result == null && i < knownValues.length; i++ ) {
-        if( knownValues[ i ].getName().equalsIgnoreCase( name ) ) {
-          result = knownValues[ i ];
-        }
-      }
-      if( result == null ) {
-        String text = "Unknown BrowserMode ''{0}''."; //$NON-NLS-1$
-        String msg = MessageFormat.format( text, new Object[] { name } );
-        throw new IllegalArgumentException( msg );
-      }
-      return result;
-    }
-
-    private final String name;
-
-    private BrowserMode( final String name ) {
-      this.name = name;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public String toString() {
-      return name;
-    }
-  }
 
   public static final int MIN_PORT_NUMBER = 0;
   public static final int MAX_PORT_NUMBER = 65535;
@@ -94,8 +52,7 @@ public final class RAPLaunchConfig {
   private static final int DEFAULT_SESSION_TIMEOUT = MIN_SESSION_TIMEOUT;
   private static final boolean DEFAULT_USE_SESSION_TIMEOUT = false;
   private static final boolean DEFAULT_DEVELOPMENT_MODE = true;
-  private static final String DEFAULT_DATA_LOCATION
-    = "${workspace_loc}/.metadata/.plugins/"; //$NON-NLS-1$
+  private static final String DEFAULT_DATA_LOCATION = "${workspace_loc}/.metadata/.plugins/"; //$NON-NLS-1$
 
   public static void setDefaults( ILaunchConfigurationWorkingCopy config ) {
     config.setAttribute( SERVLET_PATH, DEFAULT_SERVLET_PATH );
@@ -121,7 +78,7 @@ public final class RAPLaunchConfig {
   private final ILaunchConfiguration config;
   private final ILaunchConfigurationWorkingCopy workingCopy;
 
-  public RAPLaunchConfig( final ILaunchConfiguration config ) {
+  public RAPLaunchConfig( ILaunchConfiguration config ) {
     this.config = config;
     if( config instanceof ILaunchConfigurationWorkingCopy ) {
       workingCopy = ( ILaunchConfigurationWorkingCopy )config;
@@ -141,9 +98,6 @@ public final class RAPLaunchConfig {
   public RAPLaunchConfigValidator getValidator() {
     return new RAPLaunchConfigValidator( this );
   }
-
-  //////////////////////////////////////////////////////////
-  // Accessor and mutator methods for wrapped launch config
 
   public boolean getAskClearDataLocation() throws CoreException {
     return config.getAttribute( IPDELauncherConstants.ASKCLEAR, false );
@@ -188,7 +142,7 @@ public final class RAPLaunchConfig {
     return config.getAttribute( SERVLET_PATH, DEFAULT_SERVLET_PATH );
   }
 
-  public void setServletPath( final String servletPath ) {
+  public void setServletPath( String servletPath ) {
     if( servletPath == null ) {
       throw new NullPointerException( "servletPath" ); //$NON-NLS-1$
     }
@@ -200,7 +154,7 @@ public final class RAPLaunchConfig {
     return config.getAttribute( OPEN_BROWSER, true );
   }
 
-  public void setOpenBrowser( final boolean openBrowser ) {
+  public void setOpenBrowser( boolean openBrowser ) {
     checkWorkingCopy();
     workingCopy.setAttribute( OPEN_BROWSER, openBrowser );
   }
@@ -211,7 +165,7 @@ public final class RAPLaunchConfig {
     return BrowserMode.parse( value );
   }
 
-  public void setBrowserMode( final BrowserMode browserMode ) {
+  public void setBrowserMode( BrowserMode browserMode ) {
     checkWorkingCopy();
     workingCopy.setAttribute( BROWSER_MODE, browserMode.getName() );
   }
@@ -222,7 +176,7 @@ public final class RAPLaunchConfig {
     return config.getAttribute( USE_MANUAL_PORT, DEFAULT_USE_MANUAL_PORT );
   }
 
-  public void setUseManualPort( final boolean useManualPort  ) {
+  public void setUseManualPort( boolean useManualPort  ) {
     checkWorkingCopy();
     workingCopy.setAttribute( USE_MANUAL_PORT, useManualPort );
   }
@@ -231,7 +185,7 @@ public final class RAPLaunchConfig {
     return config.getAttribute( PORT, DEFAULT_PORT );
   }
 
-  public void setPort( final int port ) {
+  public void setPort( int port ) {
     checkWorkingCopy();
     workingCopy.setAttribute( PORT, port );
   }
@@ -261,7 +215,7 @@ public final class RAPLaunchConfig {
     return config.getAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
   }
 
-  public void setUseSessionTimeout( final boolean useSessionTimeout  ) {
+  public void setUseSessionTimeout( boolean useSessionTimeout  ) {
     checkWorkingCopy();
     workingCopy.setAttribute( USE_SESSION_TIMEOUT, useSessionTimeout );
   }
@@ -270,7 +224,7 @@ public final class RAPLaunchConfig {
     return config.getAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
   }
 
-  public void setSessionTimeout( final int timeout ) {
+  public void setSessionTimeout( int timeout ) {
     checkWorkingCopy();
     workingCopy.setAttribute( SESSION_TIMEOUT, timeout );
   }
@@ -279,13 +233,10 @@ public final class RAPLaunchConfig {
     return config.getAttribute( DEVELOPMENT_MODE, DEFAULT_DEVELOPMENT_MODE );
   }
 
-  public void setDevelopmentMode( final boolean developmentMode ) {
+  public void setDevelopmentMode( boolean developmentMode ) {
     checkWorkingCopy();
     workingCopy.setAttribute( DEVELOPMENT_MODE, developmentMode );
   }
-
-  /////////////////
-  // Helping method
 
   private void checkWorkingCopy() {
     if( workingCopy == null ) {
@@ -294,4 +245,46 @@ public final class RAPLaunchConfig {
       throw new IllegalStateException( msg );
     }
   }
+
+  public static final class BrowserMode {
+
+    public static final BrowserMode INTERNAL = new BrowserMode( "INTERNAL" ); //$NON-NLS-1$
+    public static final BrowserMode EXTERNAL = new BrowserMode( "EXTERNAL" ); //$NON-NLS-1$
+
+    private final String name;
+
+    private BrowserMode( String name ) {
+      this.name = name;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public String toString() {
+      return name;
+    }
+
+    public static BrowserMode[] values() {
+      return new BrowserMode[] { INTERNAL, EXTERNAL };
+    }
+
+    public static BrowserMode parse( String name ) {
+      BrowserMode result = null;
+      BrowserMode[] knownValues = values();
+      for( int i = 0; result == null && i < knownValues.length; i++ ) {
+        if( knownValues[ i ].getName().equalsIgnoreCase( name ) ) {
+          result = knownValues[ i ];
+        }
+      }
+      if( result == null ) {
+        String text = "Unknown BrowserMode ''{0}''."; //$NON-NLS-1$
+        String msg = MessageFormat.format( text, new Object[] { name } );
+        throw new IllegalArgumentException( msg );
+      }
+      return result;
+    }
+
+  }
+
 }

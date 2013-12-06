@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2008 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2008, 2013 Innoopract Informationssysteme GmbH and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
@@ -25,12 +26,10 @@ public final class PortBusyStatusHandler implements IStatusHandler {
     = new Status( IStatus.INFO, Activator.PLUGIN_ID, 601, "", null ); //$NON-NLS-1$
 
 
-  public Object handleStatus( final IStatus status, final Object source )
-    throws CoreException
-  {
+  public Object handleStatus( IStatus status, Object source ) throws CoreException {
     RAPLaunchConfig config = ( RAPLaunchConfig )source;
     String title = LaunchMessages.PortBusyStatusHandler_PortInUseTitle;
-    String text = LaunchMessages.PortBusyStatusHandler_PortInUseMessage; 
+    String text = LaunchMessages.PortBusyStatusHandler_PortInUseMessage;
     Object[] args = new Object[] {
       new Integer( config.getPort() ),
       config.getName()
@@ -70,4 +69,5 @@ public final class PortBusyStatusHandler implements IStatusHandler {
     }
     return result;
   }
+
 }

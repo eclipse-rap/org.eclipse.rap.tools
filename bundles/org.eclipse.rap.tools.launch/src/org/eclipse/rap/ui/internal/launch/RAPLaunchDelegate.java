@@ -12,6 +12,7 @@
 package org.eclipse.rap.ui.internal.launch;
 
 import static java.util.Arrays.asList;
+import static org.eclipse.pde.internal.launching.launcher.LauncherUtils.clearWorkspace;
 
 import java.io.IOException;
 import java.net.*;
@@ -25,7 +26,6 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.*;
 import org.eclipse.debug.core.model.RuntimeProcess;
-import org.eclipse.pde.internal.launching.launcher.LauncherUtils;
 import org.eclipse.pde.launching.EquinoxLaunchConfiguration;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
@@ -97,13 +97,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return subMonitor;
   }
 
-  ///////////////////////////////////////
-  // EquinoxLaunchConfiguration overrides
-
   @Override
-  public String[] getVMArguments( ILaunchConfiguration config )
-    throws CoreException
-  {
+  public String[] getVMArguments( ILaunchConfiguration config ) throws CoreException {
     List<String> list = new ArrayList<String>();
     // ORDER IS CRUCIAL HERE:
     // Override VM arguments that are specified manually with the values
@@ -163,9 +158,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return result;
   }
 
-  ////////////////////////////////////////
-  // Helping methods to manage port number
-
   private void warnIfPortBusy( SubProgressMonitor monitor ) throws CoreException {
     String taskName = LaunchMessages.RAPLaunchDelegate_CheckPortTaskName;
     monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
@@ -194,9 +186,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
   }
 
-  private int determinePort( IProgressMonitor monitor )
-    throws CoreException
-  {
+  private int determinePort( IProgressMonitor monitor ) throws CoreException {
     int result;
     String taskName = LaunchMessages.RAPLaunchDelegate_DeterminePortTaskName;
     monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
@@ -245,9 +235,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return server == null;
   }
 
-  //////////////////////////////////
-  // Helping method to construct URL
-
   private URL getUrl() throws CoreException {
     try {
       String url = URLBuilder.fromLaunchConfig( config, port, testMode );
@@ -259,9 +246,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       throw new CoreException( status );
     }
   }
-
-  ///////////////////////////////////////////////////
-  // Helping methods to detect already running launch
 
   private void terminateIfRunning( IProgressMonitor monitor ) throws CoreException {
     String taskName = LaunchMessages.RAPLaunchDelegate_TerminatePreviousTaskName;
@@ -299,9 +283,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return launchConfiguration == null ? null : launchConfiguration.getName();
   }
 
-  private static void terminate( final ILaunch previousLaunch )
-    throws DebugException
-  {
+  private static void terminate( final ILaunch previousLaunch ) throws DebugException {
     final Object signal = new Object();
     final boolean[] terminated = { false };
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
@@ -330,9 +312,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
   }
 
-  ////////////////////////////////////////////
-  // Helping methods to evaluate debug events
-
   private static boolean isCreateEventFor( DebugEvent event, ILaunch launch ) {
     Object source = event.getSource();
     return    event.getKind() == DebugEvent.CREATE
@@ -350,9 +329,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
     return result;
   }
-
-  /////////////////////////////////////
-  // Helping methods to test connection
 
   private void waitForHttpService( IProgressMonitor monitor ) {
     SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
@@ -398,14 +374,11 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     throws CoreException
   {
     String resolvedDataLocation = getResolvedDataLoacation();
-    boolean isCleared = LauncherUtils.clearWorkspace( configuration, resolvedDataLocation, monitor );
+    boolean isCleared = clearWorkspace( configuration, resolvedDataLocation, monitor );
     if( !isCleared ) {
       throw new CoreException( Status.CANCEL_STATUS );
     }
   }
-
-  /////////////////////////////////////////////////
-  // Helping methods to create browser and open URL
 
   private void registerBrowserOpener() {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
@@ -497,9 +470,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return result[ 0 ];
   }
 
-  private static void openUrl( final IWebBrowser browser, final URL url )
-    throws PartInitException
-  {
+  private static void openUrl( final IWebBrowser browser, final URL url ) throws PartInitException {
     final PartInitException[] exception = { null };
     Display.getDefault().asyncExec( new Runnable() {
       public void run() {

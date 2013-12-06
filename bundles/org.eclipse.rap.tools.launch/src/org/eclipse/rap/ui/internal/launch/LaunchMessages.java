@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 EclipseSource and others.
+ * Copyright (c) 2009, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,8 @@ import org.eclipse.osgi.util.NLS;
 
 public class LaunchMessages extends NLS {
 
-  private static final String BUNDLE_NAME
-    = "org.eclipse.rap.ui.internal.launch.messages"; //$NON-NLS-1$
+  private static final String BUNDLE_NAME = "org.eclipse.rap.ui.internal.launch.messages"; //$NON-NLS-1$
+
   public static String PortBusyStatusHandler_PortInUseMessage;
   public static String PortBusyStatusHandler_PortInUseTitle;
   public static String RAPLaunchConfigValidator_BrandingMissing;
@@ -65,5 +65,7 @@ public class LaunchMessages extends NLS {
   }
 
   private LaunchMessages() {
+    // prevent instantiation
   }
+
 }

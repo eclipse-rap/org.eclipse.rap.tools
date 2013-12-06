@@ -55,9 +55,8 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateURL() );
       addNonOKState( states, validateSessionTimeout() );
       addNonOKState( states, validateDataLocation() );
-    } catch( final CoreException e ) {
-      String text
-        = LaunchMessages.RAPLaunchConfigValidator_ErrorWhileValidating;
+    } catch( CoreException e ) {
+      String text = LaunchMessages.RAPLaunchConfigValidator_ErrorWhileValidating;
       Object[] args = new Object[] { e.getLocalizedMessage() };
       String msg = MessageFormat.format( text, args );
       states.add( createError( msg, 0, e ) );
@@ -146,9 +145,7 @@ public final class RAPLaunchConfigValidator {
     IStatus result = Status.OK_STATUS;
     if( config.getUseManualPort() ) {
       int port = config.getPort();
-      if(    port < RAPLaunchConfig.MIN_PORT_NUMBER
-          || port > RAPLaunchConfig.MAX_PORT_NUMBER )
-      {
+      if( port < RAPLaunchConfig.MIN_PORT_NUMBER || port > RAPLaunchConfig.MAX_PORT_NUMBER ) {
         String text = LaunchMessages.RAPLaunchConfigValidator_PortNumberInvalid;
         Object[] args = new Object[] {
           new Integer( RAPLaunchConfig.MIN_PORT_NUMBER ),
@@ -199,17 +196,13 @@ public final class RAPLaunchConfigValidator {
 
   private IStatus validateSessionTimeout() throws CoreException {
     IStatus result = Status.OK_STATUS;
-    boolean isValid
-      = config.getSessionTimeout() >= RAPLaunchConfig.MIN_SESSION_TIMEOUT;
+    boolean isValid = config.getSessionTimeout() >= RAPLaunchConfig.MIN_SESSION_TIMEOUT;
     if( !isValid ) {
       String msg = LaunchMessages.RAPLaunchConfigValidator_TimeoutInvalid;
       result = createError( msg, ERR_TIMEOUT, null );
     }
     return result;
   }
-
-  /////////////////////////
-  // Status creation helper
 
   private void addNonOKState( List<IStatus> states, IStatus state ) {
     if( state != null && !state.isOK() ) {
@@ -225,9 +218,6 @@ public final class RAPLaunchConfigValidator {
   private IStatus createError( String msg, int code, Throwable thr ) {
     return new Status( IStatus.ERROR, Activator.getPluginId(), code, msg, thr );
   }
-
-  /////////////////////////////////////////
-  // Helping methods for validateUniquePort
 
   private static ILaunchConfiguration[] getLaunchConfigs() throws CoreException {
     ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
