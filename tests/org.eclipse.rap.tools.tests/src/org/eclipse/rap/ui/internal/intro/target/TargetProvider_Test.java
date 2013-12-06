@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class TargetProviderTest {
+public class TargetProvider_Test {
 
   private List<File> filesToDelete;
 

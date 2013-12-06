@@ -11,10 +11,13 @@
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch;
 
+import static java.util.Arrays.asList;
+
 import java.io.IOException;
 import java.net.*;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.core.runtime.jobs.Job;
@@ -23,7 +26,7 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.*;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.pde.internal.launching.launcher.LauncherUtils;
-import org.eclipse.pde.ui.launcher.EquinoxLaunchConfiguration;
+import org.eclipse.pde.launching.EquinoxLaunchConfiguration;
 import org.eclipse.rap.ui.internal.launch.RAPLaunchConfig.BrowserMode;
 import org.eclipse.rap.ui.internal.launch.util.ErrorUtil;
 import org.eclipse.swt.widgets.Display;
@@ -46,7 +49,6 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
 
   private static final int CONNECT_TIMEOUT = 20000; // 20 Seconds
 
-
   private ILaunch launch;
   private RAPLaunchConfig config;
   private int port;
@@ -56,23 +58,24 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     this( false );
   }
 
-  public RAPLaunchDelegate( final boolean testMode ) {
+  public RAPLaunchDelegate( boolean testMode ) {
     this.testMode = testMode;
   }
 
-  public void launch( final ILaunchConfiguration config,
-                      final String mode,
-                      final ILaunch launch,
-                      final IProgressMonitor monitor )
+  @Override
+  public void launch( ILaunchConfiguration config,
+                      String mode,
+                      ILaunch launch,
+                      IProgressMonitor monitor )
     throws CoreException
   {
     SubProgressMonitor subMonitor = doPreLaunch( config, launch, monitor );
     super.launch( config, mode, launch, subMonitor );
   }
 
-  public SubProgressMonitor doPreLaunch( final ILaunchConfiguration config,
-                                         final ILaunch launch,
-                                         final IProgressMonitor monitor )
+  public SubProgressMonitor doPreLaunch( ILaunchConfiguration config,
+                                         ILaunch launch,
+                                         IProgressMonitor monitor )
     throws CoreException
   {
     // As this is the first method that is called after creating an instance
@@ -97,62 +100,49 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   ///////////////////////////////////////
   // EquinoxLaunchConfiguration overrides
 
-  public String[] getVMArguments( final ILaunchConfiguration config )
+  @Override
+  public String[] getVMArguments( ILaunchConfiguration config )
     throws CoreException
   {
-    List list = new ArrayList();
+    List<String> list = new ArrayList<String>();
     // ORDER IS CRUCIAL HERE:
     // Override VM arguments that are specified manually with the values
     // necessary for the RAP launcher
-    list.addAll( Arrays.asList( super.getVMArguments( config ) ) );
-    list.addAll( Arrays.asList( getRAPVMArguments() ) );
-    String[] result = new String[ list.size() ];
-    list.toArray( result );
-    return result;
+    list.addAll( asList( super.getVMArguments( config ) ) );
+    list.addAll( getRAPVMArguments() );
+    return toStringArray( list );
   }
 
+  @Override
   public String[] getProgramArguments( ILaunchConfiguration configuration ) throws CoreException {
-    List newProgrammArguments = new ArrayList();
-    String[] originalPogramArguments = super.getProgramArguments( configuration );
-    newProgrammArguments.addAll( Arrays.asList( originalPogramArguments ) );
-    String[] dataLocationArgument = getDataLocationArgument();
-    newProgrammArguments.addAll( Arrays.asList( dataLocationArgument ) );
-    String[] result = new String[ newProgrammArguments.size() ];
-    newProgrammArguments.toArray( result );
-    return result;
-  }
-
-  private String[] getDataLocationArgument() throws CoreException {
-    String[] result;
+    List<String> programArguments = new ArrayList<String>();
+    programArguments.addAll( asList( super.getProgramArguments( configuration ) ) );
     String dataLocationResolved = getResolvedDataLoacation();
     if( dataLocationResolved.length() > 0 ) {
-      result = new String[] { "-data", dataLocationResolved };
-    } else {
-      result = new String[ 0 ];
+      programArguments.addAll( asList( "-data", dataLocationResolved ) );
     }
-    return result;
+    return toStringArray( programArguments );
   }
 
   private String getResolvedDataLoacation() throws CoreException {
     String dataLocation = config.getDataLocation();
-    String dataLocationResolved = resolveDataLocation( dataLocation );
-    return dataLocationResolved;
+    return resolveVariables( dataLocation );
   }
 
-  private String resolveDataLocation( String dataLocation ) throws CoreException {
-    final VariablesPlugin variablePlugin = VariablesPlugin.getDefault();
+  private String resolveVariables( String dataLocation ) throws CoreException {
+    VariablesPlugin variablePlugin = VariablesPlugin.getDefault();
     IStringVariableManager stringVariableManager = variablePlugin.getStringVariableManager();
     return stringVariableManager.performStringSubstitution( dataLocation );
   }
 
-  private String[] getRAPVMArguments() throws CoreException {
-    List<String> list = new ArrayList<String>();
-    list.add( VMARG_PORT + port );
-    list.add( VMARG_DEVELOPMENT_MODE + config.getDevelopmentMode() );
+  private List<String> getRAPVMArguments() throws CoreException {
+    List<String> arguments = new ArrayList<String>();
+    arguments.add( VMARG_PORT + port );
+    arguments.add( VMARG_DEVELOPMENT_MODE + config.getDevelopmentMode() );
     if( config.getUseSessionTimeout() ) {
-      list.add( VMARG_SESSION_TIMEOUT + config.getSessionTimeout() );
+      arguments.add( VMARG_SESSION_TIMEOUT + config.getSessionTimeout() );
     } else {
-      list.add( VMARG_SESSION_TIMEOUT + RAPLaunchConfig.MIN_SESSION_TIMEOUT );
+      arguments.add( VMARG_SESSION_TIMEOUT + RAPLaunchConfig.MIN_SESSION_TIMEOUT );
     }
     if( config.getUseManualContextPath() ) {
       String contextPath = config.getContextPath();
@@ -162,8 +152,12 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       if( contextPath.endsWith( URLBuilder.SLASH ) ) {
         contextPath = contextPath.substring( 0, contextPath.length() - 1 );
       }
-      list.add( VMARG_CONTEXT_PATH + contextPath );
+      arguments.add( VMARG_CONTEXT_PATH + contextPath );
     }
+    return arguments;
+  }
+
+  private static String[] toStringArray( List<String> list ) {
     String[] result = new String[ list.size() ];
     list.toArray( result );
     return result;
@@ -172,8 +166,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   ////////////////////////////////////////
   // Helping methods to manage port number
 
-  private void warnIfPortBusy( SubProgressMonitor monitor ) throws CoreException
-  {
+  private void warnIfPortBusy( SubProgressMonitor monitor ) throws CoreException {
     String taskName = LaunchMessages.RAPLaunchDelegate_CheckPortTaskName;
     monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
@@ -184,8 +177,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
           IStatus status = PortBusyStatusHandler.STATUS;
           Object resolution = prompter.handleStatus( status, config );
           if( Boolean.FALSE.equals( resolution ) ) {
-            String text
-              = LaunchMessages.RAPLaunchDelegate_PortInUse;
+            String text = LaunchMessages.RAPLaunchDelegate_PortInUse;
             Object[] args = new Object[] {
               new Integer( config.getPort() ),
               config.getName()
@@ -202,7 +194,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
   }
 
-  private int determinePort( final IProgressMonitor monitor )
+  private int determinePort( IProgressMonitor monitor )
     throws CoreException
   {
     int result;
@@ -236,7 +228,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
   }
 
-  private static boolean isPortBusy( final int port ) {
+  private static boolean isPortBusy( int port ) {
     ServerSocket server = null;
     try {
       server = new ServerSocket( port );
@@ -275,7 +267,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     String taskName = LaunchMessages.RAPLaunchDelegate_TerminatePreviousTaskName;
     monitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
     try {
-      final ILaunch runningLaunch = findRunning();
+      ILaunch runningLaunch = findRunning();
       if( runningLaunch != null ) {
         terminate( runningLaunch );
       }
@@ -300,7 +292,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return result;
   }
 
-  private static String getLaunchName( final ILaunch launch ) {
+  private static String getLaunchName( ILaunch launch ) {
     ILaunchConfiguration launchConfiguration = launch.getLaunchConfiguration();
     // the launch config might be null (e.g. if deleted) even though there
     // still exists a launch for that config
@@ -314,9 +306,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     final boolean[] terminated = { false };
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     debugPlugin.addDebugEventListener( new IDebugEventSetListener() {
-      public void handleDebugEvents( final DebugEvent[] events ) {
-        for( int i = 0; i < events.length; i++ ) {
-          DebugEvent event = events[ i ];
+      public void handleDebugEvents( DebugEvent[] events ) {
+        for( DebugEvent event : events ) {
           if( isTerminateEventFor( event, previousLaunch ) ) {
             DebugPlugin.getDefault().removeDebugEventListener( this );
             synchronized( signal ) {
@@ -342,18 +333,14 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   ////////////////////////////////////////////
   // Helping methods to evaluate debug events
 
-  private static boolean isCreateEventFor( final DebugEvent event,
-                                           final ILaunch launch )
-  {
+  private static boolean isCreateEventFor( DebugEvent event, ILaunch launch ) {
     Object source = event.getSource();
     return    event.getKind() == DebugEvent.CREATE
            && source instanceof RuntimeProcess
            && ( ( RuntimeProcess ) source ).getLaunch() == launch;
   }
 
-  private static boolean isTerminateEventFor( final DebugEvent event,
-                                              final ILaunch launch )
-  {
+  private static boolean isTerminateEventFor( DebugEvent event, ILaunch launch ) {
     boolean result = false;
     if(    event.getKind() == DebugEvent.TERMINATE
         && event.getSource() instanceof RuntimeProcess )
@@ -367,7 +354,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   /////////////////////////////////////
   // Helping methods to test connection
 
-  private void waitForHttpService( final IProgressMonitor monitor ) {
+  private void waitForHttpService( IProgressMonitor monitor ) {
     SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
     String taskName = LaunchMessages.RAPLaunchDelegate_WaitForHTTPTaskName;
     subMonitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
@@ -399,6 +386,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     }
   }
 
+  @Override
   public void clear( ILaunchConfiguration configuration, IProgressMonitor monitor )
     throws CoreException
   {
@@ -422,9 +410,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private void registerBrowserOpener() {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     debugPlugin.addDebugEventListener( new IDebugEventSetListener() {
-      public void handleDebugEvents( final DebugEvent[] events ) {
-        for( int i = 0; i < events.length; i++ ) {
-          DebugEvent event = events[ i ];
+      public void handleDebugEvents( DebugEvent[] events ) {
+        for( DebugEvent event : events ) {
           if( isCreateEventFor( event, launch ) ) {
             DebugPlugin.getDefault().removeDebugEventListener( this );
             // Start a separate job to wait for the http service and launch the
@@ -432,7 +419,8 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
             // service we are waiting for
             final String jobTaskName = LaunchMessages.RAPLaunchDelegate_StartClientTaskName;
             Job job = new Job( jobTaskName ) {
-              protected IStatus run( final IProgressMonitor monitor ) {
+              @Override
+              protected IStatus run( IProgressMonitor monitor ) {
                 String taskName = jobTaskName;
                 monitor.beginTask( taskName, 2 );
                 try {
@@ -454,7 +442,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     } );
   }
 
-  private void openBrowser( final IProgressMonitor monitor ) {
+  private void openBrowser( IProgressMonitor monitor ) {
     SubProgressMonitor subMonitor = new SubProgressMonitor( monitor, 1 );
     String taskName = LaunchMessages.RAPLaunchDelegate_StartClientTaskName;
     subMonitor.beginTask( taskName, IProgressMonitor.UNKNOWN );
@@ -464,7 +452,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
         url = getUrl();
         IWebBrowser browser = getBrowser();
         openUrl( browser, url );
-      } catch( final CoreException e ) {
+      } catch( CoreException e ) {
         String text = LaunchMessages.RAPLaunchDelegate_OpenBrowserFailed;
         String msg = MessageFormat.format( text, new Object[]{ url } );
         ErrorUtil.show( msg, e );
@@ -482,10 +470,9 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
         try {
           IWorkbench workbench = PlatformUI.getWorkbench();
           IWorkbenchBrowserSupport support = workbench.getBrowserSupport();
-          int style
-            = IWorkbenchBrowserSupport.LOCATION_BAR
-            | IWorkbenchBrowserSupport.NAVIGATION_BAR
-            | IWorkbenchBrowserSupport.STATUS;
+          int style = IWorkbenchBrowserSupport.LOCATION_BAR
+                    | IWorkbenchBrowserSupport.NAVIGATION_BAR
+                    | IWorkbenchBrowserSupport.STATUS;
           if( BrowserMode.EXTERNAL.equals( config.getBrowserMode() ) ) {
             style |= IWorkbenchBrowserSupport.AS_EXTERNAL;
           } else {
@@ -531,4 +518,5 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
       throw exception[ 0 ];
     }
   }
+
 }

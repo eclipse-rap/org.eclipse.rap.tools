@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource and others.
+ * Copyright (c) 2007, 2013 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,13 +19,10 @@ import java.util.List;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.*;
-import org.eclipse.pde.internal.launching.launcher.LaunchArgumentsHelper;
 
 
 public final class RAPLaunchConfigValidator {
 
-  // FIXME remove this when Platfrom.WS_RAP defined
-  public static final String WS_RAP = "rap"; //$NON-NLS-1$
   public static final int ERR_SERVLET_PATH = 6001;
   public static final int ERR_PORT = 6004;
   public static final int ERR_URL = 6005;
@@ -41,7 +38,6 @@ public final class RAPLaunchConfigValidator {
   public static final int WARN_WS_WRONG = 7003;
   private static final String RAP_LAUNCH_CONFIG_TYPE = "org.eclipse.rap.ui.launch.RAPLauncher"; //$NON-NLS-1$
   private static final String EMPTY = ""; //$NON-NLS-1$
-  private static final String PARAM_WS = "-ws";//$NON-NLS-1$
 
   private final RAPLaunchConfig config;
 
@@ -50,7 +46,7 @@ public final class RAPLaunchConfigValidator {
   }
 
   public IStatus[] validate() {
-    List states = new ArrayList();
+    List<IStatus> states = new ArrayList<IStatus>();
     try {
       addNonOKState( states, validateServletPath() );
       addNonOKState( states, validatePort() );
@@ -59,8 +55,6 @@ public final class RAPLaunchConfigValidator {
       addNonOKState( states, validateURL() );
       addNonOKState( states, validateSessionTimeout() );
       addNonOKState( states, validateDataLocation() );
-// TODO [rst] Re-enable when bug 338544 is fixed
-//      addNonOKState( states, validateWS() );
     } catch( final CoreException e ) {
       String text
         = LaunchMessages.RAPLaunchConfigValidator_ErrorWhileValidating;
@@ -214,74 +208,35 @@ public final class RAPLaunchConfigValidator {
     return result;
   }
 
-  private IStatus validateWS() throws CoreException {
-    IStatus result = Status.OK_STATUS;
-    final ILaunchConfiguration launchConfig = config.getUnderlyingLaunchConfig();
-    String[] programArguments = LaunchArgumentsHelper.getUserProgramArgumentArray( launchConfig );
-    String wsValue = extractParameterValue( PARAM_WS, programArguments );
-    String warnMessagePattern = null;
-    if( wsValue == null || "".equals( wsValue ) ) {
-      warnMessagePattern = LaunchMessages.RAPLaunchConfigValidator_WsEmpty;
-    } else if ( !WS_RAP.equals( wsValue ) ) {
-      warnMessagePattern = LaunchMessages.RAPLaunchConfigValidator_WsWrong;
-    }
-    if( warnMessagePattern != null ) {
-      final Object[] args = new Object[]{ PARAM_WS, WS_RAP };
-      String warnMessage = MessageFormat.format( warnMessagePattern, args );
-      result = createWarning( warnMessage, WARN_WS_WRONG, null );
-    }
-    return result;
-  }
-
-  private String extractParameterValue( String name, String[] parameters ) {
-    String result = null;
-    for( int i = 0; i < parameters.length; i++ ) {
-      String key = parameters[ i ];
-      if( name.equals( key ) && i < parameters.length - 1 ) {
-        result = parameters[ i + 1 ];
-      }
-    }
-    return result;
-  }
-
   /////////////////////////
   // Status creation helper
 
-  private void addNonOKState( final List states, final IStatus state ) {
+  private void addNonOKState( List<IStatus> states, IStatus state ) {
     if( state != null && !state.isOK() ) {
       states.add( state );
     }
   }
 
-  private IStatus createWarning( final String msg,
-                                 final int code,
-                                 final Throwable thr )
-  {
+  private IStatus createWarning( String msg, int code, Throwable thr ) {
     String pluginId = Activator.getPluginId();
     return new Status( IStatus.WARNING, pluginId, code, msg, thr );
   }
 
-  private IStatus createError( final String msg,
-                               final int code,
-                               final Throwable thr )
-  {
+  private IStatus createError( String msg, int code, Throwable thr ) {
     return new Status( IStatus.ERROR, Activator.getPluginId(), code, msg, thr );
   }
 
   /////////////////////////////////////////
   // Helping methods for validateUniquePort
 
-  private static ILaunchConfiguration[] getLaunchConfigs() throws CoreException
-  {
+  private static ILaunchConfiguration[] getLaunchConfigs() throws CoreException {
     ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
     ILaunchConfigurationType type
       = launchManager.getLaunchConfigurationType( RAP_LAUNCH_CONFIG_TYPE );
     return launchManager.getLaunchConfigurations( type );
   }
 
-  private boolean hasSamePort( final RAPLaunchConfig otherConfig )
-    throws CoreException
-  {
+  private boolean hasSamePort( RAPLaunchConfig otherConfig ) throws CoreException {
     return    otherConfig.getUseManualPort()
            && !config.getName().equals( otherConfig.getName() )
            && config.getPort() == otherConfig.getPort();

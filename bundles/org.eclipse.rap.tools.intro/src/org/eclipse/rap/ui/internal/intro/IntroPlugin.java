@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2013 Innoopract Informationssysteme GmbH and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
- *     EclipseSource - ongoing development
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro;
 
@@ -24,31 +24,33 @@ public class IntroPlugin extends AbstractUIPlugin {
   public static IntroPlugin getDefault() {
     return plugin;
   }
-  
+
   public static String getPluginId() {
     return getDefault().getBundle().getSymbolicName();
   }
 
+  @Override
   public void start( final BundleContext context ) throws Exception {
     super.start( context );
     plugin = this;
   }
 
+  @Override
   public void stop( final BundleContext context ) throws Exception {
     plugin = null;
     super.stop( context );
   }
-  
+
   /**
    * Returns a service with the specified name or <code>null</code> if none.
-   * 
+   *
    * @param serviceName name of service
    * @return service object or <code>null</code> if none
    */
-  public Object acquireService( final String serviceName) {
+  public Object acquireService( String serviceName ) {
     Object service = null;
     BundleContext bundleContext = plugin.getBundle().getBundleContext();
-    ServiceReference reference = bundleContext.getServiceReference(serviceName);
+    ServiceReference<?> reference = bundleContext.getServiceReference( serviceName );
     if( reference != null ) {
       service = bundleContext.getService( reference );
       if( service != null ) {
@@ -57,4 +59,5 @@ public class IntroPlugin extends AbstractUIPlugin {
     }
     return service;
   }
+
 }
