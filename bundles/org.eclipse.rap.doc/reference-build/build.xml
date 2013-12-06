@@ -7,12 +7,12 @@
   <target name="buildExtensionPointReference">
     <pde.convertSchemaToHTML
         manifest="${runtimeSourceDir}/bundles/org.eclipse.rap.ui/plugin.xml"
-        destination="${toolsSourceDir}/bundles/org.eclipse.rap.doc/guide/reference/extension-points" />
+        destination="${targetDir}/extension-points" />
   </target>
 
   <target name="buildApiReference">
     <javadoc
-        destdir="${toolsSourceDir}/bundles/org.eclipse.rap.doc/guide/reference/api"
+        destdir="${targetDir}/api"
         encoding="UTF-8"
         charset="UTF-8"
         author="false"
@@ -49,19 +49,19 @@
       </header>
       <link href="http://download.oracle.com/javase/1.5.0/docs/api/"
         offline="true"
-        packagelistLoc="${toolsSourceDir}/releng/org.eclipse.rap.tools.build/reference/javadoc-packages/javase-1.5.0" />
+        packagelistLoc="${baseDir}/reference-build/javadoc-packages/javase-1.5.0" />
       <link href="http://www.osgi.org/javadoc/r4v43/"
         offline="true"
-        packagelistLoc="${toolsSourceDir}/releng/org.eclipse.rap.tools.build/reference/javadoc-packages/osgi-r4v43" />
+        packagelistLoc="${baseDir}/reference-build/javadoc-packages/osgi-r4v43" />
     </javadoc>
   </target>
 
   <target name="buildThemingReference" description="creates the RWT theming reference">
-    <ant dir="${toolsSourceDir}/releng/org.eclipse.rap.tools.build/reference/theming">
+    <ant dir="${baseDir}/reference-build/theming">
       <property name="src.dir"
           value="${runtimeSourceDir}/bundles/org.eclipse.rap.rwt/" />
       <property name="dest.dir"
-          value="${toolsSourceDir}/bundles/org.eclipse.rap.doc/guide/reference/theming" />
+          value="${targetDir}/theming" />
     </ant>
   </target>
 

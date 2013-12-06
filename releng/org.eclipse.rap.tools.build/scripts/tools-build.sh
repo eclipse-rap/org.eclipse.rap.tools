@@ -5,7 +5,8 @@
 # See Job -> Configure... -> This build is parameterized
 
 SCRIPTS_DIR=$(dirname $(readlink -nm $0))
-. $SCRIPTS_DIR/build-environment.sh
+MVN=${MVN:-"/opt/public/common/apache-maven-3.0.4/bin/mvn"}
+MAVEN_LOCAL_REPO_PATH=${MAVEN_LOCAL_REPO_PATH:-"/shared/rt/rap/m2/repository"}
 
 if [ "${BUILD_TYPE:0:1}" == "S" ]; then
   sign=true
@@ -25,15 +26,6 @@ for II in .cache .meta p2 ; do
   echo "Remove directory ${MAVEN_LOCAL_REPO_PATH}/${II}" 
   rm -r ${MAVEN_LOCAL_REPO_PATH}/${II}
 done
-
-######################################################################
-# Generate reference documentation
-
-cd "$WORKSPACE/org.eclipse.rap.tools"
-echo "Generating reference documentation"
-$SCRIPTS_DIR/ant-runner.sh releng/org.eclipse.rap.tools.build/reference/build.xml \
-  -DruntimeSourceDir="${WORKSPACE}/org.eclipse.rap" \
-  -DtoolsSourceDir="${WORKSPACE}/org.eclipse.rap.tools" || exit 1
 
 ######################################################################
 # Build RAP Tools

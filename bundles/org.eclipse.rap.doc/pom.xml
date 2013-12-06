@@ -14,16 +14,90 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.eclipse.rap</groupId>
-  <artifactId>org.eclipse.rap.doc</artifactId>
-  <version>2.3.0-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
-
   <parent>
     <groupId>org.eclipse.rap</groupId>
     <artifactId>org.eclipse.rap.tools-parent</artifactId>
     <version>2.3.0-SNAPSHOT</version>
-    <relativePath>../../releng/org.eclipse.rap.tools.build/pom.xml</relativePath>
+    <relativePath>../../releng/org.eclipse.rap.tools.build</relativePath>
   </parent>
+
+  <artifactId>org.eclipse.rap.doc</artifactId>
+  <version>2.3.0-SNAPSHOT</version>
+  <packaging>eclipse-plugin</packaging>
+
+  <properties>
+    <eclipserun-repo>http://download.eclipse.org/releases/juno</eclipserun-repo>
+    <runtimeSourceDir>${project.basedir}/../../../org.eclipse.rap</runtimeSourceDir>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho.extras</groupId>
+        <artifactId>tycho-eclipserun-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <appArgLine>
+            -application org.eclipse.ant.core.antRunner \
+            -buildfile reference-build/build.xml \
+            -DbaseDir=${project.basedir} \
+            -DtargetDir=${project.build.directory}/reference/guide/reference \
+            -DruntimeSourceDir=${runtimeSourceDir} \
+            -data ${project.build.directory}/workspace
+          </appArgLine>
+          <dependencies>
+            <dependency>
+              <artifactId>org.apache.ant</artifactId>
+              <type>eclipse-plugin</type>
+            </dependency>
+            <dependency>
+              <artifactId>org.eclipse.ant.core</artifactId>
+              <type>eclipse-plugin</type>
+            </dependency>
+            <dependency>
+              <artifactId>org.eclipse.help.base</artifactId>
+              <type>eclipse-plugin</type>
+            </dependency>
+            <dependency>
+              <artifactId>org.eclipse.pde.core</artifactId>
+              <type>eclipse-plugin</type>
+            </dependency>
+          </dependencies>
+          <repositories>
+            <repository>
+              <id>eclipse</id>
+              <layout>p2</layout>
+              <url>${eclipserun-repo}</url>
+            </repository>
+          </repositories>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>eclipse-run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <additionalFileSets>
+            <fileSet>
+              <directory>${project.build.directory}/reference</directory>
+              <includes>
+                <include>**/*</include>
+              </includes>
+            </fileSet>
+          </additionalFileSets>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
 
 </project>
