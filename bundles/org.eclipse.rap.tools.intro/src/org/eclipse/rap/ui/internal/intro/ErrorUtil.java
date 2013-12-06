@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2007 Innoopract Informationssysteme GmbH.
+ * Copyright (c) 2007, 2013 Innoopract Informationssysteme GmbH and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
- *     Innoopract Informationssysteme GmbH - initial API and implementation
+ *    Innoopract Informationssysteme GmbH - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.intro;
 
@@ -18,8 +19,8 @@ import org.eclipse.swt.widgets.Display;
 
 
 public final class ErrorUtil {
-  
-  public static void show( final String message, final Throwable throwable ) {
+
+  public static void show( String message, Throwable throwable ) {
     final IStatus status = createErrorStatus( message, throwable );
     IntroPlugin.getDefault().getLog().log( status );
     Display display = Display.getCurrent();
@@ -33,14 +34,12 @@ public final class ErrorUtil {
     } );
   }
 
-  public static void log( final String message, final Throwable throwable ) {
+  public static void log( String message, Throwable throwable ) {
     IStatus status = createErrorStatus( message, throwable );
     IntroPlugin.getDefault().getLog().log( status );
   }
-  
-  public static IStatus createErrorStatus( final String message, 
-                                           final Throwable throwable ) 
-  {
+
+  public static IStatus createErrorStatus( String message, Throwable throwable ) {
     Throwable cause = throwable;
     if( cause instanceof InvocationTargetException ) {
       cause = ( ( InvocationTargetException )cause ).getTargetException();
@@ -60,11 +59,7 @@ public final class ErrorUtil {
       if( statusMessage == null ) {
         statusMessage = ""; //$NON-NLS-1$
       }
-      result = new Status( IStatus.ERROR, 
-                           IntroPlugin.getPluginId(),
-                           0,
-                           statusMessage, 
-                           cause );
+      result = new Status( IStatus.ERROR, IntroPlugin.getPluginId(), 0, statusMessage, cause );
     }
     return result;
   }
@@ -72,4 +67,5 @@ public final class ErrorUtil {
   private ErrorUtil() {
     // prevent instantiation
   }
+
 }
