@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2012 EclipseSource
+ * Copyright (c) 2007, 2013 EclipseSource
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,14 +45,13 @@ public final class XmlNames {
   public static final String ELEM_VIEW = "view"; //$NON-NLS-1$
   public static final String ELEM_BRANDING = "branding"; //$NON-NLS-1$
   public static final String ELEM_PRESENTATIONFACTORY = "presentationFactory"; //$NON-NLS-1$
-  public static final String ELEM_DEFAULTSTACKPRESENTATION
-    = "defaultStackPresentation"; //$NON-NLS-1$
+  public static final String ELEM_DEFAULTSTACKPRESENTATION = "defaultStackPresentation"; //$NON-NLS-1$
 
   public static final String XID_COMMANDS = "org.eclipse.ui.commands"; //$NON-NLS-1$
-  public static final String XID_APPLICATION
-    = "org.eclipse.core.runtime.applications"; //$NON-NLS-1$
+  public static final String XID_APPLICATION = "org.eclipse.core.runtime.applications"; //$NON-NLS-1$
   public static final String XID_PERSPECTIVES = "org.eclipse.ui.perspectives"; //$NON-NLS-1$
   public static final String XID_VIEWS = "org.eclipse.ui.views"; //$NON-NLS-1$
   public static final String XID_BRANDING = "org.eclipse.rap.ui.branding"; //$NON-NLS-1$
   public static final String XID_ENTRYPOINT = "org.eclipse.rap.ui.entrypoint"; //$NON-NLS-1$
+
 }

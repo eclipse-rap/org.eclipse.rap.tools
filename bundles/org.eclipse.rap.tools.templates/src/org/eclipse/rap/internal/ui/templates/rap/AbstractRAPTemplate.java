@@ -70,9 +70,6 @@ abstract class AbstractRAPTemplate extends OptionTemplateSection {
     return new IPluginReference[ 0 ];
   }
 
-  ////////////////////
-  // protected methods
-
   protected final void addExtensionToPlugin( IPluginExtension extension ) throws CoreException {
     IPluginBase plugin = model.getPluginBase();
     if( !extension.isInTheModel() ) {

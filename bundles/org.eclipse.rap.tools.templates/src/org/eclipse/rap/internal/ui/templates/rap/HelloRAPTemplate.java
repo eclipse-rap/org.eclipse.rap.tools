@@ -47,9 +47,6 @@ class HelloRAPTemplate extends AbstractRAPTemplate {
   protected void updateModel( IProgressMonitor monitor ) throws CoreException {
   }
 
-  //////////////////
-  // helping methods
-
   private void createTemplateOptions() {
     addOption( KEY_WINDOW_TITLE,
                Messages.helloRAPTemplate_windowTitle,
