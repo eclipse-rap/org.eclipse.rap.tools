@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.rap.tools.launch;singleton:=true
 Bundle-Version: 2.3.0.qualifier
-Bundle-Activator: org.eclipse.rap.ui.internal.launch.Activator
+Bundle-Activator: org.eclipse.rap.tools.launch.internal.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.ui,
  org.eclipse.jdt.core,
@@ -17,7 +17,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.eclipse.rap.ui.internal.launch;x-friends:="org.eclipse.rap.tools.tests",
- org.eclipse.rap.ui.internal.launch.junit;x-friends:="org.eclipse.rap.tools.tests",
- org.eclipse.rap.ui.internal.launch.tab;x-friends:="org.eclipse.rap.tools.tests",
- org.eclipse.rap.ui.internal.launch.util;x-friends:="org.eclipse.rap.tools.tests"
+Export-Package: org.eclipse.rap.tools.launch.internal;x-friends:="org.eclipse.rap.tools.tests",
+ org.eclipse.rap.tools.launch.internal.junit;x-friends:="org.eclipse.rap.tools.tests",
+ org.eclipse.rap.tools.launch.internal.tab;x-friends:="org.eclipse.rap.tools.tests",
+ org.eclipse.rap.tools.launch.internal.util;x-friends:="org.eclipse.rap.tools.tests"

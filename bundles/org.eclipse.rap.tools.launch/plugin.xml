@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="org.eclipse.rap.ui.internal.launch.RAPLaunchDelegate"
+            delegate="org.eclipse.rap.tools.launch.internal.RAPLaunchDelegate"
             delegateDescription="%launchConfigurationType.delegateDescription"
             delegateName="%launchConfigurationType.delegateName"
             id="org.eclipse.rap.ui.launch.RAPLauncher"
@@ -15,7 +15,7 @@
             sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
       </launchConfigurationType>
       <launchConfigurationType
-            delegate="org.eclipse.rap.ui.internal.launch.junit.RAPJUnitLaunchConfigurationDelegate"
+            delegate="org.eclipse.rap.tools.launch.internal.junit.RAPJUnitLaunchConfigurationDelegate"
             delegateDescription="%junitLaunchConfigurationType.delegateDescription"
             delegateName="%junitLaunchConfigurationType.delegateName"
             id="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher"
@@ -31,20 +31,20 @@
       <launchConfigurationTypeImage
             configTypeID="org.eclipse.rap.ui.launch.RAPLauncher"
             icon="$nl$/icons/obj16/launcher.gif"
-            id="org.eclipse.rap.ui.launch.RAPLaunchImage">
+            id="org.eclipse.rap.tools.launch.RAPLaunchImage">
       </launchConfigurationTypeImage>
       <launchConfigurationTypeImage
             configTypeID="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher"
             icon="$nl$/icons/obj16/rapjunitlaunch.gif"
-            id="org.eclipse.rap.ui.launch.RAPJUnitTestLaunchImage">
+            id="org.eclipse.rap.tools.launch.RAPJUnitTestLaunchImage">
       </launchConfigurationTypeImage>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="org.eclipse.rap.ui.internal.launch.tab.RAPLaunchTabGroup"
+            class="org.eclipse.rap.tools.launch.internal.tab.RAPLaunchTabGroup"
             description="%launchConfigurationTabGroup.description"
-            id="org.eclipse.rap.ui.launch.RAPTabGroup"
+            id="org.eclipse.rap.tools.launch.RAPTabGroup"
             type="org.eclipse.rap.ui.launch.RAPLauncher">
          <launchMode
                description="%launchMode.run.description"
@@ -56,9 +56,9 @@
          </launchMode>
       </launchConfigurationTabGroup>
       <launchConfigurationTabGroup
-            class="org.eclipse.rap.ui.internal.launch.junit.RAPJUnitLaunchTabGroup"
+            class="org.eclipse.rap.tools.launch.internal.junit.RAPJUnitLaunchTabGroup"
             description="%junitLaunchConfigurationTabGroup.description"
-            id="org.eclipse.rap.ui.launch.RAPJUnitTabGroup"
+            id="org.eclipse.rap.tools.launch.RAPJUnitTabGroup"
             type="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher">
          <launchMode
                description="%junitLaunchMode.run.description"
@@ -73,9 +73,9 @@
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="org.eclipse.rap.ui.internal.launch.RAPLaunchShortcut"
+            class="org.eclipse.rap.tools.launch.internal.RAPLaunchShortcut"
             icon="$nl$/icons/obj16/launcher.gif"
-            id="org.eclipse.rap.ui.launch.RAPLaunchShortcut"
+            id="org.eclipse.rap.tools.launch.RAPLaunchShortcut"
             label="%launchShortcut.label"
             modes="run,debug">
          <configurationType
@@ -108,9 +108,9 @@
          </contextualLaunch>         
       </shortcut>
       <shortcut
-            class="org.eclipse.rap.ui.internal.launch.junit.RAPJUnitLaunchShortcut"
+            class="org.eclipse.rap.tools.launch.internal.junit.RAPJUnitLaunchShortcut"
             icon="$nl$/icons/obj16/rapjunitlaunch.gif"
-            id="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut"
+            id="org.eclipse.rap.tools.launch.RAPJUnitLaunchShortcut"
             label="%junitLaunchShortcut.label"
             modes="run, debug">
          <configurationType
@@ -144,13 +144,13 @@
    <extension
          point="org.eclipse.pde.ui.launchShortcuts">
       <shortcut
-            id="org.eclipse.rap.ui.launch.RAPLaunchShortcut"
+            id="org.eclipse.rap.tools.launch.RAPLaunchShortcut"
             label="%pdeLaunchShortcut.run.label"
             mode="run"
             osgi="false">
       </shortcut>
       <shortcut
-            id="org.eclipse.rap.ui.launch.RAPLaunchShortcut"
+            id="org.eclipse.rap.tools.launch.RAPLaunchShortcut"
             label="%pdeLaunchShortcut.debug.label"
             mode="debug"
             osgi="false">
@@ -162,46 +162,46 @@
             name="%command.run.name"
             description="%command.run.description"
             categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.rap.ui.launch.RAPLaunchShortcut.run">
+            id="org.eclipse.rap.tools.launch.RAPLaunchShortcut.run">
       </command>
       <command
             name="%command.debug.name"
             description="%command.debug.description"
             categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.rap.ui.launch.RAPLaunchShortcut.debug">
+            id="org.eclipse.rap.tools.launch.RAPLaunchShortcut.debug">
       </command>
       <command
             name="%command.junit.run.name"
             description="%command.junit.run.description"
             categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut.run">
+            id="org.eclipse.rap.tools.launch.RAPJUnitLaunchShortcut.run">
       </command>
       <command
             name="%command.junit.debug.name"
             description="%command.junit.debug.description"
             categoryId="org.eclipse.debug.ui.category.run"
-            id="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut.debug">
+            id="org.eclipse.rap.tools.launch.RAPJUnitLaunchShortcut.debug">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="org.eclipse.rap.ui.launch.RAPLaunchShortcut.run"
+            commandId="org.eclipse.rap.tools.launch.RAPLaunchShortcut.run"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M2+X R">
       </key>
       <key
-            commandId="org.eclipse.rap.ui.launch.RAPLaunchShortcut.debug"
+            commandId="org.eclipse.rap.tools.launch.RAPLaunchShortcut.debug"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M2+D R">
       </key>
       <key
-            commandId="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut.run"
+            commandId="org.eclipse.rap.tools.launch.RAPJUnitLaunchShortcut.run"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M2+X U">
       </key>
       <key
-            commandId="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut.debug"
+            commandId="org.eclipse.rap.tools.launch.RAPJUnitLaunchShortcut.debug"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M2+D U">
       </key>
@@ -209,9 +209,9 @@
   <extension
          point="org.eclipse.debug.core.statusHandlers">
       <statusHandler
-            class="org.eclipse.rap.ui.internal.launch.PortBusyStatusHandler"
+            class="org.eclipse.rap.tools.launch.internal.PortBusyStatusHandler"
             code="601"
-            id="org.eclipse.rap.ui.launch.portBusyStatusHandler"
+            id="org.eclipse.rap.tools.launch.portBusyStatusHandler"
             plugin="org.eclipse.rap.tools.launch">
       </statusHandler>
    </extension>   

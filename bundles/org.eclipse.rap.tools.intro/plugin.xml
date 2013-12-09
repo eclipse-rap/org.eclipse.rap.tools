@@ -24,15 +24,15 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.eclipse.rap.ui.internal.intro.target.InstallRAPTargetHandler"
-            id="org.eclipse.rap.ui.intro.installTarget"
+            defaultHandler="org.eclipse.rap.tools.intro.internal.target.InstallRAPTargetHandler"
+            id="org.eclipse.rap.tools.intro.installTarget"
             name="%installTargetCommand.name">
       </command>
       <command
             name="%launchRAPApplication.name"
             description="%launchRAPApplication.description"
-            id="org.eclipse.rap.ui.internal.intro.commands.launchRAPApplication"
-            defaultHandler="org.eclipse.rap.ui.internal.intro.commands.LaunchRAPApplication">
+            id="org.eclipse.rap.tools.intro.internal.commands.launchRAPApplication"
+            defaultHandler="org.eclipse.rap.tools.intro.internal.commands.LaunchRAPApplication">
       </command>
    </extension>
    <!--

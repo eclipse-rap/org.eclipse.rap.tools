@@ -18,8 +18,8 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Bundle-Activator: org.eclipse.rap.ui.internal.intro.IntroPlugin
+Bundle-Activator: org.eclipse.rap.tools.intro.internal.IntroPlugin
 Bundle-Vendor: %Bundle-Vendor
-Export-Package: org.eclipse.rap.ui.internal.intro;x-friends:="org.eclipse.rap.tools.tests",
- org.eclipse.rap.ui.internal.intro.commands;x-internal:=true,
- org.eclipse.rap.ui.internal.intro.target;x-friends:="org.eclipse.rap.tools.tests"
+Export-Package: org.eclipse.rap.tools.intro.internal;x-friends:="org.eclipse.rap.tools.tests",
+ org.eclipse.rap.tools.intro.internal.commands;x-internal:=true,
+ org.eclipse.rap.tools.intro.internal.target;x-friends:="org.eclipse.rap.tools.tests"

@@ -222,7 +222,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     IHandlerService handlerService
       = ( IHandlerService )workbenchWindow.getService( IHandlerService.class );
     try {
-      handlerService.executeCommand( "org.eclipse.rap.ui.intro.installTarget", null ); //$NON-NLS-1$
+      handlerService.executeCommand( "org.eclipse.rap.tools.intro.installTarget", null ); //$NON-NLS-1$
     } catch( CommandException e ) {
       ILog log = Activator.getDefault().getLog();
       Status status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e );
