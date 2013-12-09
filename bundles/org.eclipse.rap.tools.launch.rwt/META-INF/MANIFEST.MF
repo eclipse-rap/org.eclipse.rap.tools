@@ -31,6 +31,7 @@ Bundle-Vendor: %Bundle-Vendor
 Export-Package: org.eclipse.rap.ui.internal.launch.rwt;x-internal:=true,
  org.eclipse.rap.ui.internal.launch.rwt.config;x-internal:=true,
  org.eclipse.rap.ui.internal.launch.rwt.delegate;x-internal:=true,
+ org.eclipse.rap.ui.internal.launch.rwt.jetty;x-internal:=true,
  org.eclipse.rap.ui.internal.launch.rwt.shortcut;x-internal:=true,
  org.eclipse.rap.ui.internal.launch.rwt.tab;x-internal:=true,
  org.eclipse.rap.ui.internal.launch.rwt.util;x-internal:=true

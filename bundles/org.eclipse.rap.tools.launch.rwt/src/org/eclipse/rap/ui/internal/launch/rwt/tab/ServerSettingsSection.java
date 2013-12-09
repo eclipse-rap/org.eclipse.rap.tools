@@ -102,4 +102,5 @@ public class ServerSettingsSection extends RWTLaunchTab {
       updateLaunchConfigurationDialog();
     }
   }
+
 }

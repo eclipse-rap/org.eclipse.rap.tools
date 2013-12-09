@@ -81,7 +81,7 @@ public final class RWTLaunchConfig {
     return launchManager.getLaunchConfigurationType( LAUNCH_CONFIG_TYPE );
   }
 
-  public static void setDefaults( final ILaunchConfigurationWorkingCopy config ) {
+  public static void setDefaults( ILaunchConfigurationWorkingCopy config ) {
     config.setAttribute( LAUNCH_TARGET, DEFAULT_LAUNCH_TARGET.toString() );
     config.setAttribute( WEB_XML_LOCATION, DEFAULT_WEB_XML_LOCATION );
     config.setAttribute( WEB_APP_LOCATION, DEFAULT_WEB_APP_LOCATION );
@@ -120,9 +120,6 @@ public final class RWTLaunchConfig {
   public ILaunchConfiguration getUnderlyingLaunchConfig() {
     return config;
   }
-
-  //////////////////////////////////////////////////////////
-  // Accessor and mutator methods for wrapped launch config
 
   public String getProjectName() {
     return getAttribute( PROJECT_NAME, DEFAULT_PROJECT_NAME );
@@ -189,7 +186,7 @@ public final class RWTLaunchConfig {
     return getAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
   }
 
-  public void setEntryPoint( final String entryPoint ) {
+  public void setEntryPoint( String entryPoint ) {
     checkNotNull( entryPoint, "entryPoint" ); //$NON-NLS-1$
     checkWorkingCopy();
     workingCopy.setAttribute( ENTRY_POINT, entryPoint );
@@ -238,7 +235,7 @@ public final class RWTLaunchConfig {
     return getAttribute( USE_SESSION_TIMEOUT, DEFAULT_USE_SESSION_TIMEOUT );
   }
 
-  public void setUseSessionTimeout( final boolean useSessionTimeout  ) {
+  public void setUseSessionTimeout( boolean useSessionTimeout  ) {
     checkWorkingCopy();
     workingCopy.setAttribute( USE_SESSION_TIMEOUT, useSessionTimeout );
   }
@@ -247,7 +244,7 @@ public final class RWTLaunchConfig {
     return getAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
   }
 
-  public void setSessionTimeout( final int timeout ) {
+  public void setSessionTimeout( int timeout ) {
     checkWorkingCopy();
     workingCopy.setAttribute( SESSION_TIMEOUT, timeout );
   }
@@ -280,9 +277,6 @@ public final class RWTLaunchConfig {
     checkWorkingCopy();
     workingCopy.setAttribute( DEVELOPMENT_MODE, developmentMode );
   }
-
-  /////////////////
-  // Helping method
 
   private static void checkNotNull( Object argument, String argumentName ) {
     if( argument == null ) {

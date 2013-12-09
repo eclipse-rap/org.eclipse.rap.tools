@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     Rüdiger Herrmann - adopted original code for use in RWT launcher 
+ *     Rüdiger Herrmann - adopted original code for use in RWT launcher
  *******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
 public class VMArgumentsSection extends RWTLaunchTab {
+
   private Text txtVMArguments;
   private Button btnVariables;
 
@@ -99,4 +100,5 @@ public class VMArgumentsSection extends RWTLaunchTab {
       }
     }
   }
+
 }

@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.util;
 
@@ -15,11 +16,11 @@ import org.eclipse.debug.core.model.RuntimeProcess;
 
 
 public class DebugUtil {
-  
+
   public static String getLaunchName( ILaunch launch ) {
     ILaunchConfiguration launchConfiguration = launch.getLaunchConfiguration();
     // the launch config might be null (e.g. if deleted) even though there
-    // still exists a launch for that config  
+    // still exists a launch for that config
     return launchConfiguration == null ? null : launchConfiguration.getName();
   }
 
@@ -31,7 +32,7 @@ public class DebugUtil {
     }
     return result;
   }
-  
+
   public static boolean containsTerminateEventFor( DebugEvent[] events, ILaunch launch ) {
     boolean result = false;
     for( int i = 0; !result && i < events.length; i++ ) {
@@ -40,7 +41,7 @@ public class DebugUtil {
     }
     return result;
   }
-  
+
   private static boolean eventSourceEqualsLaunch( DebugEvent debugEvent, ILaunch launch ) {
     boolean result = false;
     if( debugEvent.getSource() instanceof RuntimeProcess ) {
@@ -49,7 +50,7 @@ public class DebugUtil {
     }
     return result;
   }
-  
+
   private static boolean isCreateEvent( DebugEvent event ) {
     return event.getKind() == DebugEvent.CREATE;
   }
@@ -61,4 +62,5 @@ public class DebugUtil {
   private DebugUtil() {
     // prevent instantiation
   }
+
 }

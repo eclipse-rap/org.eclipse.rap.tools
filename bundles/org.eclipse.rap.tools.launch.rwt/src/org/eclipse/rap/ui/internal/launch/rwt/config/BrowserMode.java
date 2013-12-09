@@ -1,28 +1,27 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
 
 public final class BrowserMode {
 
-  public static final BrowserMode INTERNAL
-    = new BrowserMode( "INTERNAL" ); //$NON-NLS-1$
-  public static final BrowserMode EXTERNAL 
-    = new BrowserMode( "EXTERNAL" ); //$NON-NLS-1$
+  public static final BrowserMode INTERNAL = new BrowserMode( "INTERNAL" ); //$NON-NLS-1$
+  public static final BrowserMode EXTERNAL = new BrowserMode( "EXTERNAL" ); //$NON-NLS-1$
 
   public static BrowserMode[] values() {
     return new BrowserMode[]{ INTERNAL, EXTERNAL };
   }
 
-  public static BrowserMode parse( final String name ) {
+  public static BrowserMode parse( String name ) {
     BrowserMode result = null;
     BrowserMode[] knownValues = values();
     for( int i = 0; result == null && i < knownValues.length; i++ ) {
@@ -38,7 +37,7 @@ public final class BrowserMode {
   }
   private final String name;
 
-  private BrowserMode( final String name ) {
+  private BrowserMode( String name ) {
     this.name = name;
   }
 
@@ -49,4 +48,5 @@ public final class BrowserMode {
   public String toString() {
     return name;
   }
+
 }

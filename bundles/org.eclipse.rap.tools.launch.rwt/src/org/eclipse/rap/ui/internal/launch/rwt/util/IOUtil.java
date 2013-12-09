@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.util;
 
@@ -16,6 +17,7 @@ import java.text.MessageFormat;
 
 
 public final class IOUtil {
+
   private static final int BUFFER_SIZE = 8192;
   private static final Charset UTF_8 = Charset.forName( "utf-8" ); //$NON-NLS-1$
 
@@ -62,7 +64,7 @@ public final class IOUtil {
       handleCopyException( destination, ioe );
     }
   }
-  
+
   public static String readContent( InputStream inputStream ) {
     StringBuffer result = new StringBuffer();
     InputStreamReader reader = new InputStreamReader( inputStream, UTF_8 );
@@ -93,23 +95,21 @@ public final class IOUtil {
     String msg = MessageFormat.format( text, new Object[] { destination } );
     throw new RuntimeException( msg, ioe );
   }
-  
-  private static void handleCopyException( File source, 
-                                           File destination, 
-                                           IOException ioe ) 
-  {
+
+  private static void handleCopyException( File source, File destination, IOException ioe ) {
     String text = "Failed to copy file from ''{0}'' to ''{1}''."; //$NON-NLS-1$
     Object[] args = new Object[] { source, destination };
     String msg = MessageFormat.format( text, args );
     throw new RuntimeException( msg, ioe );
   }
-  
+
   private static void handleReadException( IOException ioe ) {
     String msg = "Failed to read from input stream."; //$NON-NLS-1$
     throw new RuntimeException( msg, ioe );
   }
-  
+
   private IOUtil() {
     // prevent instantiation
   }
+
 }

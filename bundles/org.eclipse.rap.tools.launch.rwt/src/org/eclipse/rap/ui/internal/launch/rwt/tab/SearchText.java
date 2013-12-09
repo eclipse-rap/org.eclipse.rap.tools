@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
@@ -18,7 +19,7 @@ import org.eclipse.swt.widgets.*;
 
 
 class SearchText {
-  
+
   private final int margin;
   private Label label;
   private Text text;
@@ -36,15 +37,15 @@ class SearchText {
     text.setEnabled( enabled );
     button.setEnabled( enabled );
   }
-  
+
   String getText() {
     return text.getText().trim();
   }
-  
+
   void setText( String string ) {
     text.setText( string );
   }
-  
+
   void addModifyListener( ModifyListener modifyListener ) {
     text.addModifyListener( modifyListener );
   }
@@ -52,15 +53,15 @@ class SearchText {
   void removeModifyListener( ModifyListener modifyListener ) {
     text.removeModifyListener( modifyListener );
   }
-  
+
   void addSelectionListener( SelectionListener selectionListener ) {
     button.addSelectionListener( selectionListener );
   }
-  
+
   void removeSelectionListener( SelectionListener selectionListener ) {
     button.removeSelectionListener( selectionListener );
   }
-  
+
   private Label createLabel( Composite parent, String string ) {
     Label result = new Label( parent, SWT.NONE );
     result.setText( string );
@@ -81,4 +82,5 @@ class SearchText {
     result.setText( string );
     return result;
   }
+
 }

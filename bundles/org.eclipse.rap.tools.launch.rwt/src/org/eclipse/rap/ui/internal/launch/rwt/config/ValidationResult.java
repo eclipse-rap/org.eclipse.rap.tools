@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
@@ -19,15 +20,15 @@ import org.eclipse.rap.ui.internal.launch.rwt.RWTLaunchActivator;
 
 public class ValidationResult {
   private final List<IStatus> results;
-  
+
   public ValidationResult() {
     results = new LinkedList<IStatus>();
   }
-  
+
   public void addError( String message, int code ) {
     addStatus( IStatus.ERROR, message, code );
   }
-  
+
   public void addWarning( String message, int code ) {
     addStatus( IStatus.WARNING, message, code );
   }
@@ -37,15 +38,15 @@ public class ValidationResult {
     results.toArray( result );
     return result;
   }
-  
+
   public IStatus[] getErrors() {
     return getStates( IStatus.ERROR );
   }
-  
+
   public IStatus[] getWarnings() {
     return getStates( IStatus.WARNING );
   }
-  
+
   public boolean contains( int code ) {
     IStatus[] all = getAll();
     boolean result = false;
@@ -89,4 +90,5 @@ public class ValidationResult {
     }
     return result;
   }
+
 }

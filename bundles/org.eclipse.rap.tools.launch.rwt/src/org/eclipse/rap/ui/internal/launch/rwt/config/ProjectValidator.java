@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
@@ -29,9 +30,9 @@ class ProjectValidator extends Validator {
 
   void validate() {
     String projectName = config.getProjectName();
-    if(    isProjectNameSpecified( projectName ) 
-        && isValidProjectName( projectName ) 
-        && !isExistingJavaProject( projectName ) ) 
+    if(    isProjectNameSpecified( projectName )
+        && isValidProjectName( projectName )
+        && !isExistingJavaProject( projectName ) )
     {
       String text = "The project {0} does not exist.";
       String msg = MessageFormat.format( text, new Object[] { projectName } );
@@ -52,4 +53,5 @@ class ProjectValidator extends Validator {
     IPath projectPath = new Path( null, projectName ).makeAbsolute();
     return projectPath.segmentCount() == 1;
   }
+
 }

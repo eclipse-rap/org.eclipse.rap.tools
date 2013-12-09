@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.config;
 
@@ -22,7 +23,7 @@ class WebXmlLocationValidator extends Validator {
 
   static final int ERR_WEB_XML_LOCATION_EMPTY = 8010;
   static final int ERR_WEB_XML_LOCATION_NOT_FOUND = 8011;
-  
+
   WebXmlLocationValidator( RWTLaunchConfig config, ValidationResult validationResult ) {
     super( config, validationResult );
   }
@@ -30,7 +31,7 @@ class WebXmlLocationValidator extends Validator {
   void validate() {
     if( LaunchTarget.WEB_XML.equals( config.getLaunchTarget() ) ) {
       String webXmlLocation = config.getWebXmlLocation();
-      if( webXmlLocation.length() == 0 ) { 
+      if( webXmlLocation.length() == 0 ) {
         addError( "The location for the web.xml is empty.", ERR_WEB_XML_LOCATION_EMPTY );
       } else {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -41,4 +42,5 @@ class WebXmlLocationValidator extends Validator {
       }
     }
   }
+
 }

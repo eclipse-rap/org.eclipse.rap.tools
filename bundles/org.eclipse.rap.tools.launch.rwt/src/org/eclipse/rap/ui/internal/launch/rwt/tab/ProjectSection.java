@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
@@ -22,7 +23,7 @@ import org.eclipse.swt.widgets.*;
 
 
 public class ProjectSection extends RWTLaunchTab {
-  
+
   private Text txtProject;
   private Button btnSelectProject;
 
@@ -54,7 +55,7 @@ public class ProjectSection extends RWTLaunchTab {
   public void performApply( RWTLaunchConfig launchConfig ) {
     launchConfig.setProjectName( txtProject.getText().trim() );
   }
-  
+
   private void handleSelectJavaProject() {
     IJavaProject project = selectJavaProject();
     if( project != null ) {
@@ -76,24 +77,25 @@ public class ProjectSection extends RWTLaunchTab {
     if( projectName.length() > 0 ) {
       result = getJavaModel().getJavaProject( projectName );
     }
-    return result;    
+    return result;
   }
 
   private static IJavaModel getJavaModel() {
     IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
     return JavaCore.create( workspaceRoot );
   }
-  
+
   private class JavaProjectSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
       handleSelectJavaProject();
       updateLaunchConfigurationDialog();
     }
   }
-  
+
   private class TextModifyListener implements ModifyListener {
     public void modifyText( ModifyEvent event ) {
       updateLaunchConfigurationDialog();
     }
   }
+
 }

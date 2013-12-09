@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.shortcut;
 
@@ -19,33 +20,29 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 
 
 final class RunnableContextHelper {
-  
-  interface IContextRunnable {
-    void run( IProgressMonitor monitor ) throws Exception;
-  }
-  
+
   private final IRunnableContext context;
 
   RunnableContextHelper( IRunnableContext context ) {
     this.context = context;
   }
-  
+
   void runInContext( IContextRunnable contextRunnable ) throws CoreException, InterruptedException {
     IRunnableWithProgress progressRunnable = wrapContextRunnable( contextRunnable );
     runInContext( progressRunnable );
   }
 
-  private void runInContext( IRunnableWithProgress progressRunnable ) 
-    throws CoreException, InterruptedException 
+  private void runInContext( IRunnableWithProgress progressRunnable )
+    throws CoreException, InterruptedException
   {
     try {
       context.run( true, true, progressRunnable );
     } catch( InvocationTargetException ite ) {
       handleInvocationTargetException( ite );
-    } 
+    }
   }
 
-  private static void handleInvocationTargetException( InvocationTargetException ite ) 
+  private static void handleInvocationTargetException( InvocationTargetException ite )
     throws CoreException, InterruptedException
   {
     if( ite.getCause() instanceof CoreException ) {
@@ -56,7 +53,7 @@ final class RunnableContextHelper {
     }
     if( ite.getCause() instanceof RuntimeException ) {
       throw ( RuntimeException )ite.getCause();
-    } 
+    }
     throw new RuntimeException( ite.getCause() );
   }
 
@@ -64,14 +61,18 @@ final class RunnableContextHelper {
     return new ContextRunnableWrapper( contextRunnable );
   }
 
+  interface IContextRunnable {
+    void run( IProgressMonitor monitor ) throws Exception;
+  }
+
   private static class ContextRunnableWrapper implements IRunnableWithProgress {
-  
+
     private final IContextRunnable contextRunnable;
-  
+
     private ContextRunnableWrapper( IContextRunnable contextRunnable ) {
       this.contextRunnable = contextRunnable;
     }
-  
+
     public void run( IProgressMonitor monitor ) throws InvocationTargetException {
       try {
         contextRunnable.run( monitor );
@@ -80,4 +81,5 @@ final class RunnableContextHelper {
       }
     }
   }
+
 }

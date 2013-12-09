@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.util;
 
@@ -20,15 +21,15 @@ import org.osgi.framework.BundleContext;
 
 
 public final class BundleFileLocator {
-  
-  public static String locate( String bundleSymbolicName ) {
-    return new BundleFileLocator( bundleSymbolicName ).locate();
-  }
-  
+
   private final Bundle bundle;
 
   private BundleFileLocator( String symbolicName ) {
     bundle = findBundle( symbolicName );
+  }
+
+  public static String locate( String bundleSymbolicName ) {
+    return new BundleFileLocator( bundleSymbolicName ).locate();
   }
 
   public String locate() {
@@ -55,7 +56,7 @@ public final class BundleFileLocator {
     String msg= "Failed to obtain file location for bundle: " + symbolicName; //$NON-NLS-1$
     throw new RuntimeException( msg, exception );
   }
-  
+
   private static Bundle findBundle( String symbolicName ) {
     Bundle result = null;
     Bundle[] bundles = getAllBundles();
@@ -73,4 +74,5 @@ public final class BundleFileLocator {
     Bundle[] bundles = bundleContext.getBundles();
     return bundles;
   }
+
 }

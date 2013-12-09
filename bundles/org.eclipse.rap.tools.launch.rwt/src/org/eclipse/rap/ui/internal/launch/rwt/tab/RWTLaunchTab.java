@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2011 Rüdiger Herrmann and others. All rights reserved.
+ * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Rüdiger Herrmann - initial API and implementation
+ *    Rüdiger Herrmann - initial API and implementation
+ *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.ui.internal.launch.rwt.tab;
 
@@ -25,11 +26,11 @@ public abstract class RWTLaunchTab extends JavaLaunchTab {
 
   public abstract void initializeFrom( RWTLaunchConfig config );
   public abstract void performApply( RWTLaunchConfig config );
-  
+
   public void setDefaults( ILaunchConfigurationWorkingCopy config ) {
     RWTLaunchConfig.setDefaults( config );
   }
-  
+
   public final void initializeFrom( ILaunchConfiguration config ) {
     RWTLaunchConfig launchConfig = new RWTLaunchConfig( config );
     initializeFrom( launchConfig );
@@ -42,17 +43,17 @@ public abstract class RWTLaunchTab extends JavaLaunchTab {
     validate( launchConfig );
     setDirty( true );
   }
-  
+
   public boolean isValid( ILaunchConfiguration config ) {
     return getErrorMessage() == null;
   }
-  
+
   protected final Label createLabel( Composite parent, String text ) {
     Label result = new Label( parent, SWT.NONE );
     result.setText( text );
     return result;
   }
-  
+
   private void validate( RWTLaunchConfig config ) {
     ValidationRunner validationRunner = new ValidationRunner( config );
     validationRunner.validate();
@@ -67,4 +68,5 @@ public abstract class RWTLaunchTab extends JavaLaunchTab {
       setErrorMessage( errors[ 0 ].getMessage() );
     }
   }
+
 }
