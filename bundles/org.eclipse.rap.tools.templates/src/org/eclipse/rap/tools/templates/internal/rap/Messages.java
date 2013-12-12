@@ -9,7 +9,7 @@
  *    Innoopract Informationssysteme GmbH - initial API and implementation
  *    EclipseSource - ongoing development
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates.rap;
+package org.eclipse.rap.tools.templates.internal.rap;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -43,7 +43,7 @@ public class Messages extends NLS {
   public static String mailRAPWizard_windowTitle;
 
   private static final String BUNDLE_NAME
-    = "org.eclipse.rap.internal.ui.templates.rap.messages"; //$NON-NLS-1$
+    = "org.eclipse.rap.tools.templates.internal.rap.messages"; //$NON-NLS-1$
 
   static {
     // initialize resource bundle

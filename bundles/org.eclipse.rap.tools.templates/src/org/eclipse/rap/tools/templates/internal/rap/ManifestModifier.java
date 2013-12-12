@@ -8,19 +8,26 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates.rap;
+package org.eclipse.rap.tools.templates.internal.rap;
 
 import java.io.*;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.*;
-import org.eclipse.rap.internal.ui.templates.TemplateUtil;
+import org.eclipse.rap.tools.templates.internal.TemplateUtil;
 
-final class BuildPropertiesModifier extends ResourceModifier {
+final class ManifestModifier extends ResourceModifier {
 
-  public BuildPropertiesModifier( AbstractRAPWizard wizard ) {
-    super( "build.properties" ); //$NON-NLS-1$
+  private String requireBundles;
+  private boolean shouldModifyActivator;
+  private String activatorName;
+
+  public ManifestModifier( AbstractRAPWizard wizard ) {
+    super( "MANIFEST.MF" ); //$NON-NLS-1$
+    requireBundles = wizard.getRequireBundles();
+    shouldModifyActivator = wizard.shouldModifyActivator();
+    activatorName = wizard.getActivatorName();
   }
 
   protected void modifyResource( IResource resource ) throws CoreException {
@@ -32,19 +39,31 @@ final class BuildPropertiesModifier extends ResourceModifier {
         BufferedWriter writer = new BufferedWriter( new OutputStreamWriter( baos ) );
         try {
           String line = reader.readLine();
+          boolean inRequireBundle = false;
           while( line != null ) {
             String result = line + NL;
-            if( !line.startsWith( "source.." ) && !line.startsWith( "output.." ) ) { //$NON-NLS-1$ //$NON-NLS-2$
+            if( line.startsWith( "Require-Bundle:" ) ) { //$NON-NLS-1$
+              inRequireBundle = true;
               result = null;
+            } else if( inRequireBundle && line.startsWith( " " ) ) { //$NON-NLS-1$
+              result = null;
+            } else {
+              inRequireBundle = false;
             }
             if( result != null ) {
               writer.write( result );
             }
             line = reader.readLine();
           }
-          writer.write( "bin.includes = META-INF/,\\" + NL ); //$NON-NLS-1$
-          writer.write( "               OSGI-INF/,\\" + NL ); //$NON-NLS-1$
-          writer.write( "               ." + NL ); //$NON-NLS-1$
+          writer.write( "Require-Bundle: " + requireBundles + NL ); //$NON-NLS-1$
+          if( shouldModifyActivator && activatorName != null ) {
+            writer.write( "Import-Package: org.osgi.framework" + NL ); //$NON-NLS-1$
+          }
+          String fileName = AbstractRAPWizard.SERVICE_COMPONENT_FILE;
+          IFile serviceComponentXml = file.getProject().getFile( fileName );
+          if( serviceComponentXml.exists() ) {
+            writer.write( "Service-Component: " + fileName + NL ); //$NON-NLS-1$
+          }
         } finally {
           writer.close();
         }

@@ -9,7 +9,7 @@
  *    Innoopract Informationssysteme GmbH - initial API and implementation
  *    EclipseSource - ongoing development
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates.rap;
+package org.eclipse.rap.tools.templates.internal.rap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -17,8 +17,8 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.pde.core.plugin.IPluginElement;
 import org.eclipse.pde.core.plugin.IPluginExtension;
-import org.eclipse.rap.internal.ui.templates.TemplateUtil;
-import org.eclipse.rap.internal.ui.templates.XmlNames;
+import org.eclipse.rap.tools.templates.internal.TemplateUtil;
+import org.eclipse.rap.tools.templates.internal.XmlNames;
 
 class MailRAPTemplate extends AbstractRAPTemplate {
 

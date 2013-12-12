@@ -9,22 +9,22 @@
  *    Innoopract Informationssysteme GmbH - initial API and implementation
  *    EclipseSource - ongoing development
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates.rap;
+package org.eclipse.rap.tools.templates.internal.rap;
 
 import org.eclipse.pde.ui.IFieldData;
 import org.eclipse.pde.ui.templates.ITemplateSection;
 
-public class MailRAPWizard extends AbstractRAPWizard {
+public class HelloRAPWizard extends AbstractRAPWizard {
 
   private AbstractRAPTemplate template;
 
   public void init( IFieldData data ) {
     super.init( data );
-    setWindowTitle( Messages.mailRAPWizard_windowTitle );
+    setWindowTitle( Messages.helloRAPWizard_windowTitle );
   }
 
   public ITemplateSection[] createTemplateSections() {
-    template = new MailRAPTemplate();
+    template = new HelloRAPTemplate();
     return new ITemplateSection[] {
       template
     };
@@ -42,7 +42,7 @@ public class MailRAPWizard extends AbstractRAPWizard {
 
   @Override
   protected String getRequireBundles() {
-    return "org.eclipse.rap.ui;bundle-version=\"[2.0.0,3.0.0)\"";
+    return "org.eclipse.rap.rwt;bundle-version=\"[2.0.0,3.0.0)\"";
   }
 
   @Override
@@ -52,12 +52,12 @@ public class MailRAPWizard extends AbstractRAPWizard {
 
   @Override
   protected boolean shouldModifyActivator() {
-    return false;
+    return true;
   }
 
   @Override
   protected boolean shouldModifyBuildProperties() {
-    return false;
+    return true;
   }
 
 }

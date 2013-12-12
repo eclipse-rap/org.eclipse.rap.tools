@@ -5,9 +5,9 @@
          point="org.eclipse.pde.ui.pluginContent">
       <!-- contribute to plugin wizards -->
       <wizard
-            class="org.eclipse.rap.internal.ui.templates.rap.HelloRAPWizard"
+            class="org.eclipse.rap.tools.templates.internal.rap.HelloRAPWizard"
             icon="$nl$/icons/etool16/newexprj_wiz.gif"
-            id="org.eclipse.rap.internal.ui.templates.rap.HelloRAPWizard"
+            id="org.eclipse.rap.tools.templates.internal.rap.HelloRAPWizard"
             java="true"
             rcp="false"
             name="%helloRAP.name"
@@ -17,9 +17,9 @@
          </description>
       </wizard>
       <wizard
-            class="org.eclipse.rap.internal.ui.templates.rap.MailRAPWizard"
+            class="org.eclipse.rap.tools.templates.internal.rap.MailRAPWizard"
             icon="$nl$/icons/etool16/newexprj_wiz.gif"
-            id="org.eclipse.rap.internal.ui.templates.rap.MailRAPWizard"
+            id="org.eclipse.rap.tools.templates.internal.rap.MailRAPWizard"
             java="true"
             rcp="false"
             name="%mailRAP.name"

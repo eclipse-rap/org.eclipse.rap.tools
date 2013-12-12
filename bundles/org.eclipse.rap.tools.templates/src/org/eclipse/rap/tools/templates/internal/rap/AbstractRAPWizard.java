@@ -9,7 +9,7 @@
  *    Innoopract Informationssysteme GmbH - initial API and implementation
  *    EclipseSource - ongoing development
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates.rap;
+package org.eclipse.rap.tools.templates.internal.rap;
 
 import java.io.*;
 
@@ -23,8 +23,8 @@ import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.eclipse.pde.ui.IFieldData;
 import org.eclipse.pde.ui.templates.NewPluginTemplateWizard;
-import org.eclipse.rap.internal.ui.templates.Activator;
-import org.eclipse.rap.internal.ui.templates.TemplateUtil;
+import org.eclipse.rap.tools.templates.internal.Activator;
+import org.eclipse.rap.tools.templates.internal.TemplateUtil;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;

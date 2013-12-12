@@ -9,7 +9,7 @@
  *    Innoopract Informationssysteme GmbH - initial API and implementation
  *    EclipseSource - ongoing development
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates.rap;
+package org.eclipse.rap.tools.templates.internal.rap;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,7 +19,7 @@ import org.eclipse.pde.core.plugin.*;
 import org.eclipse.pde.ui.IFieldData;
 import org.eclipse.pde.ui.templates.AbstractTemplateSection;
 import org.eclipse.pde.ui.templates.OptionTemplateSection;
-import org.eclipse.rap.internal.ui.templates.TemplateUtil;
+import org.eclipse.rap.tools.templates.internal.TemplateUtil;
 
 abstract class AbstractRAPTemplate extends OptionTemplateSection {
 

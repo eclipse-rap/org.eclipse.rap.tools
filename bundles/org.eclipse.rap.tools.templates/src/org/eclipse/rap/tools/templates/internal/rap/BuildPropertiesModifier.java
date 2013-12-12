@@ -8,39 +8,19 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates.rap;
+package org.eclipse.rap.tools.templates.internal.rap;
 
 import java.io.*;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.*;
-import org.eclipse.rap.internal.ui.templates.TemplateUtil;
+import org.eclipse.rap.tools.templates.internal.TemplateUtil;
 
-final class ActivatorModifier extends ResourceModifier {
+final class BuildPropertiesModifier extends ResourceModifier {
 
-  private static final String TAG_ACTIVATOR_NAME = "${activatorName}"; //$NON-NLS-1$
-  private static final String CONTENT =
-    // we keep the original package declaration
-    NL
-    + "import org.osgi.framework.BundleActivator;" + NL //$NON-NLS-1$
-    + "import org.osgi.framework.BundleContext;" + NL //$NON-NLS-1$
-    + NL
-    + "public class ${activatorName} implements BundleActivator {" + NL //$NON-NLS-1$
-    + NL
-    + "    public void start(BundleContext context) throws Exception {" + NL //$NON-NLS-1$
-    + "    }" + NL //$NON-NLS-1$
-    + NL
-    + "    public void stop(BundleContext context) throws Exception {" + NL //$NON-NLS-1$
-    + "    }" + NL //$NON-NLS-1$
-    + NL
-    + "}" + NL; //$NON-NLS-1$
-
-  private final String activatorName;
-
-  public ActivatorModifier( AbstractRAPWizard wizard ) {
-    super( wizard.getActivatorName() + ".java" ); //$NON-NLS-1$
-    activatorName = wizard.getActivatorName();
+  public BuildPropertiesModifier( AbstractRAPWizard wizard ) {
+    super( "build.properties" ); //$NON-NLS-1$
   }
 
   protected void modifyResource( IResource resource ) throws CoreException {
@@ -54,12 +34,17 @@ final class ActivatorModifier extends ResourceModifier {
           String line = reader.readLine();
           while( line != null ) {
             String result = line + NL;
-            if( result.startsWith( "package" ) ) { //$NON-NLS-1$
+            if( !line.startsWith( "source.." ) && !line.startsWith( "output.." ) ) { //$NON-NLS-1$ //$NON-NLS-2$
+              result = null;
+            }
+            if( result != null ) {
               writer.write( result );
             }
             line = reader.readLine();
           }
-          writer.write( CONTENT.replace( TAG_ACTIVATOR_NAME, activatorName ) );
+          writer.write( "bin.includes = META-INF/,\\" + NL ); //$NON-NLS-1$
+          writer.write( "               OSGI-INF/,\\" + NL ); //$NON-NLS-1$
+          writer.write( "               ." + NL ); //$NON-NLS-1$
         } finally {
           writer.close();
         }

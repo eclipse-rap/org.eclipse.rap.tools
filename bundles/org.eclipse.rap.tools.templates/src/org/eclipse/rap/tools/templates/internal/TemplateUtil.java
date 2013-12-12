@@ -9,7 +9,7 @@
  *    Innoopract Informationssysteme GmbH - initial API and implementation
  *    EclipseSource - ongoing development
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates;
+package org.eclipse.rap.tools.templates.internal;
 
 import java.net.URL;
 import java.util.Locale;

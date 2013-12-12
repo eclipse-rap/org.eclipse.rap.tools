@@ -8,25 +8,38 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.internal.ui.templates.rap;
+package org.eclipse.rap.tools.templates.internal.rap;
 
 import java.io.*;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.*;
-import org.eclipse.rap.internal.ui.templates.TemplateUtil;
+import org.eclipse.rap.tools.templates.internal.TemplateUtil;
 
-final class ManifestModifier extends ResourceModifier {
+final class ActivatorModifier extends ResourceModifier {
 
-  private String requireBundles;
-  private boolean shouldModifyActivator;
-  private String activatorName;
+  private static final String TAG_ACTIVATOR_NAME = "${activatorName}"; //$NON-NLS-1$
+  private static final String CONTENT =
+    // we keep the original package declaration
+    NL
+    + "import org.osgi.framework.BundleActivator;" + NL //$NON-NLS-1$
+    + "import org.osgi.framework.BundleContext;" + NL //$NON-NLS-1$
+    + NL
+    + "public class ${activatorName} implements BundleActivator {" + NL //$NON-NLS-1$
+    + NL
+    + "    public void start(BundleContext context) throws Exception {" + NL //$NON-NLS-1$
+    + "    }" + NL //$NON-NLS-1$
+    + NL
+    + "    public void stop(BundleContext context) throws Exception {" + NL //$NON-NLS-1$
+    + "    }" + NL //$NON-NLS-1$
+    + NL
+    + "}" + NL; //$NON-NLS-1$
 
-  public ManifestModifier( AbstractRAPWizard wizard ) {
-    super( "MANIFEST.MF" ); //$NON-NLS-1$
-    requireBundles = wizard.getRequireBundles();
-    shouldModifyActivator = wizard.shouldModifyActivator();
+  private final String activatorName;
+
+  public ActivatorModifier( AbstractRAPWizard wizard ) {
+    super( wizard.getActivatorName() + ".java" ); //$NON-NLS-1$
     activatorName = wizard.getActivatorName();
   }
 
@@ -39,31 +52,14 @@ final class ManifestModifier extends ResourceModifier {
         BufferedWriter writer = new BufferedWriter( new OutputStreamWriter( baos ) );
         try {
           String line = reader.readLine();
-          boolean inRequireBundle = false;
           while( line != null ) {
             String result = line + NL;
-            if( line.startsWith( "Require-Bundle:" ) ) { //$NON-NLS-1$
-              inRequireBundle = true;
-              result = null;
-            } else if( inRequireBundle && line.startsWith( " " ) ) { //$NON-NLS-1$
-              result = null;
-            } else {
-              inRequireBundle = false;
-            }
-            if( result != null ) {
+            if( result.startsWith( "package" ) ) { //$NON-NLS-1$
               writer.write( result );
             }
             line = reader.readLine();
           }
-          writer.write( "Require-Bundle: " + requireBundles + NL ); //$NON-NLS-1$
-          if( shouldModifyActivator && activatorName != null ) {
-            writer.write( "Import-Package: org.osgi.framework" + NL ); //$NON-NLS-1$
-          }
-          String fileName = AbstractRAPWizard.SERVICE_COMPONENT_FILE;
-          IFile serviceComponentXml = file.getProject().getFile( fileName );
-          if( serviceComponentXml.exists() ) {
-            writer.write( "Service-Component: " + fileName + NL ); //$NON-NLS-1$
-          }
+          writer.write( CONTENT.replace( TAG_ACTIVATOR_NAME, activatorName ) );
         } finally {
           writer.close();
         }
