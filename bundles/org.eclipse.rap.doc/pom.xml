@@ -38,12 +38,7 @@
         <version>${tycho-version}</version>
         <configuration>
           <appArgLine>
-            -application org.eclipse.ant.core.antRunner \
-            -buildfile reference-build/build.xml \
-            -DbaseDir=${project.basedir} \
-            -DtargetDir=${project.build.directory}/reference/guide/reference \
-            -DruntimeSourceDir=${runtimeSourceDir} \
-            -data ${project.build.directory}/workspace
+            -application org.eclipse.ant.core.antRunner -buildfile reference-build/build.xml -DbaseDir="${project.basedir}" -DtargetDir="${project.build.directory}/reference/guide/reference" -DruntimeSourceDir="${runtimeSourceDir}" -data "${project.build.directory}/workspace"
           </appArgLine>
           <dependencies>
             <dependency>
