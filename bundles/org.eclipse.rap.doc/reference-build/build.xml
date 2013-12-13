@@ -18,6 +18,7 @@
         author="false"
         version="true"
         use="true"
+        useexternalfile="yes"
         windowtitle="Eclipse Remote Application Platform API Reference"
         packagenames="org.eclipse.rap.rwt.*"
         excludePackageNames="org.eclipse.rap.rwt.internal.*,org.eclipse.swt.internal.*">
