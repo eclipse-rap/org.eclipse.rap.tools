@@ -35,7 +35,7 @@
           <includeAllDependencies>false</includeAllDependencies>
           <compress>true</compress>
           <!-- Use tycho build qualifier in zip file name (assigned to ${buildQualifier}) -->
-          <finalName>org.eclipse.rap.tools-${signingQualifier}${buildQualifier}</finalName>
+          <finalName>rap-tools-${signingQualifier}${buildQualifier}</finalName>
         </configuration>
       </plugin>
 
