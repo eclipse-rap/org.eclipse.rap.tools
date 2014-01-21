@@ -329,12 +329,24 @@
   </p>
   <pre>-Dorg.eclipse.rap.rwt.developmentMode=true</pre>
 
+  <h3>Context path</h3>
+  <p>
+    To simulate the production environment, you can start your application with a context path,
+    e.g. <em>http://localhost:8080/contextPath/servletName</em>.
+  </p>
+  <pre>-Dorg.eclipse.equinox.http.jetty.context.path=&lt;context path&gt;</pre>
+  <p>
+    Valid context paths start with a slash and do not end with a slash. In the example above, the
+    context path would be <code>/contextPath</code>. The default is the root context, i.e. the URL
+    does not contain a contextPath segment.
+  </p>
+
   <h3>Servlet engine log</h3>
   <p>
     By default the servlet engine (namely Jetty) is configured to suppress most logging
     information. This can be changed by adding this VM argument to the launch configuration:
   </p>
-    <pre>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</pre>
+  <pre>-Dorg.eclipse.equinox.http.jetty.log.stderr.threshold=&lt;log level&gt;</pre>
   <p>
     Valid log levels are <em>debug</em>,
     <em>info</em>, <em>warn</em>, <em>error</em>, and <em>off</em>.
