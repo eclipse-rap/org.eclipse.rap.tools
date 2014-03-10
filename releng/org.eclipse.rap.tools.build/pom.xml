@@ -40,11 +40,6 @@
   </prerequisites>
 
   <modules>
-    <!-- The feature -->
-    <module>../../features/org.eclipse.rap.tools.feature</module>
-    <module>../../features/org.eclipse.rap.tools.transition.feature</module>
-    <!-- The p2 repository -->
-    <module>repository</module>
     <!-- The bundles -->
     <module>../../bundles/org.eclipse.rap.doc</module>
     <module>../../bundles/org.eclipse.rap.tools.intro</module>
@@ -52,8 +47,13 @@
     <module>../../bundles/org.eclipse.rap.tools.launch</module>
     <module>../../bundles/org.eclipse.rap.tools.launch.rwt</module>
     <!-- tests -->
-    <module>../../tests/org.eclipse.rap.tools.tests</module>
     <module>../../tests/org.eclipse.rap.tools.launch.rwt.test</module>
+    <module>../../tests/org.eclipse.rap.tools.tests</module>
+    <!-- The feature -->
+    <module>../../features/org.eclipse.rap.tools.feature</module>
+    <module>../../features/org.eclipse.rap.tools.transition.feature</module>
+    <!-- The p2 repository -->
+    <module>repository</module>
   </modules>
 
   <build>
@@ -152,11 +152,37 @@
             <include>**/*Test.*</include>
           </includes>
           <runOrder>random</runOrder>
-          <dependency>
-            <type>eclipse-feature</type>
-            <artifactId>org.eclipse.rcp</artifactId>
-            <version>0.0.0</version>
-          </dependency>
+          <showEclipseLog>true</showEclipseLog>
+          <bundleStartLevel>
+            <bundle>
+                <id>org.eclipse.equinox.ds</id>
+                <level>2</level>
+                <autoStart>true</autoStart>
+            </bundle>
+            <bundle>
+                <id>org.eclipse.equinox.event</id>
+                <level>2</level>
+                <autoStart>true</autoStart>
+            </bundle>
+            <bundle>
+                <id>org.eclipse.core.runtime</id>
+                <level>4</level>
+                <autoStart>true</autoStart>
+            </bundle>
+          </bundleStartLevel>
+          <dependencies>
+            <!-- type is one of eclipse-feature, eclipse-plugin, p2-installable-unit -->
+            <dependency>
+              <type>eclipse-feature</type>
+              <artifactId>org.eclipse.e4.rcp</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+            <dependency>
+              <type>eclipse-plugin</type>
+              <artifactId>org.eclipse.osgi.compatibility.state</artifactId>
+              <version>0.0.0</version>
+            </dependency>
+          </dependencies>
         </configuration>
       </plugin>
 

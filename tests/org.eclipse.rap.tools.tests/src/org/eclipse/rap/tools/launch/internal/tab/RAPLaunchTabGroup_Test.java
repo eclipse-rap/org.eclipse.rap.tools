@@ -18,6 +18,7 @@ import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationDia
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.rap.tools.internal.tests.Fixture;
 import org.eclipse.rap.tools.launch.internal.tab.RAPLaunchTabGroup;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -29,7 +30,7 @@ public class RAPLaunchTabGroup_Test {
   private static final String VM_ARGS
     = IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS;
 
-  @Test
+  @Test @Ignore
   public void testDefaultVMArgumentJettyLogLevel() throws CoreException {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     RAPLaunchTabGroup launchTabGroup = new RAPLaunchTabGroup();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2013 Borland Software Corporation and others.
+ * Copyright (c) 2005, 2014 Borland Software Corporation and others.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,8 +21,9 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.osgi.baseadaptor.BaseData;
-import org.eclipse.osgi.framework.internal.core.AbstractBundle;
+import org.eclipse.osgi.container.ModuleRevision;
+import org.eclipse.osgi.internal.framework.EquinoxBundle;
+import org.eclipse.osgi.storage.BundleInfo.Generation;
 import org.eclipse.pde.core.target.ITargetDefinition;
 import org.eclipse.pde.core.target.ITargetLocation;
 import org.eclipse.pde.core.target.ITargetPlatformService;
@@ -61,8 +62,9 @@ public class TargetUtil {
     List<ITargetLocation> bundleContainers = new ArrayList<ITargetLocation>();
     Set<File> dirs = new HashSet<File>();
     for( Bundle bundle : bundles ) {
-      BaseData bundleData = ( BaseData )( ( AbstractBundle )bundle ).getBundleData();
-      File file = bundleData.getBundleFile().getBaseFile();
+      ModuleRevision moduleRevision = ( ( EquinoxBundle )bundle ).getModule().getCurrentRevision();
+      Generation generation = ( Generation )moduleRevision.getRevisionInfo();
+      File file = generation.getBundleFile().getBaseFile();
       File folder = file.getParentFile();
       if( !dirs.contains( folder ) ) {
         dirs.add( folder );
