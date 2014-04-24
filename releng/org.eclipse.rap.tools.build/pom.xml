@@ -14,18 +14,15 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <name>RAP Tools build</name>
-
   <groupId>org.eclipse.rap</groupId>
   <artifactId>org.eclipse.rap.tools-parent</artifactId>
   <version>2.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
-    <tycho-version>0.18.1</tycho-version>
+    <tycho-version>0.20.0</tycho-version>
     <tycho-extras-version>${tycho-version}</tycho-extras-version>
     <signing-plugin-version>1.0.4</signing-plugin-version>
-    <base-platform>4.3/R-4.3.1-201309111000/</base-platform>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/rap/org.eclipse.rap.tools.git</tycho.scmUrl>
     <!-- disabled due to bug 393977
@@ -38,23 +35,6 @@
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
-
-  <modules>
-    <!-- The bundles -->
-    <module>../../bundles/org.eclipse.rap.doc</module>
-    <module>../../bundles/org.eclipse.rap.tools.intro</module>
-    <module>../../bundles/org.eclipse.rap.tools.templates</module>
-    <module>../../bundles/org.eclipse.rap.tools.launch</module>
-    <module>../../bundles/org.eclipse.rap.tools.launch.rwt</module>
-    <!-- tests -->
-    <module>../../tests/org.eclipse.rap.tools.launch.rwt.test</module>
-    <module>../../tests/org.eclipse.rap.tools.tests</module>
-    <!-- The feature -->
-    <module>../../features/org.eclipse.rap.tools.feature</module>
-    <module>../../features/org.eclipse.rap.tools.transition.feature</module>
-    <!-- The p2 repository -->
-    <module>repository</module>
-  </modules>
 
   <build>
     <plugins>
@@ -102,9 +82,8 @@
           <target>
             <artifact>
               <groupId>${project.groupId}</groupId>
-              <artifactId>org.eclipse.rap.tools-parent</artifactId>
+              <artifactId>org.eclipse.rap.tools.target.definition</artifactId>
               <version>${project.version}</version>
-              <classifier>rap-tools</classifier>
             </artifact>
           </target>
         </configuration>

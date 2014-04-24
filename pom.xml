@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2014 EclipseSource and others
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/legal/epl-v10.html
+
+  Contributors:
+     EclipseSource - initial implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>RAP Tools Build</name>
+
+  <groupId>org.eclipse.rap</groupId>
+  <artifactId>org.eclipse.rap.tools-build</artifactId>
+  <version>2.3.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <!-- The bundles -->
+    <module>bundles/org.eclipse.rap.doc</module>
+    <module>bundles/org.eclipse.rap.tools.intro</module>
+    <module>bundles/org.eclipse.rap.tools.templates</module>
+    <module>bundles/org.eclipse.rap.tools.launch</module>
+    <module>bundles/org.eclipse.rap.tools.launch.rwt</module>
+    <!-- tests -->
+    <module>tests/org.eclipse.rap.tools.launch.rwt.test</module>
+    <module>tests/org.eclipse.rap.tools.tests</module>
+    <!-- The feature -->
+    <module>features/org.eclipse.rap.tools.feature</module>
+    <module>features/org.eclipse.rap.tools.transition.feature</module>
+    <!-- The p2 repository -->
+    <module>releng/org.eclipse.rap.tools.build/repository</module>
+    <!-- The target platform -->
+    <module>releng/org.eclipse.rap.tools.build/target.definition</module>
+  </modules>
+
+</project>
