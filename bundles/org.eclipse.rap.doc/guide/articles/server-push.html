@@ -49,19 +49,22 @@
 <pre class="lang-java">
 final ServerPushSession pushSession = new ServerPushSession();
 Runnable bgRunnable = new Runnable() {
+  @Override
   public void run() {
-  // do some background work ...
-  // schedule the UI update
-  display.asyncExec( new Runnable() {
-    public void run() {
-      if( !widget.isDisposed() ) {
-        // update the UI
-        label.setText( "updated" );
-        // close push session when finished
-        pushSession.stop();
+    // do some background work ...
+    // schedule the UI update
+    display.asyncExec( new Runnable() {
+      @Override
+      public void run() {
+        if( !label.isDisposed() ) {
+          // update the UI
+          label.setText( "updated" );
+          // close push session when finished
+          pushSession.stop();
+        }
       }
-    }
-  } );
+    } );
+  }
 };
 pushSession.start();
 Thread bgThread = new Thread( bgRunnable );
