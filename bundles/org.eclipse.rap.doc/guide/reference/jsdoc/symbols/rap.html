@@ -212,6 +212,10 @@ ul.inheritsList
   
   <li></li>
   
+  <li></li>
+  
+  <li></li>
+  
   <li><a href="../symbols/rap.html">rap</a></li>
   
   <li><a href="../symbols/SWT.html">SWT</a></li>
@@ -219,6 +223,8 @@ ul.inheritsList
 </ul>
 <h2>Types</h2>
 <ul class="classList">
+  
+  <li><a href="../symbols/%24.html">$</a></li>
   
   <li><a href="../symbols/Button.html">Button</a></li>
   
@@ -243,6 +249,8 @@ ul.inheritsList
   <li><a href="../symbols/Spinner.html">Spinner</a></li>
   
   <li><a href="../symbols/Text.html">Text</a></li>
+  
+  <li><a href="../symbols/Widget.html">Widget</a></li>
   
   <li></li>
   
@@ -463,9 +471,8 @@ by <code>org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId</code> and
 <code>org.eclipse.rap.rwt.remote.RemoteObject.getId</code>.
 If there is no object registered for the given id, <code>null</code> is returned.
 For internal objects (e.g. RWT/SWT widgets) a wrapper is returned that approximates
-the API of its Java analoge. <a href="../symbols/Composite.html">Composite</a> is a special case where additional API
-is present to allow HTML/DOM based custom widget development.
-            
+the API of its Java analoge. <a href="../symbols/Composite.html#append">Composite#append</a> and <a href="../symbols/Widget.html#$el">Widget#$el</a> are special cases
+where additional scripting-only API is provided.
             
           </div>
 
@@ -499,7 +506,7 @@ is present to allow HTML/DOM based custom widget development.
               <dl class="detailList">
               <dt class="heading">See:</dt>
               
-                <dd><a href="../symbols/Composite.html">Composite</a></dd>
+                <dd><a href="../symbols/Composite.html">Composite</a>, Widget</dd>
               
               </dl>
             
@@ -518,7 +525,6 @@ is present to allow HTML/DOM based custom widget development.
 A client object is any object that was created by an type handler factory method.
 Multiple calls for the same object will return the same RemoteObject
 instance.
-            
             
           </div>
 
@@ -569,7 +575,6 @@ instance.
           <div class="description">
             De-register the function as a listener of the given type.
             
-            
           </div>
 
           
@@ -611,7 +616,6 @@ instance.
           <div class="description">
             Register the function as a listener of the given type. Registering unkown
 types throws an Error.
-            
             
           </div>
 
@@ -655,7 +659,6 @@ types throws an Error.
             Registers a RAP protocol type handler for a specific type of client objects.
 The handler is used by the protocol message processor to process operations that target
 any client object of this type. Example:
-            
             
           </div>
 
@@ -768,7 +771,6 @@ sent for types that are given in this list and are listend to by the server. See
           <div class="description">
             Sent after a message has been processed.
             
-            
           </div>
 
           
@@ -792,7 +794,6 @@ sent for types that are given in this list and are listend to by the server. See
           </div>
           <div class="description">
             Sent right before a message is send to the server.
-            
             
           </div>
 

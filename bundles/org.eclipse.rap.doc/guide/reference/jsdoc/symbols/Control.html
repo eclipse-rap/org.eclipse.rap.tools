@@ -212,6 +212,10 @@ ul.inheritsList
   
   <li></li>
   
+  <li></li>
+  
+  <li></li>
+  
   <li><a href="../symbols/rap.html">rap</a></li>
   
   <li><a href="../symbols/SWT.html">SWT</a></li>
@@ -219,6 +223,8 @@ ul.inheritsList
 </ul>
 <h2>Types</h2>
 <ul class="classList">
+  
+  <li><a href="../symbols/%24.html">$</a></li>
   
   <li><a href="../symbols/Button.html">Button</a></li>
   
@@ -244,6 +250,8 @@ ul.inheritsList
   
   <li><a href="../symbols/Text.html">Text</a></li>
   
+  <li><a href="../symbols/Widget.html">Widget</a></li>
+  
   <li></li>
   
   <li></li>
@@ -263,37 +271,29 @@ ul.inheritsList
 <!-- ============================== class summary ========================== -->
       <p class="description">
         
+        <br />Extends
+          <a href="../symbols/Widget.html">Widget</a>.<br />
         
 
-        RWT Scripting analoge to org.eclipse.swt.widgets.Control
+        RWT Scripting analoge to org.eclipse.swt.widgets.Control. All controls given by
+<a href="../symbols/rap.html#.getObject">rap.getObject</a> are instances of this type, even if their specific subtype is not
+documented.
 
       </p>
 
 <!-- ============================== constructor summary ==================== -->
       
-      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Control.">
-        <caption>Type Summary</caption>
-        <thead>
-          <tr>
-            <th scope="col">Constructor Attributes</th>
-            <th scope="col">Constructor Name and Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="attributes">&nbsp;</td>
-            <td class="nameDescription" >
-              <div class="fixedFont">
-                <b><a href="../symbols/Control.html#constructor">Control</a></b>()
-              </div>
-              <div class="description">The constructor is not public.</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      
 
 <!-- ============================== properties summary ===================== -->
+      
+        
+        
+
+        
+        <dl class="inheritsList">
+        <dt>Fields borrowed from class <a href="../symbols/Widget.html">Widget</a>: </dt><dd><a href="../symbols/Widget.html#$el">$el</a></dd>
+        </dl>
+        
       
 
 <!-- ============================== methods summary ======================== -->
@@ -309,6 +309,15 @@ ul.inheritsList
             </tr>
           </thead>
           <tbody>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#addListener">addListener</a></b>(type, listener)
+                </div>
+                <div class="description">Register the function as a listener of the given type</div>
+              </td>
+            </tr>
           
             <tr>
               <td class="attributes">&nbsp;</td>
@@ -390,6 +399,15 @@ not been set.</div>
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Control.html#removeListener">removeListener</a></b>(type, listener)
+                </div>
+                <div class="description">De-register the function as a listener of the given type</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
                 <div class="fixedFont"><b><a href="../symbols/Control.html#setBackground">setBackground</a></b>(color)
                 </div>
                 <div class="description">Sets the receiver's background color to the color specified
@@ -454,8 +472,188 @@ and marks it invisible otherwise.</div>
         
 
         
+        <dl class="inheritsList">
+        
+        </dl>
+        
       
 <!-- ============================== events summary ======================== -->
+      
+        
+        
+        <table class="summaryTable" cellspacing="0" summary="A summary of the events documented in the class Control.">
+          <caption>Event Summary</caption>
+          <thead>
+            <tr>
+              <th scope="col">Event Attributes</th>
+              <th scope="col">Event Name and Description</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:FocusIn">FocusIn</a></b>
+                </div>
+                <div class="description">Sent when the widget gains focus</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:FocusOut">FocusOut</a></b>
+                </div>
+                <div class="description">Sent when the widget looses focus</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:Hide">Hide</a></b>
+                </div>
+                <div class="description">Sent when the widget is hidden</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:KeyDown">KeyDown</a></b>
+                </div>
+                <div class="description">Sent when a key is pressed</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:KeyUp">KeyUp</a></b>
+                </div>
+                <div class="description">Sent when a key is released</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:MouseDoubleClick">MouseDoubleClick</a></b>
+                </div>
+                <div class="description">Sent when a mouse button is clicked twice</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:MouseDown">MouseDown</a></b>
+                </div>
+                <div class="description">Sent when a mouse button is pressed</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:MouseEnter">MouseEnter</a></b>
+                </div>
+                <div class="description">Sent when the mouse pointer enters the widget</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:MouseExit">MouseExit</a></b>
+                </div>
+                <div class="description">Sent when the mouse pointer exits the widget</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:MouseMove">MouseMove</a></b>
+                </div>
+                <div class="description">Sent when the mouse pointer is moved</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:MouseUp">MouseUp</a></b>
+                </div>
+                <div class="description">Sent when a mouse button is released</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:MouseWheel">MouseWheel</a></b>
+                </div>
+                <div class="description">Sent when the mouse wheel is moved</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:Paint">Paint</a></b>
+                </div>
+                <div class="description">Sent when the widget is painted</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Control.html#event:Show">Show</a></b>
+                </div>
+                <div class="description">Sent when the widget appears</div>
+              </td>
+            </tr>
+          
+          </tbody>
+        </table>
+        
+
+        
+        <dl class="inheritsList">
+        
+        </dl>
+        
       
 
 <!-- ============================== constructor details ==================== -->
@@ -465,7 +663,7 @@ and marks it invisible otherwise.</div>
           Type Detail
         </div>
 
-        <div class="fixedFont">
+        <div class="fixedFont">&lt;private&gt; 
             <b>Control</b>()
         </div>
 
@@ -502,6 +700,47 @@ and marks it invisible otherwise.</div>
           Method Detail
         </div>
         
+          <a name="addListener"> </a>
+          <div class="fixedFont">
+
+          
+          <b>addListener</b>(type, listener)
+
+          </div>
+          <div class="description">
+            Register the function as a listener of the given type
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>type</b>
+                  
+                </dt>
+                <dd>The type of the event (e.g. SWT.Resize).</dd>
+              
+                <dt>
+                  <span class="light fixedFont">{Function}</span> <b>listener</b>
+                  
+                </dt>
+                <dd>The callback function. It is executed in global context.</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+
+          <hr />
+        
           <a name="forceFocus"> </a>
           <div class="fixedFont">
 
@@ -512,7 +751,6 @@ and marks it invisible otherwise.</div>
           <div class="description">
             Forces the receiver to have the <em>keyboard focus</em>, causing
 all keyboard events to be delivered to it.
-            
             
           </div>
 
@@ -544,7 +782,6 @@ all keyboard events to be delivered to it.
           </div>
           <div class="description">
             Returns the receiver's background color.
-            
             
           </div>
 
@@ -584,7 +821,6 @@ is changed to match the control's cursor.
 All possible values are available as constants on the <a href="../symbols/SWT.html">SWT</a> object.
 </p>
             
-            
           </div>
 
           
@@ -620,7 +856,6 @@ with the specified name, or null if it has not been set.
   The java widget properties can be accessed if the
   property name was registered with WidgetUtil.registerDataKeys.
 </p>
-            
             
           </div>
 
@@ -674,7 +909,6 @@ with the specified name, or null if it has not been set.
 not selectable from the user interface and draws with an
 inactive or "grayed" look.
             
-            
           </div>
 
           
@@ -705,7 +939,6 @@ inactive or "grayed" look.
           </div>
           <div class="description">
             Returns the receiver's foreground color.
-            
             
           </div>
 
@@ -738,7 +971,6 @@ inactive or "grayed" look.
           <div class="description">
             Returns the receiver's tool tip text, or null if it has
 not been set.
-            
             
           </div>
 
@@ -778,7 +1010,6 @@ may still indicate that it is considered visible even though
 it may not actually be showing.
 </p>
             
-            
           </div>
 
           
@@ -800,6 +1031,47 @@ it may not actually be showing.
 
           <hr />
         
+          <a name="removeListener"> </a>
+          <div class="fixedFont">
+
+          
+          <b>removeListener</b>(type, listener)
+
+          </div>
+          <div class="description">
+            De-register the function as a listener of the given type
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>type</b>
+                  
+                </dt>
+                <dd>The type of the event (e.g. SWT.Resize).</dd>
+              
+                <dt>
+                  <span class="light fixedFont">{Function}</span> <b>listener</b>
+                  
+                </dt>
+                <dd>The callback function</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+
+          <hr />
+        
           <a name="setBackground"> </a>
           <div class="fixedFont">
 
@@ -811,7 +1083,6 @@ it may not actually be showing.
             Sets the receiver's background color to the color specified
 by the argument, or to the default system color for the control
 if the argument is null.
-            
             
           </div>
 
@@ -852,7 +1123,6 @@ with the specified name to the given value.
   The java widget is not affected by this method, but can itself set this object's
   properties if the name was registered with WidgetUtil.registerDataKeys.
 </p>
-            
             
           </div>
 
@@ -905,7 +1175,6 @@ and disables it otherwise. A disabled control is typically
 not selectable from the user interface and draws with an
 inactive or "grayed" look.
             
-            
           </div>
 
           
@@ -943,7 +1212,6 @@ inactive or "grayed" look.
 by the argument, or to the default system color for the control
 if the argument is null.
             
-            
           </div>
 
           
@@ -979,7 +1247,6 @@ if the argument is null.
           <div class="description">
             Sets the receiver's tool tip text to the argument, which
 may be null indicating that no tool tip text should be shown.
-            
             
           </div>
 
@@ -1027,7 +1294,6 @@ to this widget, it may be notified at a later point in time. <code>ClientListene
 are notified right away.
 </p>
             
-            
           </div>
 
           
@@ -1056,6 +1322,599 @@ are notified right away.
       
 
 <!-- ============================== event details ========================= -->
+      
+        <div class="sectionTitle">
+          Event Detail
+        </div>
+        
+          <a name="event:FocusIn"> </a>
+          <div class="fixedFont">
+
+          
+          <b>FocusIn</b>
+
+          </div>
+          <div class="description">
+            Sent when the widget gains focus
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.FocusIn">SWT.FocusIn</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:FocusOut"> </a>
+          <div class="fixedFont">
+
+          
+          <b>FocusOut</b>
+
+          </div>
+          <div class="description">
+            Sent when the widget looses focus
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.FocusOut">SWT.FocusOut</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:Hide"> </a>
+          <div class="fixedFont">
+
+          
+          <b>Hide</b>
+
+          </div>
+          <div class="description">
+            Sent when the widget is hidden
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.Hide">SWT.Hide</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:KeyDown"> </a>
+          <div class="fixedFont">
+
+          
+          <b>KeyDown</b>
+
+          </div>
+          <div class="description">
+            Sent when a key is pressed
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.KeyDown">SWT.KeyDown</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:KeyUp"> </a>
+          <div class="fixedFont">
+
+          
+          <b>KeyUp</b>
+
+          </div>
+          <div class="description">
+            Sent when a key is released
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.KeyUp">SWT.KeyUp</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:MouseDoubleClick"> </a>
+          <div class="fixedFont">
+
+          
+          <b>MouseDoubleClick</b>
+
+          </div>
+          <div class="description">
+            Sent when a mouse button is clicked twice
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.MouseDoubleClick">SWT.MouseDoubleClick</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:MouseDown"> </a>
+          <div class="fixedFont">
+
+          
+          <b>MouseDown</b>
+
+          </div>
+          <div class="description">
+            Sent when a mouse button is pressed
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.MouseDown">SWT.MouseDown</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:MouseEnter"> </a>
+          <div class="fixedFont">
+
+          
+          <b>MouseEnter</b>
+
+          </div>
+          <div class="description">
+            Sent when the mouse pointer enters the widget
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.MouseEnter">SWT.MouseEnter</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:MouseExit"> </a>
+          <div class="fixedFont">
+
+          
+          <b>MouseExit</b>
+
+          </div>
+          <div class="description">
+            Sent when the mouse pointer exits the widget
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.MouseExit">SWT.MouseExit</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:MouseMove"> </a>
+          <div class="fixedFont">
+
+          
+          <b>MouseMove</b>
+
+          </div>
+          <div class="description">
+            Sent when the mouse pointer is moved
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.MouseMove">SWT.MouseMove</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:MouseUp"> </a>
+          <div class="fixedFont">
+
+          
+          <b>MouseUp</b>
+
+          </div>
+          <div class="description">
+            Sent when a mouse button is released
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.MouseUp">SWT.MouseUp</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:MouseWheel"> </a>
+          <div class="fixedFont">
+
+          
+          <b>MouseWheel</b>
+
+          </div>
+          <div class="description">
+            Sent when the mouse wheel is moved
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.MouseWheel">SWT.MouseWheel</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:Paint"> </a>
+          <div class="fixedFont">
+
+          
+          <b>Paint</b>
+
+          </div>
+          <div class="description">
+            Sent when the widget is painted
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.Paint">SWT.Paint</a></dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="event:Show"> </a>
+          <div class="fixedFont">
+
+          
+          <b>Show</b>
+
+          </div>
+          <div class="description">
+            Sent when the widget appears
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.Show">SWT.Show</a></dd>
+              
+              </dl>
+            
+
+          
+        
       
 
       <hr />

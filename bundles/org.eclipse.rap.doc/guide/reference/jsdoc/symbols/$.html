@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="generator" content="JsDoc Toolkit" />
     
-    <title>JsDoc Reference - Label</title>
+    <title>JsDoc Reference - $</title>
 
     <style type="text/css">
       /* default.css */
@@ -265,61 +265,29 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
       <h1 class="classTitle">
         
-        Type Label
+        Type $
       </h1>
 
 <!-- ============================== class summary ========================== -->
       <p class="description">
         
-        <br />Extends
-          <a href="../symbols/Control.html">Control</a>.<br />
         
 
-        RWT Scripting analoge to org.eclipse.swt.widgets.Label
+        An JQuery-like object which allows manipulation of HTML elements.
 
       </p>
 
 <!-- ============================== constructor summary ==================== -->
       
-      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Label.">
-        <caption>Type Summary</caption>
-        <thead>
-          <tr>
-            <th scope="col">Constructor Attributes</th>
-            <th scope="col">Constructor Name and Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="attributes">&nbsp;</td>
-            <td class="nameDescription" >
-              <div class="fixedFont">
-                <b><a href="../symbols/Label.html#constructor">Label</a></b>()
-              </div>
-              <div class="description">The constructor is not public.</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      
 
 <!-- ============================== properties summary ===================== -->
-      
-        
-        
-
-        
-        <dl class="inheritsList">
-        <dt>Fields borrowed from class <a href="../symbols/Widget.html">Widget</a>: </dt><dd><a href="../symbols/Widget.html#$el">$el</a></dd>
-        </dl>
-        
       
 
 <!-- ============================== methods summary ======================== -->
       
         
         
-        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Label.">
+        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class $.">
           <caption>Method Summary</caption>
           <thead>
             <tr>
@@ -332,18 +300,9 @@ ul.inheritsList
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Label.html#getText">getText</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/%24.html#attr">attr</a></b>(attribute, value)
                 </div>
-                <div class="description">Returns the widget text.</div>
-              </td>
-            </tr>
-          
-            <tr>
-              <td class="attributes">&nbsp;</td>
-              <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Label.html#setText">setText</a></b>(text)
-                </div>
-                <div class="description">Sets the receivers text to the given string.</div>
+                <div class="description">A method to either set or get the value of an HTML-attribute.</div>
               </td>
             </tr>
           
@@ -352,21 +311,8 @@ ul.inheritsList
         
 
         
-        <dl class="inheritsList">
-        <dt>Methods borrowed from class <a href="../symbols/Control.html">Control</a>: </dt><dd><a href="../symbols/Control.html#addListener">addListener</a>, <a href="../symbols/Control.html#forceFocus">forceFocus</a>, <a href="../symbols/Control.html#getBackground">getBackground</a>, <a href="../symbols/Control.html#getCursor">getCursor</a>, <a href="../symbols/Control.html#getData">getData</a>, <a href="../symbols/Control.html#getEnabled">getEnabled</a>, <a href="../symbols/Control.html#getForeground">getForeground</a>, <a href="../symbols/Control.html#getToolTipText">getToolTipText</a>, <a href="../symbols/Control.html#getVisible">getVisible</a>, <a href="../symbols/Control.html#removeListener">removeListener</a>, <a href="../symbols/Control.html#setBackground">setBackground</a>, <a href="../symbols/Control.html#setData">setData</a>, <a href="../symbols/Control.html#setEnabled">setEnabled</a>, <a href="../symbols/Control.html#setForeground">setForeground</a>, <a href="../symbols/Control.html#setToolTipText">setToolTipText</a>, <a href="../symbols/Control.html#setVisible">setVisible</a></dd>
-        </dl>
-        
       
 <!-- ============================== events summary ======================== -->
-      
-        
-        
-
-        
-        <dl class="inheritsList">
-        <dt>Events borrowed from class <a href="../symbols/Control.html">Control</a>: </dt><dd><a href="../symbols/Control.html#event:FocusIn">FocusIn</a>, <a href="../symbols/Control.html#event:FocusOut">FocusOut</a>, <a href="../symbols/Control.html#event:Hide">Hide</a>, <a href="../symbols/Control.html#event:KeyDown">KeyDown</a>, <a href="../symbols/Control.html#event:KeyUp">KeyUp</a>, <a href="../symbols/Control.html#event:MouseDoubleClick">MouseDoubleClick</a>, <a href="../symbols/Control.html#event:MouseDown">MouseDown</a>, <a href="../symbols/Control.html#event:MouseEnter">MouseEnter</a>, <a href="../symbols/Control.html#event:MouseExit">MouseExit</a>, <a href="../symbols/Control.html#event:MouseMove">MouseMove</a>, <a href="../symbols/Control.html#event:MouseUp">MouseUp</a>, <a href="../symbols/Control.html#event:MouseWheel">MouseWheel</a>, <a href="../symbols/Control.html#event:Paint">Paint</a>, <a href="../symbols/Control.html#event:Show">Show</a></dd>
-        </dl>
-        
       
 
 <!-- ============================== constructor details ==================== -->
@@ -376,12 +322,13 @@ ul.inheritsList
           Type Detail
         </div>
 
-        <div class="fixedFont">
-            <b>Label</b>()
+        <div class="fixedFont">&lt;private&gt; 
+            <b>$</b>(target)
         </div>
 
         <div class="description">
-          The constructor is not public.
+          The constructor is not public. Instances can currently only be obtained from
+<a href="../symbols/Widget.html#$el">Widget#$el</a>.
           
         </div>
 
@@ -389,11 +336,22 @@ ul.inheritsList
 
 
           
+            <dl class="detailList">
+            <dt class="heading">Parameters:</dt>
+            
+              <dt>
+                 <b>target</b>
+                
+              </dt>
+                <dd></dd>
+            
+            </dl>
+          
           
           
             <dl class="detailList">
             <dt class="heading">Since:</dt>
-              <dd>2.2</dd>
+              <dd>2.3</dd>
             </dl>
           
           
@@ -413,46 +371,16 @@ ul.inheritsList
           Method Detail
         </div>
         
-          <a name="getText"> </a>
+          <a name="attr"> </a>
           <div class="fixedFont">
 
-          <span class="light">{string}</span>
-          <b>getText</b>()
+          <span class="light">{string|<a href="../symbols/%24.html">$</a>}</span>
+          <b>attr</b>(attribute, value)
 
           </div>
           <div class="description">
-            Returns the widget text.
-            
-          </div>
-
-          
-
-            
-            
-            
-            
-            
-              <dl class="detailList">
-              <dt class="heading">Returns:</dt>
-              
-                <dd><span class="light fixedFont">{string}</span> the widget text</dd>
-              
-              </dl>
-            
-            
-            
-
-          <hr />
-        
-          <a name="setText"> </a>
-          <div class="fixedFont">
-
-          
-          <b>setText</b>(text)
-
-          </div>
-          <div class="description">
-            Sets the receivers text to the given string.
+            A method to either set or get the value of an HTML-attribute.
+Note that the attributes "id" and "class" can not be set this way.
             
           </div>
 
@@ -463,16 +391,31 @@ ul.inheritsList
               <dt class="heading">Parameters:</dt>
               
                 <dt>
-                  <span class="light fixedFont">{string}</span> <b>text</b>
+                  <span class="light fixedFont">{string|Object}</span> <b>attribute</b>
                   
                 </dt>
-                <dd>the new text</dd>
+                <dd>The name of the attribute to return or modify. Alternatively
+a plain object with key-value pairs to set.</dd>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>value</b>
+                  <i>Optional</i>
+                </dt>
+                <dd>The value to set the attribute to.</dd>
               
               </dl>
             
             
             
             
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{string|<a href="../symbols/%24.html">$</a>}</span> The the value of the given attribute, if the function is called with a
+string only. Otherwise a reference to this object.</dd>
+              
+              </dl>
             
             
             

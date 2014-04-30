@@ -212,6 +212,10 @@ ul.inheritsList
   
   <li></li>
   
+  <li></li>
+  
+  <li></li>
+  
   <li><a href="../symbols/rap.html">rap</a></li>
   
   <li><a href="../symbols/SWT.html">SWT</a></li>
@@ -219,6 +223,8 @@ ul.inheritsList
 </ul>
 <h2>Types</h2>
 <ul class="classList">
+  
+  <li><a href="../symbols/%24.html">$</a></li>
   
   <li><a href="../symbols/Button.html">Button</a></li>
   
@@ -243,6 +249,8 @@ ul.inheritsList
   <li><a href="../symbols/Spinner.html">Spinner</a></li>
   
   <li><a href="../symbols/Text.html">Text</a></li>
+  
+  <li><a href="../symbols/Widget.html">Widget</a></li>
   
   <li></li>
   
@@ -296,6 +304,15 @@ ul.inheritsList
       
 
 <!-- ============================== properties summary ===================== -->
+      
+        
+        
+
+        
+        <dl class="inheritsList">
+        <dt>Fields borrowed from class <a href="../symbols/Widget.html">Widget</a>: </dt><dd><a href="../symbols/Widget.html#$el">$el</a></dd>
+        </dl>
+        
       
 
 <!-- ============================== methods summary ======================== -->
@@ -355,11 +372,44 @@ must be greater than or equal to zero.</div>
 
         
         <dl class="inheritsList">
-        <dt>Methods borrowed from class <a href="../symbols/Control.html">Control</a>: </dt><dd><a href="../symbols/Control.html#forceFocus">forceFocus</a>, <a href="../symbols/Control.html#getBackground">getBackground</a>, <a href="../symbols/Control.html#getCursor">getCursor</a>, <a href="../symbols/Control.html#getData">getData</a>, <a href="../symbols/Control.html#getEnabled">getEnabled</a>, <a href="../symbols/Control.html#getForeground">getForeground</a>, <a href="../symbols/Control.html#getToolTipText">getToolTipText</a>, <a href="../symbols/Control.html#getVisible">getVisible</a>, <a href="../symbols/Control.html#setBackground">setBackground</a>, <a href="../symbols/Control.html#setData">setData</a>, <a href="../symbols/Control.html#setEnabled">setEnabled</a>, <a href="../symbols/Control.html#setForeground">setForeground</a>, <a href="../symbols/Control.html#setToolTipText">setToolTipText</a>, <a href="../symbols/Control.html#setVisible">setVisible</a></dd>
+        <dt>Methods borrowed from class <a href="../symbols/Control.html">Control</a>: </dt><dd><a href="../symbols/Control.html#addListener">addListener</a>, <a href="../symbols/Control.html#forceFocus">forceFocus</a>, <a href="../symbols/Control.html#getBackground">getBackground</a>, <a href="../symbols/Control.html#getCursor">getCursor</a>, <a href="../symbols/Control.html#getData">getData</a>, <a href="../symbols/Control.html#getEnabled">getEnabled</a>, <a href="../symbols/Control.html#getForeground">getForeground</a>, <a href="../symbols/Control.html#getToolTipText">getToolTipText</a>, <a href="../symbols/Control.html#getVisible">getVisible</a>, <a href="../symbols/Control.html#removeListener">removeListener</a>, <a href="../symbols/Control.html#setBackground">setBackground</a>, <a href="../symbols/Control.html#setData">setData</a>, <a href="../symbols/Control.html#setEnabled">setEnabled</a>, <a href="../symbols/Control.html#setForeground">setForeground</a>, <a href="../symbols/Control.html#setToolTipText">setToolTipText</a>, <a href="../symbols/Control.html#setVisible">setVisible</a></dd>
         </dl>
         
       
 <!-- ============================== events summary ======================== -->
+      
+        
+        
+        <table class="summaryTable" cellspacing="0" summary="A summary of the events documented in the class Scale.">
+          <caption>Event Summary</caption>
+          <thead>
+            <tr>
+              <th scope="col">Event Attributes</th>
+              <th scope="col">Event Name and Description</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Scale.html#event:Selection">Selection</a></b>
+                </div>
+                <div class="description">Sent when the widget selection is changed</div>
+              </td>
+            </tr>
+          
+          </tbody>
+        </table>
+        
+
+        
+        <dl class="inheritsList">
+        <dt>Events borrowed from class <a href="../symbols/Control.html">Control</a>: </dt><dd><a href="../symbols/Control.html#event:FocusIn">FocusIn</a>, <a href="../symbols/Control.html#event:FocusOut">FocusOut</a>, <a href="../symbols/Control.html#event:Hide">Hide</a>, <a href="../symbols/Control.html#event:KeyDown">KeyDown</a>, <a href="../symbols/Control.html#event:KeyUp">KeyUp</a>, <a href="../symbols/Control.html#event:MouseDoubleClick">MouseDoubleClick</a>, <a href="../symbols/Control.html#event:MouseDown">MouseDown</a>, <a href="../symbols/Control.html#event:MouseEnter">MouseEnter</a>, <a href="../symbols/Control.html#event:MouseExit">MouseExit</a>, <a href="../symbols/Control.html#event:MouseMove">MouseMove</a>, <a href="../symbols/Control.html#event:MouseUp">MouseUp</a>, <a href="../symbols/Control.html#event:MouseWheel">MouseWheel</a>, <a href="../symbols/Control.html#event:Paint">Paint</a>, <a href="../symbols/Control.html#event:Show">Show</a></dd>
+        </dl>
+        
       
 
 <!-- ============================== constructor details ==================== -->
@@ -416,7 +466,6 @@ must be greater than or equal to zero.</div>
           <div class="description">
             Returns the maximum value which the receiver will allow.
             
-            
           </div>
 
           
@@ -448,7 +497,6 @@ must be greater than or equal to zero.</div>
           <div class="description">
             Returns the minimum value which the receiver will allow.
             
-            
           </div>
 
           
@@ -479,7 +527,6 @@ must be greater than or equal to zero.</div>
           </div>
           <div class="description">
             Returns the 'selection', which is the receiver's position.
-            
             
           </div>
 
@@ -513,7 +560,6 @@ must be greater than or equal to zero.</div>
             Sets the 'selection', which is the receiver's value, to the argument which
 must be greater than or equal to zero.
             
-            
           </div>
 
           
@@ -542,6 +588,53 @@ must be greater than or equal to zero.
       
 
 <!-- ============================== event details ========================= -->
+      
+        <div class="sectionTitle">
+          Event Detail
+        </div>
+        
+          <a name="event:Selection"> </a>
+          <div class="fixedFont">
+
+          
+          <b>Selection</b>
+
+          </div>
+          <div class="description">
+            Sent when the widget selection is changed
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.Selection">SWT.Selection</a></dd>
+              
+              </dl>
+            
+
+          
+        
       
 
       <hr />
