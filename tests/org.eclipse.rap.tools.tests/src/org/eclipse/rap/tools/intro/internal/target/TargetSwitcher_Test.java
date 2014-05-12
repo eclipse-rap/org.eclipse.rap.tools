@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 EclipseSource and others.
+ * Copyright (c) 2011, 2014 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,6 @@ import org.eclipse.pde.core.target.ITargetHandle;
 import org.eclipse.pde.core.target.ITargetPlatformService;
 import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.rap.tools.internal.tests.Fixture;
-import org.eclipse.rap.tools.intro.internal.target.TargetSwitcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,7 +92,11 @@ public class TargetSwitcher_Test {
       assertEquals( newTarget.getHandle(), workspaceTargetHandle2 );
     } finally {
       // Switch back
-      ITargetDefinition targetDefinition = workspaceTargetHandle.getTargetDefinition();
+      ITargetDefinition targetDefinition = null;
+      // Note: Since Luna M7 the initial workspaceTargetHandle is null
+      if( workspaceTargetHandle != null ) {
+        targetDefinition = workspaceTargetHandle.getTargetDefinition();
+      }
       TargetSwitcher.switchTarget( targetDefinition );
     }
   }
