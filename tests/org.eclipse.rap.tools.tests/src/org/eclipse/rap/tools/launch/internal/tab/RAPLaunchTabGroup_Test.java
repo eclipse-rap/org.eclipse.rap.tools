@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 EclipseSource and others.
+ * Copyright (c) 2009, 2014 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationDialog;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.rap.tools.internal.tests.Fixture;
-import org.eclipse.rap.tools.launch.internal.tab.RAPLaunchTabGroup;
-import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -30,7 +28,7 @@ public class RAPLaunchTabGroup_Test {
   private static final String VM_ARGS
     = IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS;
 
-  @Test @Ignore
+  @Test
   public void testDefaultVMArgumentJettyLogLevel() throws CoreException {
     ILaunchConfigurationWorkingCopy config = Fixture.createRAPLaunchConfig();
     RAPLaunchTabGroup launchTabGroup = new RAPLaunchTabGroup();
