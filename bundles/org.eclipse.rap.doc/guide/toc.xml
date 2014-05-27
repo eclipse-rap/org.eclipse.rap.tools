@@ -170,6 +170,8 @@
       <link toc="guide/reference/theming/toc.xml" />
     </topic>
     <topic href="guide/reference/jsdoc/index.html" label="RAP WebClient API Reference">
+       <topic href="guide/reference/jsdoc/symbols/$.html" label="$">
+       </topic>
        <topic href="guide/reference/jsdoc/symbols/rap.html" label="rap">
        </topic>
        <topic href="guide/reference/jsdoc/symbols/SWT.html" label="SWT">
@@ -197,6 +199,8 @@
        <topic href="guide/reference/jsdoc/symbols/Spinner.html" label="Spinner">
        </topic>
        <topic href="guide/reference/jsdoc/symbols/Text.html" label="Text">
+       </topic>
+       <topic href="guide/reference/jsdoc/symbols/Widget.html" label="Widget">
        </topic>
     </topic>
   </topic>
