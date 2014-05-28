@@ -10,7 +10,25 @@
 <body>
 
   <h1>Scripting</h1>
-  <h2>Overview</h2>
+
+  <h2>Contents</h2>
+
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#api">API</a><ul>
+      <li><a href="#ClientListener">ClientListener</a></li>
+      <li><a href="#widgets">Widgets</a></li>
+      <li><a href="#events">Event Types</a></li>
+      <li><a href="#data">Data Transfer</a></li>
+      <li><a href="#crosswidget">Cross-Widget Scripting</a></li>
+      <li><a href="#html">Widget HTML</a></li>
+    </ul></li>
+    <li><a href="#limitations">Limitations</a></li>
+    <li><a href="#jshints">JavaScript for Java Developer</a></li>
+
+  </ul>
+
+  <h2 id="overview">Overview</h2>
   <p>
     RAP applications are running almost entirely on a Server. All application-relevant events
     that occur on the client have to be forwarded to the Server before being
@@ -375,6 +393,40 @@ widget.setData( &quot;foo&quot;, &quot;myData&quot; );</pre>
     <p>JavaScript:</p>
     <pre class="lang-javascript">var otherWidget = rap.getObject( widget.getData( &quot;otherWidget&quot; ) );</pre>
 
+    <h3 id="html">HTML Attributes</h3>
+    <p>
+      JavaScript widget objects obtained via <a href="../reference/jsdoc/symbols/rap.html#.getObject"><code>rap.getObject( id )</code></a> have a field
+      <a href="../reference/jsdoc/symbols/Widget.html#$el"><em>$el</em></a> that allows manipulating their HTML element. Currently it can only be used to
+      <a href="../reference/jsdoc/symbols/%24.html#attr">set HTML attributes</a> of the element containing the entire widget HTML, and
+      (in case of <em>Text</em>) the <a href="../reference/jsdoc/symbols/Text.html#$input"><code>&lt;input&gt;</code> element</a>.
+    </p><p>
+      This feature can be useful to assign test-id's for easier UI-testing. It can also be used to
+      add <a href="http://www.w3.org/TR/wai-aria/">ARIA</a> attributes that can be evaluated by screen reader software, thereby providing an
+      alternative to the unsupported SWT accessibility API. (Please take a look at the RAP FAQ
+      for more information on <a href="https://wiki.eclipse.org/RAP/FAQ#How_to_create_UI_Tests_for_RAP">UI-testing</a> and <a href="https://wiki.eclipse.org/RAP/FAQ#How_to_make_RAP_applications_Accessible">accessibility</a> in RAP.)
+    </p>
+    <p>
+      To access the <em>$el</em> field from Java code use the JavaScriptExecutor service. If, for
+      example, you want a method to set test-id's on any given widget, your code may look like this:
+    </p>
+  <pre class="lang-java">static void setTestId( Widget widget, String value ) {
+  if( uiTestsEnabled && !widget.isDisposed() ) {
+    String $el = widget instanceof Text ? "$input" : "$el";
+    String id = WidgetUtil.getId( widget );
+    exec( "rap.getObject( '", id, "' ).", $el, ".attr( 'test-id', '", value + "' );" );
+  }
+}
+
+private static void exec( String... strings ) {
+  StringBuilder builder = new StringBuilder();
+  builder.append( "try{" );
+  for( String str : strings ) {
+    builder.append( str );
+  }
+  builder.append( "}catch(e){}" );
+  JavaScriptExecutor executor = RWT.getClient().getService( JavaScriptExecutor.class );
+  executor.execute( builder.toString() );
+}</pre>
     <h2 id="limitations">Notable Limitations and discouraged Usage</h2>
     <ul>
       <li>

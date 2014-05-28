@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2012, 2014 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Tree and Table Enhancements</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -80,12 +80,14 @@ table.setData( RWT.ROW_TEMPLATE, template );</pre>
     </p>
     <p>
       To position a cell, you have to set exactly two horizontal and two vertical dimensions
-      (two out of left, right and width, and two out of top, bottom and height). The values
-      are relative to the area that is available to display
+      (two out of left, right and width, and two out of top, bottom and height). The cells are
+      positioned relative to the area that is available to display
       the current item - which is usually the inner width of the Tree/Table widget and the height
       given using <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#CUSTOM_ITEM_HEIGHT">RWT.CUSTOM_ITEM_HEIGHT</a></em>.
+      The values for left, top, right and bottom may be absolute (in pixel), relative
+      (in percentage), or the sum of both. The values for width and height may only be absolute.
     </p>
-    <pre class="lang-java">imageCell.setLeft( 4 ).setWidth( 48 ).setTop( 4 ).setBottom( 4 );</pre>
+    <pre class="lang-java">imageCell.setLeft( 40, 0 ).setWidth( 48 ).setTop( 4 ).setBottom( 33.33f, 4 );</pre>
     <p>
       All cells can by further styled with colors, fonts, alignments, etc.
       Since all setter return the cell instance, chaining the commands as shown

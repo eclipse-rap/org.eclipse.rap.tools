@@ -17,12 +17,13 @@
     API as the Standard Widget Toolkit (SWT). That is why many projects that build upon SWT
     (like <a href="http://wiki.eclipse.org/index.php/JFace">JFace</a>)
     can run on RWT with little or no modifications. It can
-    also be used <a href="application-setup.html#workbench">with or without the Eclipse 3.x workbench layer</a>.
+    also be used <a href="application-setup.html#workbench">with or without the Eclipse 3.x
+    workbench layer</a>.
    </p>
   <p>
-    <small> NOTE: “RWT“ refers to this toolkit specifically, while “RAP” refers to the
+    Note that <q>RWT</q> refers only to this widget toolkit, while <q>RAP</q> refers to the
     project in its entirety, including its ports of JFace, Workbench and Forms, OSGI
-    integration, add-ons, Branding and Interaction Design API, tooling, demos and custom themes.</small>
+    integration, add-ons, Branding and Interaction Design API, tooling, demos and custom themes.
   </p>
   <p>
     RWT implements most (40+) <a href="http://www.eclipse.org/swt/widgets/">
@@ -44,7 +45,7 @@
     If this is the case, it is likely because it's hard or impossible to implement in RWT.
     In some cases, SWT classes and methods are implemented as empty stubs to enable single-sourcing,
     but only where this is a valid according of the SWT documentation of the API.
-    Examples are the Accessibility API and some SWT constants that are marked as <em>HINT</em>.
+    Examples are the accessibility API and some SWT constants that are marked as <em>HINT</em>.
   </p>
   <p>
     SWT was developed for desktop applications, but RWT is used to build web applications.
@@ -91,9 +92,11 @@
       widget can be used. The widget looks like a button, but when clicked will open the file picker
       dialog of the user's browser.
       After a file has been selected, it can programmatically be send to any HTTP server.
+      <i>As of RAP 2.3 it is also possible to use any widget as a drop target for files dragged from
+      outside the browser (e.g. the Windows Explorer).</i>
       <br/>
-      <strong> Important:</strong> The widget only allows <i>sending</i> the file to a given URL,
-      it does not handle <i>receiving</i> it.
+      <strong> Important:</strong> These features only allow <i>sending</i> the file to a given
+      URL, they do not handle the <i>receiving</i> part.
       If you require a complete solution for uploading and
       opening the file in your application, consider using the
       <a href="http://wiki.eclipse.org/RAP/Incubator/File_Upload">FileDialog</a>
@@ -117,6 +120,24 @@
     </li>
 
     <li style="margin-bottom:10px">
+      <b>DropDown Widget</b>
+      <br/>
+      The
+      <em><a href="../reference/api/org/eclipse/rap/rwt/widgets/DropDown.html">DropDown</a></em>
+      widget enables simple and efficient input assist for text fields.
+      It is basically a pop-up list that can be attached to any <em>Text</em> widget.
+      It behaves very similar to <em>Combo</em>, but does not automatically change the content of
+      the widget it is attached to.
+      Instead it fires selection events that may be used to modify the value of the Text widget
+      programatically. <br/>
+      <i>A ready-to-use, enhanced auto-complete solution for text fields can be found in the
+      <a href="https://eclipse.org/rap/incubator/">RAP Incubator</a>.
+      The component is called
+      <em><a href="http://wiki.eclipse.org/RAP/Incubator/DropDown#AutoSuggest">AutoSuggest</a></em>
+      and uses the DropDown widget internally.</i>
+    </li>
+
+    <li style="margin-bottom:10px">
       <b>Theming</b>
       <br/>
       In SWT, the default visual representation of an widget is determined by the operating
@@ -132,6 +153,14 @@
       An detailed introduction can be found <a href="scopes.html">here</a>.
     </li>
 
+    <li style="margin-bottom:10px">
+      <b>Scripting</b><br/>
+      Since the RAP WebClient is JavaScript based you can also write event listeners in JavaScript
+      instead of Java. This may be used to implement features that require instantaneous user
+      feedback or rely heavily on key events. Read more about it in the
+      <a href="scripting.html">Scripting</a> section.
+    </li>
+
   </ul>
 
   <h2>Notable Limitations</h2>
@@ -142,21 +171,23 @@
       <br/>
       While the API for touch event handling and accessibility configuration is present in RWT,
       it does not natively support either. This is a valid implementation according to the SWT
-      documentation.
+      documentation. Accessibility in RAP may be achieved by
+      <a href="scripting.html#html">adding ARIA attributes</a> though.
     </li>
 
     <li style="margin-bottom:10px">
       <b>Unimplemented Widgets:</b>
       <em>StyledText</em>, <em>Tracker</em>, <em>TaskBar</em>, <em>Tray</em>
       <br/>
-      These widgets are currently not available in RWT.
+      These widgets are currently not available in RWT. If you require a rich text editor in RAP,
+      take a look in the RAP Incubator and Wiki.
     </li>
 
     <li style="margin-bottom:10px">
       <b>Painting Limitations</b><br/>
       SWT can paint on any widget or image using a
       <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html">GC</a></em>,
-      while RAP currently only allows painting on the
+      while RAP only allows painting on the
       <em><a href="../reference/api/org/eclipse/swt/widgets/Canvas.html">Canvas</a></em>
       widget.
       In some cases the
@@ -169,6 +200,8 @@
       <em>setClipping</em>, <em>setTransform</em>, <em>setInterpolation</em>,
       <em>setLineDash</em> and <em>setXORMode</em>.
       Performance and results of a drawing operations can differ depending on the browser.
+      It is possible to use the native HTML5 Canvas directly instead of the SWT GC using RWT
+      Scripting.
       See also <q><a href="custom-widget.html#selfdrawing">Self-Drawing custom widgets</a></q>.
     </li>
 
@@ -232,7 +265,10 @@
       <em><a href="../reference/api/org/eclipse/swt/dnd/DragSourceEvent.html#offsetY">offsetY</a></em>
       have no effect.
       <em><a href="../reference/api/org/eclipse/swt/dnd/DropTargetEvent.html">DropTargetEvent</a></em>s
-      may be omitted while the mouse cursor is still in motion.
+      may be omitted while the mouse cursor is still in motion. When dragging files from the
+      clients OS (to drop on a drop target with <em>ClientFileTransfer</em>), feedback effects
+      are not renderd, operation types (move/copy/link) are ignored, and no <em>DragEnter</em> /
+      <em>DragOver</em> / <em>DragLeave</em> events are fired.
     </li>
 
     <li style="margin-bottom:10px">

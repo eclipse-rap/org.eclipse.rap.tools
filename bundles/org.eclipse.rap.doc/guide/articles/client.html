@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2012 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2012, 2014 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>The RAP Client</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -21,10 +21,8 @@
   <p>
     The RAP project includes the default RAP client, written in JavaScript. It it will be referred
     to simply as the "web client" from here on. The web client is downloaded  and started
-    automatically when the URL of a RAP application is entered into a browser. In-depth
-    technical information about this client can be found in the
-    <a href="http://wiki.eclipse.org/RAP/WebClient">RAP Wiki</a>.
-    Other client implementations are not part of the RAP project.
+    automatically when the URL of a RAP application is entered into a browser.
+    Other client implementations are not part of the RAP project itself.
   </p>
   <h2>The Client Interface</h2>
   <p>
@@ -71,7 +69,7 @@ if( navigation != null ) {
   ...
 }</pre>
   <h3>
-    Services of the web client
+    Services of the Web Client
   </h3>
   <p>These services are all supported by the web client and can be found in the package
   <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/package-summary.html">org.eclipse.rap.rwt.client.service</a></em>.</p>
@@ -131,6 +129,16 @@ if( navigation != null ) {
       <strong>NOTE:</strong>
       The warnings from <em>JavaScriptExecuter</em> also apply for <em>JavaScriptLoader</em>.
     </li>
+
+    <li id="uploader" style="margin-bottom:10px">
+      <b>ClientFileUploader</b>
+      <br/>
+      Can be used to <a href="../reference/api/org/eclipse/rap/rwt/client/service/ClientFileUploader.html#submit(java.lang.String, org.eclipse.rap.rwt.client.ClientFile[])">upload files</a> from the client device to any given URL.
+      A client-side file is represented by the class <em><a href="../reference/api/org/eclipse/rap/rwt/client/ClientFile.html">ClientFile</a></em> which can be obtained
+      from a <em><a href="../reference/api/org/eclipse/swt/dnd/DropTargetEvent.html">Drop</a></em> event if <em><a href="../reference/api/org/eclipse/rap/rwt/dnd/ClientFileTransfer.html">ClientFileTransfer</a></em> is used. To receive the file
+      on the RAP server, use the <em><a href="http://wiki.eclipse.org/RAP/Incubator/File_Upload">FileUploadHandler</a></em> from the <a href="http://eclipse.org/rap/incubator/">RAP Incubator</a>.
+    </li>
+
   </ul>
 
   <h2 id="jsapi">JavaScript API</h2>
