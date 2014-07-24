@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.rap.tools"
       label="RAP Tools upgrade for Eclipse Juno"
-      version="2.3.0.qualifier"
+      version="3.0.0.qualifier"
       provider-name="Eclipse.org - RAP"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
@@ -20,7 +20,7 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.rap.tools.feature" version="2.3.0" match="compatible"/>
+      <import feature="org.eclipse.rap.tools.feature" version="3.0.0" match="compatible"/>
    </requires>
 
 </feature>
