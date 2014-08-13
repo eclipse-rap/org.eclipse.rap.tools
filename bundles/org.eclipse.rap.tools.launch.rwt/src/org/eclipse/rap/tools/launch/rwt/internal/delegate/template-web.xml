@@ -9,8 +9,8 @@
   <display-name>${webAppName}</display-name>
 
   <context-param>
-    <param-name>org.eclipse.rwt.entryPoints</param-name>
-    <param-value>${entryPoint}</param-value>
+    <param-name>${paramName}</param-name>
+    <param-value>${className}</param-value>
   </context-param>
 
   <listener>

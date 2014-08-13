@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
-import org.eclipse.rap.tools.launch.rwt.internal.shortcut.RWTLaunchShortcut;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.Fixture;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.TestProject;
 import org.junit.After;
@@ -99,12 +98,12 @@ public class RWTLaunchShortcut_Test {
     assertEquals( createdConfig, foundConfig );
   }
 
-  private static IType createEntryPointType( TestProject project ) throws CoreException {
+  private IType createEntryPointType( TestProject project ) throws CoreException {
     String code
       = "package foo;\n"
-      + "class Foo {\n"
+      + "class Foo implements EntryPoint {\n"
       + "  public int createUI() {\n"
-      + "    return 0\n"
+      + "    return 0;\n"
       + "  }\n"
       + "}\n";
     project.createJavaClass( "foo", "Foo", code );
@@ -129,6 +128,11 @@ public class RWTLaunchShortcut_Test {
                                                             ILaunchConfigurationType configType )
     {
       return super.findLaunchConfiguration( type, configType );
+    }
+
+    @Override
+    protected String askForServletPath() {
+      return "/foo";
     }
   }
 

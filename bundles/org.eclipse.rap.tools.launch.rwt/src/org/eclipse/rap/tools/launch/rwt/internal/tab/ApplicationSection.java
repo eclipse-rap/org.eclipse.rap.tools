@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,28 +25,34 @@ import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
 
-public class EntryPointSection extends RWTLaunchTab {
+public class ApplicationSection extends RWTLaunchTab {
 
   private static final int MARGIN = 20;
 
   private Button rbEntryPoint;
   private SearchText stEntryPoint;
+  private Button rbAppConfig;
+  private SearchText stAppConfig;
   private Button rbWebXml;
   private SearchText stWebXmlLocation;
 
   public String getName() {
-    return "Application Entry Point";
+    return "RWT Application";
   }
 
   public void createControl( Composite parent ) {
     Group group = new Group( parent, SWT.NONE );
-    group.setText( "Application entry point" );
+    group.setText( "Application" );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     group.setLayout( new GridLayout( 3, false ) );
-    rbEntryPoint = createLaunchTargetRadioButton( group, "Run &entry point class" );
+    rbEntryPoint = createLaunchTargetRadioButton( group, "Run &entry point" );
     stEntryPoint = new SearchText( group, "Class name:", "Search...", MARGIN );
     stEntryPoint.addModifyListener( new TextModifyListener() );
     stEntryPoint.addSelectionListener( new EntryPointClassSelectionListener() );
+    rbAppConfig = createLaunchTargetRadioButton( group, "Run &application configuration" );
+    stAppConfig = new SearchText( group, "Class name:", "Search...", MARGIN );
+    stAppConfig.addModifyListener( new TextModifyListener() );
+    stAppConfig.addSelectionListener( new AppConfigClassSelectionListener() );
     rbWebXml = createLaunchTargetRadioButton( group, "Run from &web.xml" );
     stWebXmlLocation = new SearchText( group, "Location:", "Search...", MARGIN );
     stWebXmlLocation.addModifyListener( new TextModifyListener() );
@@ -59,24 +65,30 @@ public class EntryPointSection extends RWTLaunchTab {
 
   public void initializeFrom( RWTLaunchConfig launchConfig ) {
     rbEntryPoint.setSelection( LaunchTarget.ENTRY_POINT.equals( launchConfig.getLaunchTarget() ) );
+    rbAppConfig.setSelection( LaunchTarget.APP_CONFIG.equals( launchConfig.getLaunchTarget() ) );
     rbWebXml.setSelection( LaunchTarget.WEB_XML.equals( launchConfig.getLaunchTarget() ) );
-    stWebXmlLocation.setText( launchConfig.getWebXmlLocation() );
     stEntryPoint.setText( launchConfig.getEntryPoint() );
+    stAppConfig.setText( launchConfig.getAppConfig() );
+    stWebXmlLocation.setText( launchConfig.getWebXmlLocation() );
     updateEnablement();
   }
 
   public void performApply( RWTLaunchConfig launchConfig ) {
     if( rbEntryPoint.getSelection() ) {
       launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
+    } else if( rbAppConfig.getSelection() ) {
+      launchConfig.setLaunchTarget( LaunchTarget.APP_CONFIG );
     } else if( rbWebXml.getSelection() ) {
       launchConfig.setLaunchTarget( LaunchTarget.WEB_XML );
     }
     launchConfig.setEntryPoint( stEntryPoint.getText() );
+    launchConfig.setAppConfig( stAppConfig.getText() );
     launchConfig.setWebXmlLocation( stWebXmlLocation.getText() );
   }
 
   private void updateEnablement() {
     stEntryPoint.setEnabled( rbEntryPoint.getSelection() );
+    stAppConfig.setEnabled( rbAppConfig.getSelection() );
     stWebXmlLocation.setEnabled( rbWebXml.getSelection() );
   }
 
@@ -92,9 +104,16 @@ public class EntryPointSection extends RWTLaunchTab {
   }
 
   private void selectEntryPointClass() {
-    EntryPointTypeSelectionDialog dialog = new EntryPointTypeSelectionDialog( getShell() );
+    ApplicationTypeSelectionDialog dialog = new ApplicationTypeSelectionDialog( getShell() );
     if( dialog.open() ) {
       stEntryPoint.setText( dialog.getSelection().getFullyQualifiedName() );
+    }
+  }
+
+  private void selectAppConfigClass() {
+    ApplicationTypeSelectionDialog dialog = new ApplicationTypeSelectionDialog( getShell() );
+    if( dialog.open() ) {
+      stAppConfig.setText( dialog.getSelection().getFullyQualifiedName() );
     }
   }
 
@@ -122,6 +141,13 @@ public class EntryPointSection extends RWTLaunchTab {
   private class EntryPointClassSelectionListener extends SelectionAdapter {
     public void widgetSelected( SelectionEvent event ) {
       selectEntryPointClass();
+      updateLaunchConfigurationDialog();
+    }
+  }
+
+  private class AppConfigClassSelectionListener extends SelectionAdapter {
+    public void widgetSelected( SelectionEvent event ) {
+      selectAppConfigClass();
       updateLaunchConfigurationDialog();
     }
   }

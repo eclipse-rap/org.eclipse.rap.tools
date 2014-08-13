@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,21 +13,20 @@ package org.eclipse.rap.tools.launch.rwt.internal.tab;
 
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.rap.tools.launch.rwt.internal.tab.EntryPointSection;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class EntryPointSection_Test {
+public class ApplicationSection_Test {
 
   private Shell shell;
-  private EntryPointSection entryPointSection;
+  private ApplicationSection entryPointSection;
 
   @Before
   public void setUp() throws Exception {
-    entryPointSection = new EntryPointSection();
+    entryPointSection = new ApplicationSection();
     shell = new Shell();
   }
 

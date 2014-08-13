@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011. 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011. 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ public class ValidationRunner {
   private Validator[] createValidators() {
     return new Validator[] {
       new ProjectValidator( config, validationResult ),
-      new EntryPointValidator( config, validationResult ),
+      new ApplicationClassValidator( config, validationResult ),
       new WebXmlLocationValidator( config, validationResult ),
       new ServletPathValidator( config, validationResult ),
       new ContextPathValidator( config, validationResult )

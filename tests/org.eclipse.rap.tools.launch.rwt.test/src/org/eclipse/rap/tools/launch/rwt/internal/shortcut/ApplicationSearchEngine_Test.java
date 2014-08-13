@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,30 +24,27 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.rap.tools.launch.rwt.internal.shortcut.EntryPointSearchEngine;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.TestProject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class EntryPointSearchEngine_Test {
+public class ApplicationSearchEngine_Test {
 
   private TestProject project;
-  private EntryPointSearchEngine searchEngine;
+  private ApplicationSearchEngine searchEngine;
 
   @Before
   public void setUp() throws Exception {
     IRunnableContext runnableContext = new IRunnableContext() {
-      public void run( boolean fork,
-                       boolean cancelable,
-                       IRunnableWithProgress runnable )
+      public void run( boolean fork, boolean cancelable, IRunnableWithProgress runnable )
         throws InvocationTargetException, InterruptedException
       {
         runnable.run( new NullProgressMonitor() );
       }
     };
-    searchEngine = new EntryPointSearchEngine( runnableContext );
+    searchEngine = new ApplicationSearchEngine( runnableContext );
     project = new TestProject();
   }
 
@@ -252,11 +249,11 @@ public class EntryPointSearchEngine_Test {
   @Test
   public void testSearch_withExtendedAbstractEntryPoint() throws Exception {
     String code
-    = "package foo;\n"
-        + "class Foo extends AbstractEntryPoint {\n"
-        + "  protected void createContents( Composite parent ) {\n"
-        + "  }\n"
-        + "}\n";
+      = "package foo;\n"
+      + "class Foo extends AbstractEntryPoint {\n"
+      + "  protected void createContents( Composite parent ) {\n"
+      + "  }\n"
+      + "}\n";
     project.createJavaClass( "foo", "Foo", code );
     IType type = project.getJavaProject().findType( "foo.Foo" );
 
@@ -269,11 +266,11 @@ public class EntryPointSearchEngine_Test {
   @Test
   public void testSearch_withoutExtendsAbstractEntryPoint() throws Exception {
     String code
-    = "package foo;\n"
-        + "class Foo {\n"
-        + "  protected void createContents( Composite parent ) {\n"
-        + "  }\n"
-        + "}\n";
+      = "package foo;\n"
+      + "class Foo {\n"
+      + "  protected void createContents( Composite parent ) {\n"
+      + "  }\n"
+      + "}\n";
     project.createJavaClass( "foo", "Foo", code );
     IType type = project.getJavaProject().findType( "foo.Foo" );
 
@@ -283,20 +280,101 @@ public class EntryPointSearchEngine_Test {
   }
 
   @Test
-  public void testSearch_withAbstractClass() throws Exception {
+  public void testSearch_withAbstractEntryPoint() throws Exception {
     String code
-    = "package foo;\n"
-        + "abstract class Foo implements EntryPoint {\n"
-        + "  public int createUI() {\n"
-        + "    return 0;\n"
-        + "  }\n"
-        + "}\n";
+      = "package foo;\n"
+      + "abstract class Foo implements EntryPoint {\n"
+      + "  public int createUI() {\n"
+      + "    return 0;\n"
+      + "  }\n"
+      + "}\n";
     project.createJavaClass( "foo", "Foo", code );
     IType type = project.getJavaProject().findType( "foo.Foo" );
 
     IType[] entryPointTypes = searchEngine.search( new IJavaElement[] { type } );
 
     assertEquals( 0, entryPointTypes.length );
+  }
+
+  @Test
+  public void testSearch_withApplicationConfiguration() throws Exception {
+    String code
+      = "package foo;\n"
+      + "class Foo implements ApplicationConfiguration {\n"
+      + "  public void configure( Application application ) {\n"
+      + "  }\n"
+      + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] appConfigTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 1, appConfigTypes.length );
+    assertEquals( "foo.Foo", appConfigTypes[ 0 ].getFullyQualifiedName() );
+  }
+
+  @Test
+  public void testSearch_withAbstractApplicationConfiguration() throws Exception {
+    String code
+      = "package foo;\n"
+      + "abstract class Foo implements ApplicationConfiguration {\n"
+      + "  public void configure( Application application ) {\n"
+      + "  }\n"
+      + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] appConfigTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 0, appConfigTypes.length );
+  }
+
+  @Test
+  public void testSearch_withApplicationConfiguration_withoutConfigureMethod() throws Exception {
+    String code
+      = "package foo;\n"
+      + "class Foo implements ApplicationConfiguration {\n"
+      + "  public void setApplication( Application application ) {\n"
+      + "  }\n"
+      + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] appConfigTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 0, appConfigTypes.length );
+  }
+
+  @Test
+  public void testSearch_withApplicationConfiguration_wrongMethodSignature() throws Exception {
+    String code
+      = "package foo;\n"
+      + "class Foo implements ApplicationConfiguration {\n"
+      + "  public void configure( Object arg0 ) {\n"
+      + "  }\n"
+      + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] appConfigTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 0, appConfigTypes.length );
+  }
+
+  @Test
+  public void testSearch_withApplicationConfiguration_withoutInterface() throws Exception {
+    String code
+      = "package foo;\n"
+      + "class Foo {\n"
+      + "  public void configure( Application application ) {\n"
+      + "  }\n"
+      + "}\n";
+    project.createJavaClass( "foo", "Foo", code );
+    IType type = project.getJavaProject().findType( "foo.Foo" );
+
+    IType[] appConfigTypes = searchEngine.search( new IJavaElement[] { type } );
+
+    assertEquals( 0, appConfigTypes.length );
   }
 
   @Test

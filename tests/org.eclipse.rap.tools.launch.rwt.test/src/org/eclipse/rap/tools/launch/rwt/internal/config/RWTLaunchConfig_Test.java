@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.rap.tools.launch.rwt.internal.config.BrowserMode;
-import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig.LaunchTarget;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.Fixture;
 import org.junit.After;
@@ -58,6 +56,7 @@ public class RWTLaunchConfig_Test {
     assertEquals( LaunchTarget.ENTRY_POINT, rwtConfig.getLaunchTarget() );
     assertEquals( "/rap", rwtConfig.getServletPath() );
     assertEquals( "", rwtConfig.getEntryPoint() );
+    assertEquals( "", rwtConfig.getAppConfig() );
     assertEquals( "", rwtConfig.getWebXmlLocation() );
     assertEquals( "", rwtConfig.getWebAppLocation() );
     assertEquals( "", rwtConfig.getVMArguments() );
@@ -174,6 +173,20 @@ public class RWTLaunchConfig_Test {
   @Test( expected = NullPointerException.class )
   public void testSetEntryPointWithNullArgument() {
     rwtConfig.setEntryPoint( null );
+  }
+
+  @Test
+  public void testAppConfigPoint() {
+    String appConfig = "ac";
+
+    rwtConfig.setAppConfig( appConfig );
+
+    assertEquals( appConfig, rwtConfig.getAppConfig() );
+  }
+
+  @Test( expected = NullPointerException.class )
+  public void testSetAppConfigWithNullArgument() {
+    rwtConfig.setAppConfig( null );
   }
 
   @Test( expected = NullPointerException.class )

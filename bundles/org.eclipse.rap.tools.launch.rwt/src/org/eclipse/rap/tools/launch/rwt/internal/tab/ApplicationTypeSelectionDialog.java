@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,12 +24,12 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
 
-public class EntryPointTypeSelectionDialog {
+public class ApplicationTypeSelectionDialog {
 
   private final Shell parent;
   private IType selection;
 
-  public EntryPointTypeSelectionDialog( Shell parent ) {
+  public ApplicationTypeSelectionDialog( Shell parent ) {
     this.parent = parent;
   }
 

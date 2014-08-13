@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.*;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig.LaunchTarget;
 
@@ -69,12 +70,16 @@ class LaunchConfigFinder {
     return result;
   }
 
-  private boolean isLaunchConfigForType( RWTLaunchConfig config ) {
+  private boolean isLaunchConfigForType( RWTLaunchConfig config ) throws JavaModelException {
     String projectName = type.getJavaProject().getElementName();
-    boolean entryPointEquals = config.getEntryPoint().equals( type.getFullyQualifiedName() );
     boolean projectEquals = config.getProjectName().equals( projectName );
-    boolean useEntryPoint = LaunchTarget.ENTRY_POINT.equals( config.getLaunchTarget() );
-    return projectEquals && entryPointEquals && useEntryPoint;
+    boolean launchTargetEquals = LaunchTarget.ENTRY_POINT.equals( config.getLaunchTarget() );
+    boolean applicationEquals = config.getEntryPoint().equals( type.getFullyQualifiedName() );
+    if( new TypeInspector( type ).isApplicationConfigurationType() ) {
+      launchTargetEquals = LaunchTarget.APP_CONFIG.equals( config.getLaunchTarget() );
+      applicationEquals = config.getAppConfig().equals( type.getFullyQualifiedName() );
+    }
+    return projectEquals && launchTargetEquals && applicationEquals;
   }
 
   private static ILaunchConfiguration[] listExistingLaunchConfigs() throws CoreException {

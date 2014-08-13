@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ public final class RWTLaunchConfig {
   public static final int MAX_SESSION_TIMEOUT = Integer.MAX_VALUE;
 
   public static enum LaunchTarget {
+    APP_CONFIG,
     ENTRY_POINT,
     WEB_XML,
   }
@@ -43,6 +44,7 @@ public final class RWTLaunchConfig {
   private static final String PREFIX = "org.eclipse.rap.launch.rwt."; //$NON-NLS-1$
   private static final String LAUNCH_TARGET = PREFIX + "launchMode"; //$NON-NLS-1$
   private static final String ENTRY_POINT = PREFIX + "entryPoint"; //$NON-NLS-1$
+  private static final String APP_CONFIG = PREFIX + "applicationConfiguration"; //$NON-NLS-1$
   private static final String WEB_XML_LOCATION = PREFIX + "webXmlLocation"; //$NON-NLS-1$
   private static final String WEB_APP_LOCATION = PREFIX + "webAppLocation"; //$NON-NLS-1$
   private static final String SERVLET_PATH = PREFIX + "servletPath"; //$NON-NLS-1$
@@ -59,6 +61,7 @@ public final class RWTLaunchConfig {
   // Default values for attributes
   private static final LaunchTarget DEFAULT_LAUNCH_TARGET = LaunchTarget.ENTRY_POINT;
   private static final String DEFAULT_ENTRY_POINT = ""; //$NON-NLS-1$
+  private static final String DEFAULT_APP_CONFIG = ""; //$NON-NLS-1$
   private static final String DEFAULT_PROJECT_NAME = ""; //$NON-NLS-1$
   private static final String DEFAULT_VM_ARGUMENTS = ""; //$NON-NLS-1$
   private static final String DEFAULT_WEB_XML_LOCATION = ""; //$NON-NLS-1$
@@ -87,6 +90,7 @@ public final class RWTLaunchConfig {
     config.setAttribute( WEB_APP_LOCATION, DEFAULT_WEB_APP_LOCATION );
     config.setAttribute( SERVLET_PATH, DEFAULT_SERVLET_PATH );
     config.setAttribute( ENTRY_POINT, DEFAULT_ENTRY_POINT );
+    config.setAttribute( APP_CONFIG, DEFAULT_APP_CONFIG );
     config.setAttribute( PROJECT_NAME, DEFAULT_PROJECT_NAME );
     config.setAttribute( VM_ARGUMENTS, DEFAULT_VM_ARGUMENTS );
     config.setAttribute( WORKING_DIRECTORY, DEFAULT_WORKING_DIRECTORY );
@@ -190,6 +194,16 @@ public final class RWTLaunchConfig {
     checkNotNull( entryPoint, "entryPoint" ); //$NON-NLS-1$
     checkWorkingCopy();
     workingCopy.setAttribute( ENTRY_POINT, entryPoint );
+  }
+
+  public String getAppConfig() {
+    return getAttribute( APP_CONFIG, DEFAULT_APP_CONFIG );
+  }
+
+  public void setAppConfig( String appConfig ) {
+    checkNotNull( appConfig, "appConfig" ); //$NON-NLS-1$
+    checkWorkingCopy();
+    workingCopy.setAttribute( APP_CONFIG, appConfig );
   }
 
   public boolean getUseManualPort() {

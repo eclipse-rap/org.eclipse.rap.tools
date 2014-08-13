@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig.LaunchTarget;
-import org.eclipse.rap.tools.launch.rwt.internal.delegate.RWTLaunch;
-import org.eclipse.rap.tools.launch.rwt.internal.delegate.WebXmlProvider;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.Fixture;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.TestLaunch;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.TestProject;
@@ -57,17 +55,6 @@ public class WebXmlProvider_Test {
   }
 
   @Test
-  public void testProvide_withGeneratedWebXml() throws Exception {
-    launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
-    launchConfig.setEntryPoint( "EntryPoint" );
-
-    File providedWebXml = provider.provide( monitor );
-
-    byte[] providedWebXmlBytes = Fixture.readBytes( providedWebXml );
-    assertTrue( providedWebXmlBytes.length > 0 );
-  }
-
-  @Test
   public void testProvide_withProvidedWebXml() throws Exception {
     String webXmlContent = "<web.xml />";
     TestProject testProject = new TestProject();
@@ -81,6 +68,43 @@ public class WebXmlProvider_Test {
     byte[] webXmlContentBytes = webXmlContent.getBytes( "utf-8" );
     byte[] providedWebXmlBytes = Fixture.readBytes( providedWebXml );
     assertArrayEquals( webXmlContentBytes, providedWebXmlBytes );
+  }
+
+  @Test
+  public void testProvide_withGeneratedWebXml() throws Exception {
+    launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
+    launchConfig.setEntryPoint( "Foo" );
+
+    File providedWebXml = provider.provide( monitor );
+
+    byte[] providedWebXmlBytes = Fixture.readBytes( providedWebXml );
+    assertTrue( providedWebXmlBytes.length > 0 );
+  }
+
+  @Test
+  public void testProvide_withGeneratedWebXml_containsEntryPoint() throws Exception {
+    launchConfig.setLaunchTarget( LaunchTarget.ENTRY_POINT );
+    launchConfig.setEntryPoint( "Foo" );
+
+    File providedWebXml = provider.provide( monitor );
+
+    String providedWebXmlContent = new String( Fixture.readBytes( providedWebXml ) );
+    assertTrue( providedWebXmlContent.indexOf( "org.eclipse.rwt.entryPoints" ) != -1 );
+    assertTrue( providedWebXmlContent.indexOf( "org.eclipse.rap.applicationConfiguration" ) == -1 );
+    assertTrue( providedWebXmlContent.indexOf( "Foo" ) != -1 );
+  }
+
+  @Test
+  public void testProvide_withGeneratedWebXml_containsAppConfig() throws Exception {
+    launchConfig.setLaunchTarget( LaunchTarget.APP_CONFIG );
+    launchConfig.setAppConfig( "Foo" );
+
+    File providedWebXml = provider.provide( monitor );
+
+    String providedWebXmlContent = new String( Fixture.readBytes( providedWebXml ) );
+    assertTrue( providedWebXmlContent.indexOf( "org.eclipse.rwt.entryPoints" ) == -1 );
+    assertTrue( providedWebXmlContent.indexOf( "org.eclipse.rap.applicationConfiguration" ) != -1 );
+    assertTrue( providedWebXmlContent.indexOf( "Foo" ) != -1 );
   }
 
   private static IFile createFile( IContainer container, String fileName, String content )

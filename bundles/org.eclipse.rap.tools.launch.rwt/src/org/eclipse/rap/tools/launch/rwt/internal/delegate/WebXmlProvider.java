@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *    EclipseSource - ongoing development
  ******************************************************************************/
 package org.eclipse.rap.tools.launch.rwt.internal.delegate;
+
 
 import java.io.*;
 
@@ -22,6 +23,9 @@ import org.eclipse.rap.tools.launch.rwt.internal.util.TemplateParser;
 
 
 class WebXmlProvider {
+
+  private static final String ENTRY_POINTS_PARAM_NAME = "org.eclipse.rwt.entryPoints"; //$NON-NLS-1$
+  private static final String APP_CONFIG_PARAM_NAME = "org.eclipse.rap.applicationConfiguration"; //$NON-NLS-1$
 
   private final RWTLaunchConfig config;
   private final File destination;
@@ -46,7 +50,7 @@ class WebXmlProvider {
   private void internalProvide() {
     if( LaunchTarget.WEB_XML.equals( config.getLaunchTarget() ) ) {
       provideCustomWebXml();
-    } else if( LaunchTarget.ENTRY_POINT.equals( config.getLaunchTarget() ) ) {
+    } else {
       provideGeneratedWebXml();
     }
   }
@@ -68,10 +72,17 @@ class WebXmlProvider {
   private String generateWebXmlContent() {
     TemplateParser templateParser = new TemplateParser( getWebXmlTemplate() );
     templateParser.registerVariable( "webAppName", config.getName() ); //$NON-NLS-1$
-    templateParser.registerVariable( "entryPoint", config.getEntryPoint() ); //$NON-NLS-1$
-    templateParser.registerVariable( "servletPath", config.getServletPath() ); //$NON-NLS-1$
+    String paramName = isEntryPointLauncher() ? ENTRY_POINTS_PARAM_NAME : APP_CONFIG_PARAM_NAME;
+    String className = isEntryPointLauncher() ? config.getEntryPoint() : config.getAppConfig();
+    templateParser.registerVariable( "paramName", paramName ); //$NON-NLS-1$
+    templateParser.registerVariable( "className", className ); //$NON-NLS-1$
+    templateParser.registerVariable( "servletPath", getServletPath() ); //$NON-NLS-1$
     templateParser.registerVariable( "sessionTimeout", getSessionTimeout() ); //$NON-NLS-1$
     return templateParser.parse();
+  }
+
+  private boolean isEntryPointLauncher() {
+    return LaunchTarget.ENTRY_POINT.equals( config.getLaunchTarget() );
   }
 
   private String getWebXmlTemplate() {
@@ -91,12 +102,13 @@ class WebXmlProvider {
     }
   }
 
+  private String getServletPath() {
+    String servletPath = config.getServletPath().trim();
+    return servletPath.equals( "/" ) ? "" : servletPath;
+  }
+
   private String getSessionTimeout() {
-    String result = "0";
-    if( config.getUseSessionTimeout() ) {
-      result = String.valueOf( config.getSessionTimeout() );
-    }
-    return result;
+    return config.getUseSessionTimeout() ? String.valueOf( config.getSessionTimeout() ) : "0";
   }
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 public class RWTMainTab extends RWTLaunchTab {
 
   private ProjectSection projectSection;
-  private EntryPointSection entryPointSection;
+  private ApplicationSection applicationSection;
   private BrowserSection  browserSection;
   private ServerSettingsSection serverSettingsSection;
   private RAPSettingsSection rapSettings;
@@ -35,7 +35,7 @@ public class RWTMainTab extends RWTLaunchTab {
 
   public RWTMainTab() {
     projectSection = new ProjectSection();
-    entryPointSection = new EntryPointSection();
+    applicationSection = new ApplicationSection();
     browserSection = new BrowserSection();
     serverSettingsSection = new ServerSettingsSection();
     rapSettings = new RAPSettingsSection();
@@ -55,7 +55,7 @@ public class RWTMainTab extends RWTLaunchTab {
     container.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     container.setLayout( new GridLayout( 1, false ) );
     projectSection.createControl( container );
-    entryPointSection.createControl( container );
+    applicationSection.createControl( container );
     browserSection.createControl( container );
     serverSettingsSection.createControl( container );
     rapSettings.createControl( container );
@@ -67,7 +67,7 @@ public class RWTMainTab extends RWTLaunchTab {
   public void setLaunchConfigurationDialog( ILaunchConfigurationDialog dialog ) {
     super.setLaunchConfigurationDialog( dialog );
     projectSection.setLaunchConfigurationDialog( dialog );
-    entryPointSection.setLaunchConfigurationDialog( dialog );
+    applicationSection.setLaunchConfigurationDialog( dialog );
     serverSettingsSection.setLaunchConfigurationDialog( dialog );
     browserSection.setLaunchConfigurationDialog( dialog );
     rapSettings.setLaunchConfigurationDialog( dialog );
@@ -75,7 +75,7 @@ public class RWTMainTab extends RWTLaunchTab {
 
   public void initializeFrom( RWTLaunchConfig launchConfig ) {
     projectSection.initializeFrom( launchConfig );
-    entryPointSection.initializeFrom( launchConfig );
+    applicationSection.initializeFrom( launchConfig );
     serverSettingsSection.initializeFrom( launchConfig );
     browserSection.initializeFrom( launchConfig );
     rapSettings.initializeFrom( launchConfig );
@@ -83,7 +83,7 @@ public class RWTMainTab extends RWTLaunchTab {
 
   public void performApply( RWTLaunchConfig launchConfig ) {
     projectSection.performApply( launchConfig );
-    entryPointSection.performApply( launchConfig );
+    applicationSection.performApply( launchConfig );
     serverSettingsSection.performApply( launchConfig );
     browserSection.performApply( launchConfig );
     rapSettings.performApply( launchConfig );

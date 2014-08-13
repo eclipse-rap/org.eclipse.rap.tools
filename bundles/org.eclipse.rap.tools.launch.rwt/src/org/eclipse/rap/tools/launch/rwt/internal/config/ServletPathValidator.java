@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,18 +12,25 @@
 package org.eclipse.rap.tools.launch.rwt.internal.config;
 
 
-class ServletPathValidator extends Validator {
+public class ServletPathValidator extends Validator {
 
   static final int ERR_SERVLET_PATH_EMPTY = 8030;
   static final int ERR_SERVLET_PATH_INVALID = 8031;
   static final int ERR_SERVLET_PATH_LEADING_SLASH = 8032;
 
-  ServletPathValidator( RWTLaunchConfig config, ValidationResult validationResult ) {
+  private String servletPath;
+
+  public ServletPathValidator( RWTLaunchConfig config, ValidationResult validationResult ) {
     super( config, validationResult );
   }
 
-  void validate() {
-    if( config.getOpenBrowser() ) {
+  public ServletPathValidator( String servletPath, ValidationResult validationResult ) {
+    super( null, validationResult );
+    this.servletPath = servletPath;
+  }
+
+  public void validate() {
+    if( config == null || config.getOpenBrowser() ) {
       validateNotEmpty();
       validateLeadingSlash();
       vaidateCharacters();
@@ -31,19 +38,19 @@ class ServletPathValidator extends Validator {
   }
 
   private void validateNotEmpty() {
-    if( config.getServletPath().length() == 0 ) {
+    if( getServletPath().length() == 0 ) {
       addError( "The servlet path must not be empty.", ERR_SERVLET_PATH_EMPTY );
     }
   }
 
   private void validateLeadingSlash() {
-    if( !config.getServletPath().startsWith( "/" ) ) {
+    if( !getServletPath().startsWith( "/" ) ) {
       addError( "The servlet path must start with a slash.", ERR_SERVLET_PATH_LEADING_SLASH );
     }
   }
 
   private void vaidateCharacters() {
-    String servletPath = config.getServletPath();
+    String servletPath = getServletPath();
     if( servletPath.startsWith( "/" ) ) {
       servletPath = servletPath.substring( 1 );
     }
@@ -62,4 +69,9 @@ class ServletPathValidator extends Validator {
     }
     return hasInvalidChar;
   }
+
+  private String getServletPath() {
+    return config != null ? config.getServletPath() : servletPath;
+  }
+
 }

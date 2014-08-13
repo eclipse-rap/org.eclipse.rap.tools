@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.eclipse.rap.tools.launch.rwt.internal.shortcut;
 
+import static org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig.LaunchTarget.APP_CONFIG;
+import static org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig.LaunchTarget.ENTRY_POINT;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -21,7 +23,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig.LaunchTarget;
-import org.eclipse.rap.tools.launch.rwt.internal.shortcut.LaunchConfigFinder;
 import org.eclipse.rap.tools.launch.rwt.internal.shortcut.LaunchConfigFinder.LaunchConfigSelector;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.Fixture;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.TestProject;
@@ -50,9 +51,9 @@ public class LaunchConfigFinder_Test {
   }
 
   @Test
-  public void testForType_whenMatchingLaunchConfigIsPresent() throws CoreException {
+  public void testForType_whenMatchingEntryPointLaunchConfigIsPresent() throws CoreException {
     IType entryPointType = createEntryPointType();
-    RWTLaunchConfig launchConfig = createLaunchConfigFromType( entryPointType );
+    RWTLaunchConfig launchConfig = createLaunchConfigFromType( entryPointType, ENTRY_POINT );
 
     ILaunchConfiguration foundConfig = launchConfigFinder.forType( entryPointType );
 
@@ -61,10 +62,21 @@ public class LaunchConfigFinder_Test {
   }
 
   @Test
+  public void testForType_whenMatchingAppConfigLaunchConfigIsPresent() throws CoreException {
+    IType appConfigType = createAppConfigType();
+    RWTLaunchConfig launchConfig = createLaunchConfigFromType( appConfigType, APP_CONFIG );
+
+    ILaunchConfiguration foundConfig = launchConfigFinder.forType( appConfigType );
+
+    assertTrue( foundConfig.contentsEqual( launchConfig.getUnderlyingLaunchConfig() ) );
+    assertFalse( launchConfigSelector.wasInvoked );
+  }
+
+  @Test
   public void testForType_whenMultipleMatchingLaunchConfigsArePresent() throws CoreException {
     IType entryPointType = createEntryPointType();
-    RWTLaunchConfig launchConfig1 = createLaunchConfigFromType( entryPointType );
-    createLaunchConfigFromType( entryPointType );
+    RWTLaunchConfig launchConfig1 = createLaunchConfigFromType( entryPointType, ENTRY_POINT );
+    createLaunchConfigFromType( entryPointType, ENTRY_POINT );
 
     ILaunchConfiguration foundConfig = launchConfigFinder.forType( entryPointType );
 
@@ -112,23 +124,38 @@ public class LaunchConfigFinder_Test {
   private IType createEntryPointType() throws CoreException {
     String code
       = "package foo;\n"
-      + "class Foo {\n"
+      + "class Foo implements EntryPoint {\n"
       + "  public int createUI() {\n"
-      + "    return 0\n"
+      + "    return 0;\n"
       + "  }\n"
       + "}\n";
     project.createJavaClass( "foo", "Foo", code );
     return project.getJavaProject().findType( "foo.Foo" );
   }
 
-  private static RWTLaunchConfig createLaunchConfigFromType( IType entryPointType )
+  private IType createAppConfigType() throws CoreException {
+    String code
+      = "package foo;\n"
+      + "class Bar implements ApplicationConfiguration {\n"
+      + "  public void configure( Application application ) {\n"
+      + "  }\n"
+      + "}\n";
+    project.createJavaClass( "foo", "Bar", code );
+    return project.getJavaProject().findType( "foo.Bar" );
+  }
+
+  private static RWTLaunchConfig createLaunchConfigFromType( IType type, LaunchTarget launchTarget )
     throws CoreException
   {
     ILaunchConfigurationWorkingCopy launchConfig = Fixture.createRWTLaunchConfig();
     RWTLaunchConfig result = new RWTLaunchConfig( launchConfig );
-    result.setLaunchTarget( LaunchTarget.ENTRY_POINT );
-    result.setProjectName( entryPointType.getJavaProject().getElementName() );
-    result.setEntryPoint( entryPointType.getFullyQualifiedName() );
+    result.setLaunchTarget( launchTarget );
+    result.setProjectName( type.getJavaProject().getElementName() );
+    if( ENTRY_POINT.equals( launchTarget ) ) {
+      result.setEntryPoint( type.getFullyQualifiedName() );
+    } else if( APP_CONFIG.equals( launchTarget ) ) {
+      result.setAppConfig( type.getFullyQualifiedName() );
+    }
     launchConfig.doSave();
     return result;
   }
