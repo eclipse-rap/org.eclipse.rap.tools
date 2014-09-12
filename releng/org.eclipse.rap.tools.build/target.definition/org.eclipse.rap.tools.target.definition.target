@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="15">
+<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="16">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jetty.bundles.f.feature.group" version="8.1.14.201311072346"/>
@@ -17,12 +17,12 @@
 <unit id="org.eclipse.jdt.source.feature.group" version="3.10.0.v20140606-1536"/>
 <unit id="org.eclipse.pde.feature.group" version="3.10.0.v20140606-1215"/>
 <unit id="org.eclipse.pde.source.feature.group" version="3.10.0.v20140606-1215"/>
-<unit id="org.eclipse.platform.feature.group" version="4.4.0.v20140606-1558"/>
+<unit id="org.eclipse.platform.feature.group" version="4.4.0.v20140606-1558"/>4.4.0.v20140606-1558
 <unit id="org.eclipse.platform.source.feature.group" version="4.4.0.v20140606-1558"/>
 <unit id="org.eclipse.rcp.feature.group" version="4.4.0.v20140606-1445"/>
 <unit id="org.eclipse.rcp.source.feature.group" version="4.4.0.v20140606-1445"/>
 <unit id="org.eclipse.sdk.ide" version="4.4.0.I20140606-1215"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.4milestones/S-4.4RC4-201406061215/"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>
