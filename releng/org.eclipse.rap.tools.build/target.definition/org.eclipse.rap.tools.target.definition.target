@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="21">
+<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="22">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jetty.bundles.f.feature.group" version="8.1.14.201311072346"/>
-<repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-8.x/8.1.14.v20131031/"/>
+<unit id="org.eclipse.jetty.bundles.f.feature.group" version="9.2.5.201411141551"/>
+<repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.2.5.v20141112/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.core.runtime.feature.feature.group" version="1.1.1.v20141128-1953"/>
