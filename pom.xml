@@ -33,7 +33,6 @@
     <module>tests/org.eclipse.rap.tools.tests</module>
     <!-- The feature -->
     <module>features/org.eclipse.rap.tools.feature</module>
-    <module>features/org.eclipse.rap.tools.transition.feature</module>
     <!-- The p2 repository -->
     <module>releng/org.eclipse.rap.tools.build/repository</module>
     <!-- The target platform -->
