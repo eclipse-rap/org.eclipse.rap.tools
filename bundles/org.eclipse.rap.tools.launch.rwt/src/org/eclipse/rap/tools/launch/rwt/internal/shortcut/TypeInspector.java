@@ -10,8 +10,10 @@
  ******************************************************************************/
 package org.eclipse.rap.tools.launch.rwt.internal.shortcut;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jdt.core.*;
-import org.eclipse.rap.tools.launch.rwt.internal.util.StringArrays;
 
 
 class TypeInspector {
@@ -46,9 +48,9 @@ class TypeInspector {
   }
 
   private boolean implementsEntryPoint() throws JavaModelException {
-    String[] superInterfaceNames = type.getSuperInterfaceNames();
-    return    StringArrays.contains( superInterfaceNames, "EntryPoint" ) //$NON-NLS-1$
-           || StringArrays.contains( superInterfaceNames, "IEntryPoint" ); //$NON-NLS-1$
+    List<String> superInterfaceNames = Arrays.asList( type.getSuperInterfaceNames() );
+    return    superInterfaceNames.contains( "EntryPoint" ) //$NON-NLS-1$
+           || superInterfaceNames.contains( "IEntryPoint" ); //$NON-NLS-1$
   }
 
   private boolean hasCreateUIMethod() {
@@ -71,8 +73,8 @@ class TypeInspector {
   }
 
   private boolean implementsApplicationConfiguration() throws JavaModelException {
-    String[] superInterfaceNames = type.getSuperInterfaceNames();
-    return StringArrays.contains( superInterfaceNames, "ApplicationConfiguration" ); //$NON-NLS-1$
+    List<String> superInterfaceNames = Arrays.asList( type.getSuperInterfaceNames() );
+    return superInterfaceNames.contains( "ApplicationConfiguration" ); //$NON-NLS-1$
   }
 
   private boolean hasConfigureMethod() {

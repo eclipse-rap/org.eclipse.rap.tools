@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
 package org.eclipse.rap.tools.launch.rwt.internal.delegate;
 
 import java.text.MessageFormat;
+import java.util.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.ILaunch;
@@ -19,7 +20,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.JavaLaunchDelegate;
 import org.eclipse.jdt.launching.SocketUtil;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
-import org.eclipse.rap.tools.launch.rwt.internal.util.*;
+import org.eclipse.rap.tools.launch.rwt.internal.util.BundleFileLocator;
+import org.eclipse.rap.tools.launch.rwt.internal.util.StringUtil;
 
 
 public class RWTLaunchDelegate extends JavaLaunchDelegate {
@@ -30,6 +32,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
 
   private RWTLaunch launch;
 
+  @Override
   public void launch( ILaunchConfiguration configuration,
                       String mode,
                       ILaunch launch,
@@ -57,26 +60,29 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     }
   }
 
+  @Override
   public String getMainTypeName( ILaunchConfiguration configuration ) {
     return "org.eclipse.rap.tools.launch.rwt.internal.jetty.JettyLauncher"; //$NON-NLS-1$
   }
 
+  @Override
   public String[] getClasspath( ILaunchConfiguration configuration ) throws CoreException {
-    String[] result = super.getClasspath( configuration );
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.rap.tools.launch.rwt" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.continuation" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.http" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.io" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.security" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.servlet" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.util" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.webapp" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "org.eclipse.jetty.xml" ) ); //$NON-NLS-1$
-    result = StringArrays.append( result, BundleFileLocator.locate( "javax.servlet" ) ); //$NON-NLS-1$
-    return result;
+    List<String> list = new ArrayList<String>( Arrays.asList( super.getClasspath( configuration ) ) );
+    list.add( BundleFileLocator.locate( "org.eclipse.rap.tools.launch.rwt" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.continuation" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.http" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.io" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.security" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.servlet" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.util" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.webapp" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.xml" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "javax.servlet" ) ); //$NON-NLS-1$
+    return list.toArray( new String[0] );
   }
 
+  @Override
   public String getProgramArguments( ILaunchConfiguration configuration ) {
     // don't call super, program arguments are not configurable via the UI
     String port = String.valueOf( launch.getPort() );
@@ -86,6 +92,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     return MessageFormat.format( "{0} {1} \"{2}\"", arguments ); //$NON-NLS-1$
   }
 
+  @Override
   public String getVMArguments( ILaunchConfiguration configuration ) throws CoreException {
     StringBuilder result = new StringBuilder();
     result.append( super.getVMArguments( configuration ) );
