@@ -20,7 +20,7 @@
    </license>
 
    <url>
-      <update label="Remote Application Platform (RAP) 2.3 Tools Repository" url="http://download.eclipse.org/rt/rap/tools/2.3/"/>
+      <update label="Remote Application Platform (RAP) 3.0 Tools Repository" url="http://download.eclipse.org/rt/rap/tools/3.0/"/>
    </url>
 
    <requires>
