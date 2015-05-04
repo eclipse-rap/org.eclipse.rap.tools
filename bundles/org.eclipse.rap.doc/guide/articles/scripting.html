@@ -410,7 +410,7 @@ widget.setData( &quot;foo&quot;, &quot;myData&quot; );</pre>
       example, you want a method to set test-id's on any given widget, your code may look like this:
     </p>
   <pre class="lang-java">static void setTestId( Widget widget, String value ) {
-  if( uiTestsEnabled && !widget.isDisposed() ) {
+  if( uiTestsEnabled &amp;&amp; !widget.isDisposed() ) {
     String $el = widget instanceof Text ? "$input" : "$el";
     String id = WidgetUtil.getId( widget );
     exec( "rap.getObject( '", id, "' ).", $el, ".attr( 'test-id', '", value + "' );" );
