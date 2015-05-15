@@ -18,6 +18,5 @@ Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.rap.tools.launch.internal;x-friends:="org.eclipse.rap.tools.tests",
- org.eclipse.rap.tools.launch.internal.junit;x-friends:="org.eclipse.rap.tools.tests",
  org.eclipse.rap.tools.launch.internal.tab;x-friends:="org.eclipse.rap.tools.tests",
  org.eclipse.rap.tools.launch.internal.util;x-friends:="org.eclipse.rap.tools.tests"
