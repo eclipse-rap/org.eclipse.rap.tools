@@ -5,36 +5,64 @@
 <head>
   <meta name="copyright" content="Copyright (c) 2012, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Tree and Table Enhancements</title>
+  <title>Tree, Table and the Nebula Grid</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
 </head>
 <body>
+  <h1>Tree, Table and the Nebula Grid</h1>
+  <h3 id="virtual">SWT Tree/Table</h3>
+  <p>
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Tree.html">Tree</a></em>
+    and
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Table.html">Table</a></em>
+    are among the most powerful widgets in SWT and RAP.
+    Thanks to <a href="#jface">JFace</a> and virtual
+    rendering they can easily display vast amounts of data. Any tree/table will only render HTML for the
+    items that are currently visible on screen, keeping client memory consumption low and initial
+    rendering time short regardless of item count. Also, if the widget (or viewer) is created with a
+    <em><a href="../reference/api/org/eclipse/swt/SWT.html#VIRTUAL">VIRTUAL</a></em>
+    flag, items can be created lazily. As a result, data that is not (yet) visible will also
+    not be transferred to the client. However, you will also experience a small rendering delay
+    when scrolling to previously unseen data. You can reduce this effect by
+    <a href="#caching">pre-caching</a> some items.
+  </p>
+  <h3 id="nebula">Nebula Grid</h3>
+  <p>
+    In addition to the <em>Tree</em> and <em>Table</em> widgets, RAP also includes a port of the
+    <a href="http://www.eclipse.org/nebula/widgets/grid/grid.php">Nebula</a>
+    <a href="../reference/api/org/eclipse/nebula/widgets/grid/Grid.html"><em>Grid</em></a> and
+    it's <a href="../reference/api/org/eclipse/nebula/jface/gridviewer/package-summary.html">JFace
+    Viewers</a>.
+    (As of RAP 3.0. RAP 2.x compatible ports of the Grid are available in the
+    <a href="http://eclipse.org/rap/incubator/">RAP Incubator</a>.)
+    The <em>Grid</em> API is very similar to <em>Tree</em> and <em>Table</em>,
+    but includes a number of additional features like column grouping,
+    checkboxes on multiple columns, variable/automatic item height, and a column footer.
+    (Note that for technical reasons the RAP port can only support a subset of the features of the
+    original Nebula Grid.)
+  </p>
+  <p>
+    The <em>Grid</em> and it's viewers are placed in separate bundles. To use them you need
+    to add a dependency from your project to the <em>org.eclipse.rap.nebula.widgets.grid</em>
+    and <em>org.eclipse.rap.nebula.jface.gridviewer</em> Plug-Ins, or to the
+    <em>org.eclipse.nebula.widgets.grid</em> and <em>org.eclipse.nebula.jface.gridviewer</em>
+    packages.
+  </p>
 
-  <h1>Tree and Table Enhancements</h1>
+  <h3 id="enhancements">RAP Enhancements</h3>
+  <p>
+    RAP adds some some significant functionality to <em>Tree</em>, <em>Table</em> and <em>Grid</em>
+    not found in their SWT/Nebula counterparts. Like most RAP enhancements, these features are
+    <a href="rwt.html#setdata">activated using the <em>setData</em> method</a>. Even when
+    using a viewer this can still be done in one line:
+  </p>
+  <pre class="lang-java">viewer.getTable().setData( RWT.MARKUP_ENABLED, Boolean.TRUE );</pre>
+  <p>
+    The following is a list of RAP exclusive features supported by
+    <em>Tree</em>, <em>Table</em> and/or <em>Grid</em>:
+  </p>
 
-   <p>
-     <em><a href="../reference/api/org/eclipse/swt/widgets/Tree.html">Tree</a></em>
-     and
-     <em><a href="../reference/api/org/eclipse/swt/widgets/Table.html">Table</a></em>
-     are the most powerful widgets in RAP. Not only can they easily display
-     vast amounts of data (thanks to JFace and virtual rendering) in various ways, they also feature
-     some additional functionality in RAP compared to their SWT counterparts.
-   </p>
-   <p>The following is a list of hints you might find helpful when working with Tree or Table.</p>
-
-   <h3 id="jface" >JFace support</h3>
-   <p>
-     RAP includes it's own JFace implementation that can be used
-     to sort, filter and edit data in Trees and Tables.
-     Simply create Tree/Table
-     <a href="/help/topic/org.eclipse.platform.doc.isv/guide/jface_viewers.htm">viewers</a>
-     instead of the widget itself. RAP-specific features can still be enabled by accessing the widget
-     within the viewer directly.
-      Example:
-   </p>
-   <pre class="lang-java">viewer.getTable().setData( RWT.MARKUP_ENABLED, Boolean.TRUE );</pre>
-
-    <h3 id="fixedcolumns">Fixed Columns</h3>
+    <h3 id="fixedcolumns">Fixed Columns (Tree and Table)</h3>
     <p>
       When a table or tree displays many columns, the user often has to scroll horizontally to see
       specific data.
@@ -49,12 +77,12 @@
     </p>
     <pre class="lang-java">tree.setData( RWT.FIXED_COLUMNS, new Integer( 1 ) );</pre>
 
-    <h3 id="templats">Templates</h3>
+    <h3 id="templats">Templates (Tree, Table and Grid)</h3>
     <p>
-      Row templates allow developers to customize the way a Table or Tree present
-      Items on screen, completely replacing the default column layout.
+      Row templates allow developers to customize the way a Table/Tree/Grid present
+      items on screen, completely replacing the default column layout.
       A template consists of text and image cells that can be freely arranged.
-      These cells can display either data from a Tree- or TableItem, or static content.
+      These cells can display either data from an item, or static content.
     </p>
     <p>
       <img src="../images/rowtemplate.png" />
@@ -65,7 +93,7 @@
       and then add any number of
       <em><a href="../reference/api/org/eclipse/rap/rwt/template/ImageCell.html">ImageCell</a></em> and
       <em><a href="../reference/api/org/eclipse/rap/rwt/template/TextCell.html">TextCell</a></em> instances.
-      To apply it on a Table or a Tree,
+      To apply it,
       <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#ROW_TEMPLATE">RWT.ROW_TEMPLATE</a></em> is used:
     </p>
     <pre class="lang-java">Template template = new Template();
@@ -82,8 +110,8 @@ table.setData( RWT.ROW_TEMPLATE, template );</pre>
       To position a cell, you have to set exactly two horizontal and two vertical dimensions
       (two out of left, right and width, and two out of top, bottom and height). The cells are
       positioned relative to the area that is available to display
-      the current item - which is usually the inner width of the Tree/Table widget and the height
-      given using <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#CUSTOM_ITEM_HEIGHT">RWT.CUSTOM_ITEM_HEIGHT</a></em>.
+      the current item - which is usually the inner width of the Tree/Table/Grid widget and the height
+      given using <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#CUSTOM_ITEM_HEIGHT">RWT.CUSTOM_ITEM_HEIGHT</a></em> or the <em>Grid.setItemHeight</em> method.
       The values for left, top, right and bottom may be absolute (in pixel), relative
       (in percentage), or the sum of both. The values for width and height may only be absolute.
     </p>
@@ -98,7 +126,7 @@ table.setData( RWT.ROW_TEMPLATE, template );</pre>
       Each cell can either display static content (using
       <em><a href="../reference/api/org/eclipse/rap/rwt/template/TextCell.html#setText(java.lang.String)">setText</a></em> or
       <em><a href="../reference/api/org/eclipse/rap/rwt/template/ImageCell.html#setImage(org.eclipse.swt.graphics.Image)">setImage</a></em>
-      on the cell itself), or content form the current Tree/Table Item. For this the cell
+      on the cell itself), or content form the current Tree/Table/Grid item. For this the cell
       needs to be bound to a specific column using the
       <em><a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setBindingIndex(int)">bindingIndex</a></em>. For example, this
       shows only the text from the first column:
@@ -129,37 +157,31 @@ item.setText( 0, "Data in the first column" );</pre>
       <a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setName(java.lang.String)">can be given a name</a>
       that is reflected in the <em>event.text</em> field in order to identify the selected cell.
     </p>
-    <h3 id="markup">Markup Support</h3>
+    <h3 id="markup">Markup Support (Tree, Table and Grid)</h3>
     <p>
-      You use the <a href="markup.html#markup">markup feature</a> to format the text
+      You can use the <a href="markup.html#markup">markup feature</a> to format the text
       within a cell or embed links and additional images.
+      See also <q><a href="markup.html#grid">Markup on List, Tree, Table and Grid</a></q>.
     </p>
 
-    <h3 id="break">Line breaks in Columns</h3>
+    <h3 id="break">Line breaks in Columns (Tree, Table and Grid)</h3>
     <p>
-      Unlike SWT, RAP supports line breaks ( <q>\n</q> ) in a columns text property.
+      Unlike SWT, RAP supports line breaks (<q>\n</q>) in a columns text property.
     </p>
 
-    <h3 id="virtual">Virtual rendering and performance</h3>
+    <h3 id="caching">Item Pre-Caching (Tree and Table)</h3>
     <p>
-      There are two ways Tree and Table support virtual rendering. First, any tree/table will
-      only render HTML for the data that is currently visible on screen. (Unlike <em>List</em>,
-      which always renders it's entire content.)
-      Second, if the widget (or viewer) is created with a
-      <em><a href="../reference/api/org/eclipse/swt/SWT.html#VIRTUAL">VIRTUAL</a></em>
-      flag, items can be created lazily. As a result, data that is not visible will also
-      not be transferred to the client, saving even more memory and initial rendering time.
-     </p>
-     <p>
-      The drawback of these features is a slight impact on performance when scrolling. If you
-      experience unsatisfying performance while scrolling, try reducing the number of columns,
-      or hide some columns (setting width to zero). When using the <em>VIRTUAL</em> flag,
-      you will also experience a small rendering delay when scrolling to previously unseen data.
-      You can reduce this effect by pre-caching data just above and below the visible area using
+      By default, a <em>VIRTUAL Tree/Table</em> will resolve only items currently on screen. If an unresolved
+      item becomes visible, a placeholder (<q>...</q>) will be displayed while data is transferred to the client.
+      This can often be avoided by also resolving a number of items above and below the visible area.
+      You can set the amount of items to be pre cached using
       <code><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#PRELOADED_ITEMS">RWT.PRELOADED_ITEMS</a></code>.
     </p>
 
-    <h3 id="rendering">Selection/Hover rendering order</h3>
+    <h3 id="rendering">Selection/Hover rendering order (Tree, Table and Grid)</h3>
+    <p>
+      <b>Note:</b><em>Grid</em> uses the theming of <em>Tree</em>, so everything in this section that applies to the Tree also applies to the Grid.
+    </p>
     <p>
       Any item and every cell of an item may have a custom background to highlight a specific unit
       of data. In SWT (and RAP, by default), hovering or selecting such an item will completely
@@ -240,17 +262,6 @@ TableItem:linesvisible:even:selected {
       <a href="../reference/theming/Properties.html#format/rgba-color">rgba notation</a>.
       This would then create a hover/selection effect
       with the items background color(s) shining through.
-    </p>
-
-    <h3 id="nebula">Alternative: Nebula Grid</h3>
-    <p>
-      Available in the <a href="http://eclipse.org/rap/incubator/">RAP Incubator</a>
-      is a RAP implementation of the
-      <a href="http://www.eclipse.org/nebula/widgets/grid/grid.php">Nebula Grid</a>
-      widget. Based on the same JavaScript
-      code as tree and table, it adds features like column grouping,
-      checkboxes on multiple columns, variable item height and column footer. (It does not
-      support <i>all</i> features of the original Nebula Grid.)
     </p>
 
 </body>

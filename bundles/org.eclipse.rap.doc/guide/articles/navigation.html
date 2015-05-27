@@ -46,8 +46,8 @@
 List list = new List( parent, style );
 list.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
 list.add( "This link opens &lt;a href='http://eclipse.org/rap' target='_blank'&gt;a new tab&lt;/a&gt;" );</pre>
-    <p>
-      When embedding a link in <em>List</em>, <em>Tree</em>, or <em>Table</em> widgets, it may also
+    <p id="selection-link">
+      When embedding a link in <em>List</em>, <em>Tree</em>, <em>Table</em> or <em>Grid</em> widgets, it may also
       be used to issue selection events instead of navigating to an URL. To do so, the target attribute
       must be set to <code>"_rwt"</code>. If the link is clicked now, a <em>Selection</em> event will be fired. This
       event is different from ordinary <em>Selection</em> events in that the <em>detail</em>

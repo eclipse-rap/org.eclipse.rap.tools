@@ -180,10 +180,11 @@ linkLabel.setText(
 Label navLabel = new Label( parent, SWT.NONE );
 navLabel.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
 navLabel.setText( "Go to &lt;a href='#navPoint'&gt;navPoint&lt;/a&gt;!" );</pre>
-  <h3>Markup on List, Tree and Table</h3>
+  <h3 id="grid">Markup on List, Tree, Table, and Grid</h3>
   <p>
-    After setting the <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#MARKUP_ENABLED">RWT.MARKUP_ENABLED</a></em> property,
-    markup is enabled for all items of the widget, except for columns.
+    After setting the <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#MARKUP_ENABLED">RWT.MARKUP_ENABLED</a></em>
+    property of a <em>Tree</em>/<em>Table</em>/<em>Grid</em>/<em>List</em> widget to <em>Boolean.TRUE</em>,
+    markup is enabled for all its items, except columns.
     There is, however, one more property that might need to be set.
     Since RAP can not predict how high items with markup are going to be, it will
     not include it in the layout calculations for the height of the rows. This may result in cut off
@@ -203,7 +204,11 @@ markupList.setItems( new String[]{
   "with&lt;br/&gt;break"
 } );</pre>
   <p>
-    When calculating the value for <code>CUSTOM_ITEM_HEIGHT</code>, account for the cell/item
+    <em>RWT.CUSTOM_ITEM_HEIGHT</em> applies only to <em>Tree</em>, <em>Table</em> and <em>List</em>.
+    For <em>Grid</em>, use its <em>setItemHeight</em> method.
+  </p>
+  <p>
+    When calculating the value for the item height, account for the cell/item
     padding defined in the
     <a href="../reference/theming/List.html#List-Item">List</a>/<a href="../reference/theming/Tree.html#Tree-Cell">Tree</a>/<a href="../reference/theming/Table.html#Table-Cell">Table</a>
     <a href="theming.html">theming</a>.
@@ -212,8 +217,13 @@ markupList.setItems( new String[]{
     If it is higher, the content will be top-aligned (still respecting padding) and cut off at the bottom.
   </p>
   <p>
-    <strong>Note:</strong> To achieve more complex layouts within a Tree or Table item, consider
+    <strong>Note:</strong> To achieve more complex layouts within an item, consider
     using <a href="tree-table.html#templates">templates</a> instead.
+  </p>
+  <p>
+    All widgets that support markup and selection also support a special kind of hyperlink
+    that can be intercepted with a selection event. Read more about it
+    <a href="navigation.html#selection-link">in the article on browser navigation</a>.
   </p>
   <h3>Editing</h3>
   <p>
