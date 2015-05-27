@@ -122,6 +122,8 @@
           href="guide/reference/api/org/eclipse/rap/rwt/theme/package-summary.html"/>
       <topic label="org.eclipse.rap.rwt.widgets"
           href="guide/reference/api/org/eclipse/rap/rwt/widgets/package-summary.html"/>
+      <topic label="org.eclipse.rap.fileupload"
+          href="guide/reference/api/org/eclipse/rap/fileupload/package-summary.html"/>
       <topic label="org.eclipse.swt"
           href="guide/reference/api/org/eclipse/swt/package-summary.html"/>
       <topic label="org.eclipse.swt.accessibility"
@@ -140,6 +142,10 @@
           href="guide/reference/api/org/eclipse/swt/layout/package-summary.html"/>
       <topic label="org.eclipse.swt.widgets"
           href="guide/reference/api/org/eclipse/swt/widgets/package-summary.html"/>
+      <topic label="org.eclipse.nebula.widgets.grid"
+          href="guide/reference/api/org/eclipse/nebula/widgets/grid/package-summary.html"/>
+      <topic label="org.eclipse.nebula.jface.gridviewer"
+          href="guide/reference/api/org/eclipse/nebula/jface/gridviewer/package-summary.html"/>
     </topic>
 
     <topic label="RAP Extension Points Reference"

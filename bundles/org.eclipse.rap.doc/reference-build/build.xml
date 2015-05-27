@@ -34,6 +34,30 @@
         <include name="org/eclipse/**/*.java" />
         <exclude name="org/eclipse/**/internal/**/*.java" />
       </fileset>
+      <fileset
+          dir="${runtimeSourceDir}/bundles/org.eclipse.rap.filedialog/src"
+          defaultexcludes="yes">
+        <include name="org/eclipse/**/*.java" />
+        <exclude name="org/eclipse/**/internal/**/*.java" />
+      </fileset>
+      <fileset
+          dir="${runtimeSourceDir}/bundles/org.eclipse.rap.fileupload/src"
+          defaultexcludes="yes">
+        <include name="org/eclipse/**/*.java" />
+        <exclude name="org/eclipse/**/internal/**/*.java" />
+      </fileset>
+      <fileset
+          dir="${runtimeSourceDir}/bundles/org.eclipse.rap.nebula.widgets.grid/src"
+          defaultexcludes="yes">
+        <include name="org/eclipse/**/*.java" />
+        <exclude name="org/eclipse/**/internal/**/*.java" />
+      </fileset>
+      <fileset
+          dir="${runtimeSourceDir}/bundles/org.eclipse.rap.nebula.jface.gridviewer/src"
+          defaultexcludes="yes">
+        <include name="org/eclipse/**/*.java" />
+        <exclude name="org/eclipse/**/internal/**/*.java" />
+      </fileset>
       <doctitle>
         <![CDATA[<h1>Eclipse Remote Application Platform API Reference</h1>]]>
       </doctitle>
