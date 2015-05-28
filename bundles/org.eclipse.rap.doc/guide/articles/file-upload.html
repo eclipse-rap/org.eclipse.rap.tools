@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="copyright" content="Copyright (c) 2012, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>File Upload</title>
+  <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
+</head>
+<body>
+
+  <h1>File Upload</h1>
+  <p>
+    This article describes how to allow users to upload files from their local file system to the
+    RAP server or another HTTP server.
+    This can be done using a RAP <a href="#fileupload"><em>FileUpload</em></a> widget,
+    the <a href="#dnd">drag and drop</a> API, or a <a href="#file-dialog"><em>FileDialog</em></a>.
+  </p>
+
+  <h2>FileUpload Widget</h2>
+  <p id="fileupload">
+    The
+    <em><a href="../reference/api/org/eclipse/rap/rwt/widgets/FileUpload.html">FileUpload</a></em>
+    widget looks like a push button, but it will open the file picker dialog of the user's
+    browser when clicked (it wraps an HTML <code>&lt;input type="file"/&gt;</code> element).
+    When one or more files have been selected (indicated by a <em>Selection</em> event), these
+    files can then be sent to any URL using the <em>submit</em> method.
+  </p>
+  <p>
+    To receive a file on the server, RAP provides a service in the bundle
+    <em>org.eclipse.rap.fileupload</em>.
+    To use this service, create an instance of
+    <em><a href="../reference/api/org/eclipse/rap/fileupload/FileUploadHandler.html">FileUploadHandler</a></em>
+    and obtain the upload URL from its method <code>getUploadUrl</code>.
+    Here's a minimal example that uploads a file and stores it in a temporary directory:
+  </p>
+  <pre class="lang-java">final DiskFileUploadReceiver receiver = new DiskFileUploadReceiver();
+final FileUploadHandler uploadHandler = new FileUploadHandler( receiver );
+uploadHandler.addUploadListener( new FileUploadListener() {
+  public void uploadProgress( FileUploadEvent event ) {}
+  public void uploadFailed( FileUploadEvent event ) {}
+  public void uploadFinished( FileUploadEvent event ) {
+    System.out.println( "Stored file: " + receiver.getTargetFiles()[ 0 ].getAbsolutePath() );
+  }
+} );
+
+final FileUpload fileUpload = new FileUpload( parent, SWT.NONE );
+fileUpload.setText( "Select File" );
+fileUpload.addSelectionListener( new SelectionAdapter() {
+  @Override
+  public void widgetSelected( SelectionEvent e ) {
+    fileUpload.submit( uploadHandler.getUploadUrl() );
+  }
+} );
+  </pre>
+  <p>
+    To upload multiple files at once, create the <em>FileUpload</em> with the
+    <em>SWT.MULTI</em> flag. The files are stored in the temporary directory indefinitely,
+    so you should take care to delete them once they are no longer needed.
+  </p>
+
+  <h2 id="dnd">File Drag and Drop</h2>
+  <p>
+    Modern browsers allow selecting a file from the file system using drag and drop. In RAP this
+    feature has been integrated into the SWT drag and drop API. To make a control a target for file
+    drop and drop, create an instance of
+    <em><a href="../reference/api/org/eclipse/rap/swt/dnd/DropTarget.html">DropTarget</a></em>
+    with a
+    <em><a href="../reference/api/org/eclipse/rap/rwt/dnd/ClientFileTransfer.html">ClientFileTransfer</a></em>.
+    The
+    <a href="../reference/api/org/eclipse/swt/dnd/DropTargetAdapter.html#drop(org.eclipse.swt.dnd.DropTargetEvent)">drop event</a>
+    <em><a href="../reference/api/org/eclipse/swt/events/TypedEvent.html#data">data</a></em>
+    will the contain an array of
+    <em><a href="../reference/api/org/eclipse/rap/rwt/client/ClientFile.html">ClientFile</a></em>
+    objects:
+  </p>
+  <pre class="lang-java">DropTarget dropTarget = new DropTarget( control, DND.DROP_MOVE );
+dropTarget.setTransfer( new Transfer[] { ClientFileTransfer.getInstance() } );
+dropTarget.addDropListener( new DropTargetAdapter() {
+  @Override
+  public void drop( DropTargetEvent event ) {
+    handleFileDrop( ( ClientFile[] )event.data );
+  }
+} );
+  </pre>
+  <p>
+    Note that unlike <q>normal</q> drag gestures, the drag feedback (the icon attached to
+    the mouse cursor) is rendered by the operating system and may therefore look and behave
+    different than usual in RAP. Also, the drop operation will always be move, even when
+    the user holds a modifier key.
+  </p>
+  <p>
+    The <em>ClientFile</em> objects represent the files selected on the client, but they are not
+    uploaded yet. To do so, you have to use the
+    <em><a href="../reference/api/org/eclipse/rap/rwt/client/ClientFileUploader.html">ClientFileUploader</a></em>
+    service and, <a href="#fileupload">like with
+    the <em>FileUpload</em> widget above</a>, a <em>FileUploadHandler</em>:
+  </p>
+<pre>private void handleFileDrop( ClientFile[] files ) {
+  final DiskFileUploadReceiver receiver = new DiskFileUploadReceiver();
+  final FileUploadHandler uploadHandler = new FileUploadHandler( receiver );
+  uploadHandler.addUploadListener( new FileUploadListener() {
+    public void uploadProgress( FileUploadEvent event ) {}
+    public void uploadFailed( FileUploadEvent event ) {}
+    public void uploadFinished( FileUploadEvent event ) {
+      System.out.println( "Stored file: " + receiver.getTargetFiles()[ 0 ].getAbsolutePath() );
+    }
+  } );
+  RWT.getClient().getService( ClientFileUploader.class ).submit( uploadHandler.getUploadUrl(), files );
+}
+</pre>
+
+  <h2 id="file-dialog">FileDialog</h2>
+  <p>
+    This is basically the all-in-one solution. The
+    <em><a href="../reference/api/org/eclipse/rap/swt/widget/FileDialog.html">FileDialog</a></em>
+    provides an SWT compatible
+    API that allows the user to select one or multiple files for the application to open.
+    Once a file has been selected using the <em>FileUpload</em> (file picker) or file drag
+    and drop, they are uploaded immediately. The dialog shows the upload progress
+    (using <a href="server-push.html"><em>ServerPush</em></a>) and - unless canceled - can only be
+    closed once all uploads are complete.
+  </p>
+  <p>
+    <img src="../images/file-dialog.png" />
+  </p>
+  <p>
+    The <em>FileDialog</em> can be used in RAP almost like in SWT, but there are some differences:
+  </p>
+  <ul>
+    <li>
+      The <em>FileDialog</em> is <i>not</i> part of the RWT bundle. Because of its additional
+      dependencies, it is contained in a bundle of its own, named <em>org.eclipse.rap.filedialog</em>.
+    </li>
+    <li>
+      Unlike the SWT <em>FileDialog</em>, the RAP version can only select files to <q>open</q>
+      (i.e. upload). Creating the <em>FileDialog</em> with the <em>SWT.SAVE</em> flag has no effect.
+      However, <em>SWT.MULTI</em> is supported.
+    </li>
+    <li>
+      When no files are selected, the dialog shows a placeholder message. This message can be
+      localized (see <a href="internationalization.html#messages">Localizing RAP Messages</a>).
+      The corresponding properties are contained in the file <em>RWTMessages.properties</em>
+      and they are prefixed with <em>RWT_FileDialog</em>.
+    </li>
+    <li>
+      <p>
+        <a href="rwt.html#dialog">Like all dialogs</a>, the <em>FileDialog</em> has to be opened
+        differently in the <a href="application-setup.html#compat">JEE compatibility mode</a>:
+      </p>
+  <pre class="lang-java">final FileDialog fileDialog = new FileDialog( parent, SWT.APPLICATION_MODAL );
+
+// SWT compatibility mode:
+System.out.println( "Stored file: " + fileDialog.open() );
+
+// JEE compatibility mode:
+DialogUtil.open( fileDialog, new DialogCallback() {
+  public void dialogClosed( int returnCode ) {
+    System.out.println( "Stored file: " + fileDialog.getFileName() );
+  }
+} );
+  </pre>
+    </li>
+  </ul>
+</body>
+</html>

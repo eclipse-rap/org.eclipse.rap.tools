@@ -87,20 +87,8 @@
       <b>HTTP File Upload</b>
       <br/>
       Unlike SWT, RWT can not simply access the user's file system and read data from it.
-      As an alternative, the
-      <em><a href="../reference/api/org/eclipse/rap/rwt/widgets/FileUpload.html">FileUpload</a></em>
-      widget can be used. The widget looks like a button, but when clicked will open the file picker
-      dialog of the user's browser.
-      After a file has been selected, it can programmatically be send to any HTTP server.
-      <i>As of RAP 2.3 it is also possible to use any widget as a drop target for files dragged from
-      outside the browser (e.g. the Windows Explorer).</i>
-      <br/>
-      <strong> Important:</strong> These features only allow <i>sending</i> the file to a given
-      URL, they do not handle the <i>receiving</i> part.
-      If you require a complete solution for uploading and
-      opening the file in your application, consider using the
-      <a href="http://wiki.eclipse.org/RAP/Incubator/File_Upload">FileDialog</a>
-      implementation based on the <em>FileUpload</em> widget.
+      Therefore RAP provides several ways to upload files within the RAP application. Read more
+      about it <a href="file-upload.html">here</a>.
     </li>
 
     <li style="margin-bottom:10px">
@@ -205,7 +193,7 @@
       See also <q><a href="custom-widget.html#selfdrawing">Self-Drawing custom widgets</a></q>.
     </li>
 
-    <li style="margin-bottom:10px">
+    <li id="dialog" style="margin-bottom:10px">
       <b>Limitations in Dialogs:</b>
       <em><a href="../reference/api/org/eclipse/swt/widgets/Dialog.html">Dialog</a></em>,
       <em><a href="../reference/api/org/eclipse/swt/widgets/ColorDialog.html">ColorDialog</a></em>,

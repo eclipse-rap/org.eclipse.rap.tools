@@ -38,6 +38,8 @@
     </topic>
     <topic href="guide/articles/navigation.html" label="Browser Navigation and History">
     </topic>
+    <topic href="guide/articles/file-upload.html" label="File Upload">
+    </topic>
     <topic
         label="RWT Theming"
         href="guide/articles/theming.html"/>
