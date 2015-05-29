@@ -275,7 +275,7 @@ ul.inheritsList
           <a href="../symbols/Widget.html">Widget</a>.<br />
         
 
-        RWT Scripting analoge to org.eclipse.swt.widgets.Control. All controls given by
+        RWT Scripting analog to org.eclipse.swt.widgets.Control. All controls given by
 <a href="../symbols/rap.html#.getObject">rap.getObject</a> are instances of this type, even if their specific subtype is not
 documented.
 
@@ -350,16 +350,6 @@ all keyboard events to be delivered to it.</div>
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Control.html#getData">getData</a></b>(property)
-                </div>
-                <div class="description">Returns the application defined property of the receiver
-with the specified name, or null if it has not been set.</div>
-              </td>
-            </tr>
-          
-            <tr>
-              <td class="attributes">&nbsp;</td>
-              <td class="nameDescription">
                 <div class="fixedFont"><b><a href="../symbols/Control.html#getEnabled">getEnabled</a></b>()
                 </div>
                 <div class="description">Returns <code>true</code> if the receiver is enabled, and
@@ -419,16 +409,6 @@ if the argument is null.</div>
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/Control.html#setData">setData</a></b>(property, value)
-                </div>
-                <div class="description">Sets the application defined property of the receiver
-with the specified name to the given value.</div>
-              </td>
-            </tr>
-          
-            <tr>
-              <td class="attributes">&nbsp;</td>
-              <td class="nameDescription">
                 <div class="fixedFont"><b><a href="../symbols/Control.html#setEnabled">setEnabled</a></b>(enabled)
                 </div>
                 <div class="description">Enables the receiver if the argument is <code>true</code>,
@@ -473,7 +453,7 @@ and marks it invisible otherwise.</div>
 
         
         <dl class="inheritsList">
-        
+        <dt>Methods borrowed from class <a href="../symbols/Widget.html">Widget</a>: </dt><dd><a href="../symbols/Widget.html#getData">getData</a>, <a href="../symbols/Widget.html#setData">setData</a></dd>
         </dl>
         
       
@@ -842,60 +822,6 @@ All possible values are available as constants on the <a href="../symbols/SWT.ht
 
           <hr />
         
-          <a name="getData"> </a>
-          <div class="fixedFont">
-
-          <span class="light">{var}</span>
-          <b>getData</b>(property)
-
-          </div>
-          <div class="description">
-            Returns the application defined property of the receiver
-with the specified name, or null if it has not been set.
-<p>
-  The java widget properties can be accessed if the
-  property name was registered with WidgetUtil.registerDataKeys.
-</p>
-            
-          </div>
-
-          
-
-            
-              <dl class="detailList">
-              <dt class="heading">Parameters:</dt>
-              
-                <dt>
-                  <span class="light fixedFont">{string}</span> <b>property</b>
-                  
-                </dt>
-                <dd>the name of the property</dd>
-              
-              </dl>
-            
-            
-            
-            
-            
-              <dl class="detailList">
-              <dt class="heading">Returns:</dt>
-              
-                <dd><span class="light fixedFont">{var}</span> the value</dd>
-              
-              </dl>
-            
-            
-            
-              <dl class="detailList">
-              <dt class="heading">See:</dt>
-              
-                <dd><a href="../symbols/Control.html#setData">Control#setData</a></dd>
-              
-              </dl>
-            
-
-          <hr />
-        
           <a name="getEnabled"> </a>
           <div class="fixedFont">
 
@@ -1105,59 +1031,6 @@ if the argument is null.
             
             
             
-            
-
-          <hr />
-        
-          <a name="setData"> </a>
-          <div class="fixedFont">
-
-          
-          <b>setData</b>(property, value)
-
-          </div>
-          <div class="description">
-            Sets the application defined property of the receiver
-with the specified name to the given value.
-<p>
-  The java widget is not affected by this method, but can itself set this object's
-  properties if the name was registered with WidgetUtil.registerDataKeys.
-</p>
-            
-          </div>
-
-          
-
-            
-              <dl class="detailList">
-              <dt class="heading">Parameters:</dt>
-              
-                <dt>
-                  <span class="light fixedFont">{string}</span> <b>property</b>
-                  
-                </dt>
-                <dd>the name of the property</dd>
-              
-                <dt>
-                  <span class="light fixedFont">{var}</span> <b>value</b>
-                  
-                </dt>
-                <dd>the new value for the property</dd>
-              
-              </dl>
-            
-            
-            
-            
-            
-            
-            
-              <dl class="detailList">
-              <dt class="heading">See:</dt>
-              
-                <dd><a href="../symbols/Control.html#getData">Control#getData</a></dd>
-              
-              </dl>
             
 
           <hr />
@@ -1923,7 +1796,7 @@ are notified right away.
 
 <!-- ============================== footer ================================= -->
     <div class="fineprint" style="clear:both">
-      Copyright (c) EclipseSource and others 2013, 2014. All rights reserved.
+      Copyright (c) EclipseSource and others 2013, 2015. All rights reserved.
     </div>
   </body>
 </html>

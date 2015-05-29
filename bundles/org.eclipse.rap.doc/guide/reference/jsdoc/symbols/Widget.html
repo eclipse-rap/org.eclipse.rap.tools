@@ -273,7 +273,7 @@ ul.inheritsList
         
         
 
-        RWT Scripting analoge to org.eclipse.swt.widgets.Widget. All widgets given by
+        RWT Scripting analog to org.eclipse.swt.widgets.Widget. All widgets given by
 <a href="../symbols/rap.html#.getObject">rap.getObject</a> are instances of this type, even if their specific subtype is not
 documented.
 
@@ -314,6 +314,44 @@ documented.
       
 
 <!-- ============================== methods summary ======================== -->
+      
+        
+        
+        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Widget.">
+          <caption>Method Summary</caption>
+          <thead>
+            <tr>
+              <th scope="col">Method Attributes</th>
+              <th scope="col">Method Name and Description</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Widget.html#getData">getData</a></b>(property)
+                </div>
+                <div class="description">Returns the application defined property of the receiver
+with the specified name, or null if it has not been set.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/Widget.html#setData">setData</a></b>(property, value)
+                </div>
+                <div class="description">Sets the application defined property of the receiver
+with the specified name to the given value.</div>
+              </td>
+            </tr>
+          
+          </tbody>
+        </table>
+        
+
+        
       
 <!-- ============================== events summary ======================== -->
       
@@ -384,6 +422,118 @@ documented.
 
 <!-- ============================== method details ========================= -->
       
+        <div class="sectionTitle">
+          Method Detail
+        </div>
+        
+          <a name="getData"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{*}</span>
+          <b>getData</b>(property)
+
+          </div>
+          <div class="description">
+            Returns the application defined property of the receiver
+with the specified name, or null if it has not been set.
+<p>
+  The java widget properties can be accessed if the
+  property name was registered with WidgetUtil.registerDataKeys.
+</p>
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>property</b>
+                  
+                </dt>
+                <dd>the name of the property</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{*}</span> the value</dd>
+              
+              </dl>
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd>Control#setData</dd>
+              
+              </dl>
+            
+
+          <hr />
+        
+          <a name="setData"> </a>
+          <div class="fixedFont">
+
+          
+          <b>setData</b>(property, value)
+
+          </div>
+          <div class="description">
+            Sets the application defined property of the receiver
+with the specified name to the given value.
+<p>
+  The java widget is not affected by this method, but can itself set this object's
+  properties if the name was registered with WidgetUtil.registerDataKeys.
+</p>
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>property</b>
+                  
+                </dt>
+                <dd>the name of the property</dd>
+              
+                <dt>
+                  <span class="light fixedFont">{*}</span> <b>value</b>
+                  
+                </dt>
+                <dd>the new value for the property</dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd>Control#getData</dd>
+              
+              </dl>
+            
+
+          
+        
+      
 
 <!-- ============================== event details ========================= -->
       
@@ -394,7 +544,7 @@ documented.
 
 <!-- ============================== footer ================================= -->
     <div class="fineprint" style="clear:both">
-      Copyright (c) EclipseSource and others 2013, 2014. All rights reserved.
+      Copyright (c) EclipseSource and others 2013, 2015. All rights reserved.
     </div>
   </body>
 </html>
