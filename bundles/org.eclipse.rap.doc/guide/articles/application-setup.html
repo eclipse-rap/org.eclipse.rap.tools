@@ -89,13 +89,25 @@
     <a href="custom-widget.html#browser">browser-based custom widgets</a>.
   </p>
 
-  <h2 id="workbench">Workbench 3.x</h2>
+  <h2 id="workbench">Eclipse Workbench (RCP)</h2>
   <p>
-    If you're building an application based on the Eclipse 3.x workbench, you need a platform that
+    If you're building an application based on the Eclipse workbench, you need a platform that
     includes the Equinox OSGi implementation and the extension registry.
+    Moreover, these applications require the SWT compatibility mode.
+  </p>
+
+  <h3>Eclipse 3.x</h3>
+  <p>
     The application and all contributions, such as views or themes, must be
     <a href="branding.html">registered as extensions</a>.
-    In this setup, the SWT compatibility mode is enforced.
+  </p>
+
+  <h3>Eclipse 4.x</h3>
+  <p>
+    Eclipse 4.x applications can run on RAP using the E4 support in the
+    <a href="http://www.eclipse.org/rap/incubator/">RAP Incubator</a>.
+    For details, see the
+    <a href="http://wiki.eclipse.org/RAP/Eclipse4">RAP E4 wiki page</a>.
   </p>
 
   <h2 id="summary">Summary</h2>
@@ -106,13 +118,13 @@
     <tr>
       <th align="left" width="10%"></th>
       <th align="left" width="30%">RAP with OSGi</th>
-      <th align="left" width="30%">RAP with Workbench 3.x</th>
+      <th align="left" width="30%">RAP with Workbench</th>
       <th align="left" width="30%">RWT Standalone</th>
     </tr>
     <tr>
       <th align="left">Summary</th>
       <td>Lightweight and flexible, recommended for new applications that do not use Eclipse extensions</td>
-      <td>For applications using the Workbench 3.x</td>
+      <td>For applications using the Eclipse Workbench (RCP applications)</td>
       <td>No OSGi, RWT used as a library in a traditional web app</td>
     </tr>
     <tr>
