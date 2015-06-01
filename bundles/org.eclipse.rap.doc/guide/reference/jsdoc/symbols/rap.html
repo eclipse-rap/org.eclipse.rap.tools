@@ -324,7 +324,7 @@ ul.inheritsList
                 <div class="fixedFont">rap.<b><a href="../symbols/rap.html#.getObject">getObject</a></b>(id)
                 </div>
                 <div class="description">Returns the client object associated with the given id as returned
-by <code>org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId</code> and
+by <code>org.eclipse.rap.rwt.widget.WidgetUtil.getId</code> and
 <code>org.eclipse.rap.rwt.remote.RemoteObject.getId</code>.</div>
               </td>
             </tr>
@@ -467,12 +467,12 @@ by <code>org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId</code> and
           </div>
           <div class="description">
             Returns the client object associated with the given id as returned
-by <code>org.eclipse.rap.rwt.lifecycle.WidgetUtil.getId</code> and
+by <code>org.eclipse.rap.rwt.widget.WidgetUtil.getId</code> and
 <code>org.eclipse.rap.rwt.remote.RemoteObject.getId</code>.
 If there is no object registered for the given id, <code>null</code> is returned.
-For internal objects (e.g. RWT/SWT widgets) a wrapper is returned that approximates
-the API of its Java analoge. <a href="../symbols/Composite.html#append">Composite#append</a> and <a href="../symbols/Widget.html#$el">Widget#$el</a> are special cases
-where additional scripting-only API is provided.
+For custom widgets, that is the result of the type handler factory.
+For SWT/RWT widgets (any Control or Item) a wrapper (instance of <a href="../symbols/Widget.html">Widget</a>) is returned that approximates
+a subset of the API of its Java analog. Getting objects of other types is unsupported.
             
           </div>
 
@@ -506,7 +506,9 @@ where additional scripting-only API is provided.
               <dl class="detailList">
               <dt class="heading">See:</dt>
               
-                <dd><a href="../symbols/Composite.html">Composite</a>, Widget</dd>
+                <dd><a href="../symbols/Widget.html">Widget</a></dd>
+              
+                <dd><a href="../symbols/rap.html#.registerTypeHandler">rap.registerTypeHandler</a></dd>
               
               </dl>
             
@@ -614,7 +616,7 @@ instance.
 
           </div>
           <div class="description">
-            Register the function as a listener of the given type. Registering unkown
+            Register the function as a listener of the given type. Registering unknown
 types throws an Error.
             
           </div>
@@ -738,7 +740,7 @@ A "call" operation given by the server for a method that is not in this list wil
                 <dd>List of event types supported by this type.
 The server may instruct the client object with "listen" operations to start or stop sending
 notifications when events of he given event type occur. Notifications may and can only be
-sent for types that are given in this list and are listend to by the server. See also
+sent for types that are given in this list and are listened to by the server. See also
 <a href="../symbols/RemoteObject.html#notify">RemoteObject#notify</a>.
 <em>Optional.</em></dd>
               

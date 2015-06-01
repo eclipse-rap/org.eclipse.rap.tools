@@ -306,6 +306,24 @@ ul.inheritsList
               </td>
             </tr>
           
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/%24.html#css">css</a></b>(property, value)
+                </div>
+                <div class="description">A method to either set or get the value of a CSS property.</div>
+              </td>
+            </tr>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont"><b><a href="../symbols/%24.html#get">get</a></b>()
+                </div>
+                <div class="description">Retrieve the DOM element represented by this object.</div>
+              </td>
+            </tr>
+          
           </tbody>
         </table>
         
@@ -412,8 +430,103 @@ a plain object with key-value pairs to set.</dd>
               <dl class="detailList">
               <dt class="heading">Returns:</dt>
               
-                <dd><span class="light fixedFont">{string|<a href="../symbols/%24.html">$</a>}</span> The the value of the given attribute, if the function is called with a
+                <dd><span class="light fixedFont">{string|<a href="../symbols/%24.html">$</a>}</span> The value of the given attribute, if the function is called with a
 string only. Otherwise a reference to this object.</dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
+          <a name="css"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{string|<a href="../symbols/%24.html">$</a>}</span>
+          <b>css</b>(property, value)
+
+          </div>
+          <div class="description">
+            A method to either set or get the value of a CSS property. Note that RAP may overwrite any changes 
+made to a widget's style properties, and that the changes are not applied to the Java-side widget instance. 
+Modifying properties not used by RAP is safe. Supports only elements of control widgets.
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{string|Object}</span> <b>property</b>
+                  
+                </dt>
+                <dd>The name of the property to return or modify. Alternatively
+a plain object with key-value pairs to set.</dd>
+              
+                <dt>
+                  <span class="light fixedFont">{string}</span> <b>value</b>
+                  <i>Optional</i>
+                </dt>
+                <dd>The value to set the property to.</dd>
+              
+              </dl>
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Since:</dt>
+                <dd>3.0</dd>
+              </dl>
+              </dl>
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{string|<a href="../symbols/%24.html">$</a>}</span> The value of the given property, if the function is called with a
+string only. Otherwise a reference to this object.</dd>
+              
+              </dl>
+            
+            
+            
+
+          <hr />
+        
+          <a name="get"> </a>
+          <div class="fixedFont">
+
+          <span class="light">{[HTMLElement]}</span>
+          <b>get</b>()
+
+          </div>
+          <div class="description">
+            Retrieve the DOM element represented by this object. Supports only elements of control widgets.
+            
+          </div>
+
+          
+
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Since:</dt>
+                <dd>3.0</dd>
+              </dl>
+              </dl>
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">Returns:</dt>
+              
+                <dd><span class="light fixedFont">{[HTMLElement]}</span> Array with exactly one HTML element.</dd>
               
               </dl>
             
