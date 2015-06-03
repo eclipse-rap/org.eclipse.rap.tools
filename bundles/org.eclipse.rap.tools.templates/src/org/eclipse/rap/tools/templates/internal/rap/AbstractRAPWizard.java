@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 EclipseSource and others
+ * Copyright (c) 2007, 2015 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,8 @@ import org.eclipse.pde.ui.IFieldData;
 import org.eclipse.pde.ui.templates.NewPluginTemplateWizard;
 import org.eclipse.rap.tools.templates.internal.Activator;
 import org.eclipse.rap.tools.templates.internal.TemplateUtil;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -166,7 +166,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   private void handleRapTargetVerification() {
     if( !containsRapUi() ) {
-      handleRapTargetInstalation();
+      handleRapTargetInstallation();
     }
   }
 
@@ -175,13 +175,16 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     return rapUiPluginModel != null;
   }
 
-  private void handleRapTargetInstalation() {
-    final Display currentDisplay = Display.getCurrent();
-    currentDisplay.asyncExec( new Runnable() {
-
-      public void run() {
-        boolean isRapTargetInstallWanted = isRapTargetInstallWanted();
-        if( isRapTargetInstallWanted ) {
+  private void handleRapTargetInstallation() {
+    // [if] Open target installer dialog after RAP wizard is closed
+    // and workbench window shell become active again
+    // 469119: [Tools] Target installer dialog freezes IDE when opened from New Project wizard
+    // https://bugs.eclipse.org/bugs/show_bug.cgi?id=469119
+    final Shell mainShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+    mainShell.addListener( SWT.Activate, new Listener() {
+      public void handleEvent( Event event ) {
+        mainShell.removeListener( SWT.Activate, this );
+        if( isRapTargetInstallWanted() ) {
           executeInstallTargetCommand();
         }
       }
