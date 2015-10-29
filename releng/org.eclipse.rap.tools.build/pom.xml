@@ -99,7 +99,6 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-plugin</artifactId>
         <version>${tycho-version}</version>
-        <!-- disabled due to bug 393977
         <configuration>
           <baselineRepositories>
             <repository>
@@ -107,7 +106,6 @@
             </repository>
           </baselineRepositories>
         </configuration>
-         -->
       </plugin>
 
       <plugin>
