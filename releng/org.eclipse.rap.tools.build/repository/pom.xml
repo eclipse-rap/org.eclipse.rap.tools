@@ -34,8 +34,7 @@
           <repositoryName>RAP Tools</repositoryName>
           <includeAllDependencies>false</includeAllDependencies>
           <compress>true</compress>
-          <!-- Use tycho build qualifier in zip file name (assigned to ${buildQualifier}) -->
-          <finalName>rap-tools-${signingQualifier}${buildQualifier}</finalName>
+          <finalName>rap-tools-${unqualifiedVersion}-${buildType}-${build}</finalName>
         </configuration>
       </plugin>
 

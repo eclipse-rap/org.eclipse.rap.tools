@@ -20,16 +20,19 @@
   <packaging>pom</packaging>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
     <tycho-version>0.21.0</tycho-version>
     <tycho-extras-version>${tycho-version}</tycho-extras-version>
     <signing-plugin-version>1.1.1</signing-plugin-version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/rap/org.eclipse.rap.tools.git</tycho.scmUrl>
     <!-- disabled due to bug 393977
     <baseline-repository>http://download.eclipse.org/rt/rap/nightly/tooling/</baseline-repository>
      -->
     <test-workspace-dir>${java.io.tmpdir}/rap-tools-test-workspace</test-workspace-dir>
-    <signingQualifier></signingQualifier>
+    <!-- The build type, N for nighty builds, S for stable builds. S-builds will be signed. -->
+    <buildType>N</buildType>
+    <build>${maven.build.timestamp}</build>
   </properties>
 
   <prerequisites>
@@ -183,7 +186,7 @@
       </activation>
 
       <properties>
-        <signingQualifier>S-</signingQualifier>
+        <buildType>S</buildType>
       </properties>
 
       <pluginRepositories>
