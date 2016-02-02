@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="37">
+<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="38">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jetty.bundles.f.feature.group" version="9.2.13.201508192117"/>
-<repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.2.13.v20150730/"/>
+<unit id="org.eclipse.jetty.bundles.f.feature.group" version="9.3.5.201510142109"/>
+<repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.3.5.v20151012/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.1.200.v20151207-2221"/>
-<unit id="org.eclipse.e4.rcp.feature.group" version="1.5.0.v20151209-1900"/>
-<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.5.0.v20151209-1900"/>
-<unit id="org.eclipse.emf.common.feature.group" version="2.12.0.v20151209-1100"/>
-<unit id="org.eclipse.emf.ecore.feature.group" version="2.12.0.v20151209-1100"/>
-<unit id="org.eclipse.help.feature.group" version="2.1.1.v20151209-2300"/>
-<unit id="org.eclipse.help.source.feature.group" version="2.1.1.v20151209-2300"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.12.0.v20151209-2300"/>
-<unit id="org.eclipse.jdt.source.feature.group" version="3.12.0.v20151209-2300"/>
-<unit id="org.eclipse.pde.feature.group" version="3.12.0.v20151209-2300"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.12.0.v20151209-2300"/>
-<unit id="org.eclipse.platform.feature.group" version="4.6.0.v20151209-2300"/>
-<unit id="org.eclipse.platform.source.feature.group" version="4.6.0.v20151209-2300"/>
-<unit id="org.eclipse.rcp.feature.group" version="4.6.0.v20151209-2300"/>
-<unit id="org.eclipse.rcp.source.feature.group" version="4.6.0.v20151209-2300"/>
-<unit id="org.eclipse.sdk.ide" version="4.6.0.I20151209-2300"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.6milestones/S-4.6M4-201512092300/"/>
+<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.1.200.v20160125-1118"/>
+<unit id="org.eclipse.e4.rcp.feature.group" version="1.5.0.v20160127-0039"/>
+<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.5.0.v20160127-0039"/>
+<unit id="org.eclipse.emf.common.feature.group" version="2.12.0.v20160128-0808"/>
+<unit id="org.eclipse.emf.ecore.feature.group" version="2.12.0.v20160128-0808"/>
+<unit id="org.eclipse.help.feature.group" version="2.2.0.v20160128-2000"/>
+<unit id="org.eclipse.help.source.feature.group" version="2.2.0.v20160128-2000"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.12.0.v20160128-2000"/>
+<unit id="org.eclipse.jdt.source.feature.group" version="3.12.0.v20160128-2000"/>
+<unit id="org.eclipse.pde.feature.group" version="3.12.0.v20160128-2000"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.12.0.v20160128-2000"/>
+<unit id="org.eclipse.platform.feature.group" version="4.6.0.v20160128-2000"/>
+<unit id="org.eclipse.platform.source.feature.group" version="4.6.0.v20160128-2000"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.6.0.v20160128-2000"/>
+<unit id="org.eclipse.rcp.source.feature.group" version="4.6.0.v20160128-2000"/>
+<unit id="org.eclipse.sdk.ide" version="4.6.0.I20160128-2000"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.6milestones/S-4.6M5-201601282000/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>
