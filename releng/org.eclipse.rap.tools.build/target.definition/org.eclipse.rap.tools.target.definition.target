@@ -22,7 +22,7 @@
 <unit id="org.eclipse.rcp.feature.group" version="4.5.2.v20160203-1000"/>
 <unit id="org.eclipse.rcp.source.feature.group" version="4.5.2.v20160203-1000"/>
 <unit id="org.eclipse.sdk.ide" version="4.5.2.M20160203-1000"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.5-M-builds/M-4.5.2RC3-201602031000/"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.5/R-4.5.2-201602121500/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>
