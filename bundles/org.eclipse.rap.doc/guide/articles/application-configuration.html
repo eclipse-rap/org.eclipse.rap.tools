@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2012, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2012, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title> Application Configuration </title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -33,7 +33,7 @@
     An application configuration is an implementation of the interface
     <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html">ApplicationConfiguration</a></em>.
     RAP uses a callback approach to configure applications before they are started.
-    The method <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html#configure(org.eclipse.rap.rwt.application.Application)">configure( Application )</a></em>
+    The method <em><a href="../reference/api/org/eclipse/rap/rwt/application/ApplicationConfiguration.html#configure-org.eclipse.rap.rwt.application.Application-">configure( Application )</a></em>
     is invoked with a reference to the created
     <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html">Application</a></em>
     as the sole argument.
@@ -65,7 +65,8 @@ public class SimpleConfiguration implements ApplicationConfiguration {
     (e.g. <em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html">WebClient</a></em>)
     provides constants to be used with the map.
     For example, it's possible to specify
-    <a href="theming.html#rwt">a theme to use</a>,
+    <a href="theming.html#rwt">a theme to use</a>, native HTML document
+    <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#PAGE_OVERFLOW">overflow</a> behaviour,
     and an <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#FAVICON">icon</a>
     and <a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#PAGE_TITLE">title</a>
     to be displayed in the browser title bar.
@@ -77,6 +78,7 @@ public class SimpleConfiguration implements ApplicationConfiguration {
 <pre class="lang-java">
 Map&lt;String, String&gt; properties = new HashMap&lt;String, String&gt;();
 properties.put( WebClient.PAGE_TITLE, "RAP Example" );
+properties.put( WebClient.PAGE_OVERFLOW, "scrollY" );
 properties.put( WebClient.BODY_HTML, "&lt;big&gt;Loading Application&lt;big&gt;" );
 properties.put( WebClient.FAVICON, "icons/favicon.png" );
 properties.put( WebClient.THEME_ID, "MyCustomTheme" );
@@ -85,19 +87,19 @@ application.addEntryPoint( "/example", Example.class, properties );
   <p>
     Note that the favicon and any images you might use in the additional HTML must be registered
     as a static resource. This can also be done in the application configuration with the
-    method <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addResource(java.lang.String, org.eclipse.rap.rwt.service.ResourceLoader)">Application#addResource</a></em>.
+    method <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addResource-java.lang.String-org.eclipse.rap.rwt.service.ResourceLoader-">Application#addResource</a></em>.
     Learn more about static resources <a href="resources.html">here</a>.
   </p>
   <p>
     The theme-id (<em><a href="../reference/api/org/eclipse/rap/rwt/client/WebClient.html#THEME_ID">WebClient.THEME_ID</a></em>)
-    is the same that is used in the method <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addStyleSheet(java.lang.String, java.lang.String, org.eclipse.rap.rwt.service.ResourceLoader)">Application#addStyleSheet</a></em>.
+    is the same that is used in the method <em><a href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addStyleSheet-java.lang.String-java.lang.String, org.eclipse.rap.rwt.service.ResourceLoader-">Application#addStyleSheet</a></em>.
     Learn more about custom themes and theme contributions <a href="theming.html">here</a>.
   </p>
   <p>
     Moreover, the application instance provides methods to set the
     <a href="application-setup.html#compat">operation mode</a>
     and to register a
-    <a  href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addServiceHandler(java.lang.String, org.eclipse.rap.rwt.service.ServiceHandler)">service handler</a>.
+    <a  href="../reference/api/org/eclipse/rap/rwt/application/Application.html#addServiceHandler-java.lang.String, org.eclipse.rap.rwt.service.ServiceHandler-">service handler</a>.
   </p>
 
   <h3>Exception Handlers</h3>

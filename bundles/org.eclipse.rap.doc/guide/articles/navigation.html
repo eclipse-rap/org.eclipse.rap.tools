@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2013, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2013, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Browser Navigation &amp; History</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -127,7 +127,7 @@ service.setMessage( "Do you really wanna leave the party?" );</pre>
       is called, and the fragment is available on the
       <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigationEvent.html">BrowserNavigationEvent</a></em>
       via the
-      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigationEvent.html#getState()">getState()</a></em>.
+      <em><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigationEvent.html#getState--">getState()</a></em>.
       The string can then be used to decide where to navigate in your application.
       If, for example, you are using a TabFolder as your main navigation element,
       a simple but complete implementation could look like this:
@@ -179,7 +179,7 @@ public void navigated( BrowserNavigationEvent event ) {
     (<a href="#deeplinks">see above</a>),
     all that is left to
     do is to add new entries to the history. To do so, simply call
-    <em style="white-space:nowrap;"><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigation.html#pushState(java.lang.String, java.lang.String)">pushState( state, title )</a></em>
+    <em style="white-space:nowrap;"><a href="../reference/api/org/eclipse/rap/rwt/client/service/BrowserNavigation.html#pushState-java.lang.String-java.lang.String-">pushState( state, title )</a></em>
     whenever your application enters a new state that
     should appear in the history. The <q>state</q> string will then be given in the
     <em>BrowserNavigationEvent</em>

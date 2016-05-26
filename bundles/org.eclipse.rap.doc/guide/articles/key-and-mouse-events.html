@@ -59,7 +59,7 @@
       <a href="../reference/api/org/eclipse/swt/widgets/Listener.html">untyped listener</a>
       for a mouse event attached.
       As a side-effect, using a
-      <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter(int, org.eclipse.swt.widgets.Listener)">display filter</a>
+      <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter-int, org.eclipse.swt.widgets.Listener-">display filter</a>
       does not work like in SWT.
       Example:
     </p>
@@ -161,7 +161,7 @@ widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2
     listener is attached or not, and canceled keys are still fired as an SWT key event.</li>
       <li>This approach is single-sourcing capable. Since the <em>doit</em> field still
       exists in RWT, and the list is attached using only
-      <em><a href="../reference/api/org/eclipse/swt/widgets/Widget.html#setData(java.lang.String, java.lang.Object)">setData</a></em>, both mechanisms
+      <em><a href="../reference/api/org/eclipse/swt/widgets/Widget.html#setData-java.lang.String-java.lang.Object-">setData</a></em>, both mechanisms
       can be used in parallel.</li>
       <li>An alternative to Cancel Keys is using a <a href = "scripting.html">ClientListener</a>,
       which fully supports the <code><a href="../reference/jsdoc/symbols/Event.html#doit">doit</a></code> flag
@@ -195,7 +195,7 @@ widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2
     <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html">Display</a></em>,
     which is useful to allow keybindings ("shortcuts"). Active Keys work slightly different in
     that case. Like with mouse events (see <a href="#mouse_filter">above</a>), a
-    <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter(int, org.eclipse.swt.widgets.Listener)">display filter</a>
+    <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter-int, org.eclipse.swt.widgets.Listener-">display filter</a>
     usually catches
     only key events when their target has a listener attached.
     However, attaching a list of Active Keys to display
@@ -208,7 +208,7 @@ widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2
     to display. The same list can then be used again for Cancel Keys to prevent any undesired
     operations to be triggered by any of the keys. Then a filter for
     <em><a href="../reference/api/org/eclipse/swt/SWT.html#KeyDown">SWT.KeyDown</a></em>
-    has to be <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter(int, org.eclipse.swt.widgets.Listener)">added</a>,
+    has to be <a href="../reference/api/org/eclipse/swt/widgets/Display.html#addFilter-int, org.eclipse.swt.widgets.Listener-">added</a>,
     where the pressed key combination has to be determined and handled.
    </p>
    <p>
@@ -246,7 +246,7 @@ widget.setData( RWT.CANCEL_KEYS, new String[] { &quot;CTRL+1&quot;, &quot;CTRL+2
    <p>
      Accelerators are shortcuts that can be associated with <em>MenuItem</em> widgets
      using the method
-     <em><a href="../reference/api/org/eclipse/swt/widgets/MenuItem.html#setAccelerator(int)">MenuItem#setAccelerator</a></em>.
+     <em><a href="../reference/api/org/eclipse/swt/widgets/MenuItem.html#setAccelerator-int-">MenuItem#setAccelerator</a></em>.
      Entering the shortcut will fire a <em>Selection</em> event on the associated
      <em>MenuItem</em>. The shortcuts will also be added to the displays <a href="#global">current
      ACTIVE_KEYS list</a>. <strong>Take care not to overwrite them.</strong>

@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Threads in RAP</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -28,8 +28,8 @@
     must be called from this thread.
     This includes most methods of
     <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html">RWT</a></em>, such as
-    <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getUISession()">RWT.getUISession()</a></em> and
-    <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getApplicationContext()">RWT.getApplicationContext()</a></em>),
+    <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getUISession--">RWT.getUISession()</a></em> and
+    <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getApplicationContext--">RWT.getApplicationContext()</a></em>),
     but also the
     <em><a href="../reference/api/org/eclipse/rap/rwt/SingletonUtil.html">SingletonUtil</a></em>.
   </p>
@@ -84,7 +84,7 @@ new Thread( runnable ).start();
   <p>
     The solution is to run the code in question in the context of the UI session.
     To do so, it must be wrapped in a runnable and executed using the method
-    <em style="white-space:nowrap;"><a href="../reference/api/org/eclipse/rap/rwt/service/UISession.html#exec(java.lang.Runnable)">UISession#exec( Runnable runnable )</a></em>.
+    <em style="white-space:nowrap;"><a href="../reference/api/org/eclipse/rap/rwt/service/UISession.html#exec-java.lang.Runnable-">UISession#exec( Runnable runnable )</a></em>.
     This will execute the runnable in the context of the UI session, granting the code in its
     <em>run()</em> method access to all session-scoped data.
     However, the code can not access any widgets, because it is not executed in the UI Thread
@@ -93,7 +93,7 @@ new Thread( runnable ).start();
   <p>
     In case there is no reference to the current UISession available,
     it can also be obtained from
-    <em style="white-space:nowrap;"><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getUISession()">RWT.getUISession( Display display )</a></em>.
+    <em style="white-space:nowrap;"><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#getUISession--">RWT.getUISession( Display display )</a></em>.
   </p>
 <pre class="lang-java">
 // CORRECT
@@ -123,8 +123,8 @@ new Thread( runnable ).start();
     but in the same thread that the method is called.
     Hence, <em>UISession#exec</em> is not suitable to execute code that accesses the UI.
     To do so,
-    <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#asyncExec(java.lang.Runnable)">Display#asyncExec</a></em>
-    (or <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#syncExec(java.lang.Runnable)">Display#syncExec</a></em>)
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#asyncExec-java.lang.Runnable-">Display#asyncExec</a></em>
+    (or <em><a href="../reference/api/org/eclipse/swt/widgets/Display.html#syncExec-java.lang.Runnable-">Display#syncExec</a></em>)
     has to be used instead.
     Please note that UI updates from a background thread will only be “pushed” to the client when the
     <a href="server-push.html">Server Push</a> is active.

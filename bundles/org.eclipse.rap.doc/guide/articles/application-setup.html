@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Choosing a RAP Application Setup</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -77,14 +77,14 @@
     In JEE mode, code execution will continue after opening the dialog, but any operations reacting
     to closing the dialog must be done in a callback.
     RAP provides an
-    <a href="../reference/api/org/eclipse/rap/rwt/widgets/DialogUtil.html">alternative API</a>
+    <a href="../reference/api/org/eclipse/swt/widgets/Dialog.html#open-org.eclipse.rap.rwt.widgets.DialogCallback-">additional API</a>
     that can be used for those dialog callbacks.
     This mechanism does not exist in SWT.
   </p>
   <p>
     Another blocking API in SWT are the <em>Browser</em>-widget's execute and evaluate
-    methods. Their return value can also be obtained with
-    <a href="../reference/api/org/eclipse/rap/rwt/widgets/BrowserUtil.html">callback implementation</a>,
+    methods. Their return value can also be obtained
+    <a href="../reference/api/org/eclipse/swt/browser/Browser.html#evaluate-java.lang.String-org.eclipse.rap.rwt.widgets.BrowserCallback-">using callback API</a>,
     but this may be problematic when developing
     <a href="custom-widget.html#browser">browser-based custom widgets</a>.
   </p>

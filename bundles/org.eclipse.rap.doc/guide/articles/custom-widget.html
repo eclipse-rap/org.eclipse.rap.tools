@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Custom widgets</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -72,7 +72,7 @@
     redrawn less often than others, you should consider combining this with the
     compound approach. Either stack multiple canvases on top of each other (use
     <a href="../reference/api/org/eclipse/swt/SWT.html#INHERIT_FORCE">SWT.INHERIT_FORCE</a> on the
-    <a href="../reference/api/org/eclipse/swt/widgets/Composite.html#setBackgroundMode(int)">parent background</a>
+    <a href="../reference/api/org/eclipse/swt/widgets/Composite.html#setBackgroundMode-int-">parent background</a>
     to make their background transparent),
     or put them in any layout as you would other widgets.
     This can reduce the number of operations by calling &quot;redraw&quot; only on the canvases that need to be updated.
@@ -138,12 +138,12 @@
     to the other by using a <q>Remote Object</q>. While the server
     <em><a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html">RemoteObject</a></em>
     can be
-    <a href="../reference/api/org/eclipse/rap/rwt/remote/Connection.html#createRemoteObject(java.lang.String)">created</a> by
+    <a href="../reference/api/org/eclipse/rap/rwt/remote/Connection.html#createRemoteObject-java.lang.String-">created</a> by
     the custom widget code, the client <em><a href="../reference/jsdoc/symbols/RemoteObject.html">RemoteObject</a></em>
     is
     <a href="../reference/jsdoc/symbols/rap.html#.getRemoteObject">provided</a> by the framework.
     To process messages, the server side
-    <a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html#setHandler(org.eclipse.rap.rwt.remote.OperationHandler)">registers</a>
+    <a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html#setHandler-org.eclipse.rap.rwt.remote.OperationHandler-">registers</a>
     an
     <em><a href="../reference/api/org/eclipse/rap/rwt/remote/OperationHandler.html">OperationHandler</a></em>
     on the <em><a href="../reference/api/org/eclipse/rap/rwt/remote/RemoteObject.html">RemoteObject</a></em>

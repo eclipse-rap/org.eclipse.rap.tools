@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2012, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2012, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Tree, Table and the Nebula Grid</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -124,11 +124,11 @@ table.setData( RWT.ROW_TEMPLATE, template );</pre>
     </p>
     <p>
       Each cell can either display static content (using
-      <em><a href="../reference/api/org/eclipse/rap/rwt/template/TextCell.html#setText(java.lang.String)">setText</a></em> or
-      <em><a href="../reference/api/org/eclipse/rap/rwt/template/ImageCell.html#setImage(org.eclipse.swt.graphics.Image)">setImage</a></em>
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/TextCell.html#setText-java.lang.String-">setText</a></em> or
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/ImageCell.html#setImage-org.eclipse.swt.graphics.Image-">setImage</a></em>
       on the cell itself), or content form the current Tree/Table/Grid item. For this the cell
       needs to be bound to a specific column using the
-      <em><a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setBindingIndex(int)">bindingIndex</a></em>. For example, this
+      <em><a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setBindingIndex-int-">bindingIndex</a></em>. For example, this
       shows only the text from the first column:
     </p>
     <pre class="lang-java">Table table = new Table( parent, SWT.FULL_SELECTION );
@@ -147,14 +147,14 @@ item.setText( 0, "Data in the first column" );</pre>
     </p>
     <p>
       Cells can also be
-      <a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setSelectable(boolean)">selectable</a>.
+      <a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setSelectable-boolean-">selectable</a>.
       When a selectable cell is clicked on,
       it does not select the item, but triggers a selection event with the
       event.detail field set to <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html#CELL">RWT.CELL</a></em>.
       Items can still be selected by clicking elsewhere, though <strong>the selection is only visible if the
       SWT.FULL_SELECTION style flag is set</strong>.
       If multiple cells in a template are selectable, cells
-      <a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setName(java.lang.String)">can be given a name</a>
+      <a href="../reference/api/org/eclipse/rap/rwt/template/Cell.html#setName-java.lang.String-">can be given a name</a>
       that is reflected in the <em>event.text</em> field in order to identify the selected cell.
     </p>
     <h3 id="markup">Markup Support (Tree, Table and Grid)</h3>

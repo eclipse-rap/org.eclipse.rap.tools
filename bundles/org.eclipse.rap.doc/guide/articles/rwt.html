@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2012, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2012, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Differences between RWT and SWT</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -57,7 +57,7 @@
     <em><a href="../reference/api/index.html">org.eclipse.rap.rwt</a></em>.
     Many are activated using a
     widget's
-    <em><a href="../reference/api/org/eclipse/swt/widgets/Widget.html#setData(java.lang.String, java.lang.Object)">setData</a></em>
+    <em><a href="../reference/api/org/eclipse/swt/widgets/Widget.html#setData-java.lang.String-java.lang.Object-">setData</a></em>
     method with a constant from the
     <em><a href="../reference/api/org/eclipse/rap/rwt/RWT.html">RWT</a></em>
     class as the
@@ -81,7 +81,6 @@
       The <code>Client</code> interface and client services are documented in more detail
       <a href="client.html">here</a>.
     </li>
-
 
     <li style="margin-bottom:10px">
       <b>HTTP File Upload</b>
@@ -179,10 +178,10 @@
       <em><a href="../reference/api/org/eclipse/swt/widgets/Canvas.html">Canvas</a></em>
       widget.
       In some cases the
-      <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawText(java.lang.String, int, int)">drawText</a></em>,
-      <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawString(java.lang.String, int, int)">drawString</a></em>
+      <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawText-java.lang.String-int-int-">drawText</a></em>,
+      <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawString-java.lang.String-int-int-">drawString</a></em>
       and
-      <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawImage(org.eclipse.swt.graphics.Image, int, int)">drawImage</a></em>
+      <em><a href="../reference/api/org/eclipse/swt/graphics/GC.html#drawImage-org.eclipse.swt.graphics.Image-int-int-">drawImage</a></em>
       methods may disregard the drawing order and overlap elements that are drawn later.
       Some methods are unimplemented, including <em>copyArea</em>,
       <em>setClipping</em>, <em>setTransform</em>, <em>setInterpolation</em>,
@@ -203,8 +202,8 @@
       When using the
       <a href="application-setup.html#compat">JEE compatibility mode</a>,
       opening a dialog does not block program execution.
-      To obtain their return value, a callback must be registered using the RWT-specific class
-      <em><a href="../reference/api/org/eclipse/rap/rwt/widgets/DialogUtil.html">DialogUtil</a></em>.
+      To obtain their return value, a callback must be registered using the RWT-only
+      <a href="../reference/api/org/eclipse/swt/widgets/Dialog.html#open-org.eclipse.rap.rwt.widgets.DialogCallback-"><em>open(DialogCallback)</em></a> method.
     </li>
 
     <li id="browser" style="margin-bottom:10px">
@@ -214,6 +213,11 @@
       <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html">Browser</a></em>
       widget is based on the HTML <em>iframe</em> element, there are some restrictions.
       Detailed information can be found <a href="web-embedding.html">here</a>.
+      Also, when using the
+      <a href="application-setup.html#compat">JEE compatibility mode</a>,
+      evaluating a script does not block program execution.
+      To obtain its return value, a callback must be registered using the RWT-only
+      <a href="../reference/api/org/eclipse/swt/browser/Browser.html#evaluate-java.lang.String-org.eclipse.rap.rwt.widgets.BrowserCallback-"><em>evaluate(String, BrowserCallback)</em></a> method.
     </li>
 
     <li style="margin-bottom:10px">

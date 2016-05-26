@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2007, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2007, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title>Browser Widget</title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -25,18 +25,18 @@
   <p>
     In RAP, any HTML document (including JavaScript) placed in a <em>Browser</em> widget
     will end up in an <em>iframe</em> element. You can call JavaScript from Java by using
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#evaluate(java.lang.String)">evaluate</a></em>,
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#evaluate-java.lang.String-">evaluate</a></em>,
     and vice versa using the
     <code>BrowserFunction</code>
     <em><a href="../reference/api/org/eclipse/swt/browser/BrowserFunction.html">BrowserFunction</a></em>
     class.
     It's recommended
     to always use <em>evaluate</em> instead of
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#execute(java.lang.String)">execute</a></em>,
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#execute-java.lang.String-">execute</a></em>,
     since it throws an exception if the JavaScript execution fails.
     Before you can use <em>evaluate</em>, you must wait until the document is fully loaded,
     using either a
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#addProgressListener(org.eclipse.swt.browser.ProgressListener)">ProgressListener</a></em>
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#addProgressListener-org.eclipse.swt.browser.ProgressListener-">ProgressListener</a></em>
     or a <em>BrowserFunction</em>.
   </p>
 
@@ -65,7 +65,7 @@
     the document loaded in the browser widget has to come from the
     same domain and port that the RAP application is loaded from. This is automatically given
     if the
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#setText(java.lang.String)">setText</a></em>
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#setText-java.lang.String-">setText</a></em>
     method is used, or the file is registered as a <a href="#resources">static resource</a>.
     <br/>
   </p>
@@ -76,7 +76,7 @@
     provided to the browser widget. If you use only a moderate amount of HTML with inlined
     JavaScript and/or CSS (and <i>no images</i>), or your non-HTML resources can be loaded from
     a different HTTP-server, it will suffice to use the
-    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#setText(java.lang.String)">setText</a></em>
+    <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#setText-java.lang.String-">setText</a></em>
     method of the browser
     widget. This code would then also run in an SWT application. However, when using
     <em>setText</em>, the client browser can not cache the loaded document, so each new instance has
@@ -97,9 +97,9 @@
       (the default for non-workbench based applications), then
       the <em>executeScript</em> and <em>evaluate</em> methods will not block program
       execution.
-      Like with dialogs, a workaround is possible using the class
-      <em><a href="../reference/api/org/eclipse/rap/rwt/widgets/BrowserUtil.html">BrowserUtil</a></em>,
-      which lets you register a callback to receive the results of the <em>evaluate</em>
+      Like with dialogs, a RAP-only method
+      <em><a href="../reference/api/org/eclipse/swt/browser/Browser.html#evaluate-java.lang.String-org.eclipse.rap.rwt.widgets.BrowserCallback-">evaluate(String, BrowserCallback)</a></em>,
+      is available, which lets you register a callback to receive the results of the <em>evaluate</em>
       call. However, this pattern makes implementing a traditional "getter" impossible.
       In <a href="application-setup.html#compat">SWT compatibility</a> mode you can write:
     </p>
@@ -114,7 +114,7 @@ public String getText() {
   </p>
    <pre class="lang-java">
 public void getText( final MyCallback callback ) {
-  BrowserUtil.evaluate( browser, "return myWidget.getData();", new BrowserCallback() {
+  browser.evaluate( "return myWidget.getData();", new BrowserCallback() {
     public void evaluationSucceeded( Object result ) {
       callback.handleGetText( ( String )result );
     }

@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta name="copyright" content="Copyright (c) 2013, 2015 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
+  <meta name="copyright" content="Copyright (c) 2013, 2016 EclipseSource. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page."/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <title> Scripting </title>
   <link rel="stylesheet" href="../../../PRODUCT_PLUGIN/book.css" type="text/css"/>
@@ -339,7 +339,7 @@ widget.addListener( SWT.Verify, new ClientListener( scriptCode ) );
       Data attached to the Java widget instance can be transferred to the client widget object.
       To do so,
       the key for that data has to be registered with the method
-      <em><a href="../reference/api/org/eclipse/rap/rwt/widgets/WidgetUtil.html#registerDataKeys(java.lang.String...)">WidgetUtil.registerDataKeys</a></em>,
+      <em><a href="../reference/api/org/eclipse/rap/rwt/widgets/WidgetUtil.html#registerDataKeys-java.lang.String...-">WidgetUtil.registerDataKeys</a></em>,
       like this:
     </p>
     <pre class="lang-java">WidgetUtil.registerDataKeys( &quot;foo&quot; );
@@ -398,7 +398,7 @@ widget.setData( &quot;foo&quot;, &quot;myData&quot; );</pre>
       JavaScript widget objects obtained via <a href="../reference/jsdoc/symbols/rap.html#.getObject"><code>rap.getObject( id )</code></a> have a field
       <a href="../reference/jsdoc/symbols/Widget.html#$el"><em>$el</em></a> that allows manipulating their HTML element. Currently it can only be used to set
       <a href="../reference/jsdoc/symbols/%24.html#attr">HTML attributes</a> or
-      <a href="../reference/jsdoc/symbols/%24.html#css">CSS properties</a> 
+      <a href="../reference/jsdoc/symbols/%24.html#css">CSS properties</a>
       of the element containing the entire widget HTML, and
       (in case of <em>Text</em>) the <a href="../reference/jsdoc/symbols/Text.html#$input"><code>&lt;input&gt;</code> element</a>.
     </p><p>
