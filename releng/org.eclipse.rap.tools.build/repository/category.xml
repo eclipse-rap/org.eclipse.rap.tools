@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright (C) 2011, 2015 EclipseSource and others
+  Copyright (C) 2011, 2016 EclipseSource and others
   All rights reserved. This program and the accompanying materials
   are made available under the terms of the Eclipse Public License v1.0
   which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
      EclipseSource - initial implementation
 -->
 <site>
-   <feature url="http://eclipse.org/rap" id="org.eclipse.rap.tools.feature" version="3.1.0.qualifier">
+   <feature url="http://eclipse.org/rap" id="org.eclipse.rap.tools.feature" version="3.1.1.qualifier">
       <category name="org.eclipse.rap.category"/>
    </feature>
    <category-def name="org.eclipse.rap.category" label="Remote Application Platform (RAP)"/>
