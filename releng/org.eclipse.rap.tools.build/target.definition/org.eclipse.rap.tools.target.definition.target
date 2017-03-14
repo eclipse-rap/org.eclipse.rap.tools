@@ -6,23 +6,23 @@
 <repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.0.v20161208/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.0.v20170123-1654"/>
-<unit id="org.eclipse.e4.rcp.feature.group" version="1.6.0.v20170126-0932"/>
-<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.6.0.v20170126-0932"/>
+<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.0.v20170307-1429"/>
+<unit id="org.eclipse.e4.rcp.feature.group" version="1.6.0.v20170308-1904"/>
+<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.6.0.v20170308-1904"/>
 <unit id="org.eclipse.emf.common.feature.group" version="2.13.0.v20170123-0427"/>
 <unit id="org.eclipse.emf.ecore.feature.group" version="2.13.0.v20170123-0427"/>
-<unit id="org.eclipse.help.feature.group" version="2.2.0.v20170126-1030"/>
-<unit id="org.eclipse.help.source.feature.group" version="2.2.0.v20170126-1030"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.13.0.v20170126-1030"/>
-<unit id="org.eclipse.jdt.source.feature.group" version="3.13.0.v20170126-1030"/>
-<unit id="org.eclipse.pde.feature.group" version="3.13.0.v20170126-1030"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.13.0.v20170126-1030"/>
-<unit id="org.eclipse.platform.feature.group" version="4.7.0.v20170126-1030"/>
-<unit id="org.eclipse.platform.source.feature.group" version="4.7.0.v20170126-1030"/>
-<unit id="org.eclipse.rcp.feature.group" version="4.7.0.v20170126-1030"/>
-<unit id="org.eclipse.rcp.source.feature.group" version="4.7.0.v20170126-1030"/>
-<unit id="org.eclipse.sdk.ide" version="4.7.0.I20170126-1030"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.7milestones/S-4.7M5-201701261030/"/>
+<unit id="org.eclipse.help.feature.group" version="2.2.100.v20170308-2000"/>
+<unit id="org.eclipse.help.source.feature.group" version="2.2.100.v20170308-2000"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.13.0.v20170308-2105"/>
+<unit id="org.eclipse.jdt.source.feature.group" version="3.13.0.v20170308-2105"/>
+<unit id="org.eclipse.pde.feature.group" version="3.13.0.v20170308-2000"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.13.0.v20170308-2000"/>
+<unit id="org.eclipse.platform.feature.group" version="4.7.0.v20170308-2000"/>
+<unit id="org.eclipse.platform.source.feature.group" version="4.7.0.v20170308-2000"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.7.0.v20170308-2000"/>
+<unit id="org.eclipse.rcp.source.feature.group" version="4.7.0.v20170308-2000"/>
+<unit id="org.eclipse.sdk.ide" version="4.7.0.I20170308-2000"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.7milestones/S-4.7M6-201703082000/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>
