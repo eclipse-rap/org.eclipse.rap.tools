@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="generator" content="JsDoc Toolkit" />
     
-    <title>JsDoc Reference - ProgressBar</title>
+    <title>JsDoc Reference - Slider</title>
 
     <style type="text/css">
       /* default.css */
@@ -277,7 +277,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
       <h1 class="classTitle">
         
-        Type ProgressBar
+        Type Slider
       </h1>
 
 <!-- ============================== class summary ========================== -->
@@ -287,13 +287,13 @@ ul.inheritsList
           <a href="../symbols/Control.html">Control</a>.<br />
         
 
-        RWT Scripting analoge to org.eclipse.swt.widgets.Progressbar
+        RWT Scripting analoge to org.eclipse.swt.widgets.Slider
 
       </p>
 
 <!-- ============================== constructor summary ==================== -->
       
-      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class ProgressBar.">
+      <table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Slider.">
         <caption>Type Summary</caption>
         <thead>
           <tr>
@@ -306,7 +306,7 @@ ul.inheritsList
             <td class="attributes">&nbsp;</td>
             <td class="nameDescription" >
               <div class="fixedFont">
-                <b><a href="../symbols/ProgressBar.html#constructor">ProgressBar</a></b>()
+                <b><a href="../symbols/Slider.html#constructor">Slider</a></b>()
               </div>
               <div class="description">The constructor is not public.</div>
             </td>
@@ -331,7 +331,7 @@ ul.inheritsList
       
         
         
-        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class ProgressBar.">
+        <table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Slider.">
           <caption>Method Summary</caption>
           <thead>
             <tr>
@@ -344,7 +344,7 @@ ul.inheritsList
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/ProgressBar.html#getMaximum">getMaximum</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/Slider.html#getMaximum">getMaximum</a></b>()
                 </div>
                 <div class="description">Returns the maximum value which the receiver will allow.</div>
               </td>
@@ -353,7 +353,7 @@ ul.inheritsList
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/ProgressBar.html#getMinimum">getMinimum</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/Slider.html#getMinimum">getMinimum</a></b>()
                 </div>
                 <div class="description">Returns the minimum value which the receiver will allow.</div>
               </td>
@@ -362,7 +362,7 @@ ul.inheritsList
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/ProgressBar.html#getSelection">getSelection</a></b>()
+                <div class="fixedFont"><b><a href="../symbols/Slider.html#getSelection">getSelection</a></b>()
                 </div>
                 <div class="description">Returns the 'selection', which is the receiver's position.</div>
               </td>
@@ -371,7 +371,7 @@ ul.inheritsList
             <tr>
               <td class="attributes">&nbsp;</td>
               <td class="nameDescription">
-                <div class="fixedFont"><b><a href="../symbols/ProgressBar.html#setSelection">setSelection</a></b>(selection)
+                <div class="fixedFont"><b><a href="../symbols/Slider.html#setSelection">setSelection</a></b>(selection)
                 </div>
                 <div class="description">Sets the 'selection', which is the receiver's value, to the argument which
 must be greater than or equal to zero.</div>
@@ -392,6 +392,30 @@ must be greater than or equal to zero.</div>
       
         
         
+        <table class="summaryTable" cellspacing="0" summary="A summary of the events documented in the class Slider.">
+          <caption>Event Summary</caption>
+          <thead>
+            <tr>
+              <th scope="col">Event Attributes</th>
+              <th scope="col">Event Name and Description</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <tr>
+              <td class="attributes">&nbsp;</td>
+              <td class="nameDescription">
+                <div class="fixedFont">
+                  
+                  <b><a href="../symbols/Slider.html#event:Selection">Selection</a></b>
+                </div>
+                <div class="description">Sent when the widget selection is changed</div>
+              </td>
+            </tr>
+          
+          </tbody>
+        </table>
+        
 
         
         <dl class="inheritsList">
@@ -408,7 +432,7 @@ must be greater than or equal to zero.</div>
         </div>
 
         <div class="fixedFont">
-            <b>ProgressBar</b>()
+            <b>Slider</b>()
         </div>
 
         <div class="description">
@@ -424,7 +448,7 @@ must be greater than or equal to zero.</div>
           
             <dl class="detailList">
             <dt class="heading">Since:</dt>
-              <dd>2.2</dd>
+              <dd>3.2</dd>
             </dl>
           
           
@@ -576,6 +600,53 @@ must be greater than or equal to zero.
       
 
 <!-- ============================== event details ========================= -->
+      
+        <div class="sectionTitle">
+          Event Detail
+        </div>
+        
+          <a name="event:Selection"> </a>
+          <div class="fixedFont">
+
+          
+          <b>Selection</b>
+
+          </div>
+          <div class="description">
+            Sent when the widget selection is changed
+            
+          </div>
+
+          
+
+            
+              <dl class="detailList">
+              <dt class="heading">Parameters:</dt>
+              
+                <dt>
+                  <span class="light fixedFont">{<a href="../symbols/Event.html">Event</a>}</span> <b>event</b>
+                  
+                </dt>
+                <dd></dd>
+              
+              </dl>
+            
+            
+            
+            
+            
+            
+            
+              <dl class="detailList">
+              <dt class="heading">See:</dt>
+              
+                <dd><a href="../symbols/SWT.html#.Selection">SWT.Selection</a></dd>
+              
+              </dl>
+            
+
+          
+        
       
 
       <hr />
