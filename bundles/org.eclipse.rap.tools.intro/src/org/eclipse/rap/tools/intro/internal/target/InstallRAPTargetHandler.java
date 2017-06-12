@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 Innoopract Informationssysteme GmbH and others.
+ * Copyright (c) 2007, 2017 Innoopract Informationssysteme GmbH and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.rap.tools.intro.internal.ErrorUtil;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -37,12 +38,17 @@ public class InstallRAPTargetHandler extends AbstractHandler {
   };
 
   public Object execute( ExecutionEvent event ) throws ExecutionException {
+    Object trigger = event.getTrigger();
+    String targetDefinitionURI = TargetProvider.TARGET_REPOSITORY;
+    if( trigger instanceof Event && "e4".equals( ( ( Event )trigger ).text ) ) {
+      targetDefinitionURI = TargetProvider.TARGET_E4_REPOSITORY;
+    }
     IWorkbench workbench = PlatformUI.getWorkbench();
     Shell shell = workbench.getActiveWorkbenchWindow().getShell();
     InstallTargetDialog dialog = new InstallTargetDialog( shell );
     int result = dialog.open();
     if( result == Window.OK ) {
-      execute( dialog.shouldSwitchTarget(), TargetProvider.TARGET_REPOSITORY );
+      execute( dialog.shouldSwitchTarget(), targetDefinitionURI );
     }
     return null;
   }

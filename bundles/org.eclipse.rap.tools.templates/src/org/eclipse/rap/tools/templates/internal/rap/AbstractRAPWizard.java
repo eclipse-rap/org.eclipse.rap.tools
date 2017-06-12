@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2015 EclipseSource and others
+ * Copyright (c) 2007, 2017 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,6 @@ import org.eclipse.ui.handlers.IHandlerService;
  */
 abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
-  private static final String WORKBENCH_LAUNCH_TEMPLATE = "workbench_launch.template"; //$NON-NLS-1$
-  private static final String BASIC_LAUNCH_TEMPLATE = "basic_launch.template"; //$NON-NLS-1$
   private static final String CHARSET = "ISO-8859-1"; //$NON-NLS-1$
   private static final String PREFERENCE_INSTALL_TARGET = "installTarget"; //$NON-NLS-1$
 
@@ -51,6 +49,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   private static final String TAG_PACKAGE_NAME = "${packageName}"; //$NON-NLS-1$
 
   static final String SERVICE_COMPONENT_FILE = "OSGI-INF/contribution.xml"; //$NON-NLS-1$
+  private static final String E4_APP_CONFIG_FILE = "Application.e4xmi"; //$NON-NLS-1$
 
   private ResourceChangeListener listener;
 
@@ -67,6 +66,7 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     if( result ) {
       copyServiceComponentConfig( project, model );
       copyLaunchConfig( project, model );
+      copyE4AppConfig( project, model );
       handleRapTargetVerification();
     }
     return result;
@@ -98,9 +98,23 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
     if( !launchConfig.exists() ) {
       try {
         String pluginId = model.getPluginBase().getId();
-        InputStream templete = AbstractRAPWizard.class.getResourceAsStream( getLaunchTemplete( project ) );
+        InputStream templete = AbstractRAPWizard.class.getResourceAsStream( getLaunchTemplate() );
         InputStream stream = readTemplete( templete, project.getName(), pluginId );
         launchConfig.create( stream, true, new NullProgressMonitor() );
+      } catch( CoreException exception ) {
+        TemplateUtil.log( exception.getStatus() );
+      }
+    }
+  }
+
+  private void copyE4AppConfig( IProject project, IPluginModelBase model ) {
+    IFile e4AppConfig = project.getFile( E4_APP_CONFIG_FILE );
+    if( e4AppConfig.exists() ) {
+      try {
+        String pluginId = model.getPluginBase().getId();
+        InputStream templete = e4AppConfig.getContents();
+        InputStream stream = readTemplete( templete, project.getName(), pluginId );
+        e4AppConfig.setContents( stream, true, false, new NullProgressMonitor() );
       } catch( CoreException exception ) {
         TemplateUtil.log( exception.getStatus() );
       }
@@ -144,14 +158,11 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   protected abstract String getActivatorName();
 
+  protected abstract String getLaunchTemplate();
+
   protected abstract boolean shouldModifyActivator();
 
   protected abstract boolean shouldModifyBuildProperties();
-
-  private String getLaunchTemplete( IProject project ) {
-    IFile serviceComponentXml = project.getFile( SERVICE_COMPONENT_FILE );
-    return serviceComponentXml.exists() ? BASIC_LAUNCH_TEMPLATE : WORKBENCH_LAUNCH_TEMPLATE;
-  }
 
   private static void replacePlaceholder( StringBuffer buffer,
                                           String placeholder,
@@ -165,14 +176,24 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
   }
 
   private void handleRapTargetVerification() {
-    if( !containsRapUi() ) {
+    if( !containsRequiredBundle() ) {
       handleRapTargetInstallation();
     }
   }
 
-  private boolean containsRapUi() {
-    IPluginModelBase rapUiPluginModel = PluginRegistry.findModel( "org.eclipse.rap.ui" ); //$NON-NLS-1$
-    return rapUiPluginModel != null;
+  private boolean containsRequiredBundle() {
+    String requiredBundle = "org.eclipse.rap." + getRequiredBundleSuffix();
+    return PluginRegistry.findModel( requiredBundle ) != null;
+  }
+
+  private String getRequiredBundleSuffix() {
+    String requireBundles = getRequireBundles();
+    if( requireBundles.contains( "org.eclipse.rap.e4" ) ) {
+      return "e4";
+    } else if( requireBundles.contains( "org.eclipse.rap.ui" ) ) {
+      return "ui";
+    }
+    return "rwt";
   }
 
   private void handleRapTargetInstallation() {
@@ -222,10 +243,11 @@ abstract class AbstractRAPWizard extends NewPluginTemplateWizard {
 
   private void executeInstallTargetCommand() {
     IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-    IHandlerService handlerService
-      = ( IHandlerService )workbenchWindow.getService( IHandlerService.class );
+    IHandlerService handlerService = workbenchWindow.getService( IHandlerService.class );
     try {
-      handlerService.executeCommand( "org.eclipse.rap.tools.intro.installTarget", null ); //$NON-NLS-1$
+      Event event = new Event();
+      event.text = getRequiredBundleSuffix();
+      handlerService.executeCommand( "org.eclipse.rap.tools.intro.installTarget", event ); //$NON-NLS-1$
     } catch( CommandException e ) {
       ILog log = Activator.getDefault().getLog();
       Status status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, e.getLocalizedMessage(), e );

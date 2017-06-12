@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 EclipseSource
+ * Copyright (c) 2007, 2017 EclipseSource
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,13 @@ public class Messages extends NLS {
   public static String helloRAPTemplate_pageTitle;
   public static String helloRAPTemplate_windowTitle;
   public static String helloRAPWizard_windowTitle;
+
+  public static String e4RAPTemplate_appWindowTitle;
+  public static String e4RAPTemplate_packageName;
+  public static String e4RAPTemplate_pageDescr;
+  public static String e4RAPTemplate_pageTitle;
+  public static String e4RAPTemplate_windowTitle;
+  public static String e4RAPWizard_windowTitle;
 
   public static String mailRAPTemplate_appClass;
   public static String mailRAPTemplate_appWindowTitle;
@@ -53,4 +60,5 @@ public class Messages extends NLS {
   private Messages() {
     // avoid instantiation
   }
+
 }

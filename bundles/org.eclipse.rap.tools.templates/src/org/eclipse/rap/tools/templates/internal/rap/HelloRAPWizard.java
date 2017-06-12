@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2014 EclipseSource and others
+ * Copyright (c) 2007, 2017 EclipseSource and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ import org.eclipse.pde.ui.IFieldData;
 import org.eclipse.pde.ui.templates.ITemplateSection;
 
 public class HelloRAPWizard extends AbstractRAPWizard {
+
+  private static final String LAUNCH_TEMPLATE = "basic_launch.template"; //$NON-NLS-1$
 
   private AbstractRAPTemplate template;
 
@@ -42,7 +44,7 @@ public class HelloRAPWizard extends AbstractRAPWizard {
 
   @Override
   protected String getRequireBundles() {
-    return "org.eclipse.rap.rwt;bundle-version=\"[2.0.0,4.0.0)\"";
+    return "org.eclipse.rap.rwt;bundle-version=\"[3.0.0,4.0.0)\"";
   }
 
   @Override
@@ -58,6 +60,11 @@ public class HelloRAPWizard extends AbstractRAPWizard {
   @Override
   protected boolean shouldModifyBuildProperties() {
     return true;
+  }
+
+  @Override
+  protected String getLaunchTemplate() {
+    return LAUNCH_TEMPLATE;
   }
 
 }

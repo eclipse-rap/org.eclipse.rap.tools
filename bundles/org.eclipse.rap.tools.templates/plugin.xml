@@ -28,6 +28,18 @@
             %mailRAP.description
          </description>
       </wizard>
+      <wizard
+            class="org.eclipse.rap.tools.templates.internal.rap.E4RAPWizard"
+            icon="$nl$/icons/etool16/newexprj_wiz.gif"
+            id="org.eclipse.rap.tools.templates.internal.rap.E4RAPWizard"
+            java="true"
+            name="%e4RAP.name"
+            rcp="false"
+            ui-content="true">
+         <description>
+            %e4RAP.description
+         </description>
+      </wizard>
       <!-- contribute to rcp wizards -->
    </extension>
 

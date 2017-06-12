@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 EclipseSource and others.
+ * Copyright (c) 2011, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,10 @@ public final class TargetProvider {
     = "rap-" + getVersion() + ".target"; //$NON-NLS-1$ //$NON-NLS-2$
   public final static String TARGET_REPOSITORY
     = "http://download.eclipse.org/rt/rap/targets/" + TARGET_FILE_NAME; //$NON-NLS-1$
+  public final static String TARGET_E4_FILE_NAME
+    = "rap-" + getVersion() + "-e4.target"; //$NON-NLS-1$ //$NON-NLS-2$
+  public final static String TARGET_E4_REPOSITORY
+    = "http://download.eclipse.org/rt/rap/targets/" + TARGET_E4_FILE_NAME; //$NON-NLS-1$
 
   public static String createLocalTargetDefinition( String targetDefinitionURI,
                                                     IProgressMonitor monitor )
