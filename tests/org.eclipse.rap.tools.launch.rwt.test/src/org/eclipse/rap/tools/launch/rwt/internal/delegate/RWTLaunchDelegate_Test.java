@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2013 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2017 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
-import org.eclipse.rap.tools.launch.rwt.internal.delegate.RWTLaunchDelegate;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.Fixture;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.TestLaunch;
 import org.eclipse.rap.tools.launch.rwt.internal.tests.TestProject;
@@ -111,7 +110,27 @@ public class RWTLaunchDelegate_Test {
   @Test
   public void testGetClasspath() throws CoreException {
     String[] classpath = launchDelegate.getClasspath( launchConfig );
-    assertEquals( 11, classpath.length );
+    String[] bundles = {
+      "org.eclipse.rap.tools.launch.rwt",
+      "org.eclipse.jetty.continuation",
+      "org.eclipse.jetty.http",
+      "org.eclipse.jetty.io",
+      "org.eclipse.jetty.security",
+      "org.eclipse.jetty.server",
+      "org.eclipse.jetty.servlet",
+      "org.eclipse.jetty.util",
+      "org.eclipse.jetty.webapp",
+      "org.eclipse.jetty.xml"
+    };
+    for( String bundle : bundles ) {
+      boolean found = false;
+      for( String path : classpath ) {
+        if( path != null && path.indexOf( bundle ) != -1 ) {
+          found = true;
+        }
+      }
+      assertTrue( "Bundle " + bundle + " not found in classpath." , found );
+    }
   }
 
   @Test
