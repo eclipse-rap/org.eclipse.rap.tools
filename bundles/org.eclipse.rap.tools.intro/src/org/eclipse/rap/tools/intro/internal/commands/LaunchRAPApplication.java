@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 EclipseSource and others.
+ * Copyright (c) 2009, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,8 +52,7 @@ public final class LaunchRAPApplication extends AbstractHandler {
 
   private static void runHandler( ExecutionEvent event ) {
     IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow( event );
-    IHandlerService handlerService
-      = ( IHandlerService )workbenchWindow.getService( IHandlerService.class );
+    IHandlerService handlerService = workbenchWindow.getService( IHandlerService.class );
     try {
       handlerService.executeCommand( RUN_COMMAND, null );
     } catch( CommandException e ) {

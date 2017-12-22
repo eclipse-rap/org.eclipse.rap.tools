@@ -6,29 +6,29 @@
 <repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.7.v20170914/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.1.v20170928-1321"/>
-<unit id="org.eclipse.e4.rcp.feature.group" version="1.6.2.v20171129-0543"/>
-<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.6.2.v20171129-0543"/>
+<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.100.v20171204-1916"/>
+<unit id="org.eclipse.e4.rcp.feature.group" version="1.6.100.v20171205-1335"/>
+<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.6.100.v20171205-1335"/>
 <unit id="org.eclipse.ecf.core.feature.feature.group" version="1.4.0.v20170516-2248"/>
 <unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="1.1.0.v20170110-1317"/>
-<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.13.7.v20170516-2248"/>
-<unit id="org.eclipse.ecf.filetransfer.httpclient4.feature.feature.group" version="3.13.7.v20170516-2248"/>
+<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.13.8.v20170715-2257"/>
+<unit id="org.eclipse.ecf.filetransfer.httpclient4.feature.feature.group" version="3.13.8.v20170715-2257"/>
 <unit id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature.feature.group" version="1.1.0.v20170110-1317"/>
 <unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="1.1.0.v20170110-1317"/>
-<unit id="org.eclipse.emf.common.feature.group" version="2.13.0.v20170609-0707"/>
-<unit id="org.eclipse.emf.ecore.feature.group" version="2.13.0.v20170609-0707"/>
-<unit id="org.eclipse.help.feature.group" version="2.2.102.v20171130-0510"/>
-<unit id="org.eclipse.help.source.feature.group" version="2.2.102.v20171130-0510"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.13.2.v20171130-0906"/>
-<unit id="org.eclipse.jdt.source.feature.group" version="3.13.2.v20171130-0906"/>
-<unit id="org.eclipse.pde.feature.group" version="3.13.2.v20171130-0510"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.13.2.v20171130-0510"/>
-<unit id="org.eclipse.platform.feature.group" version="4.7.2.v20171130-0510"/>
-<unit id="org.eclipse.platform.source.feature.group" version="4.7.2.v20171130-0510"/>
-<unit id="org.eclipse.rcp.feature.group" version="4.7.2.v20171130-0510"/>
-<unit id="org.eclipse.rcp.source.feature.group" version="4.7.2.v20171130-0510"/>
-<unit id="org.eclipse.sdk.ide" version="4.7.2.M20171130-0510"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.7/R-4.7.2-201711300510/"/>
+<unit id="org.eclipse.emf.common.feature.group" version="2.14.0.v20171203-1459"/>
+<unit id="org.eclipse.emf.ecore.feature.group" version="2.14.0.v20171203-1459"/>
+<unit id="org.eclipse.help.feature.group" version="2.2.200.v20171206-2000"/>
+<unit id="org.eclipse.help.source.feature.group" version="2.2.200.v20171206-2000"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.14.0.v20171206-2000"/>
+<unit id="org.eclipse.jdt.source.feature.group" version="3.14.0.v20171206-2000"/>
+<unit id="org.eclipse.pde.feature.group" version="3.13.100.v20171206-2000"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.13.100.v20171206-2000"/>
+<unit id="org.eclipse.platform.feature.group" version="4.8.0.v20171206-2000"/>
+<unit id="org.eclipse.platform.source.feature.group" version="4.8.0.v20171206-2000"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.8.0.v20171206-2000"/>
+<unit id="org.eclipse.rcp.source.feature.group" version="4.8.0.v20171206-2000"/>
+<unit id="org.eclipse.sdk.ide" version="4.8.0.I20171206-2000"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.8milestones/S-4.8M4-201712062000/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>

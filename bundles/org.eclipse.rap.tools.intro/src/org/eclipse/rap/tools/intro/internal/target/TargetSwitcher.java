@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2013 EclipseSource and others.
+ * Copyright (c) 2009, 2017 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -142,9 +142,7 @@ public final class TargetSwitcher {
   }
 
   private static ITargetPlatformService getTargetPlatformService() {
-    String className = ITargetPlatformService.class.getName();
-    PDECore pdeCore = PDECore.getDefault();
-    return ( ITargetPlatformService )pdeCore.acquireService( className );
+    return PDECore.getDefault().acquireService( ITargetPlatformService.class );
   }
 
   private static Throwable getDownloadException( IStatus status ) {
