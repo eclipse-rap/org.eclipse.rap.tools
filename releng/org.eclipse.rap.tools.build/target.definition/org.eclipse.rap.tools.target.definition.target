@@ -2,7 +2,7 @@
 <?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="20">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jetty.bundles.f.feature.group" version="9.4.8.201711291701"/>
+<unit id="org.eclipse.jetty.bundles.f.feature.group" version="9.4.8.201802270002"/>
 <repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.8.v20171121/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
