@@ -89,7 +89,7 @@
             <artifact>
               <groupId>${project.groupId}</groupId>
               <artifactId>org.eclipse.rap.tools.target.definition</artifactId>
-              <version>${project.version}</version>
+              <version>3.4.1-SNAPSHOT</version>
             </artifact>
           </target>
         </configuration>
