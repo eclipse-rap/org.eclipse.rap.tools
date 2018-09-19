@@ -27,7 +27,7 @@
 <unit id="org.eclipse.platform.source.feature.group" version="4.9.0.v20180906-1121"/>
 <unit id="org.eclipse.rcp.feature.group" version="4.9.0.v20180906-1121"/>
 <unit id="org.eclipse.rcp.source.feature.group" version="4.9.0.v20180906-1121"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.9milestones/S-4.9RC2-201809060745/"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.9/R-4.9-201809060745/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>
