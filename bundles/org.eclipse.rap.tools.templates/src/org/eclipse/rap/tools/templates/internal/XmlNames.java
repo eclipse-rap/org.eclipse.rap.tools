@@ -34,6 +34,7 @@ public final class XmlNames {
   public static final String ATT_VISIBLE = "visible"; //$NON-NLS-1$
   public static final String ATT_APPLICATION_ID = "applicationId"; //$NON-NLS-1$
   public static final String ATT_BRANDING_ID = "brandingId"; //$NON-NLS-1$
+  public static final String ATT_APPLICATION = "application"; //$NON-NLS-1$
 
   public static final String ELEM_ENTRYPOINT = "entrypoint"; //$NON-NLS-1$
   public static final String ELEM_APPLICATION = "application"; //$NON-NLS-1$
@@ -46,6 +47,7 @@ public final class XmlNames {
   public static final String ELEM_BRANDING = "branding"; //$NON-NLS-1$
   public static final String ELEM_PRESENTATIONFACTORY = "presentationFactory"; //$NON-NLS-1$
   public static final String ELEM_DEFAULTSTACKPRESENTATION = "defaultStackPresentation"; //$NON-NLS-1$
+  public static final String ELEM_PRODUCT = "product"; //$NON-NLS-1$
 
   public static final String XID_COMMANDS = "org.eclipse.ui.commands"; //$NON-NLS-1$
   public static final String XID_APPLICATION = "org.eclipse.core.runtime.applications"; //$NON-NLS-1$
@@ -53,5 +55,6 @@ public final class XmlNames {
   public static final String XID_VIEWS = "org.eclipse.ui.views"; //$NON-NLS-1$
   public static final String XID_BRANDING = "org.eclipse.rap.ui.branding"; //$NON-NLS-1$
   public static final String XID_ENTRYPOINT = "org.eclipse.rap.ui.entrypoint"; //$NON-NLS-1$
+  public static final String XID_PRODUCT = "org.eclipse.core.runtime.products"; //$NON-NLS-1$
 
 }

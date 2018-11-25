@@ -14,6 +14,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.pde.core.plugin.IPluginElement;
+import org.eclipse.pde.core.plugin.IPluginExtension;
+import org.eclipse.rap.tools.templates.internal.XmlNames;
 
 class E4RAPTemplate extends AbstractRAPTemplate {
 
@@ -44,6 +47,18 @@ class E4RAPTemplate extends AbstractRAPTemplate {
 
   @Override
   protected void updateModel( IProgressMonitor monitor ) throws CoreException {
+    createE4ApplicationExtension();
+  }
+
+  private void createE4ApplicationExtension() throws CoreException {
+    IPluginExtension extension = createExtension( XmlNames.XID_PRODUCT, true );
+    extension.setId( getFullApplicationId() );
+    IPluginElement applicationElement = createElement( extension );
+    applicationElement.setName( XmlNames.ELEM_PRODUCT );
+    applicationElement.setAttribute( XmlNames.ATT_APPLICATION, "org.eclipse.e4.ui.workbench.swt.E4Application" ); //$NON-NLS-1$
+    applicationElement.setAttribute( XmlNames.ATT_NAME, "RAP E4 Application" ); //$NON-NLS-1$
+    extension.add( applicationElement );
+    addExtensionToPlugin( extension );
   }
 
   private void createTemplateOptions() {
