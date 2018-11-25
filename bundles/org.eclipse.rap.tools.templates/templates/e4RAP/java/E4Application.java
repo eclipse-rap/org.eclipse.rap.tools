@@ -11,7 +11,7 @@ import org.eclipse.rap.rwt.application.Application.OperationMode;
 import org.eclipse.rap.rwt.client.WebClient;
 
 
-public class e4Application implements ApplicationConfiguration {
+public class E4Application implements ApplicationConfiguration {
 
     private final static String E4XMI = "platform:/plugin/$pluginId$/Application.e4xmi";
 
