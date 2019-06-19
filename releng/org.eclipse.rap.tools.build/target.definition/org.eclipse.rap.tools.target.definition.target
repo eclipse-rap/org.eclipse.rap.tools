@@ -26,7 +26,7 @@
 <unit id="org.eclipse.platform.source.feature.group" version="4.12.0.v20190605-1801"/>
 <unit id="org.eclipse.rcp.feature.group" version="4.12.0.v20190605-1801"/>
 <unit id="org.eclipse.rcp.source.feature.group" version="4.12.0.v20190605-1801"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.12milestones/S-4.12RC2-201906051800/"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.12/R-4.12-201906051800/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="2.0.1.v20180423-1114"/>
