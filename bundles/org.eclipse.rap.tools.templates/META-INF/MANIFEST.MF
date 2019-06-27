@@ -6,7 +6,7 @@ Bundle-Version: 3.10.0.qualifier
 Bundle-Vendor: %bundleProvider
 Bundle-Localization: plugin
 Bundle-Activator: org.eclipse.rap.tools.templates.internal.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
