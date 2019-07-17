@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="48">
+<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="49">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jetty.bundles.f.feature.group" version="9.4.18.v20190429"/>
 <repository location="http://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.18.v20190429/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.500.v20190518-1240"/>
-<unit id="org.eclipse.e4.rcp.feature.group" version="1.6.500.v20190605-1801"/>
-<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.6.500.v20190605-1801"/>
+<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.600.v20190708-1505"/>
+<unit id="org.eclipse.e4.rcp.feature.group" version="1.6.600.v20190711-0829"/>
+<unit id="org.eclipse.e4.rcp.source.feature.group" version="1.6.600.v20190711-0829"/>
 <unit id="org.eclipse.ecf.core.feature.feature.group" version="1.5.3.v20190423-0625"/>
 <unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="1.1.200.v20190502-0212"/>
 <unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.5.v20190423-0614"/>
 <unit id="org.eclipse.ecf.filetransfer.httpclient45.feature.feature.group" version="1.0.0.v20190530-1947"/>
 <unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="1.1.100.v20180301-0132"/>
-<unit id="org.eclipse.emf.common.feature.group" version="2.16.0.v20190528-0845"/>
+<unit id="org.eclipse.emf.common.feature.group" version="2.16.0.v20190625-1131"/>
 <unit id="org.eclipse.emf.ecore.feature.group" version="2.18.0.v20190528-0845"/>
-<unit id="org.eclipse.help.feature.group" version="2.2.600.v20190605-1800"/>
-<unit id="org.eclipse.help.source.feature.group" version="2.2.600.v20190605-1800"/>
-<unit id="org.eclipse.jdt.feature.group" version="3.18.0.v20190605-1800"/>
-<unit id="org.eclipse.jdt.source.feature.group" version="3.18.0.v20190605-1800"/>
-<unit id="org.eclipse.pde.feature.group" version="3.14.0.v20190605-1800"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.14.0.v20190605-1800"/>
-<unit id="org.eclipse.platform.feature.group" version="4.12.0.v20190605-1801"/>
-<unit id="org.eclipse.platform.source.feature.group" version="4.12.0.v20190605-1801"/>
-<unit id="org.eclipse.rcp.feature.group" version="4.12.0.v20190605-1801"/>
-<unit id="org.eclipse.rcp.source.feature.group" version="4.12.0.v20190605-1801"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.12/R-4.12-201906051800/"/>
+<unit id="org.eclipse.help.feature.group" version="2.2.700.v20190711-1805"/>
+<unit id="org.eclipse.help.source.feature.group" version="2.2.700.v20190711-1805"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.18.100.v20190711-1805"/>
+<unit id="org.eclipse.jdt.source.feature.group" version="3.18.100.v20190711-1805"/>
+<unit id="org.eclipse.pde.feature.group" version="3.14.100.v20190711-1805"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.14.100.v20190711-1805"/>
+<unit id="org.eclipse.platform.feature.group" version="4.13.0.v20190711-1805"/>
+<unit id="org.eclipse.platform.source.feature.group" version="4.13.0.v20190711-1805"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.13.0.v20190711-1805"/>
+<unit id="org.eclipse.rcp.source.feature.group" version="4.13.0.v20190711-1805"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.13milestones/S-4.13M1-201907111805/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="2.0.1.v20180423-1114"/>
