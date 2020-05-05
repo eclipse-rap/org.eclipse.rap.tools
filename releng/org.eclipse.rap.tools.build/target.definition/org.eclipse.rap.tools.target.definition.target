@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="RAP Tools target platform" sequenceNumber="62">
+<?pde version="3.8"?>
+<target name="RAP Tools target platform" sequenceNumber="62">
     <locations>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-            <unit id="org.eclipse.jetty.bundles.f.feature.group" version="9.4.27.v20200227"/>
-            <repository location="https://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.27.v20200227/"/>
+            <unit id="org.eclipse.jetty.bundles.f.feature.group" version="9.4.28.v20200408"/>
+            <repository location="https://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.28.v20200408/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-            <unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.900.v20200406-0956"/>
-            <unit id="org.eclipse.e4.rcp.feature.group" version="4.16.0.v20200408-1004"/>
-            <unit id="org.eclipse.e4.rcp.source.feature.group" version="4.16.0.v20200408-1004"/>
+            <unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.900.v20200429-1624"/>
+            <unit id="org.eclipse.e4.rcp.feature.group" version="4.16.0.v20200501-0715"/>
+            <unit id="org.eclipse.e4.rcp.source.feature.group" version="4.16.0.v20200501-0715"/>
             <unit id="org.eclipse.ecf.core.feature.feature.group" version="1.5.500.v20200217-1548"/>
             <unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="1.1.300.v20191023-2007"/>
             <unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.700.v20200217-0016"/>
@@ -16,17 +17,17 @@
             <unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="1.1.200.v20191024-1546"/>
             <unit id="org.eclipse.emf.common.feature.group" version="2.19.0.v20200324-0932"/>
             <unit id="org.eclipse.emf.ecore.feature.group" version="2.22.0.v20200324-0932"/>
-            <unit id="org.eclipse.help.feature.group" version="2.3.200.v20200409-0200"/>
-            <unit id="org.eclipse.help.source.feature.group" version="2.3.200.v20200409-0200"/>
-            <unit id="org.eclipse.jdt.feature.group" version="3.18.400.v20200409-0200"/>
-            <unit id="org.eclipse.jdt.source.feature.group" version="3.18.400.v20200409-0200"/>
-            <unit id="org.eclipse.pde.feature.group" version="3.14.400.v20200409-0200"/>
-            <unit id="org.eclipse.pde.source.feature.group" version="3.14.400.v20200409-0200"/>
-            <unit id="org.eclipse.platform.feature.group" version="4.16.0.v20200409-0200"/>
-            <unit id="org.eclipse.platform.source.feature.group" version="4.16.0.v20200409-0200"/>
-            <unit id="org.eclipse.rcp.feature.group" version="4.16.0.v20200409-0200"/>
-            <unit id="org.eclipse.rcp.source.feature.group" version="4.16.0.v20200409-0200"/>
-            <repository location="https://download.eclipse.org/eclipse/updates/4.16milestones/S-4.16M1-202004090200/"/>
+            <unit id="org.eclipse.help.feature.group" version="2.3.200.v20200501-0520"/>
+            <unit id="org.eclipse.help.source.feature.group" version="2.3.200.v20200501-0520"/>
+            <unit id="org.eclipse.jdt.feature.group" version="3.18.400.v20200501-0520"/>
+            <unit id="org.eclipse.jdt.source.feature.group" version="3.18.400.v20200501-0520"/>
+            <unit id="org.eclipse.pde.feature.group" version="3.14.400.v20200501-0520"/>
+            <unit id="org.eclipse.pde.source.feature.group" version="3.14.400.v20200501-0520"/>
+            <unit id="org.eclipse.platform.feature.group" version="4.16.0.v20200501-0715"/>
+            <unit id="org.eclipse.platform.source.feature.group" version="4.16.0.v20200501-0715"/>
+            <unit id="org.eclipse.rcp.feature.group" version="4.16.0.v20200501-0715"/>
+            <unit id="org.eclipse.rcp.source.feature.group" version="4.16.0.v20200501-0715"/>
+            <repository location="https://download.eclipse.org/eclipse/updates/4.16-I-builds/I20200501-0520/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
             <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
