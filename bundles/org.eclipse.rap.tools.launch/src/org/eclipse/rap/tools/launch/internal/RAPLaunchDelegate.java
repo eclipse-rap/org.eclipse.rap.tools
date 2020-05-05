@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2013 EclipseSource and others.
+ * Copyright (c) 2007, 2020 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -288,6 +288,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     final boolean[] terminated = { false };
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     debugPlugin.addDebugEventListener( new IDebugEventSetListener() {
+      @Override
       public void handleDebugEvents( DebugEvent[] events ) {
         for( DebugEvent event : events ) {
           if( isTerminateEventFor( event, previousLaunch ) ) {
@@ -373,16 +374,13 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private void clearDataLocation( ILaunchConfiguration configuration, IProgressMonitor monitor )
     throws CoreException
   {
-    String resolvedDataLocation = getResolvedDataLoacation();
-    boolean isCleared = clearWorkspace( configuration, resolvedDataLocation, monitor );
-    if( !isCleared ) {
-      throw new CoreException( Status.CANCEL_STATUS );
-    }
+    clearWorkspace( configuration, getResolvedDataLoacation(), monitor );
   }
 
   private void registerBrowserOpener() {
     DebugPlugin debugPlugin = DebugPlugin.getDefault();
     debugPlugin.addDebugEventListener( new IDebugEventSetListener() {
+      @Override
       public void handleDebugEvents( DebugEvent[] events ) {
         for( DebugEvent event : events ) {
           if( isCreateEventFor( event, launch ) ) {
@@ -439,6 +437,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     final IWebBrowser[] result = { null };
     final CoreException[] exception = { null };
     Display.getDefault().syncExec( new Runnable() {
+      @Override
       public void run() {
         try {
           IWorkbench workbench = PlatformUI.getWorkbench();
@@ -473,6 +472,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private static void openUrl( final IWebBrowser browser, final URL url ) throws PartInitException {
     final PartInitException[] exception = { null };
     Display.getDefault().asyncExec( new Runnable() {
+      @Override
       public void run() {
         try {
           browser.openURL( url );
