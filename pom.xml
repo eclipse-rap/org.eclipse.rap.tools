@@ -18,7 +18,7 @@
 
   <groupId>org.eclipse.rap</groupId>
   <artifactId>org.eclipse.rap.tools-build</artifactId>
-  <version>3.12.0-SNAPSHOT</version>
+  <version>3.14.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
