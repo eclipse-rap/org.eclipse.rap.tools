@@ -51,13 +51,8 @@ public class E4RAPWizard extends AbstractRAPWizard {
                      BundleValueEntry.bundle( "org.eclipse.e4.core.services" ),
                      BundleValueEntry.bundle( "org.eclipse.e4.ui.di" ),
                      BundleValueEntry.bundle( "org.eclipse.equinox.common" ),
-                     BundleValueEntry.bundle( "org.eclipse.e4.ui.model.workbench" ) );
-  }
-
-  public String getImportPackagesAsString() {
-    return asString( BundleValueEntry.pack( "org.osgi.framework" ),
-                     BundleValueEntry.pack( "javax.annotation", "1.2.0" ),
-                     BundleValueEntry.pack( "javax.inject", "1.0.0" ) );
+                     BundleValueEntry.bundle( "org.eclipse.e4.ui.model.workbench" ), 
+                     BundleValueEntry.bundle( "javax.annotation" ) );
   }
 
   @Override
