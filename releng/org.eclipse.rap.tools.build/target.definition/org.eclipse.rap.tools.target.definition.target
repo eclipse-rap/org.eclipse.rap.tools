@@ -7,27 +7,27 @@
             <repository location="https://download.eclipse.org/jetty/updates/jetty-bundles-9.x/9.4.30.v20200611/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-            <unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.1000.v20200706-2051"/>
-            <unit id="org.eclipse.e4.rcp.feature.group" version="4.17.0.v20200707-1002"/>
-            <unit id="org.eclipse.e4.rcp.source.feature.group" version="4.17.0.v20200707-1002"/>
+            <unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.1000.v20200727-1529"/>
+            <unit id="org.eclipse.e4.rcp.feature.group" version="4.17.0.v20200729-2048"/>
+            <unit id="org.eclipse.e4.rcp.source.feature.group" version="4.17.0.v20200729-2048"/>
             <unit id="org.eclipse.ecf.core.feature.feature.group" version="1.5.600.v20200611-2221"/>
             <unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="1.1.400.v20200611-2220"/>
-            <unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.800.v20200611-2221"/>
+            <unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.1200.v20200713-1642"/>
             <unit id="org.eclipse.ecf.filetransfer.httpclient45.feature.feature.group" version="1.0.400.v20200611-1836"/>
             <unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="1.1.300.v20200611-1836"/>
             <unit id="org.eclipse.emf.common.feature.group" version="2.20.0.v20200630-0516"/>
             <unit id="org.eclipse.emf.ecore.feature.group" version="2.23.0.v20200630-0516"/>
-            <unit id="org.eclipse.help.feature.group" version="2.3.300.v20200708-1800"/>
-            <unit id="org.eclipse.help.source.feature.group" version="2.3.300.v20200708-1800"/>
-            <unit id="org.eclipse.jdt.feature.group" version="3.18.500.v20200708-1800"/>
-            <unit id="org.eclipse.jdt.source.feature.group" version="3.18.500.v20200708-1800"/>
-            <unit id="org.eclipse.pde.feature.group" version="3.14.500.v20200708-1800"/>
-            <unit id="org.eclipse.pde.source.feature.group" version="3.14.500.v20200708-1800"/>
-            <unit id="org.eclipse.platform.feature.group" version="4.17.0.v20200708-1800"/>
-            <unit id="org.eclipse.platform.source.feature.group" version="4.17.0.v20200708-1800"/>
-            <unit id="org.eclipse.rcp.feature.group" version="4.17.0.v20200708-1800"/>
-            <unit id="org.eclipse.rcp.source.feature.group" version="4.17.0.v20200708-1800"/>
-            <repository location="https://download.eclipse.org/eclipse/updates/4.17milestones/S-4.17M1-202007081800/"/>
+            <unit id="org.eclipse.help.feature.group" version="2.3.300.v20200729-1800"/>
+            <unit id="org.eclipse.help.source.feature.group" version="2.3.300.v20200729-1800"/>
+            <unit id="org.eclipse.jdt.feature.group" version="3.18.500.v20200729-1800"/>
+            <unit id="org.eclipse.jdt.source.feature.group" version="3.18.500.v20200729-1800"/>
+            <unit id="org.eclipse.pde.feature.group" version="3.14.500.v20200729-1800"/>
+            <unit id="org.eclipse.pde.source.feature.group" version="3.14.500.v20200729-1800"/>
+            <unit id="org.eclipse.platform.feature.group" version="4.17.0.v20200729-2048"/>
+            <unit id="org.eclipse.platform.source.feature.group" version="4.17.0.v20200729-2048"/>
+            <unit id="org.eclipse.rcp.feature.group" version="4.17.0.v20200729-2048"/>
+            <unit id="org.eclipse.rcp.source.feature.group" version="4.17.0.v20200729-2048"/>
+            <repository location="https://download.eclipse.org/eclipse/updates/4.17-I-builds/I20200729-1800/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
             <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>

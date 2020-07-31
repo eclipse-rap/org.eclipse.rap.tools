@@ -26,7 +26,7 @@
   <packaging>eclipse-plugin</packaging>
 
   <properties>
-    <eclipserun-repo>https://download.eclipse.org/releases/2019-12</eclipserun-repo>
+    <eclipserun-repo>https://download.eclipse.org/eclipse/updates/4.17-I-builds/I20200729-1800/</eclipserun-repo>
     <runtimeSourceDir>${project.basedir}/../../../org.eclipse.rap</runtimeSourceDir>
   </properties>
 
@@ -71,7 +71,7 @@
               <url>${eclipserun-repo}</url>
             </repository>
           </repositories>
-          <executionEnvironment>JavaSE-1.8</executionEnvironment>
+          <executionEnvironment>JavaSE-11</executionEnvironment>
         </configuration>
         <executions>
           <execution>
