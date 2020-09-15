@@ -27,7 +27,7 @@
       <unit id="org.eclipse.platform.source.feature.group" version="4.17.0.v20200902-1800"/>
       <unit id="org.eclipse.rcp.feature.group" version="4.17.0.v20200902-1800"/>
       <unit id="org.eclipse.rcp.source.feature.group" version="4.17.0.v20200902-1800"/>
-      <repository location="https://download.eclipse.org/eclipse/updates/4.17milestones/S-4.17RC2-202009021800/"/>
+      <repository location="https://download.eclipse.org/eclipse/updates/4.17/R-4.17-202009021800/"/>
     </location>
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
