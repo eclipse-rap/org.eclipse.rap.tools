@@ -26,7 +26,7 @@
   <packaging>eclipse-plugin</packaging>
 
   <properties>
-    <eclipserun-repo>https://download.eclipse.org/eclipse/updates/4.17-I-builds/I20200729-1800/</eclipserun-repo>
+    <eclipserun-repo>https://download.eclipse.org/eclipse/updates/4.17/</eclipserun-repo>
     <runtimeSourceDir>${project.basedir}/../../../org.eclipse.rap</runtimeSourceDir>
   </properties>
 
