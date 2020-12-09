@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2017 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2020 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -119,6 +119,7 @@ public class RWTLaunchDelegate_Test {
       "org.eclipse.jetty.server",
       "org.eclipse.jetty.servlet",
       "org.eclipse.jetty.util",
+      "org.eclipse.jetty.util.ajax",
       "org.eclipse.jetty.webapp",
       "org.eclipse.jetty.xml"
     };

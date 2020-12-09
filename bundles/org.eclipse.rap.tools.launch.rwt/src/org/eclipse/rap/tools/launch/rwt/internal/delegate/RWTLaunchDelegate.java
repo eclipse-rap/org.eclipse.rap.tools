@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2014 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2020 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -76,6 +76,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.servlet" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.util" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.util.ajax" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.webapp" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.xml" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "javax.servlet" ) ); //$NON-NLS-1$
