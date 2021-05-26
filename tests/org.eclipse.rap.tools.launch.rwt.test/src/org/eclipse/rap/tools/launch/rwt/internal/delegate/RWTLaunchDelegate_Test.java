@@ -112,7 +112,6 @@ public class RWTLaunchDelegate_Test {
     String[] classpath = launchDelegate.getClasspath( launchConfig );
     String[] bundles = {
       "org.eclipse.rap.tools.launch.rwt",
-      "org.eclipse.jetty.continuation",
       "org.eclipse.jetty.http",
       "org.eclipse.jetty.io",
       "org.eclipse.jetty.security",
@@ -121,7 +120,8 @@ public class RWTLaunchDelegate_Test {
       "org.eclipse.jetty.util",
       "org.eclipse.jetty.util.ajax",
       "org.eclipse.jetty.webapp",
-      "org.eclipse.jetty.xml"
+      "org.eclipse.jetty.xml",
+      "slf4j.api",
     };
     for( String bundle : bundles ) {
       boolean found = false;

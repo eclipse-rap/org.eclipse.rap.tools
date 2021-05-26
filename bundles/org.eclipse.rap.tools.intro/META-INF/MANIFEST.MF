@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.ui.intro,
  org.eclipse.equinox.p2.metadata,
  org.eclipse.equinox.p2.core,
  org.eclipse.equinox.p2.repository
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
@@ -23,3 +23,4 @@ Bundle-Vendor: %Bundle-Vendor
 Export-Package: org.eclipse.rap.tools.intro.internal;x-friends:="org.eclipse.rap.tools.tests",
  org.eclipse.rap.tools.intro.internal.commands;x-internal:=true,
  org.eclipse.rap.tools.intro.internal.target;x-friends:="org.eclipse.rap.tools.tests"
+Automatic-Module-Name: org.eclipse.rap.tools.intro
