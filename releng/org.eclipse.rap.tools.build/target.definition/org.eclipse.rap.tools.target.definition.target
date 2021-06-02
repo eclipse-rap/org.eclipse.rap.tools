@@ -7,26 +7,26 @@
 			<unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-			<repository location="https://download.eclipse.org/eclipse/updates/4.20-I-builds/I20210519-1800/"/>
-			<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.1300.v20210518-0604"/>
-			<unit id="org.eclipse.e4.rcp.feature.group" version="4.20.0.v20210519-1005"/>
-			<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.5.701.v20210326-0550"/>
-			<unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="1.1.500.v20210320-0209"/>
-			<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.1702.v20210326-0343"/>
-			<unit id="org.eclipse.ecf.filetransfer.httpclient45.feature.feature.group" version="1.0.702.v20210326-0550"/>
-			<unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="1.1.400.v20210320-0251"/>
+			<repository location="https://download.eclipse.org/eclipse/updates/4.20-I-builds/I20210526-2310/"/>
+			<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.1300.v20210526-1900"/>
+			<unit id="org.eclipse.e4.rcp.feature.group" version="4.20.0.v20210527-0259"/>
+			<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.5.702.v20210409-2301"/>
+			<unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="1.1.501.v20210409-2301"/>
+			<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.1703.v20210409-2301"/>
+			<unit id="org.eclipse.ecf.filetransfer.httpclient45.feature.feature.group" version="1.0.703.v20210512-0614"/>
+			<unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="1.1.401.v20210409-2301"/>
 			<unit id="org.eclipse.emf.common.feature.group" version="2.22.0.v20210319-0732"/>
 			<unit id="org.eclipse.emf.ecore.feature.group" version="2.24.0.v20210405-0628"/>
 			<unit id="org.eclipse.equinox.compendium.sdk.feature.group" version="3.22.0.v20210308-1626"/>
-			<unit id="org.eclipse.equinox.core.feature.feature.group" version="1.13.200.v20210518-0604"/>
-			<unit id="org.eclipse.equinox.core.sdk.feature.group" version="3.23.0.v20210518-0604"/>
-			<unit id="org.eclipse.jdt.feature.group" version="3.18.800.v20210519-1800"/>
-			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.800.v20210519-1800"/>
-			<unit id="org.eclipse.pde.feature.group" version="3.14.800.v20210519-1800"/>
-			<unit id="org.eclipse.pde.source.feature.group" version="3.14.800.v20210519-1800"/>
-			<unit id="org.eclipse.platform.feature.group" version="4.20.0.v20210519-1800"/>
-			<unit id="org.eclipse.platform.source.feature.group" version="4.20.0.v20210519-1800"/>
-			<unit id="org.eclipse.rcp.feature.group" version="4.20.0.v20210519-1800"/>
+			<unit id="org.eclipse.equinox.core.feature.feature.group" version="1.13.200.v20210526-1900"/>
+			<unit id="org.eclipse.equinox.core.sdk.feature.group" version="3.23.0.v20210526-1900"/>
+			<unit id="org.eclipse.jdt.feature.group" version="3.18.800.v20210526-2310"/>
+			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.800.v20210526-2310"/>
+			<unit id="org.eclipse.pde.feature.group" version="3.14.800.v20210526-2310"/>
+			<unit id="org.eclipse.pde.source.feature.group" version="3.14.800.v20210526-2310"/>
+			<unit id="org.eclipse.platform.feature.group" version="4.20.0.v20210527-0259"/>
+			<unit id="org.eclipse.platform.source.feature.group" version="4.20.0.v20210527-0259"/>
+			<unit id="org.eclipse.rcp.feature.group" version="4.20.0.v20210527-0259"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 			<repository location="https://download.eclipse.org/webtools/jetty/10.0.3/repository/"/>
