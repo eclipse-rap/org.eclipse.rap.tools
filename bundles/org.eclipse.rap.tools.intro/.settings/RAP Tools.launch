@@ -274,7 +274,7 @@
         <setEntry value="org.w3c.dom.events@default:default"/>
         <setEntry value="org.w3c.dom.smil@default:default"/>
         <setEntry value="org.w3c.dom.svg@default:default"/>
-        <setEntry value="slf4j.api@default:default"/>
+        <setEntry value="org.slf4j.api@default:default"/>
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
         <setEntry value="org.eclipse.rap.doc@default:default"/>
