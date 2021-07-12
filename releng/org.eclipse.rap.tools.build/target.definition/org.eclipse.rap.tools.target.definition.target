@@ -7,59 +7,59 @@
 			<unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-			<repository location="https://download.eclipse.org/eclipse/updates/4.20/R-4.20-202106111600/"/>
-			<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.1300.v20210602-1312"/>
-			<unit id="org.eclipse.e4.rcp.feature.group" version="4.20.0.v20210602-2209"/>
+			<repository location="https://download.eclipse.org/eclipse/updates/4.21-I-builds/I20210709-0030/"/>
+			<unit id="org.eclipse.core.runtime.feature.feature.group" version="1.2.1400.v20210701-1827"/>
+			<unit id="org.eclipse.e4.rcp.feature.group" version="4.21.0.v20210709-0434"/>
 			<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.5.702.v20210409-2301"/>
 			<unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="1.1.501.v20210409-2301"/>
-			<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.1703.v20210409-2301"/>
+			<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.1800.v20210618-0642"/>
 			<unit id="org.eclipse.ecf.filetransfer.httpclient45.feature.feature.group" version="1.0.703.v20210512-0614"/>
 			<unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="1.1.401.v20210409-2301"/>
-			<unit id="org.eclipse.emf.common.feature.group" version="2.22.0.v20210319-0732"/>
-			<unit id="org.eclipse.emf.ecore.feature.group" version="2.24.0.v20210405-0628"/>
+			<unit id="org.eclipse.emf.common.feature.group" version="2.23.0.v20210618-0700"/>
+			<unit id="org.eclipse.emf.ecore.feature.group" version="2.25.0.v20210618-0700"/>
 			<unit id="org.eclipse.equinox.compendium.sdk.feature.group" version="3.22.0.v20210308-1626"/>
-			<unit id="org.eclipse.equinox.core.feature.feature.group" version="1.13.200.v20210602-1312"/>
-			<unit id="org.eclipse.equinox.core.sdk.feature.group" version="3.23.0.v20210609-0619"/>
-			<unit id="org.eclipse.jdt.feature.group" version="3.18.800.v20210611-1600"/>
-			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.800.v20210611-1600"/>
-			<unit id="org.eclipse.pde.feature.group" version="3.14.800.v20210611-1636"/>
-			<unit id="org.eclipse.pde.source.feature.group" version="3.14.800.v20210611-1636"/>
-			<unit id="org.eclipse.platform.feature.group" version="4.20.0.v20210611-1600"/>
-			<unit id="org.eclipse.platform.source.feature.group" version="4.20.0.v20210611-1600"/>
-			<unit id="org.eclipse.rcp.feature.group" version="4.20.0.v20210611-1600"/>
+			<unit id="org.eclipse.equinox.core.feature.feature.group" version="1.13.300.v20210701-1827"/>
+			<unit id="org.eclipse.equinox.core.sdk.feature.group" version="3.23.100.v20210706-0705"/>
+			<unit id="org.eclipse.jdt.feature.group" version="3.18.900.v20210709-0030"/>
+			<unit id="org.eclipse.jdt.source.feature.group" version="3.18.900.v20210709-0030"/>
+			<unit id="org.eclipse.pde.feature.group" version="3.14.900.v20210709-0030"/>
+			<unit id="org.eclipse.pde.source.feature.group" version="3.14.900.v20210709-0030"/>
+			<unit id="org.eclipse.platform.feature.group" version="4.21.0.v20210709-0434"/>
+			<unit id="org.eclipse.platform.source.feature.group" version="4.21.0.v20210709-0434"/>
+			<unit id="org.eclipse.rcp.feature.group" version="4.21.0.v20210709-0434"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-			<repository location="https://download.eclipse.org/webtools/jetty/10.0.5/repository/"/>
+			<repository location="https://download.eclipse.org/webtools/jetty/10.0.6/repository/"/>
 			<unit id="jakarta.annotation-api" version="1.3.5"/>
 			<unit id="jakarta.ejb-api" version="3.2.6"/>
 			<unit id="jakarta.enterprise.cdi-api" version="2.0.2"/>
 			<unit id="jakarta.interceptor-api" version="1.2.5"/>
 			<unit id="jakarta.transaction-api" version="1.3.2"/>
 			<unit id="javax.el-api" version="3.0.3"/>
-			<unit id="org.eclipse.jetty.http" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.http.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.io" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.io.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.jndi" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.jndi.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.plus" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.plus.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.security" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.security.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.server" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.server.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.servlet" version="10.0.5"/>
+			<unit id="org.eclipse.jetty.http" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.http.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.io" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.io.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.jndi" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.jndi.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.plus" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.plus.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.security" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.security.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.server" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.server.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.servlet" version="10.0.6"/>
 			<unit id="org.eclipse.jetty.servlet-api" version="4.0.6"/>
 			<unit id="org.eclipse.jetty.servlet-api.source" version="4.0.6"/>
-			<unit id="org.eclipse.jetty.servlet.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.util" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.util.ajax" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.util.ajax.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.util.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.webapp" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.webapp.source" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.xml" version="10.0.5"/>
-			<unit id="org.eclipse.jetty.xml.source" version="10.0.5"/>
+			<unit id="org.eclipse.jetty.servlet.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.util" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.util.ajax" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.util.ajax.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.util.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.webapp" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.webapp.source" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.xml" version="10.0.6"/>
+			<unit id="org.eclipse.jetty.xml.source" version="10.0.6"/>
 		</location>
 	</locations>
 	<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"/>
