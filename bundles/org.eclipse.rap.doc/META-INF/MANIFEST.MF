@@ -3,7 +3,7 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.rap.doc;singleton:=true
-Bundle-Version: 3.19.0.qualifier
+Bundle-Version: 3.20.0.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.help,
  org.eclipse.core.runtime,
