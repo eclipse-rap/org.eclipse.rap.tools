@@ -19,6 +19,7 @@
         version="true"
         use="true"
         useexternalfile="yes"
+        additionalparam="--ignore-source-errors"
         windowtitle="Eclipse RAP ${version} API Reference"
         packagenames="org.eclipse.rap.rwt.*"
         excludePackageNames="org.eclipse.rap.rwt.internal.*,org.eclipse.swt.internal.*">
