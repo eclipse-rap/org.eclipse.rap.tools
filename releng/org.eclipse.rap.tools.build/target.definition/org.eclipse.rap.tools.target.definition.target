@@ -20,7 +20,7 @@
             <unit id="org.eclipse.equinox.compendium.sdk.feature.group" version="3.22.300.v20220426-1329"/>
             <unit id="org.eclipse.equinox.core.feature.feature.group" version="1.13.600.v20220427-2211"/>
             <unit id="org.eclipse.equinox.core.sdk.feature.group" version="3.23.400.v20220428-0703"/>
-            <unit id="org.eclipse.equinox.serverside.sdk.feature.group" version="3.23.400.v20220428-0821"/>
+            <unit id="org.eclipse.equinox.server.p2.feature.group" version="1.12.500.v20220426-1329"/>
             <unit id="org.eclipse.jdt.feature.group" version="3.18.1200.v20220428-1800"/>
             <unit id="org.eclipse.jdt.source.feature.group" version="3.18.1200.v20220428-1800"/>
             <unit id="org.eclipse.pde.feature.group" version="3.14.1200.v20220428-1800"/>
