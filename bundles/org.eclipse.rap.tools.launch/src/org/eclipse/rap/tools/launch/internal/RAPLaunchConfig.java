@@ -45,7 +45,7 @@ public final class RAPLaunchConfig {
   // Default values for launch configuration attribute names
   private static final String DEFAULT_SERVLET_PATH = "/rap"; //$NON-NLS-1$
   private static final BrowserMode DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL;
-  private static final int DEFAULT_PORT = 10080;
+  private static final int DEFAULT_PORT = 8080;
   private static final boolean DEFAULT_USE_MANUAL_PORT = false;
   private static final String DEFAULT_CONTEXTPATH = "/";
   private static final boolean DEFAULT_USE_MANUAL_CONTEXTPATH = false;
