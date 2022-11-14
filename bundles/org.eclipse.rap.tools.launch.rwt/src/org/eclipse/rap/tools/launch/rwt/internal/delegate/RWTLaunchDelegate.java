@@ -76,7 +76,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.security" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.servlet" ) ); //$NON-NLS-1$
-    list.add( BundleFileLocator.locate( "org.eclipse.jetty.servlet-api" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "jakarta.servlet-api" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.util" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.util.ajax" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.webapp" ) ); //$NON-NLS-1$
