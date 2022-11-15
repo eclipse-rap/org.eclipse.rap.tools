@@ -121,7 +121,6 @@ public class RWTLaunchDelegate_Test {
       "org.eclipse.jetty.util.ajax",
       "org.eclipse.jetty.webapp",
       "org.eclipse.jetty.xml",
-      "org.slf4j.api",
     };
     for( String bundle : bundles ) {
       boolean found = false;
