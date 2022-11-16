@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
-
 <target name="RAP Runtime e3 3.23" sequenceNumber="3">
   <locations>
-    <location includeAllPlatforms="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+    <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.23.0.20221114-1200"/>
       <unit id="org.eclipse.rap.examples.feature.feature.group" version="3.23.0.20221114-1200"/>
       <unit id="org.eclipse.rap.feature.feature.group" version="3.23.0.20221115-1106"/>
