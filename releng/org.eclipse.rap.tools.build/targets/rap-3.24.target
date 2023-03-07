@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
-<target name="RAP Runtime e3 3.24" sequenceNumber="3">
+<target name="RAP Runtime e3 3.24" sequenceNumber="5">
   <locations>
     <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.24.0.20230222-0816"/>
-      <unit id="org.eclipse.rap.examples.feature.feature.group" version="3.24.0.20230222-0816"/>
-      <unit id="org.eclipse.rap.feature.feature.group" version="3.24.0.20230222-0816"/>
-      <unit id="org.eclipse.rap.sdk.feature.feature.group" version="3.24.0.20230222-0816"/>
-      <repository location="https://download.eclipse.org/rt/rap/3.24/M3-20230222-0823/"/>
+      <unit id="org.eclipse.rap.equinox.target.feature.feature.group" version="3.24.0.20230307-1352"/>
+      <unit id="org.eclipse.rap.examples.feature.feature.group" version="3.24.0.20230307-1352"/>
+      <unit id="org.eclipse.rap.feature.feature.group" version="3.24.0.20230307-1352"/>
+      <unit id="org.eclipse.rap.sdk.feature.feature.group" version="3.24.0.20230307-1352"/>
+      <repository location="https://download.eclipse.org/rt/rap/3.24/RC2-20230307-1405/"/>
     </location>
   </locations>
 </target>
