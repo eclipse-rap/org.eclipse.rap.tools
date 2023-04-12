@@ -26,7 +26,7 @@
   <packaging>eclipse-plugin</packaging>
 
   <properties>
-    <eclipserun-repo>https://download.eclipse.org/eclipse/updates/4.17/</eclipserun-repo>
+    <eclipserun-repo>https://download.eclipse.org/eclipse/updates/4.27/</eclipserun-repo>
     <runtimeSourceDir>${project.basedir}/../../../org.eclipse.rap</runtimeSourceDir>
   </properties>
 
@@ -37,15 +37,15 @@
         <artifactId>tycho-eclipserun-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <applicationsArgs>
+          <applicationArgs>
             <args>-application</args><args>org.eclipse.ant.core.antRunner</args>
             <args>-buildfile</args><args>reference-build/build.xml</args>
-            <args>-Dversion="${project.version}"</args>
-            <args>-DbaseDir="${project.basedir}"</args>
-            <args>-DtargetDir="${project.build.directory}/reference/guide/reference"</args>
-            <args>-DruntimeSourceDir="${runtimeSourceDir}"</args>
-            <args>-data</args><args>"${project.build.directory}/workspace"</args>
-          </applicationsArgs>
+            <args>-Dversion=${project.version}</args>
+            <args>-DbaseDir=${project.basedir}</args>
+            <args>-DtargetDir=${project.build.directory}/reference/guide/reference</args>
+            <args>-DruntimeSourceDir=${runtimeSourceDir}</args>
+            <args>-data</args><args>${project.build.directory}/workspace</args>
+          </applicationArgs>
           <dependencies>
             <dependency>
               <artifactId>org.apache.ant</artifactId>
