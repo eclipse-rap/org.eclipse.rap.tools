@@ -16,7 +16,7 @@ Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.eclipse.rap.tools.launch.internal;x-friends:="org.eclipse.rap.tools.tests",
  org.eclipse.rap.tools.launch.internal.tab;x-friends:="org.eclipse.rap.tools.tests",
  org.eclipse.rap.tools.launch.internal.util;x-friends:="org.eclipse.rap.tools.tests"
