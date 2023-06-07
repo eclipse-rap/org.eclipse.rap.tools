@@ -41,6 +41,7 @@
         <setEntry value="javax.servlet.jsp-api"/>
         <setEntry value="javax.el-api"/>
         <setEntry value="org.jdom"/>
+        <setEntry value="org.apache.aries.spifly.dynamic.bundle"/>
         <setEntry value="org.apache.commons.jxpath"/>
         <setEntry value="org.apache.commons.commons-beanutils"/>
         <setEntry value="org.apache.commons.collections"/>
@@ -101,16 +102,21 @@
         <setEntry value="org.eclipse.rap.jface.databinding"/>
         <setEntry value="org.eclipse.rap.rwt"/>
         <setEntry value="org.eclipse.rap.rwt.osgi"/>
-        <setEntry value="org.osgi.service.cm@default:default"/>
-        <setEntry value="org.osgi.service.component@default:default"/>
-        <setEntry value="org.osgi.service.device@default:default"/>
-        <setEntry value="org.osgi.service.event@default:default"/>
-        <setEntry value="org.osgi.service.metatype@default:default"/>
+        <setEntry value="org.objectweb.asm.commons"/>
+        <setEntry value="org.objectweb.asm.tree.analysis"/>
+        <setEntry value="org.objectweb.asm.tree"/>
+        <setEntry value="org.objectweb.asm.util"/>
+        <setEntry value="org.objectweb.asm"/>
+        <setEntry value="org.osgi.service.cm"/>
+        <setEntry value="org.osgi.service.component"/>
+        <setEntry value="org.osgi.service.device"/>
+        <setEntry value="org.osgi.service.event"/>
+        <setEntry value="org.osgi.service.metatype"/>
         <setEntry value="org.osgi.service.prefs"/>
-        <setEntry value="org.osgi.service.provisioning@default:default"/>
-        <setEntry value="org.osgi.service.upnp@default:default"/>
-        <setEntry value="org.osgi.service.useradmin@default:default"/>
-        <setEntry value="org.osgi.service.wireadmin@default:default"/>
+        <setEntry value="org.osgi.service.provisioning"/>
+        <setEntry value="org.osgi.service.upnp"/>
+        <setEntry value="org.osgi.service.useradmin"/>
+        <setEntry value="org.osgi.service.wireadmin"/>
         <setEntry value="org.osgi.util.function"/>
         <setEntry value="org.osgi.util.measurement"/>
         <setEntry value="org.osgi.util.position"/>
@@ -121,7 +127,7 @@
         <setEntry value="org.slf4j.apis.jcl"/>
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
-        <setEntry value="${pluginId}@default:default"/>
+        <setEntry value="${pluginId}"/>
     </setAttribute>
     <booleanAttribute key="show_selected_only" value="true"/>
     <booleanAttribute key="tracing" value="false"/>
