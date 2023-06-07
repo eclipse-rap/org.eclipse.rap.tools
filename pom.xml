@@ -35,6 +35,7 @@
     <module>features/org.eclipse.rap.tools.feature</module>
     <!-- The p2 repository -->
     <module>releng/org.eclipse.rap.tools.build/repository</module>
+    <module>releng/org.eclipse.rap.tools.build/repository-selfcontained</module>
   </modules>
 
 </project>
