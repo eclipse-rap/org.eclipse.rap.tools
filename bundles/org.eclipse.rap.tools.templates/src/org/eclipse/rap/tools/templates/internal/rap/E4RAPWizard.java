@@ -52,7 +52,7 @@ public class E4RAPWizard extends AbstractRAPWizard {
                      BundleValueEntry.bundle( "org.eclipse.e4.ui.di" ),
                      BundleValueEntry.bundle( "org.eclipse.equinox.common" ),
                      BundleValueEntry.bundle( "org.eclipse.e4.ui.model.workbench" ), 
-                     BundleValueEntry.bundle( "javax.annotation" ) );
+                     new BundleValueEntry( true, "jakarta.annotation-api", "1.3.5", null ) );
   }
 
   @Override
