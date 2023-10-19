@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2020 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2023 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -112,14 +112,14 @@ public class RWTLaunchDelegate_Test {
     String[] classpath = launchDelegate.getClasspath( launchConfig );
     String[] bundles = {
       "org.eclipse.rap.tools.launch.rwt",
+      "org.eclipse.jetty.server",
+      "org.eclipse.jetty.ee8.servlet",
+      "org.eclipse.jetty.ee8.webapp",
       "org.eclipse.jetty.http",
       "org.eclipse.jetty.io",
       "org.eclipse.jetty.security",
-      "org.eclipse.jetty.server",
-      "org.eclipse.jetty.servlet",
       "org.eclipse.jetty.util",
       "org.eclipse.jetty.util.ajax",
-      "org.eclipse.jetty.webapp",
       "org.eclipse.jetty.xml",
     };
     for( String bundle : bundles ) {

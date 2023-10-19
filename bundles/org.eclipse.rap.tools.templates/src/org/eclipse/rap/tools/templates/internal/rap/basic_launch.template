@@ -48,7 +48,7 @@
         <setEntry value="org.eclipse.jetty.security"/>
         <setEntry value="org.eclipse.jetty.server"/>
         <setEntry value="org.eclipse.jetty.servlet-api"/>
-        <setEntry value="org.eclipse.jetty.servlet"/>
+        <setEntry value="org.eclipse.jetty.ee8.servlet"/>
         <setEntry value="jakarta.servlet-api"/>
         <setEntry value="org.eclipse.jetty.util"/>
         <setEntry value="org.eclipse.jetty.util.ajax"/>
