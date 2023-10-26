@@ -38,7 +38,6 @@
         <setEntry value="com.ibm.icu"/>
         <setEntry value="jakarta.annotation-api"/>
         <setEntry value="jakarta.inject.jakarta.inject-api"/>
-        <setEntry value="jakarta.servlet-api"/>
         <setEntry value="javax.el-api"/>
         <setEntry value="javax.servlet.jsp-api"/>
         <setEntry value="org.apache.aries.spifly.dynamic.bundle"/>
@@ -90,12 +89,16 @@
         <setEntry value="org.eclipse.equinox.registry"/>
         <setEntry value="org.eclipse.jetty.http"/>
         <setEntry value="org.eclipse.jetty.io"/>
-        <setEntry value="org.eclipse.jetty.logging"/>
         <setEntry value="org.eclipse.jetty.security"/>
         <setEntry value="org.eclipse.jetty.server"/>
+        <setEntry value="org.eclipse.jetty.servlet-api"/>
+        <setEntry value="org.eclipse.jetty.ee8.security"/>
+        <setEntry value="org.eclipse.jetty.ee8.server"/>
         <setEntry value="org.eclipse.jetty.ee8.servlet"/>
-        <setEntry value="org.eclipse.jetty.util.ajax"/>
+        <setEntry value="org.eclipse.jetty.session"/>
+        <setEntry value="org.eclipse.jetty.logging"/>
         <setEntry value="org.eclipse.jetty.util"/>
+        <setEntry value="org.eclipse.jetty.util.ajax"/>
         <setEntry value="org.eclipse.osgi.services"/>
         <setEntry value="org.eclipse.osgi.util"/>
         <setEntry value="org.eclipse.osgi@1:true"/>

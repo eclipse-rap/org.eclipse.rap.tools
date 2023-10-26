@@ -12,9 +12,7 @@
 package org.eclipse.rap.tools.launch.rwt.internal.delegate;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.ILaunch;
@@ -71,13 +69,17 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
   public String[] getClasspath( ILaunchConfiguration configuration ) throws CoreException {
     List<String> list = new ArrayList<String>( Arrays.asList( super.getClasspath( configuration ) ) );
     list.add( BundleFileLocator.locate( "org.eclipse.rap.tools.launch.rwt" ) ); //$NON-NLS-1$
-    list.add( BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee8.server" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee8.security" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee8.servlet" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee8.webapp" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.security" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.http" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.io" ) ); //$NON-NLS-1$
-    list.add( BundleFileLocator.locate( "org.eclipse.jetty.security" ) ); //$NON-NLS-1$
-    list.add( BundleFileLocator.locate( "jakarta.servlet-api" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.servlet-api" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.session" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.logging" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.util" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.util.ajax" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.xml" ) ); //$NON-NLS-1$
