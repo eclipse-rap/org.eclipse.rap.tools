@@ -36,9 +36,9 @@
     <stringAttribute key="pde.version" value="3.3"/>
     <setAttribute key="selected_target_bundles">
         <setEntry value="com.ibm.icu"/>
-        <setEntry value="jakarta.annotation-api"/>
-        <setEntry value="jakarta.inject.jakarta.inject-api"/>
-        <setEntry value="javax.el-api"/>
+        <setEntry value="jakarta.annotation-api*2.1.1"/>
+        <setEntry value="jakarta.inject.jakarta.inject-api*2.0.1"/>
+        <setEntry value="org.mortbay.jasper.apache-el"/>
         <setEntry value="javax.servlet.jsp-api"/>
         <setEntry value="org.apache.aries.spifly.dynamic.bundle"/>
         <setEntry value="org.apache.commons.collections"/>
