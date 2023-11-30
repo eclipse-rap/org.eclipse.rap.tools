@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
-<target name="RAP Runtime e4 3.27" sequenceNumber="4">
+<target name="RAP Runtime e4 3.27" sequenceNumber="5">
   <locations>
     <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.rap.e4.equinox.target.feature.feature.group" version="3.27.0.20231121-1200"/>
-      <unit id="org.eclipse.rap.e4.examples.feature.feature.group" version="3.27.0.20231121-1200"/>
-      <unit id="org.eclipse.rap.e4.feature.feature.group" version="3.27.0.20231121-1200"/>
-      <unit id="org.eclipse.rap.e4.sdk.feature.feature.group" version="3.27.0.20231121-1200"/>
-      <repository location="https://download.eclipse.org/rt/rap/3.27/e4/RC1-20231122-0036/"/>
+      <unit id="org.eclipse.rap.e4.equinox.target.feature.feature.group" version="3.27.0.20231124-1200"/>
+      <unit id="org.eclipse.rap.e4.examples.feature.feature.group" version="3.27.0.20231124-1200"/>
+      <unit id="org.eclipse.rap.e4.feature.feature.group" version="3.27.0.20231124-1200"/>
+      <unit id="org.eclipse.rap.e4.sdk.feature.feature.group" version="3.27.0.20231124-1200"/>
+      <repository location="https://download.eclipse.org/rt/rap/3.27/e4/RC2-20231129-0035/"/>
     </location>
   </locations>
 </target>
