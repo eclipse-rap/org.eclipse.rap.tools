@@ -23,5 +23,6 @@
 
   <artifactId>org.eclipse.rap.tools.feature</artifactId>
   <packaging>eclipse-feature</packaging>
+  <version>3.27.1-SNAPSHOT</version>
 
 </project>
