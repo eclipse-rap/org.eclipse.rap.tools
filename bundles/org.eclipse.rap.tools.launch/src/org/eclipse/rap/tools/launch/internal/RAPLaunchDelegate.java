@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2020 EclipseSource and others.
+ * Copyright (c) 2007, 2024 EclipseSource and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -283,6 +283,10 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
     return launchConfiguration == null ? null : launchConfiguration.getName();
   }
 
+  private String getLaunchMode() {
+    return launch == null ? ILaunchManager.RUN_MODE : launch.getLaunchMode();
+  }
+
   private static void terminate( final ILaunch previousLaunch ) throws DebugException {
     final Object signal = new Object();
     final boolean[] terminated = { false };
@@ -374,7 +378,7 @@ public final class RAPLaunchDelegate extends EquinoxLaunchConfiguration {
   private void clearDataLocation( ILaunchConfiguration configuration, IProgressMonitor monitor )
     throws CoreException
   {
-    clearWorkspace( configuration, getResolvedDataLoacation(), monitor );
+    clearWorkspace( configuration, getResolvedDataLoacation(), getLaunchMode(), monitor );
   }
 
   private void registerBrowserOpener() {
