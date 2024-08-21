@@ -20,11 +20,13 @@ public class MailRAPWizard extends AbstractRAPWizard {
 
   private AbstractRAPTemplate template;
 
+  @Override
   public void init( IFieldData data ) {
     super.init( data );
     setWindowTitle( Messages.mailRAPWizard_windowTitle );
   }
 
+  @Override
   public ITemplateSection[] createTemplateSections() {
     template = new MailRAPTemplate();
     return new ITemplateSection[] {
@@ -44,7 +46,7 @@ public class MailRAPWizard extends AbstractRAPWizard {
 
   @Override
   protected String getRequireBundles() {
-    return "org.eclipse.rap.ui;bundle-version=\"[3.0.0,4.0.0)\"";
+    return "org.eclipse.rap.ui;bundle-version=\"[4.0.0,5.0.0)\"";
   }
 
   @Override

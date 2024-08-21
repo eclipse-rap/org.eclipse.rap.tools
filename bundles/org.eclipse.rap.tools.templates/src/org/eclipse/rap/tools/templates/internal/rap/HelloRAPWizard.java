@@ -20,11 +20,13 @@ public class HelloRAPWizard extends AbstractRAPWizard {
 
   private AbstractRAPTemplate template;
 
+  @Override
   public void init( IFieldData data ) {
     super.init( data );
     setWindowTitle( Messages.helloRAPWizard_windowTitle );
   }
 
+  @Override
   public ITemplateSection[] createTemplateSections() {
     template = new HelloRAPTemplate();
     return new ITemplateSection[] {
@@ -44,7 +46,7 @@ public class HelloRAPWizard extends AbstractRAPWizard {
 
   @Override
   protected String getRequireBundles() {
-    return "org.eclipse.rap.rwt;bundle-version=\"[3.0.0,4.0.0)\"";
+    return "org.eclipse.rap.rwt;bundle-version=\"[4.0.0,5.0.0)\"";
   }
 
   @Override
