@@ -20,11 +20,13 @@ public class E4RAPWizard extends AbstractRAPWizard {
 
   private AbstractRAPTemplate template;
 
+  @Override
   public void init( IFieldData data ) {
     super.init( data );
     setWindowTitle( Messages.e4RAPWizard_windowTitle );
   }
 
+  @Override
   public ITemplateSection[] createTemplateSections() {
     template = new E4RAPTemplate();
     return new ITemplateSection[] { template };
@@ -42,8 +44,8 @@ public class E4RAPWizard extends AbstractRAPWizard {
 
   @Override
   protected String getRequireBundles() {
-    return asString( new BundleValueEntry( true, "org.eclipse.rap.rwt", "3.0.0", "4.0.0" ),
-                     new BundleValueEntry( true, "org.eclipse.rap.e4", "3.2.0", null ),
+    return asString( new BundleValueEntry( true, "org.eclipse.rap.rwt", "4.0.0", "5.0.0" ),
+                     new BundleValueEntry( true, "org.eclipse.rap.e4", "4.0.0", null ),
                      new BundleValueEntry( true, "org.eclipse.e4.ui.workbench", "1.3.0", null ),
                      BundleValueEntry.bundle( "org.eclipse.e4.core.di" ),
                      BundleValueEntry.bundle( "org.eclipse.e4.core.di.extensions" ),
@@ -51,7 +53,7 @@ public class E4RAPWizard extends AbstractRAPWizard {
                      BundleValueEntry.bundle( "org.eclipse.e4.core.services" ),
                      BundleValueEntry.bundle( "org.eclipse.e4.ui.di" ),
                      BundleValueEntry.bundle( "org.eclipse.equinox.common" ),
-                     BundleValueEntry.bundle( "org.eclipse.e4.ui.model.workbench" ), 
+                     BundleValueEntry.bundle( "org.eclipse.e4.ui.model.workbench" ),
                      new BundleValueEntry( true, "jakarta.annotation-api", "1.3.5", null ) );
   }
 

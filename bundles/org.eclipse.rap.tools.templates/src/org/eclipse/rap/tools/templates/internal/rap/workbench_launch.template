@@ -35,6 +35,7 @@
     <booleanAttribute key="org.eclipse.rap.launch.useSessionTimeout" value="false"/>
     <stringAttribute key="pde.version" value="3.3"/>
     <setAttribute key="selected_target_bundles">
+        <setEntry value="jakarta.servlet-api"/>
         <setEntry value="com.ibm.icu"/>
         <setEntry value="org.apache.aries.spifly.dynamic.bundle"/>
         <setEntry value="org.apache.felix.gogo.command"/>
@@ -52,32 +53,28 @@
         <setEntry value="org.eclipse.equinox.app"/>
         <setEntry value="org.eclipse.equinox.common"/>
         <setEntry value="org.eclipse.equinox.console"/>
-        <setEntry value="org.eclipse.equinox.http.jetty"/>
-        <setEntry value="org.eclipse.equinox.http.registry"/>
-        <setEntry value="org.eclipse.equinox.http.servlet"/>
         <setEntry value="org.eclipse.equinox.preferences"/>
         <setEntry value="org.eclipse.equinox.registry"/>
         <setEntry value="org.eclipse.help"/>
+        <setEntry value="org.eclipse.jetty.ee10.servlet"/>
         <setEntry value="org.eclipse.jetty.http"/>
         <setEntry value="org.eclipse.jetty.io"/>
         <setEntry value="org.eclipse.jetty.security"/>
         <setEntry value="org.eclipse.jetty.server"/>
-        <setEntry value="org.eclipse.jetty.servlet-api"/>
-        <setEntry value="org.eclipse.jetty.ee8.security"/>
-        <setEntry value="org.eclipse.jetty.ee8.server"/>
-        <setEntry value="org.eclipse.jetty.ee8.servlet"/>
         <setEntry value="org.eclipse.jetty.session"/>
         <setEntry value="org.eclipse.jetty.logging"/>
         <setEntry value="org.eclipse.jetty.util"/>
         <setEntry value="org.eclipse.jetty.util.ajax"/>
         <setEntry value="org.eclipse.osgi"/>
-        <setEntry value="org.eclipse.osgi.services"/>
         <setEntry value="org.eclipse.osgi.util"/>
         <setEntry value="org.eclipse.rap.design.example"/>
         <setEntry value="org.eclipse.rap.jface"/>
         <setEntry value="org.eclipse.rap.jface.databinding"/>
         <setEntry value="org.eclipse.rap.rwt"/>
         <setEntry value="org.eclipse.rap.rwt.osgi"/>
+        <setEntry value="org.eclipse.rap.http.jetty"/>
+        <setEntry value="org.eclipse.rap.http.registry"/>
+        <setEntry value="org.eclipse.rap.http.servlet"/>
         <setEntry value="org.eclipse.rap.ui"/>
         <setEntry value="org.eclipse.rap.ui.forms"/>
         <setEntry value="org.eclipse.rap.ui.views"/>
