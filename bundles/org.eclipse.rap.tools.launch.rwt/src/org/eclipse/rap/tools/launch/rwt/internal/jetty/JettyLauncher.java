@@ -10,8 +10,9 @@
  ******************************************************************************/
 package org.eclipse.rap.tools.launch.rwt.internal.jetty;
 
-import org.eclipse.jetty.ee10.webapp.WebAppContext;
+
 import org.eclipse.jetty.server.Server;
+import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig.JakartaVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,10 +24,18 @@ public class JettyLauncher {
   public static void main( String[] args ) {
     try {
       Server server = new Server( Integer.parseInt( args[ 0 ] ) );
-      WebAppContext webapp = new WebAppContext();
-      webapp.setContextPath( args[ 1 ] );
-      webapp.setWar( args[ 2 ] );
-      server.setHandler( webapp );
+      JakartaVersion jakartaVersion = Enum.valueOf( JakartaVersion.class, args[ 3 ] );
+      if( jakartaVersion == JakartaVersion.EE8 ) {
+        org.eclipse.jetty.ee8.webapp.WebAppContext webapp = new org.eclipse.jetty.ee8.webapp.WebAppContext();
+        webapp.setContextPath( args[ 1 ] );
+        webapp.setWar( args[ 2 ] );
+        server.setHandler( webapp );
+      } else {
+        org.eclipse.jetty.ee10.webapp.WebAppContext webapp = new org.eclipse.jetty.ee10.webapp.WebAppContext();
+        webapp.setContextPath( args[ 1 ] );
+        webapp.setWar( args[ 2 ] );
+        server.setHandler( webapp );
+      }
       server.start();
       server.join();
     } catch( Exception exception ) {
