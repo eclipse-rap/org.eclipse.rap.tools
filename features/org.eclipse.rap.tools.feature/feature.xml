@@ -126,7 +126,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jetty.ee8.servlet"
+         id="org.eclipse.jetty.ee10.servlet"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -148,7 +148,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jetty.ee8.webapp"
+         id="org.eclipse.jetty.ee10.webapp"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -156,6 +156,13 @@
 
    <plugin
          id="org.eclipse.jetty.xml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jetty.ee"
          download-size="0"
          install-size="0"
          version="0.0.0"
