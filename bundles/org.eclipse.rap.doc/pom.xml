@@ -71,7 +71,7 @@
               <url>${eclipserun-repo}</url>
             </repository>
           </repositories>
-          <executionEnvironment>JavaSE-17</executionEnvironment>
+          <executionEnvironment>JavaSE-21</executionEnvironment>
         </configuration>
         <executions>
           <execution>
