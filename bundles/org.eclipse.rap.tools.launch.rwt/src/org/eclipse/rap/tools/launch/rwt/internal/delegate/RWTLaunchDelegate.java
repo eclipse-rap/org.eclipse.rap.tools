@@ -22,10 +22,13 @@ import org.eclipse.jdt.launching.SocketUtil;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
 import org.eclipse.rap.tools.launch.rwt.internal.util.BundleFileLocator;
 import org.eclipse.rap.tools.launch.rwt.internal.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class RWTLaunchDelegate extends JavaLaunchDelegate {
 
+  private static final Logger LOG = LoggerFactory.getLogger( RWTLaunchDelegate.class );
   private static final String VMARG_JETTY_HOME = " -Djetty.home="; //$NON-NLS-1$
   private static final String VMARG_DEVELOPMENT_MODE
     = " -Dorg.eclipse.rap.rwt.developmentMode="; //$NON-NLS-1$
@@ -72,6 +75,10 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     list.add( BundleFileLocator.locate( "jakarta.servlet-api" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee10.servlet" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee10.webapp" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee8.server" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee8.security" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee8.servlet" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee8.webapp" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.security" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.http" ) ); //$NON-NLS-1$
@@ -93,8 +100,15 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     String port = String.valueOf( launch.getPort() );
     String contextPath = getContextPath();
     String webAppDirectory = launch.getWebAppPath().getAbsolutePath();
-    Object[] arguments = new Object[] { port, contextPath, webAppDirectory };
-    return MessageFormat.format( "{0} {1} \"{2}\"", arguments ); //$NON-NLS-1$
+    String jakartaVersion = RWTLaunchConfig.DEFAULT_JAKARTA_VERSION.name();
+    try {
+      jakartaVersion = configuration.getAttribute( RWTLaunchConfig.JAKARTA_VERSION,
+                                                   RWTLaunchConfig.DEFAULT_JAKARTA_VERSION.name() );
+    } catch( CoreException exception ) {
+      LOG.error( exception.getLocalizedMessage(), exception );
+    }
+    Object[] arguments = new Object[] { port, contextPath, webAppDirectory, jakartaVersion };
+    return MessageFormat.format( "{0} {1} \"{2}\" \"{3}\"", arguments ); //$NON-NLS-1$
   }
 
   @Override
