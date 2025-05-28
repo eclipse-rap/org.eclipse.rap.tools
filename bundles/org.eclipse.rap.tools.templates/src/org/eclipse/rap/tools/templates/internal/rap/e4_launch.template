@@ -42,8 +42,7 @@
         <setEntry value="org.apache.aries.spifly.dynamic.bundle"/>
         <setEntry value="org.apache.commons.collections"/>
         <setEntry value="org.apache.commons.commons-beanutils"/>
-        <setEntry value="org.apache.commons.jxpath"/>
-        <setEntry value="org.apache.commons.logging"/>
+        <setEntry value="org.apache.commons.commons-logging"/>
         <setEntry value="org.apache.felix.gogo.command"/>
         <setEntry value="org.apache.felix.gogo.runtime"/>
         <setEntry value="org.apache.felix.gogo.shell"/>
