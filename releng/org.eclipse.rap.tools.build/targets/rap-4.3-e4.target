@@ -7,7 +7,7 @@
       <unit id="org.eclipse.rap.e4.examples.feature.feature.group" version="4.3.0.20250530-1200"/>
       <unit id="org.eclipse.rap.e4.feature.feature.group" version="4.3.0.20250530-1200"/>
       <unit id="org.eclipse.rap.e4.sdk.feature.feature.group" version="4.3.0.20250530-1200"/>
-      <repository location="https://download.eclipse.org/rt/rap/4.3/e4/R-20250601-2335/"/>
+      <repository location="https://download.eclipse.org/rt/rap/4.3/e4/"/>
     </location>
   </locations>
 </target>
