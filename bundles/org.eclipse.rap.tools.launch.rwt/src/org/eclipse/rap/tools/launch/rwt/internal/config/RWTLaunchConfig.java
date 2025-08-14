@@ -31,6 +31,11 @@ public final class RWTLaunchConfig {
     ENTRY_POINT,
     WEB_XML,
   }
+  
+  public static enum JakartaVersion {
+    EE8,
+    EE10,
+  }
 
   // Attribute names from JDT's Java Launcher
   private static final String PROJECT_NAME
@@ -57,6 +62,7 @@ public final class RWTLaunchConfig {
   private static final String OPEN_BROWSER = PREFIX + "openBrowser"; //$NON-NLS-1$
   private static final String BROWSER_MODE = PREFIX + "browserMode"; //$NON-NLS-1$
   private static final String DEVELOPMENT_MODE = PREFIX + "developmentMode"; //$NON-NLS-1$
+  public static final String JAKARTA_VERSION = PREFIX + "jakartaVersion"; //$NON-NLS-1$
 
   // Default values for attributes
   private static final LaunchTarget DEFAULT_LAUNCH_TARGET = LaunchTarget.ENTRY_POINT;
@@ -77,6 +83,7 @@ public final class RWTLaunchConfig {
   private static final boolean DEFAULT_OPEN_BROWSER = true;
   private static final String DEFAULT_BROWSER_MODE = BrowserMode.INTERNAL.toString();
   private static final boolean DEFAULT_DEVELOPMENT_MODE = true;
+  public static final JakartaVersion DEFAULT_JAKARTA_VERSION = JakartaVersion.EE10;
 
 
   public static ILaunchConfigurationType getType() {
@@ -102,6 +109,7 @@ public final class RWTLaunchConfig {
     config.setAttribute( SESSION_TIMEOUT, DEFAULT_SESSION_TIMEOUT );
     config.setAttribute( OPEN_BROWSER, DEFAULT_OPEN_BROWSER );
     config.setAttribute( BROWSER_MODE, DEFAULT_BROWSER_MODE );
+    config.setAttribute( JAKARTA_VERSION, DEFAULT_JAKARTA_VERSION.toString() );
   }
 
   private final ILaunchConfiguration config;
@@ -290,6 +298,17 @@ public final class RWTLaunchConfig {
   public void setDevelopmentMode( boolean developmentMode ) {
     checkWorkingCopy();
     workingCopy.setAttribute( DEVELOPMENT_MODE, developmentMode );
+  }
+  
+  public JakartaVersion getJakartaVersion() {
+    String attribute = getAttribute( JAKARTA_VERSION, DEFAULT_JAKARTA_VERSION.name() );
+    return Enum.valueOf( JakartaVersion.class, attribute );
+  }
+  
+  public void setJakartaVersion( JakartaVersion jakartaVersion ) {
+    checkNotNull( jakartaVersion, "jakartaVersion" ); //$NON-NLS-1$
+    checkWorkingCopy();
+    workingCopy.setAttribute( JAKARTA_VERSION, jakartaVersion.name() );
   }
 
   private static void checkNotNull( Object argument, String argumentName ) {

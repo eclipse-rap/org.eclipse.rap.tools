@@ -13,6 +13,7 @@ package org.eclipse.rap.tools.launch.rwt.internal.tab;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig;
+import org.eclipse.rap.tools.launch.rwt.internal.config.RWTLaunchConfig.JakartaVersion;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.GridData;
@@ -28,6 +29,8 @@ public class ServerSettingsSection extends RWTLaunchTab {
   private Spinner spnSessionTimeout;
   private Button cbContextPath;
   private Text txtContextPath;
+  private Button rbEe8;
+  private Button rbEe10;
 
   public String getName() {
     return "Server Settings";
@@ -58,11 +61,27 @@ public class ServerSettingsSection extends RWTLaunchTab {
     cbContextPath.setText( "Context pat&h:" );
     cbContextPath.addSelectionListener( new UpdateConfigSelectionListener() );
     txtContextPath = new Text( group, SWT.BORDER | SWT.SINGLE );
-    GridDataFactory.fillDefaults().grab( true, false ).span( 3, 1 ).applyTo( txtContextPath );
+    GridDataFactory.fillDefaults().grab( true, false ).applyTo( txtContextPath );
     txtContextPath.addModifyListener( new UpdateConfigModifyListener() );
+    Composite cJakartaVersion = createJakartaVersionPart( group );
+    GridDataFactory.fillDefaults().grab( true, false ).span( 2, 1 ).indent( 25, 0 ).applyTo( cJakartaVersion );
     updateEnablement();
     setControl( group );
     HelpContextIds.assign( getControl(), HelpContextIds.MAIN_TAB );
+  }
+  
+  private Composite createJakartaVersionPart( Composite parent ) {
+    Composite composite = new Composite( parent, SWT.NONE );
+    composite.setLayout( new GridLayout( 3, false ) );
+    Label lblServletPath = new Label( composite, SWT.NONE );
+    lblServletPath.setText( "Jakarta Version:" );
+    rbEe8 = new Button( composite, SWT.RADIO );
+    rbEe8.setText( JakartaVersion.EE8.name() );
+    rbEe8.addSelectionListener( new JakartaVersionSelectionListener() );
+    rbEe10 = new Button( composite, SWT.RADIO );
+    rbEe10.setText( JakartaVersion.EE10.name() );
+    rbEe10.addSelectionListener( new JakartaVersionSelectionListener() );
+    return composite;
   }
 
   public void initializeFrom( RWTLaunchConfig launchConfig ) {
@@ -72,6 +91,8 @@ public class ServerSettingsSection extends RWTLaunchTab {
     spnSessionTimeout.setSelection( launchConfig.getSessionTimeout() );
     cbContextPath.setSelection( launchConfig.getUseManualContextPath() );
     txtContextPath.setText( launchConfig.getContextPath() );
+    rbEe8.setSelection( JakartaVersion.EE8.equals( launchConfig.getJakartaVersion() ) );
+    rbEe10.setSelection( JakartaVersion.EE10.equals( launchConfig.getJakartaVersion() ) );
     updateEnablement();
   }
 
@@ -82,6 +103,11 @@ public class ServerSettingsSection extends RWTLaunchTab {
     launchConfig.setSessionTimeout( spnSessionTimeout.getSelection() );
     launchConfig.setUseManualContextPath( cbContextPath.getSelection() );
     launchConfig.setContextPath( txtContextPath.getText().trim() );
+    if( rbEe8.getSelection() ) {
+      launchConfig.setJakartaVersion( JakartaVersion.EE8 );
+    } else if( rbEe10.getSelection() ) {
+      launchConfig.setJakartaVersion( JakartaVersion.EE10 );
+    }
   }
 
   private void updateEnablement() {
@@ -99,6 +125,12 @@ public class ServerSettingsSection extends RWTLaunchTab {
 
   private class UpdateConfigModifyListener implements ModifyListener {
     public void modifyText( ModifyEvent event ) {
+      updateLaunchConfigurationDialog();
+    }
+  }
+  
+  private class JakartaVersionSelectionListener extends SelectionAdapter {
+    public void widgetSelected( SelectionEvent event ) {
       updateLaunchConfigurationDialog();
     }
   }
