@@ -155,14 +155,14 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jetty.xml"
+         id="org.eclipse.jetty.ee.webapp"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jetty.ee"
+         id="org.eclipse.jetty.xml"
          download-size="0"
          install-size="0"
          version="0.0.0"
