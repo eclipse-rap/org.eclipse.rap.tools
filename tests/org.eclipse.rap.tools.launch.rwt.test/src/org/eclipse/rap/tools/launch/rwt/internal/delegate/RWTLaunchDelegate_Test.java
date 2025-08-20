@@ -115,13 +115,13 @@ public class RWTLaunchDelegate_Test {
       "org.eclipse.jetty.server",
       "org.eclipse.jetty.ee10.servlet",
       "org.eclipse.jetty.ee10.webapp",
+      "org.eclipse.jetty.ee.webapp",
       "org.eclipse.jetty.http",
       "org.eclipse.jetty.io",
       "org.eclipse.jetty.security",
       "org.eclipse.jetty.util",
       "org.eclipse.jetty.util.ajax",
-      "org.eclipse.jetty.xml",
-      "org.eclipse.jetty.ee"
+      "org.eclipse.jetty.xml"
     };
     for( String bundle : bundles ) {
       boolean found = false;

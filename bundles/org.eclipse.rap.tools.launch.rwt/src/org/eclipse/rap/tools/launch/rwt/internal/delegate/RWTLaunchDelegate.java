@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2024 Rüdiger Herrmann and others.
+ * Copyright (c) 2011, 2025 Rüdiger Herrmann and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,9 @@
 package org.eclipse.rap.tools.launch.rwt.internal.delegate;
 
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.debug.core.ILaunch;
@@ -72,6 +74,7 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     list.add( BundleFileLocator.locate( "jakarta.servlet-api" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee10.servlet" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee10.webapp" ) ); //$NON-NLS-1$
+    list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee.webapp" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.server" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.security" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.http" ) ); //$NON-NLS-1$
@@ -82,7 +85,6 @@ public class RWTLaunchDelegate extends JavaLaunchDelegate {
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.util" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.util.ajax" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "org.eclipse.jetty.xml" ) ); //$NON-NLS-1$
-    list.add( BundleFileLocator.locate( "org.eclipse.jetty.ee" ) ); //$NON-NLS-1$
     list.add( BundleFileLocator.locate( "slf4j.api" ) ); //$NON-NLS-1$
     return list.toArray( new String[0] );
   }
