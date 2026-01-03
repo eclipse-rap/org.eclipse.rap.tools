@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.eclipse.rap.tools.feature"
-      label="RAP Tools"
+      id="org.eclipse.rap.tools.dependencies.feature"
+      label="RAP Tools Dependencies"
       version="4.6.0.qualifier"
       provider-name="Eclipse.org - RAP"
       license-feature="org.eclipse.license"
@@ -19,79 +19,86 @@
       %license
    </license>
 
-   <requires>
-      <import plugin="org.eclipse.help"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.pde.ui"/>
-      <import plugin="org.eclipse.debug.ui"/>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.ui.intro"/>
-      <import plugin="org.eclipse.ui.intro.universal"/>
-      <import plugin="org.eclipse.ui.cheatsheets"/>
-      <import plugin="org.eclipse.pde.core"/>
-      <import plugin="org.eclipse.ant.core"/>
-   </requires>
-
    <plugin
-         id="org.eclipse.rap.doc"
+         id="org.eclipse.jetty.http"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.tools.intro"
+         id="org.eclipse.jetty.io"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.tools.intro.source"
+         id="org.eclipse.jetty.security"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.tools.templates"
+         id="org.eclipse.jetty.server"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.tools.templates.source"
+         id="org.eclipse.jetty.ee10.servlet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+
+   <plugin
+         id="org.eclipse.jetty.util"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.tools.launch"
+         id="org.eclipse.jetty.util.ajax"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.tools.launch.source"
+         id="org.eclipse.jetty.ee10.webapp"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.tools.launch.rwt"
+         id="org.eclipse.jetty.ee.webapp"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.rap.tools.launch.rwt.source"
+         id="org.eclipse.jetty.xml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="slf4j.api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="jakarta.servlet-api"
          download-size="0"
          install-size="0"
          version="0.0.0"
