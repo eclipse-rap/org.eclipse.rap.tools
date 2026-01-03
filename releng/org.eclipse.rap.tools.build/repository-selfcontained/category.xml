@@ -13,5 +13,6 @@
    <feature url="http://eclipse.org/rap" id="org.eclipse.rap.tools.feature" version="4.5.0.qualifier">
       <category name="org.eclipse.rap.category"/>
    </feature>
+   <feature id="org.eclipse.rap.tools.dependencies.feature"/>
    <category-def name="org.eclipse.rap.category" label="Remote Application Platform (RAP) - self contained"/>
 </site>
