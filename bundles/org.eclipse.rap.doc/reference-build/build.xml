@@ -19,10 +19,14 @@
         version="true"
         use="true"
         useexternalfile="yes"
-        additionalparam="--ignore-source-errors"
+        additionalparam="-Xdoclint:none -tag noextend:a:&quot;No Extend:&quot; -tag noreference:a:&quot;No Reference:&quot; -tag noinstantiate:a:&quot;No Instantiate:&quot;"
         windowtitle="Eclipse RAP ${version} API Reference"
         packagenames="org.eclipse.rap.rwt.*"
         excludePackageNames="org.eclipse.rap.rwt.internal.*,org.eclipse.swt.internal.*">
+      <arg value="-Xmaxerrs"/>
+      <arg value="999999"/>
+      <arg value="-Xmaxwarns"/>
+      <arg value="999999"/>
       <fileset
           dir="${runtimeSourceDir}/bundles/org.eclipse.rap.rwt/src"
           defaultexcludes="yes">
