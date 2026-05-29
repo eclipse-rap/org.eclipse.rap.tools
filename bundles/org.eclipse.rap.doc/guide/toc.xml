@@ -160,8 +160,6 @@
           href="guide/reference/extension-points/org_eclipse_rap_ui_entrypoint.html"/>
       <topic label="org.eclipse.rap.ui.layouts"
           href="guide/reference/extension-points/org_eclipse_rap_ui_layouts.html"/>
-      <topic label="org.eclipse.rap.ui.phaselistener"
-          href="guide/reference/extension-points/org_eclipse_rap_ui_phaselistener.html"/>
       <topic label="org.eclipse.rap.ui.resources"
           href="guide/reference/extension-points/org_eclipse_rap_ui_resources.html"/>
       <topic label="org.eclipse.rap.ui.serviceHandler"
