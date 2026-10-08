@@ -38,3 +38,4 @@ Export-Package: org.eclipse.rap.tools.launch.rwt.internal;x-internal:=true,
  org.eclipse.rap.tools.launch.rwt.internal.util;x-internal:=true
 Import-Package: org.slf4j
 Automatic-Module-Name: org.eclipse.rap.tools.launch.rwt
+Bundle-License: https://www.eclipse.org/legal/epl-2.0

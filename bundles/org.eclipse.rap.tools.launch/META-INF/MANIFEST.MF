@@ -21,3 +21,4 @@ Export-Package: org.eclipse.rap.tools.launch.internal;x-friends:="org.eclipse.ra
  org.eclipse.rap.tools.launch.internal.tab;x-friends:="org.eclipse.rap.tools.tests",
  org.eclipse.rap.tools.launch.internal.util;x-friends:="org.eclipse.rap.tools.tests"
 Automatic-Module-Name: org.eclipse.rap.tools.launch
+Bundle-License: https://www.eclipse.org/legal/epl-2.0

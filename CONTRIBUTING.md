@@ -54,3 +54,12 @@ For more information, see the Eclipse Committer Handbook sections on Git in gene
 Contact the project developers via the project's "dev" list.
 
 * [dev.eclipse.org/mailman/listinfo/rap-dev](https://dev.eclipse.org/mailman/listinfo/rap-dev)
+
+## License headers
+
+Use EPL 2.0 notices with `which is available at`, the canonical
+`https://www.eclipse.org/legal/epl-2.0` URL, and
+`SPDX-License-Identifier: EPL-2.0`. Preserve existing copyright years, owners,
+contributors, ongoing development, and bugfix credits when updating a header.
+See the [migration guide](releng/org.eclipse.rap.tools.build/EPL-2.0-MIGRATION.md)
+for the official guidance and verification commands.

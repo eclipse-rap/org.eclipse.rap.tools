@@ -8,3 +8,4 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.help,
  org.eclipse.core.runtime,
  org.eclipse.core.resources
+Bundle-License: https://www.eclipse.org/legal/epl-2.0

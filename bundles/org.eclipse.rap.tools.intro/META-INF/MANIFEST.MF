@@ -24,3 +24,4 @@ Export-Package: org.eclipse.rap.tools.intro.internal;x-friends:="org.eclipse.rap
  org.eclipse.rap.tools.intro.internal.commands;x-internal:=true,
  org.eclipse.rap.tools.intro.internal.target;x-friends:="org.eclipse.rap.tools.tests"
 Automatic-Module-Name: org.eclipse.rap.tools.intro
+Bundle-License: https://www.eclipse.org/legal/epl-2.0

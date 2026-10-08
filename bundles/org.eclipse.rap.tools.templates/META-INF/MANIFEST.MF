@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.core.resources,
 Export-Package: org.eclipse.rap.tools.templates.internal;x-internal:=true,
  org.eclipse.rap.tools.templates.internal.rap;x-internal:=true
 Automatic-Module-Name: org.eclipse.rap.tools.templates
+Bundle-License: https://www.eclipse.org/legal/epl-2.0
