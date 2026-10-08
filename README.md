@@ -38,7 +38,9 @@ For more information, please visit the [project's contribution guide](CONTRIBUTI
 License
 -------
 
-[Eclipse Public License - v 1.0](https://www.eclipse.org/legal/epl-v10.html)
+[Eclipse Public License - v 2.0](https://www.eclipse.org/legal/epl-2.0)
+
+See the [EPL 2.0 migration guide](releng/org.eclipse.rap.tools.build/EPL-2.0-MIGRATION.md) for official guidance, packaging changes, and verification commands.
 
 Contact
 -------
