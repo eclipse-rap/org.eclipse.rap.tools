@@ -29,9 +29,9 @@
     <!-- disabled due to bug 393977
     <baseline-repository>http://download.eclipse.org/rt/rap/nightly/tooling/</baseline-repository>
      -->
-    <jetty-repo.url>https://download.eclipse.org/tools/orbit/simrel/maven-jetty/release/12.1.13/</jetty-repo.url>
+    <jetty-repo.url>https://download.eclipse.org/tools/orbit/simrel/maven-jetty/release/12.1.14/</jetty-repo.url>
     <orbit-repo.url>https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-12/</orbit-repo.url>
-    <platform-repo.url>https://download.eclipse.org/eclipse/updates/4.42-I-builds/I20261001-2300/</platform-repo.url>
+    <platform-repo.url>https://download.eclipse.org/eclipse/updates/4.42-I-builds/I20261025-2300/</platform-repo.url>
     <test-workspace-dir>${java.io.tmpdir}/rap-tools-test-workspace</test-workspace-dir>
     <!-- The build type, N for nighty builds, S for stable builds. S-builds will be signed. -->
     <buildType>N</buildType>
