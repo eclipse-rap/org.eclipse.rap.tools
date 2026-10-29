@@ -32,6 +32,7 @@
     <jetty-repo.url>https://download.eclipse.org/tools/orbit/simrel/maven-jetty/release/12.1.14/</jetty-repo.url>
     <orbit-repo.url>https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-12/</orbit-repo.url>
     <platform-repo.url>https://download.eclipse.org/eclipse/updates/4.42-I-builds/I20261025-2300/</platform-repo.url>
+    <license-repo.url>https://download.eclipse.org/cbi/updates/license/2.0.2.v20181016-2210/</license-repo.url>
     <test-workspace-dir>${java.io.tmpdir}/rap-tools-test-workspace</test-workspace-dir>
     <!-- The build type, N for nighty builds, S for stable builds. S-builds will be signed. -->
     <buildType>N</buildType>
@@ -57,6 +58,11 @@
       <id>jetty-repo</id>
       <layout>p2</layout>
       <url>${jetty-repo.url}</url>
+    </repository>
+    <repository>
+      <id>license-repo</id>
+      <layout>p2</layout>
+      <url>${license-repo.url}</url>
     </repository>
   </repositories>
 
@@ -239,13 +245,5 @@
     </profile>
 
   </profiles>
-
-  <licenses>
-    <license>
-      <name>Eclipse Public License 2.0</name>
-      <url>https://www.eclipse.org/legal/epl-2.0</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
 
 </project>
