@@ -41,6 +41,7 @@
         <setEntry value="org.apache.felix.gogo.command"/>
         <setEntry value="org.apache.felix.gogo.runtime"/>
         <setEntry value="org.apache.felix.gogo.shell"/>
+        <setEntry value="org.apache.felix.scr"/>
         <setEntry value="org.eclipse.core.commands"/>
         <setEntry value="org.eclipse.core.contenttype"/>
         <setEntry value="org.eclipse.core.databinding"/>

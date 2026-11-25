@@ -83,6 +83,7 @@
         <setEntry value="org.eclipse.equinox.event"/>
         <setEntry value="org.eclipse.equinox.preferences"/>
         <setEntry value="org.eclipse.equinox.registry"/>
+        <setEntry value="org.eclipse.equinox.spi"/>
         <setEntry value="org.eclipse.jetty.ee10.servlet"/>
         <setEntry value="org.eclipse.jetty.http"/>
         <setEntry value="org.eclipse.jetty.io"/>
